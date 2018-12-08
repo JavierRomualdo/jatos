@@ -1,0 +1,123 @@
+<div class="card mb-0 card-accent-primary">
+  <div class="card-header bg-primary">
+    <span *ngIf="!vistaFormulario" class="h6">MANTENIMIENTO DE ROLES</span>
+    <span *ngIf="vistaFormulario && verNuevo" class="h6">NUEVO ROL</span>
+    <span *ngIf="vistaFormulario && !verNuevo" class="h6">EDITANDO ROL</span>
+    <button type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <i class="fa fa-close"></i>
+    </button>
+  </div>
+  <div *ngIf="cargando">
+    <app-cargando></app-cargando>
+  </div>
+  <!--/.form-->
+  <form #frmDatos="ngForm" name="frmDatos" autocomplete="off" *ngIf="!cargando && !vistaFormulario" (ngSubmit)="busqueda()">
+    <div class="card-body pb-0" >
+      <!--/.card-->
+      <div class="card border-primary">
+          <div class="card-header bg-primary border-primary">
+            <i class="fa fa-align-justify"></i> Listado de roles
+            <button type="button" class="btn btn-primary btn-sm float-right" (click)="nuevo()">
+              <i class="fa fa-plus"></i> Nuevo
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="input-group">
+              <input type="text" class="form-control border-primary" placeholder="Busque por rol" maxlength="150" name="rol" [(ngModel)]="parametros.rol">
+              <input type="text" class="form-control border-primary" placeholder="Busque por permiso" maxlength="150" name="permiso" [(ngModel)]="parametros.permiso">
+              <button type="submit" class="input-group-addon btn btn-square btn-primary"><i class="fa fa-search cursor-pointer"></i></button>
+              <button type="reset" class="btn btn-sm btn-primary" title="actualizar" (click)="limpiar()"><i class="fa fa-refresh cursor-pointer"></i></button>
+            </div>
+            <div class="table-responsive">
+              <!--/.table-->
+              <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline">
+                  <thead class="thead-light">
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th>Rol</th>
+                      <th>Permiso</th>
+                      <th>Estado</th>
+                      <th>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let rol of roles;let i=index" style="cursor: pointer" (click)="enviarrol(rol)">
+                      <th class="text-center">{{i+1}}</th>
+                      <td>{{rol.rol}}</td>
+                      <td>{{rol.permiso}}</td>
+                      <td>
+                        <label class="switch switch-label switch-pill switch-primary">
+                          <input type="checkbox" class="switch-input" [(ngModel)]="rol.estado" name="{{rol.rol}}">
+                          <span class="switch-slider" data-checked="on" data-unchecked="off" (click)="confirmarcambiodeestado(rol)"></span>
+                        </label>
+                      </td>
+                      <td scope="row" class="text-center">
+                        <a class="btn-link" style="cursor: pointer" title="editar" (click)="traerParaEdicion(rol.id)"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+              </table>
+              <!--/.table-->
+              <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="#">Prev</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">4</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+      <!--/.card-->
+    </div>
+    <div class="modal-footer border-primary">
+        <button (click)="limpiar()" class="btn btn-sm btn-danger"><i class="fa fa-eraser"></i> Limpiar</button>
+        <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')"><i class="fa fa-remove"></i> Cerrar</button>
+    </div>
+  </form>
+  <!--/.form-->
+  <form #formulario="ngForm" autocomplete="off" *ngIf="!cargando && vistaFormulario" class="form-horizontal" (ngSubmit)="guardarRol()">
+    <div class="card-body" >
+      <div class="form-group row">
+        <label class="col-sm-3 form-control-label">Estado <span class="text-primary">*</span></label>
+        <div class="col-sm-9" >
+          <label class="switch switch-label switch-pill switch-primary">
+            <input type="checkbox" class="switch-input" [(ngModel)]="rol.estado" name="estado">
+            <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 form-control-label">Rol <span class="text-primary">*</span></label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="rol" required="" placeholder="Ingrese nombre rol" maxlength="50" [(ngModel)]="rol.rol">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 form-control-label">Permiso</label>
+          <div class="col-sm-9">
+            <input type="text" name="permiso" placeholder="Ingrese nombre permiso" class="form-control" maxlength="50" [(ngModel)]="rol.permiso"><!--[(ngModel)]="ingeniero.correo"-->
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer border-primary">
+        <button type="submit" class="btn btn-sm btn-primary" [disabled]="!formulario.form.valid"><i class="fa fa-dot-circle-o"></i> Guardar</button><!--*ngIf="!ingeniero.id" [disabled]="!formulario.form.valid || !ingeniero.idubigeo.nombre"-->
+        <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-eraser"></i> Limpiar</button>
+        <button type="button" class="btn btn-sm btn-dark" (click)="vistaFormulario = false"><i class="fa fa-remove"></i> Cancelar</button>
+    </div>
+  </form>
+  <!--/.card-->
+</div>

@@ -1,0 +1,133 @@
+<ol class="breadcrumb border-primary">
+  <li class="breadcrumb-item">
+    <a [routerLink]="['inicio']">Inicio</a>
+  </li>
+  <li class="breadcrumb-item active">Ubigeo</li>
+</ol>
+<div class="container-fluid" *ngIf="!cargando">
+    <div class="animated fadeIn">
+      <!--/.row-->
+      <div class="row">
+        <!--/.col-->
+        <div class="col-md-12">
+          <!--/.card-->
+          <div class="card border-primary">
+            <div class="card-header bg-primary">
+              <i class="fa fa-align-justify"></i> Consolidado
+            </div>
+            <div class="card-body">
+              <!--/.row-->
+              <div class="row">
+                <!--/.col-->
+                <div class="col-sm-6">
+                  <div class="callout callout-warning" style="cursor: pointer" (click)="abrirUbigeos()">
+                    <small class="text-muted">Ubigeos</small>
+                    <br>
+                    <strong class="h4">{{ubigeos.length}}</strong>
+                    <div class="chart-wrapper">
+                      <canvas id="sparkline-chart-3" width="100" height="30"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!--/.col-->
+                <div class="col-sm-6">
+                  <div class="callout callout-success" style="cursor: pointer" (click)="abrirTipoUbigeos()">
+                    <small class="text-muted">Tipo Ubigeos</small>
+                    <br>
+                    <strong class="h4">0</strong>
+                    <div class="chart-wrapper">
+                        <canvas id="sparkline-chart-4" width="100" height="30"></canvas>
+                    </div>
+                    </div>
+                </div>
+                <!--/.col-->
+              </div>
+              <!--/.row-->
+            </div>
+          </div>
+          <!--/.card-->
+        </div>
+        <!--/.col-->
+      </div>
+      <!--/.row-->
+      <div class="row">
+          <!--/.col-->
+          <div class="col-md-12">
+            <!--/.card-->
+            <div class="card border-primary">
+              <div class="card-header bg-primary">
+                <i class="fa fa-align-justify"></i> Lista de ubigeos
+                <button type="button" class="btn btn-primary btn-sm float-right" (click)="abrirUbigeos()">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+              
+              <form #frmDatos="ngForm" name="frmDatos" autocomplete="off">
+              <div class="card-body">
+                <div class="input-group">
+                  <input type="text" class="form-control border-primary mousetrap" required [(ngModel)]="parametros.ubigeo.ubigeo" placeholder="Busque por ubigeo" maxlength="150" id="cdescor" name="cdescor">
+                  <button class="input-group-addon btn btn-square btn-primary" title="buscar" (click)="busqueda(frmDatos)" type="button"><i class="fa fa-search cursor-pointer"></i></button>
+                  <button type="reset" class="btn btn-sm btn-primary" title="actualizar" (click)="limpiar()"><i class="fa fa-refresh cursor-pointer"></i></button>
+                </div>
+                <!--/.table-->
+                <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline">
+                    <thead class="thead-light">
+                      <tr>
+                        <th class="text-center">#</th>
+                        <th>Ubigeo</th>
+                        <th>Estado</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let ubigeo of ubigeos;let i=index">
+                        <th class="text-center">{{i+1}}</th>
+                        <td>{{ubigeo.ubigeo}}</td>
+                        <td>
+                          <label class="switch switch-label switch-pill switch-primary">
+                            <input type="checkbox" class="switch-input" [(ngModel)]="ubigeo.estado" name="{{ubigeo.ubigeo}}">
+                            <span class="switch-slider" data-checked="on" data-unchecked="off" (click)="confirmarcambiodeestado(ubigeo)"></span>
+                          </label>
+                        </td>
+                        <td scope="row" class="text-center">
+                          <a class="btn-link" style="cursor: pointer" title="editar" (click)="editarUbigeo(ubigeo.id)"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                </table>
+                <!--/.table-->
+                <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="#">Prev</a>
+                    </li>
+                    <li class="page-item active">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">4</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+              </div>
+            </form>
+            <!--/.form-->
+            </div>
+            <!--/.card-->
+          </div>
+          <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
+  </div>
+  <div *ngIf="cargando">
+    <app-cargando></app-cargando>
+  </div>

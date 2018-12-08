@@ -1,0 +1,250 @@
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>
+<div id="heading-breadcrumbs" *ngIf="!cargando">
+  <div class="container">
+    <div class="row d-flex align-items-center flex-wrap">
+      <div class="col-md-10">
+        <h3 class="h3">
+          <strong><i class="fa fa-home" aria-hidden="true"></i> LOCAL
+            <span *ngIf="local.tiposervicio=='A'">(Alquiler)</span>
+            <span *ngIf="local.tiposervicio=='V'">(Venta)</span>
+          </strong>
+        </h3>
+      </div>
+      <div class="col-md-2">
+        <h2 class="h3"><strong>S/ {{local.precio}}</strong></h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="content" class="bg-white" *ngIf="!cargando">
+  <div class="container">
+    <!--<section class="no-mb bar">
+        <div class="row">
+          <div class="col-md-12">
+            <p class="lead no-mb">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+          </div>
+        </div>
+      </section>-->
+    <section>
+      <!-- Carousel Start-->
+      <div class="home-carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" *ngFor="let foto of fotos; let i = index;"
+              [attr.data-slide-to]="i" [ngClass]="{'active': i==0}"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active" [ngClass]="{'active': i==0}" *ngFor="let foto of fotos; let i = index;">
+              <img class="d-block w-100" [src]="foto.foto" [alt]="foto.nombre">
+              <div class="carousel-caption d-none d-md-block">
+                <h3>LOCAL ({{i+1}})</h3>
+                <p>{{foto.detalle}}</p>
+              </div>
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+      <!-- Carousel End-->
+    </section>
+
+    <section class="bar">
+      <div class="row portfolio-project">
+        <div class="col-md-8">
+          <div class="heading">
+            <h3>
+              <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Descripcion</strong>
+            </h3>
+          </div>
+          <p style="font-size: 17px">{{local.descripcion}}</p>
+          <div class="heading">
+            <h3>
+              <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
+            </h3>
+          </div>
+          <p class="text-sm">
+            Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para
+            usted.
+          </p>
+          <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
+                  <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
+                    required placeholder="Ingrese nombres">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="telefono"><strong>Telefono <span class="text-primary">*</span></strong></label>
+                  <input id="telefono" type="text" class="form-control" [(ngModel)]="mensaje.telefono" name="telefono"
+                    required placeholder="Ingrese telefono">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="email"><strong>Email <span class="text-primary">*</span></strong></label>
+                  <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email" required
+                    placeholder="Ingrese email">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="titulo"><strong>Titulo <span class="text-primary">*</span></strong></label>
+                  <input id="titulo" type="text" class="form-control" [(ngModel)]="mensaje.titulo" name="titulo"
+                    required placeholder="Ingrese titulo del mensaje">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="mensaje"><strong>Mensaje <span class="text-primary">*</span></strong></label>
+                  <textarea id="mensaje" class="form-control" [(ngModel)]="mensaje.mensaje" name="mensaje" required
+                    placeholder="Ingrese mensaje"></textarea>
+                </div>
+              </div>
+              <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid"><i class="fa fa-envelope-o"></i>
+                  Enviar mensaje</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4 project-more">
+          <div class="heading">
+            <h3><strong><i class="fa fa-plus"></i> Mas</strong></h3>
+          </div>
+          <h4><strong>Ubicacion</strong></h4>
+          <p>
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
+          </p>
+          <h4><strong>Direccion</strong></h4>
+          <p>
+            <i class="fa fa-home" aria-hidden="true"></i> {{local.direccion}}
+          </p>
+          <h4><strong>Servicios</strong></h4>
+          <p>
+            <span *ngFor="let servicio of servicios">
+              <i class="fa fa-check" aria-hidden="true"></i> {{servicio.servicio}}<br />
+            </span>
+          </p>
+          <h4><strong>Area</strong></h4>
+          <p>{{local.largo}} m. x {{local.ancho}}.</p>
+          <h4><strong>Datos</strong></h4>
+          <p>
+            <i class="fa fa-check" aria-hidden="true"></i> Hay S.H.<br />
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- GET IT-->
+<div class="get-it" *ngIf="!cargando">
+  <div class="container">
+    <!--<div class="row">
+        <div class="col-lg-12 text-center p-3">
+          <h3>Lista de servicios brindados por nuestra inmobiliaria:</h3>
+        </div>
+      </div>-->
+    <!---->
+    <div>
+      <!--class="bar pt-0"-->
+      <div class="row portfolio">
+        <div class="col-md-12">
+          <h3 class="text-center">Mas servicios</h3>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="box-image">
+            <div class="image"><img src="assets\img\home\casa.jpeg" alt="" class="img-fluid">
+              <div class="overlay d-flex align-items-center justify-content-center">
+                <div class="content text-center">
+                  <div class="name no-mb">
+                    <h3><a href="portfolio-detail.html" class="color-white">Propiedades</a></h3>
+                  </div>
+                  <div class="text">
+                    <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                    <p class="buttons">
+                      <a [href]="['#/welcome/servicios/propiedades']" class="btn btn-template-outlined-white"><i class="fa fa-search"></i></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="box-image">
+            <div class="image"><img src="assets\img\home\lotes.jpg" alt="" class="img-fluid">
+              <div class="overlay d-flex align-items-center justify-content-center">
+                <div class="content text-center">
+                  <div class="name no-mb">
+                    <h3><a [routerLink]="['servicios/lotes']" class="color-white">Lotes</a></h3>
+                  </div>
+                  <div class="text">
+                    <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                    <p class="buttons">
+                      <a [href]="['#/welcome/servicios/lotes']" class="btn btn-template-outlined-white"><i class="fa fa-search"></i></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="box-image">
+            <div class="image"><img src="assets\img\home\local.jpeg" alt="" class="img-fluid">
+              <div class="overlay d-flex align-items-center justify-content-center">
+                <div class="content text-center">
+                  <div class="name no-mb">
+                    <h3><a href="portfolio-detail.html" class="color-white">Locales</a></h3>
+                  </div>
+                  <div class="text">
+                    <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                    <p class="buttons">
+                      <a [href]="['#/welcome/servicios/alquileres/locales']" class="btn btn-template-outlined-white"><i
+                          class="fa fa-search"></i></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="box-image">
+            <div class="image"><img src="assets\img\home\habitacion.jpg" alt="" class="img-fluid">
+              <div class="overlay d-flex align-items-center justify-content-center">
+                <div class="content text-center">
+                  <div class="name no-mb">
+                    <h3><a href="portfolio-detail.html" class="color-white">Habitaciones</a></h3>
+                  </div>
+                  <div class="text">
+                    <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                    <p class="buttons">
+                      <a [href]="['#/welcome/servicios/alquileres/habitaciones']" class="btn btn-template-outlined-white"><i
+                          class="fa fa-search"></i></a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!---->
+  </div>
+</div>

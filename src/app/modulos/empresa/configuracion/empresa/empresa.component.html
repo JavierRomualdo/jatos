@@ -1,0 +1,168 @@
+<ol class="breadcrumb border-primary">
+    <li class="breadcrumb-item">
+      <a [routerLink]="['home']">Inicio</a>
+    </li>
+    <li class="breadcrumb-item active">Configuracion</li>
+  </ol>
+  <div class="container-fluid" *ngIf="!cargando">
+      <div class="animated fadeIn">
+        <!--/.row-->
+        <div class="row">
+          <!--/.col-->
+          <div class="col-md-12">
+            <!--/.card-->
+            <div class="card border-primary">
+              <div class="card-header bg-primary">
+                <i class="fa fa-align-justify"></i> Consolidado
+              </div>
+              <div class="card-body">
+                <!--/.row-->
+                <div class="row">
+                  <!--/.col-->
+                  <div class="col-sm-3">
+                    <div class="callout callout-info" style="cursor: pointer" (click)="abrirDatos()">
+                      <small class="text-muted">La Empresa</small>
+                      <br>
+                      <strong class="h4">0</strong>
+                    </div>
+                  </div>
+                  <!--/.col-->
+                  <div class="col-sm-3">
+                    <div class="callout callout-danger" style="cursor: pointer" (click)="abrirPersonas()">
+                      <small class="text-muted">Personas</small>
+                      <br>
+                      <strong class="h4">0</strong>
+                    </div>
+                  </div>
+                  <!--/.col-->
+                  <div class="col-sm-3">
+                    <div class="callout callout-warning" style="cursor: pointer" (click)="abrirRoles()">
+                      <small class="text-muted">Roles</small>
+                      <br>
+                      <strong class="h4">0</strong>
+                      <div class="chart-wrapper">
+                        <canvas id="sparkline-chart-3" width="100" height="30"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                  <!--/.col-->
+                  <div class="col-sm-3">
+                    <div class="callout callout-success" style="cursor: pointer" (click)="abrirServicios()">
+                      <small class="text-muted">Servicios</small>
+                      <br>
+                      <strong class="h4">0</strong>
+                      <div class="chart-wrapper">
+                          <canvas id="sparkline-chart-4" width="100" height="30"></canvas>
+                      </div>
+                      </div>
+                  </div>
+                  <!--/.col-->
+                </div>
+                <!--/.row-->
+              </div>
+            </div>
+            <!--/.card-->
+          </div>
+          <!--/.col-->
+        </div>
+        <!--/.row-->
+        <div class="row">
+            <!--/.col-->
+            <div class="col-md-12">
+              <!--/.card-->
+              <div class="card border-primary">
+                <div class="card-header bg-primary">
+                  <i class="fa fa-align-justify"></i> Lista de administradores
+                  <div class="card-header-actions">
+                    <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseClienteInfo"
+                      aria-expanded="true" placement="top" ngbTooltip="Ocultar/Mostrar">
+                      <i class="fa fa-minus"></i>
+                    </a>
+                  </div>
+                </div>
+                
+                <form #buscarusuarios="ngForm" (ngSubmit)="busqueda()" >
+                <div class="card-body collapse show" id="collapseClienteInfo">
+                  <div class="input-group">
+                    <input type="text" class="form-control border-primary" [(ngModel)]="parametros.name" placeholder="Busque por nombre" maxlength="150" id="cdescor" name="cdescor">
+                    <input type="text" class="form-control border-primary" [(ngModel)]="parametros.email" placeholder="Busque por email" maxlength="150" id="cdescr" name="cdscor">
+                    <button class="input-group-addon btn btn-square btn-primary" (click)="busqueda()" type="button" ngbTooltip="Buscar"><i class="fa fa-search cursor-pointer"></i></button><!--(click)="busqueda()" -->
+                    <button type="reset" class="btn btn-sm btn-primary" (click)="limpiar()" ngbTooltip="Actualizar"><i class="fa fa-refresh cursor-pointer"></i></button>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="abrirUsuario()" ngbTooltip="Nuevo">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                  <!--/.table-->
+                  <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline">
+                      <thead class="thead-light">
+                        <tr>
+                          <th class="text-center">#</th>
+                          <th class="text-center">
+                            <i class="fa fa-file-image-o"></i>
+                          </th>
+                          <th>Nombre</th>
+                          <th>Email</th>
+                          <th>Estado</th>
+                          <th>Opciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let usuario of usuarios;let i=index">
+                          <th class="text-center">{{i+1}}</th>
+                          <td *ngIf="usuario.foto==null">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                          </td>
+                          <td *ngIf="usuario.foto!=null">
+                            <a [href]="usuario.foto" target="_blank">
+                              <img [src]="usuario.foto" class="rounded mx-auto d-block" width="10"/>
+                            </a>
+                          </td>
+                          <td>{{usuario.name}}</td>
+                          <td>{{usuario.email}}</td>
+                          <td>
+                            <label class="switch switch-label switch-pill switch-primary">
+                              <input type="checkbox" class="switch-input" [(ngModel)]="usuario.estado" name="{{usuario.name}}">
+                              <span class="switch-slider" data-checked="on" data-unchecked="off" (click)="confirmarcambiodeestado(usuario)"></span>
+                            </label>
+                          </td>
+                          <td scope="row" class="text-center">
+                            <a class="btn-link" style="cursor: pointer" (click)="editarUsuario(usuario.id)" ngbTooltip="Editar"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                  <!--/.table-->
+                  <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#">Prev</a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">4</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                      </li>
+                  </ul>
+                </div>
+              </form>
+              <!--/.form-->
+              </div>
+              <!--/.card-->
+            </div>
+            <!--/.col-->
+          </div>
+          <!--/.row-->
+      </div>
+    </div>
+    <div *ngIf="cargando">
+      <app-cargando></app-cargando>
+    </div>

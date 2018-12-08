@@ -1,0 +1,132 @@
+<div class="row">
+  <!--formulario (filtro)-->
+  <div [ngClass]="{'sr-only':activar}" class="col-lg-3 col-md-4 col-sm-5">
+    <form class="card m-0 mb-2">
+      <div class="card-header">
+        <span>
+          <i class="fa fa-filter"></i>
+          <b> Filtros</b>
+        </span>
+      </div>
+      <div class="card-body pb-0 pt-1">
+        <!--FORMULARIO VENTAS-->
+        <div class="form-group form-group-sm">
+          <label class="control-label">
+            <b>Tipo Propiedad</b>
+          </label>
+          <select class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad">
+            <option [ngValue]="tipopropiedad" *ngFor="let tipopropiedad of tipopropiedades">
+              {{tipopropiedad}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="control-label">
+            <b>Ubigeo</b>
+          </label>
+          <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control border-success"
+            placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
+            <option value='0'>Departamento...</option>
+            <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
+          </select>
+          <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control border-success"
+            placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
+            <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
+            <option value='0'>Provincia...</option>
+            <option [ngValue]="ubigeoprovincia.id" *ngFor="let ubigeoprovincia of ubigeoprovincias">{{ubigeoprovincia.ubigeo}}</option>
+            <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
+          </select>
+          <select (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control border-success"
+            placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
+            <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
+            <option value='0'>Distrito...</option>
+            <option [ngValue]="ubigeodistrito.id" *ngFor="let ubigeodistrito of ubigeodistritos">{{ubigeodistrito.ubigeo}}</option>
+            <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
+          </select>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="control-label">
+            <b>Rango Precios</b>
+          </label>
+          <select (change)="mostrarparangoprecios(idRangoPrecio)" [(ngModel)]="idRangoPrecio" class="form-control border-success"
+            placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
+            <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
+            <option value='0'>Seleccione Precio...</option>
+            <option [ngValue]="rangoprecio.id" *ngFor="let rangoprecio of rangoprecios">S/ {{rangoprecio.preciominimo}}
+              - S/ {{rangoprecio.preciomaximo}}</option>
+            <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
+          </select>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        <div class="text-right">
+          <div class="btn-group">
+            <button type="reset" class="btn btn-sm btn-success" title="limpiar" (click)="limpiar()"><i class="fa fa-eraser"></i></button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--en formulario (filtro)-->
+
+  <div [ngClass]="{'col-lg-9 col-md-8 col-sm-7':!activar,'col-lg-12 col-md-12 col-sm-12':activar}">
+    <div class="card m-0 mb-2 mt-2 border-success">
+      <div class="card-header">
+        <button class="btn btn-sm btn-default" (click)="cambiarActivar(activar)" type="button">
+          <i class="{{activar?'fa fa-chevron-right':'fa fa-chevron-left'}}" aria-hidden="true"></i>
+        </button>
+         Lotes
+      </div>
+      <div *ngIf="cargando">
+        <app-cargando></app-cargando>
+      </div>
+      <div class="card-body text-center" *ngIf="!cargando">
+        <img src="assets/img-empresa/avatars/no_image.png" class="rounded mx-auto d-block" *ngIf="lotes.length == 0">
+        <div class="container" *ngIf="lotes.length != 0">
+          <div class="row portfolio">
+            <div class="col-lg-4" *ngFor="let lote of lotes; let i = index;">
+              <div class="home-blog-post" style="background-color: white">
+                <div class="image">
+                  <img [src]="lote.foto" alt="..." class="img-fluid" *ngIf="lote.foto!=null">
+                  <img src="assets/img-empresa/avatars/no-imagen.png" style="border: 1px cadetblue dashed" alt="..."
+                    class="img-fluid" *ngIf="lote.foto==null">
+                  <div class="overlay d-flex align-items-center justify-content-center">
+                    <!--<a href="#" class="btn btn-template-outlined-white"><i class="fa fa-chain"> </i>Leer mas</a>-->
+                    <!--<button (click)='verDetalleLote(lote.id)' type="button" class="btn btn-template-outlined-white">Leer más</button>-->
+                    <a [routerLink]="['/welcome/lote',lote.id]" target="_blank" class="btn btn-template-outlined-white">Leer
+                      más</a>
+                  </div>
+                </div>
+                <div class="text">
+                  <h5 style="color: rgb(87, 139, 62)">{{ubigeo.departamento.ubigeo}} - {{lote.ubigeo}}</h5>
+                  <p class="author-category"><strong>Precio: <span style="color: rgb(87, 139, 62)">S/ {{lote.precio}}</span>
+                      | Area: <span style="color: rgb(87, 139, 62)">{{redondear(lote.largo)}} x
+                        {{redondear(lote.ancho)}}</span></strong></p>
+                  <!--<p class="intro">Direccion: Mz. A. Lote 7 San Valentin</p>-->
+                </div>
+              </div>
+            </div>
+            <!---->
+            <div class="container">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                  </li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

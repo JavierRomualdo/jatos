@@ -1,0 +1,91 @@
+<div class="card mb-0 card-accent-primary">
+  <div class="card-header bg-primary">
+    <span class="h6">MANTENIMIENTO DE ADMINISTRADORES</span>
+    <button type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <i class="fa fa-close"></i>
+    </button>
+  </div>
+  <div *ngIf="cargando">
+    <app-cargando></app-cargando>
+  </div>
+  <form #usuarioform="ngForm" name="usuarioform" autocomplete="off" *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarusuario()">
+    <div class="card-body pb-0">
+      <!--/.card-->
+      <div class="card border-primary">
+          <div class="card-header bg-primary border-primary">
+            <i class="fa fa-align-justify"></i>
+            <span *ngIf="!verNuevo">Nuevo Admnistrador</span>
+            <span *ngIf="verNuevo">Editar Administrador</span>
+          </div>
+          <div class="card-body">
+            <!--/.row-->
+            <div class="form-group row">
+                <label class="col-sm-3 form-control-label">Nombre <span class="text-primary">*</span></label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" required placeholder="Ingrese nombres" [(ngModel)]="usuario.name" name="name"  maxlength="250">
+                </div>
+            </div>
+            <!--/.row-->
+            <div class="line"></div>
+            <div class="form-group row">
+                <label class="col-sm-3 form-control-label">Email <span class="text-primary">*</span></label>
+                <div class="col-sm-9">
+                  <input type="email" name="email" class="form-control" [(ngModel)]="usuario.email" required placeholder="Ingrese el email" maxlength="100">
+                </div>
+            </div>
+            <!--/.row-->
+            <div class="line"></div>
+            <div class="form-group row">
+                <label class="col-sm-3 form-control-label">Password <span class="text-primary">*</span></label>
+                <div class="col-sm-9">
+                  <input type="password" name="password" [(ngModel)]="usuario.password" class="form-control" required placeholder="Ingrese password" minlength="6" maxlength="100">
+                </div>
+            </div>
+            <!--/.row-->
+            <!--/.row-->
+            <div class="form-group row">
+              <label class="col-sm-3 form-control-label">Foto </label>
+              <div class="col-sm-9">
+                <input type="file" class="btn btn-primary form-control-file" accept="image/*" (change)="detectarArchivo($event)">
+              </div>
+            </div>
+            <!--/.row-->
+          </div>
+        </div>
+        <!--/.card-->
+
+        <div class="card border-primary">
+          <div class="card-header bg-primary border-primary">
+            <i class="fa fa-align-justify"></i> Foto
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <ngb-progressbar type="info" [value]="archivo.progreso">{{archivo.progreso | number: '.2-2'}} %</ngb-progressbar>
+              </div>
+            </div><br/>
+            <div class="row">
+              <div class="col-md-12" *ngIf="imagen==null; then imagenDefecto else imagenFirebase" >
+              </div>
+              <ng-template #imagenDefecto class="text-center">
+                <img src="assets/img-empresa/avatars/usuario.png" class="rounded mx-auto d-block">
+              </ng-template>
+              <ng-template #imagenFirebase class="text-center">
+                <img [src]="imagen" class="rounded mx-auto d-block" width="300" alt="..."/>
+              </ng-template>
+            </div><br/>
+            <div class="row" class="text-center" *ngIf="fotoingresada" >
+              <div class="col-md-12">
+                <button type="button" (click)="subirimagen()" class="btn btn-sm btn-success">Subir Imagen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="modal-footer border-primary">
+      <button type="submit" class="btn btn-sm btn-primary" [disabled]="!usuarioform.form.valid"><i class="fa fa-dot-circle-o"></i> Guardar</button>
+      <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-eraser"></i> Limpiar</button>
+      <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')"><i class="fa fa-remove"></i> Cerrar</button>
+    </div>
+  </form>
+</div>

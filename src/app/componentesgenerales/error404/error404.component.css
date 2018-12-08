@@ -1,0 +1,11 @@
+.custom-background{
+    background-color: #286375;
+}
+.text-white{
+    color: #ffffff;
+}
+.center-block{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+}

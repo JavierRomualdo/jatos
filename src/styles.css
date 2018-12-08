@@ -1,1 +1,151 @@
 /* You can add global styles to this file, and also import other style files */
+.contenido{
+    background-color: #D5F5E3;
+  }
+  
+  body{
+    background: white;
+  }
+  .navColor{
+    background-color: #58D68D;
+  }
+  
+  .posSuperior{
+    margin-top: 30px;
+  }
+  
+  .fondoDiv{
+    background-color:#ABEBC6;
+  }
+  
+  .footerColor{
+    background: #D6FBEE;
+    clear: both;
+    padding-top: 1px;
+  }
+  
+  .sizeBar{
+    line-height: 0.75;
+  }
+  
+  .mapa{
+    padding-bottom: 15px;
+    background: white;
+  }
+  .nosotros{
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #F2F4F4;
+    border-radius: .3rem;
+  }
+  
+  .w-60 {
+      width: 60%!important;
+  }
+  
+  .posImg{
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  
+  .tamImg{
+    width: 50%;
+    height: 50%;
+  }
+  
+  .margenInf{
+    margin-bottom: 30px;
+  }
+  
+  .social-icon {
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+  }
+  
+  .sebm-google-map-container {
+    height: 400px;
+  }
+  
+  .form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+  }
+  
+  .pie{
+    padding: 2px 0 0px;
+    background: #555;
+    color: #fff;
+  }
+  .tabla{
+    background-color: white;
+  }
+  
+  .bar {
+    padding: 30px 0!important;
+  }
+  /*Animaciones*/
+  
+  .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  .fast {
+    -webkit-animation-duration: 0.4s;
+    animation-duration: 0.4s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fadeIn {
+    animation-name: fadeIn;
+  }
+  .switch-medium[_ngcontent-c3] small[_ngcontent-c3]{
+    margin-left: 0px;
+  }
+  
+  /*stilos pa subir imagenes*/
+  .main-container{
+    margin-top: 40px;
+  }
+  
+  /* Drop Zone */
+  .drop-zone {
+      border: dotted 3px lightgray;
+      opacity: 0.5;
+      color: #666;
+      text-align: center
+  }
+  
+  .file-over {
+      border: dotted 3px dodgerblue;
+  }
+  
+  .table {
+      margin-top: 30px;
+  }
+  
+  .text-green {
+      color: green
+  }
+  
+  /*scroll*/
+  .scroll {
+    height: 400px;
+    overflow-y: scroll;
+  }
+  
