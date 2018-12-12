@@ -8,6 +8,9 @@ import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { ModalCasaComponent } from './modal-casa/modal-casa.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { CasasService } from './casas.service';
+import { MenuItem } from 'primeng/api';
+import { UtilService } from 'src/app/servicios/util/util.service';
+import { LS } from 'src/app/contantes/app-constants';
 
 @Component({
   selector: 'app-casas',
@@ -24,11 +27,16 @@ export class CasasComponent implements OnInit {
   public casa_id: number;
   public mensajes: CasaMensaje[];
   public parametros: Casa;
+  public parametrosListado: any = {};
+  public activar: boolean = false;
+  public constantes: any = LS;
 
+  items: MenuItem[];
   constructor(
     private modalService: NgbModal,
     private casasService: CasasService,
-    private toastr: ToastrService,
+    private utilService: UtilService,
+    private toastr: ToastrService
   ) {
     this.parametros = new Casa();
     this.mensajes = [];
@@ -38,44 +46,28 @@ export class CasasComponent implements OnInit {
 
   ngOnInit() {
     this.listarPropiedades();
+    this.items = this.utilService.generarItemsMenuesPropiedades(this);
   }
 
   limpiar() {
     this.parametros = new Casa();
     this.parametros.persona_id = new Persona();
     this.parametros.ubigeo_id = new Ubigeo();
+    this.parametrosListado = {};
+    this.parametrosListado.listar = false;
     this.casas = [];
     this.listarPropiedades();
   }
 
-  busqueda() {
-    let nohayvacios: Boolean = false;
-    if (this.parametros.persona_id.nombres !== undefined &&
-      this.parametros.persona_id.nombres !== '') {
-        nohayvacios = true;
-      }
-    if (this.parametros.ubigeo_id.ubigeo !== undefined && this.parametros.ubigeo_id.ubigeo !== '') {
-      // this.toastr.info('Hay servicio datos: ' + this.parametros.servicio);
-      nohayvacios = true;
-    }
-    if (this.parametros.direccion !== undefined && this.parametros.direccion !== '') {
-      // this.toastr.info('Hay detalle datos: ' + this.parametros.detalle);
-      nohayvacios = true;
-    }
-    if (nohayvacios) {
-      this.cargando = true;
-      console.log(this.parametros);
-      this.casasService.busquedaCasas(this.parametros, this);
-    } else {
-      this.toastr.warning('Verifique los datos ingresados.', 'Datos inválidos');
-    }
+  nuevo() {
+    this.abrirPropiedades();
   }
 
-  despuesDeBusquedaCasas(data) {
-    console.log(data);
-    this.casas = data;
-    this.cargando = false;
-  }
+  consultarGeneral(inactivo: boolean) {}
+
+  consultarContrato(tipo: string) {}
+
+  consultarPostContrato(tipo: string) {}
 
   abrirPropiedades(): void {
     const modalRef = this.modalService.open(ModalCasaComponent, {size: 'lg', keyboard: false});
@@ -85,9 +77,9 @@ export class CasasComponent implements OnInit {
     });
   }
 
-  editarPropiedad(id) {
+  editarPropiedad(parametros) {
     const modalRef = this.modalService.open(ModalCasaComponent, {size: 'lg', keyboard: false});
-    modalRef.componentInstance.edit = id;
+    modalRef.componentInstance.parametros = parametros;
     modalRef.result.then((result) => {
       this.listarPropiedades();
     }, (reason) => {
@@ -130,8 +122,10 @@ export class CasasComponent implements OnInit {
   }
 
   listarPropiedades() {
-    this.cargando = true;
-    this.casasService.listarCasas(this);
+    // this.cargando = true;
+    this.parametrosListado = {};
+    this.parametrosListado.listar = true;
+    // this.casasService.listarCasas(this);
   }
 
   despuesDeListarCasas(data) {
@@ -139,6 +133,10 @@ export class CasasComponent implements OnInit {
     this.cargando = false;
     console.log('resultado: ');
     console.log(this.casas);
+  }
+
+  ejecutarAccion(parametros) {
+    this.editarPropiedad(parametros);
   }
 
   listarmensajes(casa_id, estado) {

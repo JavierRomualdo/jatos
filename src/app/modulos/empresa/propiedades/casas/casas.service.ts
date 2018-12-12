@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
+import { LS } from 'src/app/contantes/app-constants';
+import { InputEstadoComponent } from 'src/app/modulos/componentes/input-estado/input-estado.component';
+import { ImagenAccionComponent } from 'src/app/modulos/componentes/imagen-accion/imagen-accion.component';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +13,7 @@ export class CasasService {
 
   constructor(
     private api: ApiRequest2Service,
+    private utilService: UtilService,
     public toastr: ToastrService,
   ) { }
 
@@ -136,5 +141,115 @@ export class CasasService {
   private handleError(error: any, contexto): void {
     contexto.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');
+  }
+
+  generarColumnas(isModal: boolean): Array<any> {
+    let columnas: Array<any> = [];
+    columnas.push(
+      {
+        headerName: 'Imagen',
+        headerClass: 'text-md-center',//Clase a nivel de th
+        field: 'foto',
+        width: 115,
+        minWidth: 115,
+        cellRendererFramework: ImagenAccionComponent,
+        cellClass: 'text-md-center'
+      },
+      {
+        headerName: 'Propietario',
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.nombres;
+        }
+      },
+      {
+        headerName: 'Ubicación',
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.ubigeo;
+        }
+      },
+      {
+        headerName: 'Dirección',
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.direccion;
+        }
+      },
+      {
+        headerName: 'Area',
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.largo + " x " + params.data.ancho +" m2";
+        }
+      },
+      {
+        headerName: 'Precio',
+        width: 100,
+        minWidth: 100,
+        valueGetter: (params) => {
+          return params.data.precio;
+        }
+      },
+      {
+        headerName: 'Pisos',
+        width: 80,
+        minWidth: 80,
+        valueGetter: (params) => {
+          return params.data.npisos;
+        }
+      },
+      {
+        headerName: 'Cuartos',
+        width: 90,
+        minWidth: 90,
+        valueGetter: (params) => {
+          return params.data.ncuartos;
+        }
+      },
+      {
+        headerName: 'Banios',
+        width: 80,
+        minWidth: 80,
+        valueGetter: (params) => {
+          return params.data.nbanios;
+        }
+      },
+      {
+        headerName: 'Jardin',
+        width: 80,
+        minWidth: 80,
+        valueGetter: (params) => {
+          return params.data.tjardin ? 'SI' : 'NO';
+        }
+      },
+      {
+        headerName: 'Cochera',
+        width: 90,
+        minWidth: 90,
+        valueGetter: (params) => {
+          return params.data.tcochera ? 'SI' : 'NO';
+        }
+      }
+    );
+    if (!isModal) {
+      columnas.push(
+        {
+          headerName: LS.TAG_INACTIVO,
+          headerClass: 'text-md-center',//Clase a nivel de th
+          field: 'estado',
+          width: 115,
+          minWidth: 115,
+          cellRendererFramework: InputEstadoComponent,
+          cellClass: 'text-md-center'
+        },
+        this.utilService.getColumnaOpciones()
+      );
+    }
+    return columnas;
   }
 }

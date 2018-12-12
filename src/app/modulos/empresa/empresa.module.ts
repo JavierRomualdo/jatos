@@ -7,6 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import { MultiSelectModule } from 'primeng/multiselect';
+import {ToolbarModule} from 'primeng/toolbar';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {MenubarModule} from 'primeng/menubar';
 
 import { HomeComponent } from './home/home.component';
 import { ApartamentosComponent } from './propiedades/apartamentos/apartamentos.component';
@@ -42,6 +46,19 @@ import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion
 import { ModalUsuarioComponent } from './configuracion/empresa/modal-usuario/modal-usuario.component';
 import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { CasasListadoComponent } from './componentes/casas-listado/casas-listado.component';
+import { ApartamentosListadoComponent } from './componentes/apartamentos-listado/apartamentos-listado.component';
+import { CocherasListadoComponent } from './componentes/cocheras-listado/cocheras-listado.component';
+import { HabitacionesListadoComponent } from './componentes/habitaciones-listado/habitaciones-listado.component';
+import { LocalesListadoComponent } from './componentes/locales-listado/locales-listado.component';
+import { LotesListadoComponent } from './componentes/lotes-listado/lotes-listado.component';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { AgGridModule } from 'ag-grid-angular';
+import { InputEstadoComponent } from '../componentes/input-estado/input-estado.component';
+import { ImagenAccionComponent } from '../componentes/imagen-accion/imagen-accion.component';
+import { BotonOpcionesComponent } from '../componentes/boton-opciones/boton-opciones.component';
+import { TooltipReaderComponent } from '../componentes/tooltip-reader/tooltip-reader.component';
+import { PinnedCellComponent } from '../componentes/pinned-cell/pinned-cell.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -73,7 +90,19 @@ import { UtilService } from 'src/app/servicios/util/util.service';
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
     ConfirmacionComponent,
-    ModalUsuarioComponent
+    ModalUsuarioComponent,
+    CasasListadoComponent,
+    ApartamentosListadoComponent,
+    CocherasListadoComponent,
+    HabitacionesListadoComponent,
+    LocalesListadoComponent,
+    LotesListadoComponent,
+
+    InputEstadoComponent,
+    ImagenAccionComponent,
+    BotonOpcionesComponent,
+    TooltipReaderComponent,
+    PinnedCellComponent
   ],
   imports: [
     ComponentesModule,
@@ -86,7 +115,14 @@ import { UtilService } from 'src/app/servicios/util/util.service';
     ReactiveFormsModule,
     RadioButtonModule,
     CheckboxModule,
-    InputSwitchModule
+    ContextMenuModule,
+    AgGridModule.withComponents([]),
+    MultiSelectModule,
+    InputSwitchModule,
+
+    ToolbarModule,
+    SplitButtonModule,
+    MenubarModule
   ],
   entryComponents: [
     ModalEmpresaComponent,
@@ -103,7 +139,13 @@ import { UtilService } from 'src/app/servicios/util/util.service';
     ModalUsuarioComponent,
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
-    ConfirmacionComponent
+    ConfirmacionComponent,
+
+    InputEstadoComponent,
+    ImagenAccionComponent,
+    BotonOpcionesComponent,
+    TooltipReaderComponent,
+    PinnedCellComponent
   ],
   providers: [
     NgbActiveModal,

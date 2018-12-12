@@ -17,6 +17,7 @@ import { ModalPersonaComponent } from '../../../configuracion/empresa/modal-pers
 import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
 import { CasasService } from '../casas.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { LS } from 'src/app/contantes/app-constants';
 
 @Component({
   selector: 'app-modal-casa',
@@ -25,7 +26,7 @@ import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 })
 export class ModalCasaComponent implements OnInit {
 
-  @Input() edit;
+  @Input() parametros;
   public verNuevo = false;
   public cargando: Boolean = false;
   public casa: Casa;
@@ -36,6 +37,8 @@ export class ModalCasaComponent implements OnInit {
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
+  public accion: string = null;
+  public constantes: any = LS;
   
   constructor(
     private modalService: NgbModal,
@@ -59,8 +62,9 @@ export class ModalCasaComponent implements OnInit {
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
-    if (this.edit) {
-      this.traerParaEdicion(this.edit);
+    if (this.parametros) {
+      this.accion = this.parametros.accion;
+      this.traerParaEdicion(this.parametros.objetoSeleccionado.id);
     }
   }
 
@@ -71,7 +75,7 @@ export class ModalCasaComponent implements OnInit {
     this.casa.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.casa.ubigeo_id = this.ubigeo.ubigeo;
     this.casa.serviciosList = this.servicios;
-    if (!this.edit) { // guardar nueva propiedad
+    if (!this.parametros) { // guardar nueva propiedad
       // guardar en lista fotos
       for (const item of this.archivos) {
         const foto: Foto = new Foto();
