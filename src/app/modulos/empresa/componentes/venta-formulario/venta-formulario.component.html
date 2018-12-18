@@ -1,0 +1,31 @@
+<div class="card m-0">
+  <div class="card-header p-1">
+    <button id="btnActivar" class="btn btn-sm btn-primary mr-2" *ngIf="isScreamMd" (click)="activar=!activar"
+      type="button" title="{{constantes.ATAJO_MOSTRAR_OCULTAR_FILTROS}}">
+      <i class="{{activar?constantes.ICON_MOSTRAR_FILTRO:constantes.ICON_OCULTAR_FILTRO}}" aria-hidden="true"></i>
+    </button>
+    <b>{{tituloForm}}</b>
+    <div class="card-header-actions">
+      <button *ngIf="accion === constantes.ACCION_CREAR" id="btnGuardar" type="button" (click)="insertarVenta(frmVenta)"
+        class="btn btn-sm btn-primary mr-1" [disabled]="cargando" title="{{constantes.ATAJO_GUARDAR}}">
+        <i class="{{constantes.ICON_GUARDAR}}"></i>
+        <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
+      </button>
+      <button *ngIf="accion === constantes.ACCION_EDITAR" id="btnGuardar" type="button" (click)="modificarVenta(frmVenta)"
+        class="btn btn-sm btn-primary mr-1" [disabled]="cargando" title="{{constantes.ATAJO_GUARDAR}}">
+      <i class="{{constantes.ICON_GUARDAR}}"></i>
+        <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
+      </button>
+      <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnCancelar" type="button" (click)="cancelar()"
+        class="btn btn-sm btn-default mr-1" [disabled]="cargando" title="{{constantes.ATAJO_CANCELAR}}">
+        <i class="{{constantes.ICON_CANCELAR}}"></i>
+        <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
+      </button>
+      <button *ngIf="accion===constantes.ACCION_CONSULTAR" id="btnCancelar" type="button" (click)="cancelar()"
+        class="btn btn-sm btn-default mr-1" title="{{constantes.ATAJO_CANCELAR}}">
+        <i class="{{constantes.ICON_REGRESAR}}" aria-hidden="true"></i>
+        <span class="d-none d-md-inline"> {{constantes.LABEL_REGRESAR}}</span>
+      </button>
+    </div>
+  </div>
+</div>

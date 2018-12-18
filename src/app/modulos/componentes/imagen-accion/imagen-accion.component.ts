@@ -12,6 +12,7 @@ export class ImagenAccionComponent implements OnInit, ICellRendererAngularComp {
   constantes: any;
   public params: any;
   public foto: string;
+  public display: boolean = false;
 
   constructor() { }
 
@@ -27,4 +28,16 @@ export class ImagenAccionComponent implements OnInit, ICellRendererAngularComp {
   refresh(): boolean {
     return false;
   }
+
+  mostrarModalImagen() {
+    this.params.context.componentParent.mostrarModalImagen(this.params.data)
+  }
+
+  showDialog() {
+    this.display = true;
+  }
+
+  onDialogClose(event) {
+    this.display = event;
+ }
 }

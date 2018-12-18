@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { Casa } from 'src/app/entidades/entidad.casa';
 import { CasaMensaje } from 'src/app/entidades/entidad.casamensaje';
 import { Persona } from 'src/app/entidades/entidad.persona';
@@ -31,12 +30,11 @@ export class CasasComponent implements OnInit {
   public activar: boolean = false;
   public constantes: any = LS;
 
-  items: MenuItem[];
+  public items: MenuItem[];
   constructor(
     private modalService: NgbModal,
     private casasService: CasasService,
     private utilService: UtilService,
-    private toastr: ToastrService
   ) {
     this.parametros = new Casa();
     this.mensajes = [];
@@ -45,8 +43,17 @@ export class CasasComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listarPropiedades();
+    this.listarPropiedades(true);
     this.items = this.utilService.generarItemsMenuesPropiedades(this);
+  }
+
+  // proviene del menu
+  nuevo() {
+    let parametros = {
+      accion: LS.ACCION_NUEVO,
+      objetoSeleccionado: null
+    }
+    this.abrirPropiedades(parametros);
   }
 
   limpiar() {
@@ -56,34 +63,39 @@ export class CasasComponent implements OnInit {
     this.parametrosListado = {};
     this.parametrosListado.listar = false;
     this.casas = [];
-    this.listarPropiedades();
+    this.listarPropiedades(true);
   }
 
-  nuevo() {
-    this.abrirPropiedades();
+  consultarGeneral(activos: boolean) {
+    this.listarPropiedades(activos);
   }
 
-  consultarGeneral(inactivo: boolean) {}
-
-  consultarContrato(tipo: string) {}
-
-  consultarPostContrato(tipo: string) {}
-
-  abrirPropiedades(): void {
-    const modalRef = this.modalService.open(ModalCasaComponent, {size: 'lg', keyboard: false});
-    modalRef.result.then((result) => {
-      this.listarPropiedades();
-    }, (reason) => {
-    });
+  consultarEstadoContrato(estadoContrato: string) {
+    this.parametrosListado = {
+      listar: true,
+      activos: true,
+      estadoContrato: estadoContrato
+    };
   }
 
-  editarPropiedad(parametros) {
+  abrirPropiedades(parametros): void {
     const modalRef = this.modalService.open(ModalCasaComponent, {size: 'lg', keyboard: false});
     modalRef.componentInstance.parametros = parametros;
-    modalRef.result.then((result) => {
-      this.listarPropiedades();
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((data) => {
+      console.log('se cerro modal propiedades');
+      this.refrescarTabla(parametros.accion, data);
+      // this.listarPropiedades(true);
     }, (reason) => {
     });
+  }
+
+  refrescarTabla(accion: string, data) {
+    this.parametrosListado = {
+      listar: true,
+      accion: accion,
+      data: data,
+    };
   }
 
   confirmarcambiodeestado(casa): void {
@@ -99,8 +111,7 @@ export class CasasComponent implements OnInit {
   }
 
   despuesCambiarEstadoCasa(data) {
-    console.log(data);
-    this.listarPropiedades();
+    this.listarPropiedades(true);
     this.cargando = false;
   }
 
@@ -121,33 +132,24 @@ export class CasasComponent implements OnInit {
     this.listarmensajes(this.casa_id, this.estadomensajes);
   }
 
-  listarPropiedades() {
-    // this.cargando = true;
-    this.parametrosListado = {};
-    this.parametrosListado.listar = true;
-    // this.casasService.listarCasas(this);
-  }
-
-  despuesDeListarCasas(data) {
-    this.casas = data;
-    this.cargando = false;
-    console.log('resultado: ');
-    console.log(this.casas);
+  listarPropiedades(activos: boolean) {
+    this.parametrosListado = {
+      listar: true,
+      activos: activos,
+      estadoContrato: null
+    };
   }
 
   ejecutarAccion(parametros) {
-    this.editarPropiedad(parametros);
+    this.abrirPropiedades(parametros);
   }
 
   listarmensajes(casa_id, estado) {
-    console.log('estado del mensaje: ');
-    console.log(estado);
     this.estadomensajes = estado;
     let valor = 1;
     if (estado === false) {
       valor = 0;
     }
-    console.log(valor);
     this.cargando = true;
     this.vermensajes = true;
     this.casa_id = casa_id;
@@ -158,12 +160,10 @@ export class CasasComponent implements OnInit {
   despuesDeListarMensajesCasa(data) {
     this.mensajes = data;
     this.cargando = false;
-    console.log('resultado: ');
-    console.log(this.mensajes);
   }
 
   cerrarmensajes() {
     this.vermensajes = false;
-    this.listarPropiedades();
+    this.listarPropiedades(true);
   }
 }

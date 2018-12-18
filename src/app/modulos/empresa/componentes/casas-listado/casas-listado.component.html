@@ -1,7 +1,7 @@
-<div class="modal-primary" *ngIf="listadoCasas?.length>0">
+<div class="modal-primary"> <!--*ngIf="listadoCasas?.length>0"-->
   <div class="card border-primary animated fadeIn">
     <div class="modal-header p-2" *ngIf="isModal">
-      <h4 class="modal-title">{{constantes.TAG_CASAS_LISTADO}}</h4>
+      {{constantes.TAG_CASAS_LISTADO}}
       <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -11,6 +11,11 @@
       <i class="fa fa-align-justify"></i> {{constantes.TAG_CASAS_LISTADO}}
       <div class="card-header-actions">
         <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-default mr-1" id="btnImprimir" placement="top" (click)="nuevaCasa()"
+            ngbTooltip="{{constantes.LABEL_NUEVO}}" container="body" title="{{constantes.ATAJO_NUEVO}}">
+            <i class="{{constantes.ICON_NUEVO}}" aria-hidden="true"></i>
+            <span class="d-none d-md-inline"> {{constantes.LABEL_NUEVO}}</span>
+          </button>
           <button type="button" class="btn btn-sm btn-default mr-1" id="btnImprimir" placement="top"
             ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
             <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
@@ -55,6 +60,9 @@
   </div>
 </div>
 <p-contextMenu #menuOpciones appendTo="body" [model]="opciones" [baseZIndex]="1100"></p-contextMenu>
+
+<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
+
 <div *ngIf="cargando">
   <app-cargando></app-cargando>
 </div>

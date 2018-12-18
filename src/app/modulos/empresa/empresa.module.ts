@@ -11,6 +11,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import {ToolbarModule} from 'primeng/toolbar';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {MenubarModule} from 'primeng/menubar';
+import {DialogModule} from 'primeng/dialog';
 
 import { HomeComponent } from './home/home.component';
 import { ApartamentosComponent } from './propiedades/apartamentos/apartamentos.component';
@@ -59,6 +60,9 @@ import { ImagenAccionComponent } from '../componentes/imagen-accion/imagen-accio
 import { BotonOpcionesComponent } from '../componentes/boton-opciones/boton-opciones.component';
 import { TooltipReaderComponent } from '../componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from '../componentes/pinned-cell/pinned-cell.component';
+import { ImagenModalComponent } from '../componentes/imagen-modal/imagen-modal.component';
+import { IconAccionComponent } from '../componentes/icon-accion/icon-accion.component';
+import { VentaFormularioComponent } from './componentes/venta-formulario/venta-formulario.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -97,12 +101,15 @@ import { PinnedCellComponent } from '../componentes/pinned-cell/pinned-cell.comp
     HabitacionesListadoComponent,
     LocalesListadoComponent,
     LotesListadoComponent,
+    ImagenModalComponent,
 
     InputEstadoComponent,
     ImagenAccionComponent,
     BotonOpcionesComponent,
     TooltipReaderComponent,
-    PinnedCellComponent
+    PinnedCellComponent,
+    IconAccionComponent,
+    VentaFormularioComponent
   ],
   imports: [
     ComponentesModule,
@@ -122,7 +129,8 @@ import { PinnedCellComponent } from '../componentes/pinned-cell/pinned-cell.comp
 
     ToolbarModule,
     SplitButtonModule,
-    MenubarModule
+    MenubarModule,
+    DialogModule
   ],
   entryComponents: [
     ModalEmpresaComponent,
@@ -140,12 +148,14 @@ import { PinnedCellComponent } from '../componentes/pinned-cell/pinned-cell.comp
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
     ConfirmacionComponent,
+    ImagenModalComponent,
 
     InputEstadoComponent,
     ImagenAccionComponent,
     BotonOpcionesComponent,
     TooltipReaderComponent,
-    PinnedCellComponent
+    PinnedCellComponent,
+    IconAccionComponent
   ],
   providers: [
     NgbActiveModal,

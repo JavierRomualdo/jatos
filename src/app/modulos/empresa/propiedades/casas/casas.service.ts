@@ -5,26 +5,57 @@ import { LS } from 'src/app/contantes/app-constants';
 import { InputEstadoComponent } from 'src/app/modulos/componentes/input-estado/input-estado.component';
 import { ImagenAccionComponent } from 'src/app/modulos/componentes/imagen-accion/imagen-accion.component';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { IconAccionComponent } from 'src/app/modulos/componentes/icon-accion/icon-accion.component';
+import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opciones/boton-opciones.component';
+import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
+import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CasasService {
 
+  public constantes: any = LS;
+  
   constructor(
     private api: ApiRequest2Service,
     private utilService: UtilService,
-    public toastr: ToastrService,
+    private toastr: ToastrService,
   ) { }
-
-  listarCasas(contexto) {
-    this.api.get2('casas').then(
-      (res) => {
-        if (res.length>0) {
-          contexto.despuesDeListarCasas(res);
+  
+  listarCasas(parametro, contexto) {
+    this.api.post2('listarCasas', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeListarCasas(data.extraInfo);
         } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
-          contexto.cargando = false;
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.despuesDeListarCasas([]);
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  listarCasasPorEstadoContrato(parametro, contexto) {
+    this.api.post2('listarCasasPorEstadoContrato', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeListarCasasPorEstadoContrato(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.despuesDeListarCasasPorEstadoContrato([]);
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  generarCodigoCasa(contexto) {
+    this.api.get2('generarCodigoCasa').then(
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeGenerarCodigoCasa(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
     ).catch(err => this.handleError(err, contexto));
@@ -32,12 +63,12 @@ export class CasasService {
 
   ingresarCasa(parametro, contexto) {
     this.api.post2('casas', parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha ingresado correctamente', 'Exito');
-          contexto.despuesDeIngresarCasa(res);
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeIngresarCasa(data.extraInfo);
         } else {
-          this.toastr.warning('Error al ingresar casa', 'Aviso');
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
@@ -46,12 +77,53 @@ export class CasasService {
 
   modificarCasa(parametro, contexto) {
     this.api.put2('casas/' + parametro.id, parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha modificado correctamente', 'Exito');
-          contexto.despuesDeModificarCasa(res);
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeModificarCasa(data.extraInfo);
         } else {
-          this.toastr.warning('Error al modificar casa', 'Aviso');
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  mostrarCasa(parametro, contexto) {
+    this.api.get2('casas/' + parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeMostrarCasa(data.extraInfo);
+        } else {
+          this.toastr.warning('Error al mostrar ubigeo', 'Aviso');
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  cambiarEstadoCasa(parametro, contexto) {
+    this.api.post2('cambiarEstadoCasa', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesCambiarEstadoCasa(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  eliminarCasa(parametro, contexto) {
+    this.api.delete2('casas/'+parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeEliminarCasa(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
@@ -71,39 +143,13 @@ export class CasasService {
     ).catch(err => this.handleError(err, contexto));
   }
 
-  cambiarEstadoCasa(parametro, contexto) {
-    this.api.delete2('casas/' + parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha modificado el estado', 'Exito');
-          contexto.despuesCambiarEstadoCasa(res);
-        } else {
-          this.toastr.warning('Error al modificar estado', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
-  mostrarCasa(parametro, contexto) {
-    this.api.get2('casas/' + parametro).then(
-      (res) => {
-        if (res) {
-          contexto.despuesDeMostrarCasa(res);
-        } else {
-          this.toastr.warning('Error al mostrar ubigeo', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
+  // Mensajes
   cambiarEstadoMensajeCasa(parametro, contexto) {
     this.api.delete2('casamensaje/' + parametro).then(
-      (res) => {
-        if (res) {
+      (data) => {
+        if (data && data.extraInfo) {
           this.toastr.success('Se ha modificado el estado mensaje', 'Exito');
-          contexto.despuesCambiarEstadoMensajeCasa(res);
+          contexto.despuesCambiarEstadoMensajeCasa(data);
         } else {
           this.toastr.warning('Error al modificar estado mensahe', 'Aviso');
           contexto.cargando = false;
@@ -139,15 +185,24 @@ export class CasasService {
   }
 
   private handleError(error: any, contexto): void {
-    contexto.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');
+    contexto.cargando = false;
   }
 
   generarColumnas(isModal: boolean): Array<any> {
     let columnas: Array<any> = [];
     columnas.push(
       {
-        headerName: 'Imagen',
+        headerName: 'Contrato',
+        headerClass: 'text-md-center',//Clase a nivel de th
+        field: 'estadocontrato',
+        width: 115,
+        minWidth: 115,
+        cellRendererFramework: IconAccionComponent,
+        cellClass: 'text-md-center'
+      },
+      {
+        headerName: LS.TAG_IMAGEN,
         headerClass: 'text-md-center',//Clase a nivel de th
         field: 'foto',
         width: 115,
@@ -156,23 +211,31 @@ export class CasasService {
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Propietario',
-        width: 150,
-        minWidth: 150,
+        headerName: LS.TAG_CODIGO,
+        width: 100,
+        minWidth: 100,
         valueGetter: (params) => {
-          return params.data.nombres;
+          return params.data.codigo;
         }
       },
       {
-        headerName: 'Ubicación',
+        headerName: LS.TAG_PROPIETARIO,
         width: 150,
         minWidth: 150,
         valueGetter: (params) => {
-          return params.data.ubigeo;
+          return params.data.propietario;
         }
       },
       {
-        headerName: 'Dirección',
+        headerName: LS.TAG_UBICACION,
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.ubicacion;
+        }
+      },
+      {
+        headerName: LS.TAG_DIRECCION,
         width: 150,
         minWidth: 150,
         valueGetter: (params) => {
@@ -180,7 +243,7 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Area',
+        headerName: LS.TAG_AREA,
         width: 150,
         minWidth: 150,
         valueGetter: (params) => {
@@ -188,7 +251,15 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Precio',
+        headerName: LS.TAG_COSTO,
+        width: 100,
+        minWidth: 100,
+        valueGetter: (params) => {
+          return params.data.costo;
+        }
+      },
+      {
+        headerName: LS.TAG_PRECIO_S,
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
@@ -196,7 +267,7 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Pisos',
+        headerName: LS.TAG_PISOS,
         width: 80,
         minWidth: 80,
         valueGetter: (params) => {
@@ -204,7 +275,7 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Cuartos',
+        headerName: LS.TAG_CUARTOS,
         width: 90,
         minWidth: 90,
         valueGetter: (params) => {
@@ -212,7 +283,7 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Banios',
+        headerName: LS.TAG_BANIOS,
         width: 80,
         minWidth: 80,
         valueGetter: (params) => {
@@ -220,7 +291,7 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Jardin',
+        headerName: LS.TAG_JARDIN_PREG,
         width: 80,
         minWidth: 80,
         valueGetter: (params) => {
@@ -228,7 +299,7 @@ export class CasasService {
         }
       },
       {
-        headerName: 'Cochera',
+        headerName: LS.TAG_COCHERA_PREG,
         width: 90,
         minWidth: 90,
         valueGetter: (params) => {
@@ -239,7 +310,7 @@ export class CasasService {
     if (!isModal) {
       columnas.push(
         {
-          headerName: LS.TAG_INACTIVO,
+          headerName: LS.TAG_ACTIVO,
           headerClass: 'text-md-center',//Clase a nivel de th
           field: 'estado',
           width: 115,
@@ -247,7 +318,24 @@ export class CasasService {
           cellRendererFramework: InputEstadoComponent,
           cellClass: 'text-md-center'
         },
-        this.utilService.getColumnaOpciones()
+        {
+          headerName: LS.TAG_OPCIONES,
+          headerClass: 'cell-header-center',//Clase a nivel de th
+          cellClass: (params) => { return (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
+          width: LS.WIDTH_OPCIONES,
+          minWidth: LS.WIDTH_OPCIONES,
+          maxWidth: LS.WIDTH_OPCIONES,
+          cellRendererFramework: BotonOpcionesComponent,
+          headerComponentFramework: TooltipReaderComponent,
+          headerComponentParams: {
+            class: LS.ICON_OPCIONES,
+            tooltip: LS.TAG_OPCIONES,
+            text: '',
+            enableSorting: false
+          },
+          pinnedRowCellRenderer: PinnedCellComponent,
+        },
+        // this.utilService.getColumnaOpciones()
       );
     }
     return columnas;

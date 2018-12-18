@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DialogModule } from 'primeng/dialog';
+// import { IconAccionComponent } from './icon-accion/icon-accion.component';
 // import { BotonOpcionesComponent } from './boton-opciones/boton-opciones.component';
 // import { TooltipReaderComponent } from './tooltip-reader/tooltip-reader.component';
 // import { PinnedCellComponent } from './pinned-cell/pinned-cell.component';
@@ -14,10 +16,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // BotonOpcionesComponent,
 //   TooltipReaderComponent,
 //   PinnedCellComponent
+// IconAccionComponent
 ],
   imports: [
     CommonModule,
     NgbModule.forRoot(),
+    DialogModule
   ],
   exports: [
   ],

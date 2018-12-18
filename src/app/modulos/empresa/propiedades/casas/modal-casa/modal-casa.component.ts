@@ -18,6 +18,7 @@ import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo
 import { CasasService } from '../casas.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
+import { CasaTO } from 'src/app/entidadesTO/empresa/CasaTO';
 
 @Component({
   selector: 'app-modal-casa',
@@ -27,6 +28,7 @@ import { LS } from 'src/app/contantes/app-constants';
 export class ModalCasaComponent implements OnInit {
 
   @Input() parametros;
+  @Input() isModal: boolean; // establecemos si este componente es modal o no 
   public verNuevo = false;
   public cargando: Boolean = false;
   public casa: Casa;
@@ -38,6 +40,7 @@ export class ModalCasaComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   public accion: string = null;
+  public tituloForm: string = null;
   public constantes: any = LS;
   
   constructor(
@@ -62,9 +65,27 @@ export class ModalCasaComponent implements OnInit {
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
+    
+    this.postInicializarModal();
+  }
+
+  postInicializarModal() {
     if (this.parametros) {
       this.accion = this.parametros.accion;
-      this.traerParaEdicion(this.parametros.objetoSeleccionado.id);
+      switch (this.accion) {
+        case LS.ACCION_CONSULTAR:
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_CASA;
+          this.traerParaEdicion(this.parametros.objetoSeleccionado.id);
+          break;
+        case LS.ACCION_EDITAR:
+          this.tituloForm = LS.TITULO_FORM_EDITAR_CASA;
+          this.traerParaEdicion(this.parametros.objetoSeleccionado.id);
+          break;
+        case LS.ACCION_NUEVO:
+          this.tituloForm = LS.TITULO_FORM_NUEVA_CASA;
+          this.postGuardarCasa();
+          break;
+      }
     }
   }
 
@@ -75,7 +96,7 @@ export class ModalCasaComponent implements OnInit {
     this.casa.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.casa.ubigeo_id = this.ubigeo.ubigeo;
     this.casa.serviciosList = this.servicios;
-    if (!this.parametros) { // guardar nueva propiedad
+    if (this.accion === LS.ACCION_NUEVO) { // guardar nueva propiedad
       // guardar en lista fotos
       for (const item of this.archivos) {
         const foto: Foto = new Foto();
@@ -91,7 +112,7 @@ export class ModalCasaComponent implements OnInit {
       console.log('antes de guardar propiedad: ');
       console.log(this.casa);
       this.casasService.ingresarCasa(this.casa, this);
-    } else { // guardar el rol editado
+    } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
@@ -118,14 +139,24 @@ export class ModalCasaComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.casa);
+    let casaTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(casaTO);
+  }
+
+  convertirCasaACasTO(data) {
+    let casaTO = new CasaTO(data);
+    casaTO.propietario = this.casa.persona_id.nombres;
+    casaTO.ubicacion = this.casa.ubigeo_id.ubigeo;
+    return casaTO;
   }
 
   despuesDeModificarCasa(data) {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.casa);
+    let casaTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    this.activeModal.close(casaTO);
   }
 
   traerParaEdicion(id) {
@@ -211,6 +242,17 @@ export class ModalCasaComponent implements OnInit {
     });
   }
 
+  postGuardarCasa() {
+    // se genera el codigode la casa cuando la accion es nuevo
+    this.cargando = true;
+    this.casasService.generarCodigoCasa(this);
+  }
+
+  despuesDeGenerarCodigoCasa(data) {
+    this.cargando = false;
+    this.casa.codigo = data;
+  }
+
   cargarImagenes() {
     let estadetalle: Boolean = true;
     for (const item of this.archivos) {
@@ -220,7 +262,7 @@ export class ModalCasaComponent implements OnInit {
       }
     }
     if (estadetalle) {
-      this.casa.path = 'casas/' + this.persona.dni;
+      this.casa.path = 'casas/' + this.casa.codigo;
       this._cargaImagenes.cargarImagenesFirebase(this.casa.path, this.archivos);
     } else {
       this.toastr.info('Ya esta asignado');
@@ -234,20 +276,15 @@ export class ModalCasaComponent implements OnInit {
   limpiarpropiedad() {
     // limpiar persona
     this.persona = new Persona();
-    this.casa.persona_id = new Persona();
-    this.casa.ubigeo_id = new Ubigeo();
+    this.casa = new Casa();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
     this.listaLP = [];
-    // limpiar foto
-    this.casa.foto = null;
     // limpiar servicios
     this.servicios = [];
     this.casaservicios = [];
-    this.casa.serviciosList = {};
-    this.casa.casaservicioList = {};
   }
 
   quitarservicio(servicio: Servicios) {

@@ -1,6 +1,5 @@
 
-<i class="fa fa-picture-o" aria-hidden="true" *ngIf="foto==null"></i>
-
-<a [href]="foto" target="_blank" *ngIf="foto!==null">
+<i class="fa fa-picture-o" aria-hidden="true" *ngIf="foto===null"></i>
+<button (click)="mostrarModalImagen()" class="btn btn-primary p-0" *ngIf="foto!==null">
     <img [src]="foto" class="rounded mx-auto d-block" width="30" height="30" />
-</a>
+</button>

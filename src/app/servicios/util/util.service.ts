@@ -38,6 +38,19 @@ export class UtilService {
     return moment().format('hh_mm_ss DD-MM-YYYY');
   }
 
+  setLocaleDate(): any {
+    return {
+      firstDayOfWeek: 0,
+      dayNames: [LS.TAG_DOMINGO, LS.TAG_LUNES, LS.TAG_MARTES, LS.TAG_MIERCOLES, LS.TAG_JUEVES, LS.TAG_VIERNES, LS.TAG_SABADO],
+      dayNamesShort: [LS.TAG_DOM, LS.TAG_LUN, LS.TAG_MAR, LS.TAG_MIE, LS.TAG_JUE, LS.TAG_VIE, LS.TAG_SAB],
+      dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Jue", "Vi", "Sa"],
+      monthNames: ["Enero ", "Febrero ", "Marzo ", "Abril ", "Mayo ", "Junio ", "Julio ", "Agosto ", "Septiembre ", "Octubre ", "Noviembre ", "Diciembre "],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      today: 'Hoy',
+      clear: 'Limpiar'
+    };
+  }
+
   establecerFormularioTocado(form: NgForm): boolean {
     let touched = true;
     let formControls = form.form.controls;
@@ -92,11 +105,11 @@ export class UtilService {
   generarItemsMenuesPropiedades(contexto) {
     let items = [
         {
-            label: 'Archivo',
-            icon: 'pi pi-fw pi-file',
+            label: LS.TAG_ARCHIVO,
+            icon: LS.ICON_ARCHIVO,
             items: [{
-                    label: 'Nuevo', 
-                    icon: 'pi pi-fw pi-plus',
+                    label: LS.ACCION_NUEVO, 
+                    icon: LS.ICON_NUEVO,
                     command: () => {
                       contexto.nuevo();
                     }
@@ -104,23 +117,23 @@ export class UtilService {
             ]
         },
         {
-            label: 'Consultar',
-            icon: 'pi pi-fw pi-cog',
+            label: LS.ACCION_CONSULTAR,
+            icon: LS.ICON_CONSULTAR,
             items: [
                 {
-                    label: 'General', 
-                    icon: 'pi pi-fw pi-search', 
+                    label: LS.TAG_GENERAL, 
+                    icon: LS.ICON_BUSCAR_MAS,
                     items: [
                       {
-                        label: 'Todo', 
-                        icon: 'pi pi-fw pi-search',
+                        label: LS.TAG_ACTIVOS, 
+                        icon: LS.ICON_ACTIVO,
                         command: () => {
                           contexto.consultarGeneral(true);
                         }
                       },
                       {
-                        label: 'Inactivos', 
-                        icon: 'pi pi-fw pi-search',
+                        label: LS.TAG_INCLUIR_INACTIVOS, 
+                        icon: LS.ICON_INACTIVO,
                         command: () => {
                           contexto.consultarGeneral(false);
                         }
@@ -129,42 +142,42 @@ export class UtilService {
                 },
                 {separator:true},
                 {
-                  label: 'Contrato', 
-                  icon: 'pi pi-fw pi-search',
+                  label: LS.TAG_CONTRATO, 
+                  icon: LS.ICON_BUSCAR_MAS,
                   items: [
                     {
-                      label: 'Vendidas', 
-                      icon: 'pi pi-fw pi-search',
+                      label: LS.TAG_VENDIDAS, 
+                      icon: LS.ICON_VENTA,
                       command: () => {
-                        contexto.consultarContrato('V');
+                        contexto.consultarEstadoContrato('V');
                       }
                     },
                     {
-                      label: 'Alquiladas', 
-                      icon: 'pi pi-fw pi-search',
+                      label: LS.TAG_ALQUILADAS, 
+                      icon: LS.ICON_ALQUILER,
                       command: () => {
-                        contexto.consultarContrato('A');
+                        contexto.consultarEstadoContrato('A');
                       }
                     }
                   ]
                 },
                 {separator:true},
                 {
-                  label: 'Post - contrato',
-                  icon: 'pi pi-fw pi-search',
+                  label: LS.TAG_POST_CONTRATO,
+                  icon: LS.ICON_BUSCAR_MAS,
                   items: [
                     {
-                      label: 'Libres', 
-                      icon: 'pi pi-fw pi-search',
+                      label: LS.TAG_LIBRES, 
+                      icon: LS.ICON_LIBRE,
                       command: () => {
-                        contexto.consultarPostContrato('L');
+                        contexto.consultarEstadoContrato('L');
                       }
                     },
                     {
-                      label: 'Reservadas', 
-                      icon: 'pi pi-fw pi-search',
+                      label: LS.TAG_RESERVADAS, 
+                      icon: LS.ICON_RESERVADO,
                       command: () => {
-                        contexto.consultarPostContrato('R');
+                        contexto.consultarEstadoContrato('R');
                       }
                     }
                   ]

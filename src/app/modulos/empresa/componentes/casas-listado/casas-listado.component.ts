@@ -4,10 +4,9 @@ import { GridApi } from 'ag-grid';
 import { ContextMenu } from 'primeng/contextmenu';
 import { CasasService } from '../../propiedades/casas/casas.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { Casa } from 'src/app/entidades/entidad.casa';
 import { LS } from 'src/app/contantes/app-constants';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { CasaTO } from 'src/app/entidadesTO/empresa/CasaTO';
 @Component({
   selector: 'app-casas-listado',
   templateUrl: './casas-listado.component.html',
@@ -21,13 +20,15 @@ export class CasasListadoComponent implements OnInit {
   @Output() enviarAccion = new EventEmitter();
 
   public cargando: boolean = false;
-  public listadoCasas: Array<any> = []; // lista casas
-  public objetoSeleccionado: any;
+  public listadoCasas: Array<CasaTO> = []; // lista casas
+  public objetoSeleccionado: CasaTO;
 
   public filtroGlobal: string = "";
   public enterKey: number = 0;//Suma el numero de enter
   public activar: boolean = false;
   public constantes: any = LS;
+
+  public parametrosFoto: any = null
 
   //AG-GRID
   public opciones: MenuItem[];
@@ -43,12 +44,11 @@ export class CasasListadoComponent implements OnInit {
     private casasService: CasasService,
     private utilService: UtilService,
     private activeModal: NgbActiveModal,
-    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
     if (this.isModal) {
-      this.listarCasas();
+      this.listarCasas(false);
     }
     this.iniciarAgGrid();
   }
@@ -56,14 +56,59 @@ export class CasasListadoComponent implements OnInit {
   ngOnChanges(changes) {
     if (changes.parametrosBusqueda) {
       if (changes.parametrosBusqueda.currentValue && changes.parametrosBusqueda.currentValue.listar) {
-        this.listarCasas();
+        if (this.parametrosBusqueda.accion) {
+          // aca se refresca la tabla (accion: nuevo o editar)
+          console.log('refrescar tabla aqui');
+          console.log(this.parametrosBusqueda.data);
+          this.refrescarTabla(this.parametrosBusqueda.accion, this.parametrosBusqueda.data);
+        } else {
+          // aca solo consulta el listado de casas
+          if (this.parametrosBusqueda.estadoContrato === null) {
+            this.listarCasas(this.parametrosBusqueda.activos);
+          } else {
+            this.listarCasasPorEstadoContrato(this.parametrosBusqueda.estadoContrato);
+          }
+        }
       }
     }
   }
 
-  listarCasas() {
+  refrescarTabla(accion, casaTO: CasaTO) {
+    switch(accion) {
+      case LS.ACCION_NUEVO: { // Insertar un elemento en la tabla
+        let listaTemporal = [... this.listadoCasas];
+        listaTemporal.unshift(casaTO);
+        this.listadoCasas = listaTemporal;
+        // this.seleccionarFila(0);
+        break;
+      }
+      case LS.ACCION_EDITAR: { // Actualiza un elemento en la tabla
+        var indexTemp = this.listadoCasas.findIndex(item => item.codigo === casaTO.codigo);
+        let listaTemporal = [... this.listadoCasas];
+        listaTemporal[indexTemp] = casaTO;
+        this.listadoCasas = listaTemporal;
+        this.objetoSeleccionado = this.listadoCasas[indexTemp];
+        // this.seleccionarFila(indexTemp);
+        break;
+      }
+      case LS.ACCION_ELIMINAR: { // Elimina un elemento en la tabla
+        //Actualizan las listas 
+        var indexTemp = this.listadoCasas.findIndex(item => item.codigo === casaTO.codigo);
+        let listaTemporal = [...this.listadoCasas];
+        listaTemporal.splice(indexTemp, 1);
+        this.listadoCasas = listaTemporal;
+        // (this.listadoCasas.length > 0) ? this.seleccionarFila((indexTemp === 0) ? 0 : (indexTemp - 1)) : null;
+        break;
+      }
+    }
+  }
+
+  listarCasas(activos: boolean) {
     this.cargando = true;
-    this.casasService.listarCasas(this);
+    let parametros = {
+      activos: activos
+    }
+    this.casasService.listarCasas(parametros, this);
   }
 
   despuesDeListarCasas(data) {
@@ -71,10 +116,39 @@ export class CasasListadoComponent implements OnInit {
     this.cargando = false;
   }
 
+  listarCasasPorEstadoContrato(estadoContrato: string) {
+    this.cargando = true;
+    let parametros = {
+      estadoContrato: estadoContrato
+    }
+    this.casasService.listarCasasPorEstadoContrato(parametros, this);
+  }
+
+  despuesDeListarCasasPorEstadoContrato(data) {
+    this.listadoCasas = data;
+    this.cargando = false;
+  }
+
+  nuevaCasa() {
+    this.emitirAccion(LS.ACCION_NUEVO, null);
+  }
+
   consultar() {
     this.emitirAccion(LS.ACCION_CONSULTAR, this.objetoSeleccionado);
   }
 
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
+  
   /**Modal */
   filaSeleccionar() {
     this.enviarItem(this.objetoSeleccionado);
@@ -95,11 +169,10 @@ export class CasasListadoComponent implements OnInit {
 
   generarOpciones() {
     let perConsultar = true;
-    let perModificar = true;
-    let perEliminar = true;
-    let perInactivar = !this.objetoSeleccionado.estado; //empInactivo
-    let perActivar = this.objetoSeleccionado.estado;
-    let perImprimir = true;
+    let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
+    let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
+    let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
+    let perActivar = this.objetoSeleccionado.estadocontrato === 'L' ? !this.objetoSeleccionado.estado : this.objetoSeleccionado.estado;
     this.opciones = [
       {
         label: LS.ACCION_CONSULTAR,
@@ -117,13 +190,13 @@ export class CasasListadoComponent implements OnInit {
         label: LS.ACCION_INACTIVAR,
         icon: LS.ICON_INACTIVAR,
         disabled: !perInactivar,
-        command: () => perModificar ? this.inactivar(true) : null
+        command: () => perModificar ? this.activarCasa(false) : null
       },
       {
         label: LS.ACCION_ACTIVAR,
         icon: LS.ICON_ACTIVAR,
         disabled: !perActivar,
-        command: () => perActivar ? this.inactivar(false) : null
+        command: () => perActivar ? this.activarCasa(true) : null
       },
       {
         label: LS.ACCION_ELIMINAR,
@@ -142,22 +215,22 @@ export class CasasListadoComponent implements OnInit {
     this.enviarAccion.emit(parametros);
   }
 
-  inactivar(estado) {
+  activarCasa(estado) {
     let parametros;
     if (!estado) {
-      // this.accion = LS.ACCION_ACTIVAR;
+      // this.accion = LS.ACCION_INACTIVAR;
       parametros = {
-        title: LS.ACCION_ACTIVAR,
-        texto: LS.MSJ_PREGUNTA_ACTIVAR + "<br> " + LS.TAG_CASA + ": " + "C0001",
+        title: LS.ACCION_INACTIVAR,
+        texto: LS.MSJ_PREGUNTA_INACTIVAR + "<br> " + LS.TAG_CASA + ": " + this.objetoSeleccionado.codigo,
         type: LS.SWAL_QUESTION,
         confirmButtonText: LS.LABEL_ACEPTAR,
         cancelButtonText: LS.LABEL_CANCELAR
       };
     } else {
-      // this.accion = LS.ACCION_INACTIVAR;
+      // this.accion = LS.ACCION_ACTIVAR;
       parametros = {
-        title: LS.ACCION_INACTIVAR,
-        texto: LS.MSJ_PREGUNTA_INACTIVAR + "<br> " + LS.TAG_CASA + ": " + "C0001",
+        title: LS.ACCION_ACTIVAR,
+        texto: LS.MSJ_PREGUNTA_ACTIVAR + "<br> " + LS.TAG_CASA + ": " + this.objetoSeleccionado.codigo,
         type: LS.SWAL_QUESTION,
         confirmButtonText: LS.LABEL_ACEPTAR,
         cancelButtonText: LS.LABEL_CANCELAR
@@ -166,23 +239,30 @@ export class CasasListadoComponent implements OnInit {
     this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
       if (respuesta) {//Si presiona CONTABILIZAR
         this.cargando = true;
-        this.objetoSeleccionado.empInactivo = estado;
+        // this.objetoSeleccionado.estado = estado;
         let parametro = {
-          pk: this.objetoSeleccionado.rhEmpleadoPK,
-          activar: !estado
+          id: this.objetoSeleccionado.id,
+          codigo: this.objetoSeleccionado.codigo,
+          activar: estado
         }
-        this.casasService.cambiarEstadoCasa(this.objetoSeleccionado.id, this);
+        this.casasService.cambiarEstadoCasa(parametro, this);
       } else {//Cierra el formulario
         this.cargando = false;
       }
     });
   }
 
+  despuesCambiarEstadoCasa(data) {
+    this.objetoSeleccionado.estado = !this.objetoSeleccionado.estado;
+    this.refrescarTabla(LS.ACCION_EDITAR, this.objetoSeleccionado);
+    this.cargando = false;
+  }
+
   eliminarCasa() {
     // this.accion = LS.ACCION_ELIMINAR;
     let parametros = {
       title: LS.MSJ_TITULO_ELIMINAR,
-      texto: LS.MSJ_PREGUNTA_ELIMINAR,
+      texto: LS.MSJ_PREGUNTA_ELIMINAR + "<br>" + LS.TAG_CASA + ": " + this.objetoSeleccionado.codigo,
       type: LS.SWAL_WARNING,
       confirmButtonText: LS.MSJ_SI_ELIMINAR,
       cancelButtonText: LS.MSJ_CANCELAR,
@@ -191,14 +271,18 @@ export class CasasListadoComponent implements OnInit {
     this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
       if (respuesta) {//Si presiona CONTABILIZAR
         this.cargando = true;
-        let parametro = {
-          rhEmpleadoPK: this.objetoSeleccionado.rhEmpleadoPK
-        }
-        // this.casasService.eliminarFotoCasa(parametro, this);
+        this.casasService.eliminarCasa(this.objetoSeleccionado.id, this);
       } else {//Cierra el formulario
         this.cargando = false;
       }
     });
+  }
+
+  despuesDeEliminarCasa(data) {
+    this.cargando = false;
+    console.log('se ha elimnado casa:');
+    console.log(data);
+    this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
   }
 
   imprimirCasas() {}
@@ -219,16 +303,22 @@ export class CasasListadoComponent implements OnInit {
     this.redimensionarColumnas();
   }
 
-  mostrarOpciones(event, dataSelected) {
-    this.mostrarContextMenu(dataSelected, event);
+  mostrarOpciones(event, dataSelected) { // BOTON OPCIONES
+    if (this.objetoSeleccionado.estadocontrato === 'L') {
+      this.mostrarContextMenu(dataSelected, event);
+    }
   }
 
   mostrarContextMenu(data, event) {
     this.objetoSeleccionado = data;
     if (!this.isModal) {
-      this.generarOpciones();
-      this.menuOpciones.show(event);
-      event.stopPropagation();
+      if (data.estadocontrato === 'L') {
+        this.generarOpciones();
+        this.menuOpciones.show(event);
+        event.stopPropagation();
+      } else {
+        this.menuOpciones.hide();
+      }
     }
   }
 

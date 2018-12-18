@@ -145,4 +145,11 @@
     height: 400px;
     overflow-y: scroll;
   }
+
+  /*menu de admin arhcivo y consultas*/
+  .ui-menu, .ui-menubar, .ui-menubar .ui-submenu-list, .ui-tieredmenu, .ui-tieredmenu .ui-submenu-list, .ui-slidemenu, .ui-slidemenu .ui-submenu-list, .ui-contextmenu, .ui-contextmenu .ui-submenu-list, .ui-megamenu {
+    color: #1b1d1f;
+    background: #f6f7f9 0 0 repeat-x !important;
+    background: linear-gradient(to bottom, #f6f7f9 0%, #ffffff 100%) !important;
+}
   

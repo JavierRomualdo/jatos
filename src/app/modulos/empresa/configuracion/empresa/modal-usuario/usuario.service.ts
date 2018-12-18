@@ -19,6 +19,7 @@ export class UsuarioService {
           contexto.despuesDeListarUsuarios(res);
         } else {
           this.toastr.warning('No se encontraron resultados', 'Aviso');
+          contexto.cargando = false;
         }
       }
     ).catch(err => this.handleError(err, contexto));

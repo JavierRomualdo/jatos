@@ -8,12 +8,12 @@ import { HabitacionesComponent } from './propiedades/habitaciones/habitaciones.c
 import { HomeComponent } from './home/home.component';
 import { CocherasComponent } from './propiedades/cocheras/cocheras.component';
 import { ApartamentosComponent } from './propiedades/apartamentos/apartamentos.component';
-import { VentasComponent } from './ventas/ventas.component';
 import { CasasComponent } from './propiedades/casas/casas.component';
 import { EmpresaComponentComponent } from './empresa-component/empresa-component.component';
 import { EmpresaConfiguracionComponent } from './configuracion/empresa/empresa.component';
 import { UbigeoComponent } from './configuracion/ubigeo/ubigeo.component';
 import { EstamosTrabajandoComponent } from 'src/app/componentesgenerales/estamos-trabajando/estamos-trabajando.component';
+import { VentasComponent } from './ventas/ventas.component';
 
 const empresaRoutes: Routes = [
   {
@@ -28,7 +28,7 @@ const empresaRoutes: Routes = [
       {path: 'propiedades/casas', component: CasasComponent},
       {path: 'propiedades/lotes', component: LotesComponent},
       {path: 'alquileres', component: EstamosTrabajandoComponent},
-      {path: 'ventas', component: EstamosTrabajandoComponent},
+      {path: 'ventas', component: VentasComponent},
       {path: 'configuracion/empresa', component: EmpresaConfiguracionComponent},
       {path: 'configuracion/ubigeo', component: UbigeoComponent},
       {path: '', redirectTo: 'inicio', pathMatch: 'full'}
