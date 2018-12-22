@@ -91,6 +91,8 @@ export class LS {
   static TAG_UBICACION = "Ubicación";
   static TAG_GENERAL = "General";
   static TAG_FECHA_VENTA = "Fecha venta";
+  static TAG_FECHA_ALQUILER = "Fecha alquiler";
+  static TAG_FECHA_CONTRATO = "Fecha contrato";
   static TAG_PENDIENTES = 'Pendientes';
   static TAG_ANULADOS = 'Anulados';
   static TAG_REVERSADOS = 'Reversados';
@@ -171,6 +173,10 @@ export class LS {
   public static TITULO_FORM_EDITAR_VENTA = "Editar venta";
   public static TITULO_FORM_CONSULTAR_VENTA = "Consultar venta";
   public static TITULO_VENTAS_LISTADO = "Listado de ventas";
+  public static TITULO_FORM_NUEVO_ALQUILER = "Nuevo alquiler";
+  public static TITULO_FORM_EDITAR_ALQUILER = "Editar alquiler";
+  public static TITULO_FORM_CONSULTAR_ALQUILER = "Consultar alquiler";
+  public static TITULO_ALQUILERES_LISTADO = "Listado de alquileres";
 
   //
   //MENSAJES

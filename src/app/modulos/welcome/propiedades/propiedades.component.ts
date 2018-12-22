@@ -209,7 +209,7 @@ export class PropiedadesComponent implements OnInit {
   listarPropiedades() {
     let mensaje: String = "";
     this.idPropiedad = 0;
-    if (this.ubigeo.tiposervicio.length === 0) {
+    if (this.ubigeo.contrato.length === 0) {
       mensaje += " tipo servicio. ";
     }
     if (this.parametros.tipopropiedad === "") {
@@ -241,7 +241,7 @@ export class PropiedadesComponent implements OnInit {
       }
     } else {
       this.propiedades = [];
-      this.toastr.info("Ingrese: " + mensaje);
+      // this.toastr.info("Ingrese: " + mensaje);
     }
   }
 

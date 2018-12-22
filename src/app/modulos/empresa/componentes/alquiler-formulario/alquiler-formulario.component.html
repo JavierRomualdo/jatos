@@ -6,12 +6,12 @@
     </button>
     <b>{{tituloForm}}</b>
     <div class="card-header-actions">
-      <button *ngIf="accion === constantes.ACCION_NUEVO" id="btnGuardar" type="button" (click)="insertarVenta()"
-        class="btn btn-sm btn-primary mr-1" [disabled]="!propiedad || !venta.persona_id" title="{{constantes.ATAJO_GUARDAR}}">
+      <button *ngIf="accion === constantes.ACCION_NUEVO" id="btnGuardar" type="button" (click)="insertarAlquiler()"
+        class="btn btn-sm btn-primary mr-1" [disabled]="!propiedad || !fechacontrato || !alquiler.persona_id" title="{{constantes.ATAJO_GUARDAR}}">
         <i class="{{constantes.ICON_GUARDAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
       </button>
-      <button *ngIf="accion === constantes.ACCION_EDITAR" id="btnGuardar" type="button" (click)="modificarVenta(frmVenta)"
+      <button *ngIf="accion === constantes.ACCION_EDITAR" id="btnGuardar" type="button" (click)="modificarAlquiler(frmAlquiler)"
         class="btn btn-sm btn-primary mr-1" [disabled]="cargando" title="{{constantes.ATAJO_GUARDAR}}">
       <i class="{{constantes.ICON_GUARDAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
@@ -35,7 +35,7 @@
             <b> {{constantes.TAG_PROPIEDAD}}</b>
           </div>
           <div class="card-body">
-            <form #frmVenta="ngForm" name="frmVenta" autocomplete="off">
+            <form #frmAlquiler="ngForm" name="frmAlquiler" autocomplete="off">
               <div class="form-group row">
                 <label class="col-sm-2 form-control-label">{{constantes.TAG_PROPIEDAD}} <span class="text-primary">*</span></label>
                 <div class="col-sm-4">
@@ -49,8 +49,17 @@
                     </div>
                   </div>
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_CLIENTE}} <span class="text-primary">*</span></label>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_FECHA_CONTRATO}} <span class="text-primary">*</span></label>
                 <div class="col-sm-4">
+                  <p-calendar inputId="fechacontrato" class="mousetrap" name="fechacontrato" [(ngModel)]="fechacontrato"
+                  dateFormat="dd/mm/yy" [locale]="es" [showIcon]="true" [required]="true"></p-calendar>
+                  <!--[maxDate]="fechaHasta" [appMaxDate]="fechaActual"-->
+                  <!-- <input type="date" [(ngModel)]="fechacontrato" name="fechacontrato" required class="form-control"> -->
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_CLIENTE}} <span class="text-primary">*</span></label>
+                <div class="col-sm-10">
                   <div class="form-group">
                     <div class="input-group">
                     <label class="form-control">{{cliente.nombres}} - {{cliente.dni}}</label>

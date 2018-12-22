@@ -1,33 +1,33 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { LS } from 'src/app/contantes/app-constants';
-import { VentaServiceService } from '../../ventas/venta-service.service';
 import * as moment from 'moment';
-import { UtilService } from 'src/app/servicios/util/util.service';
-import { ToastrService } from 'ngx-toastr';
-import { Venta } from 'src/app/entidades/entidad.venta';
-import { VentaTO } from 'src/app/entidadesTO/empresa/VentaTO';
-import { Persona } from 'src/app/entidades/entidad.persona';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalPersonaComponent } from '../../configuracion/empresa/modal-persona/modal-persona.component';
-import { CasasListadoComponent } from '../casas-listado/casas-listado.component';
+import { LS } from 'src/app/contantes/app-constants';
+import { Alquiler } from 'src/app/entidades/entidad.alquiler';
+import { AlquilerTO } from 'src/app/entidadesTO/empresa/AlquilerTO';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
-import { CasasService } from '../../propiedades/casas/casas.service';
+import { Persona } from 'src/app/entidades/entidad.persona';
+import { AlquilerService } from '../../alquileres/alquiler.service';
 import { ApartamentoService } from '../../propiedades/apartamentos/apartamento.service';
+import { CasasService } from '../../propiedades/casas/casas.service';
 import { CocheraService } from '../../propiedades/cocheras/cochera.service';
 import { LocalService } from '../../propiedades/locales/local.service';
 import { LoteService } from '../../propiedades/lotes/lote.service';
-import { ApartamentosListadoComponent } from '../apartamentos-listado/apartamentos-listado.component';
-import { CocherasListadoComponent } from '../cocheras-listado/cocheras-listado.component';
-import { LocalesListadoComponent } from '../locales-listado/locales-listado.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UtilService } from 'src/app/servicios/util/util.service';
+import { ToastrService } from 'ngx-toastr';
+import { ModalPersonaComponent } from '../../configuracion/empresa/modal-persona/modal-persona.component';
 import { LotesListadoComponent } from '../lotes-listado/lotes-listado.component';
+import { LocalesListadoComponent } from '../locales-listado/locales-listado.component';
+import { CocherasListadoComponent } from '../cocheras-listado/cocheras-listado.component';
+import { CasasListadoComponent } from '../casas-listado/casas-listado.component';
+import { ApartamentosListadoComponent } from '../apartamentos-listado/apartamentos-listado.component';
 
 @Component({
-  selector: 'app-venta-formulario',
-  templateUrl: './venta-formulario.component.html',
-  styleUrls: ['./venta-formulario.component.css']
+  selector: 'app-alquiler-formulario',
+  templateUrl: './alquiler-formulario.component.html',
+  styleUrls: ['./alquiler-formulario.component.css']
 })
-export class VentaFormularioComponent implements OnInit {
-  
+export class AlquilerFormularioComponent implements OnInit {
+
   @Input() parametrosFormulario: any;
   @Output() enviarAccion = new EventEmitter();
   @Output() enviarActivar = new EventEmitter();
@@ -39,8 +39,8 @@ export class VentaFormularioComponent implements OnInit {
   public activar: boolean = false;
   public es: any = {}; //Locale Date (Obligatoria)
   public tituloForm: string = null;
-  public venta: Venta = new Venta();
-  public ventaTO: VentaTO = new VentaTO();
+  public alquiler: Alquiler = new Alquiler();
+  public alquilerTO: AlquilerTO = new AlquilerTO();
   public tipopropiedad: string = null;
 
   // propiedad
@@ -49,12 +49,12 @@ export class VentaFormularioComponent implements OnInit {
   public ubigeo: Ubigeo = new Ubigeo();
   // cliente
   public cliente: Persona;
-
+  public fechacontrato: Date = new Date();
   // parametro formulario propiedad
   public parametroFormulario: any = null;
 
   constructor(
-    private ventaService: VentaServiceService,
+    private alquilerService: AlquilerService,
     private apartamentoService: ApartamentoService,
     private casasService: CasasService,
     private cocheraService: CocheraService,
@@ -69,15 +69,20 @@ export class VentaFormularioComponent implements OnInit {
     this.isScreamMd = window.innerWidth <= 576 ? false : true;
     this.es = this.utilService.setLocaleDate();
     moment.locale('es'); // para la fecha
+    this.es = this.utilService.setLocaleDate();
+    // this.fechacontrato = this.utilService.setLocaleDate();
     this.cliente = new Persona();
   }
 
   ngOnChanges(changes) {
+    moment.locale('es');
+    this.es = this.utilService.setLocaleDate();
     if (changes.parametrosFormulario) {
       if (changes.parametrosFormulario.currentValue) {
         this.accion = this.parametrosFormulario.accion;
         this.tipopropiedad = this.parametrosFormulario.propiedad;
         this.ubigeo = this.parametrosFormulario.ubigeo;
+        // this.fechacontrato = this.utilService.setLocaleDate();
         this.postIniciarVistaFormulario(this.tipopropiedad);
       }
     }
@@ -90,9 +95,9 @@ export class VentaFormularioComponent implements OnInit {
         // PARA APARTAMENTO
         if (this.accion === LS.ACCION_CONSULTAR) {
           this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
-          this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id);
+          this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id);
         } else if (this.accion === LS.ACCION_NUEVO){
-          this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
+          this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
           this.parametroFormulario = {
             accion: this.accion,
             apartamento: null
@@ -103,9 +108,9 @@ export class VentaFormularioComponent implements OnInit {
         // PARA CASA
         if (this.accion === LS.ACCION_CONSULTAR) {
           this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
-          this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id);
+          this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id);
         } else if (this.accion === LS.ACCION_NUEVO) {
-          this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
+          this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
           this.parametroFormulario = {
             accion: this.accion,
             casa: null
@@ -116,9 +121,9 @@ export class VentaFormularioComponent implements OnInit {
         // PARA COCHERA
         if (this.accion === LS.ACCION_CONSULTAR) {
           this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
-          this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id)
+          this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
         } else if (this.accion === LS.ACCION_NUEVO) {
-          this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
+          this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
           this.parametroFormulario = {
             accion: this.accion,
             cochera: null
@@ -130,9 +135,9 @@ export class VentaFormularioComponent implements OnInit {
         // PARA LOCAL
         if (this.accion === LS.ACCION_CONSULTAR) {
           this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
-          this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id)
+          this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
         } else if (this.accion === LS.ACCION_NUEVO) {
-          this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
+          this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
           this.parametroFormulario = {
             accion: this.accion,
             local: null
@@ -143,9 +148,9 @@ export class VentaFormularioComponent implements OnInit {
         // PARA LOTE
         if (this.accion === LS.ACCION_CONSULTAR) {
           this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
-          this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id)
+          this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
         } else if (this.accion === LS.ACCION_NUEVO) {
-          this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
+          this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
           this.parametroFormulario = {
             accion: this.accion,
             lote: null
@@ -158,64 +163,69 @@ export class VentaFormularioComponent implements OnInit {
   }
 
   traerParaEdicion(id) {
-    // consulto la venta (traigo los datos de la venta en un dto "VentaDto")
+    // consulto la alquiler (traigo los datos de la alquiler en un dto "AlquilerDto")
     this.cargando = true;
-    this.ventaService.mostrarVenta(id, this);
+    this.alquilerService.mostrarAlquiler(id, this);
   }
 
-  despuesDeMostrarVenta(data) {
+  despuesDeMostrarAlquiler(data) {
     // aca mostramos los datos del dto en el formulario
-    this.venta = this.convertirVentaDTOaVenta(data);
+    this.alquiler = this.convertirAlquilerDTOaAlquiler(data);
     this.cliente = data.cliente;
-    this.mostrarPropiedadEnFormulario(this.venta, data);
+    this.mostrarPropiedadEnFormulario(this.alquiler, data);
     this.cargando = false;
   }
 
-  mostrarPropiedadEnFormulario(venta: Venta, ventaDto) {
+  mostrarPropiedadEnFormulario(alquiler: Alquiler, alquilerDto) {
     switch (this.tipopropiedad) {
       case LS.TAG_APARTAMENTO:
         // MOSTRAR APARTAMENTO
-        this.propiedad = ventaDto.apartamento_id;
-        this.codigo = ventaDto.apartamento_id.codigo;
+        this.propiedad = alquilerDto.apartamento_id;
+        this.codigo = alquilerDto.apartamento_id.codigo;
+        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
-          apartamento: ventaDto.apartamento_id // apartamento_id es el dtoApartamento
+          apartamento: alquilerDto.apartamento_id // apartamento_id es el dtoApartamento
         }
         break;
       case LS.TAG_CASA:
         // MOSTRAR CASA
-        this.propiedad = ventaDto.casa_id;
-        this.codigo = ventaDto.casa_id.codigo;
+        this.propiedad = alquilerDto.casa_id;
+        this.codigo = alquilerDto.casa_id.codigo;
+        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
-          casa: ventaDto.casa_id // casa_id es el dtoCasa
+          casa: alquilerDto.casa_id // casa_id es el dtoCasa
         }
         break;
       case LS.TAG_COCHERA:
         // MOSTRAR COCHERA
-        this.propiedad = ventaDto.cochera_id;
-        this.codigo = ventaDto.cochera_id.codigo;
+        this.propiedad = alquilerDto.cochera_id;
+        this.codigo = alquilerDto.cochera_id.codigo;
+        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
-          cochera: ventaDto.cochera_id // cochera_id es el dtoCochera
+          cochera: alquilerDto.cochera_id // cochera_id es el dtoCochera
         }
         break;
       case LS.TAG_LOCAL:
         // MOSTRAR LOCAL
-        this.propiedad = ventaDto.local_id;
-        this.codigo = ventaDto.local_id.codigo;
+        this.propiedad = alquilerDto.local_id;
+        this.codigo = alquilerDto.local_id.codigo;
+        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
-          local: ventaDto.local_id // local_id es el dtoLocal
+          local: alquilerDto.local_id // local_id es el dtoLocal
         }
         break;
       case LS.TAG_LOTE:
         // MOSTRAR LOTE
-        this.propiedad = ventaDto.lote_id;
-        this.codigo = ventaDto.lote_id.codigo;
+        this.propiedad = alquilerDto.lote_id;
+        this.codigo = alquilerDto.lote_id.codigo;
+        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
-          lote: ventaDto.lote_id // lote_id es el dtoLocal
+          lote: alquilerDto.lote_id // lote_id es el dtoLocal
         }
         break;
       default:
@@ -223,15 +233,15 @@ export class VentaFormularioComponent implements OnInit {
     }
   }
 
-  convertirVentaDTOaVenta(data): Venta {
-    let venta = new Venta();
-    venta.id = data.id;
-    venta.apartamento_id = data.apartamento_id ? data.apartamento_id.id : null;
-    venta.casa_id = data.casa_id ? data.casa_id.id : null;
-    venta.cochera_id = data.cochera_id ? data.cochera_id.id : null;
-    venta.local_id = data.local_id ? data.local_id.id : null;
-    venta.lote_id = data.lote_id ? data.lote_id.id : null;
-    return venta;
+  convertirAlquilerDTOaAlquiler(data): Alquiler {
+    let alquiler = new Alquiler();
+    alquiler.id = data.id;
+    alquiler.apartamento_id = data.apartamento_id ? data.apartamento_id.id : null;
+    alquiler.casa_id = data.casa_id ? data.casa_id.id : null;
+    alquiler.cochera_id = data.cochera_id ? data.cochera_id.id : null;
+    alquiler.local_id = data.local_id ? data.local_id.id : null;
+    alquiler.lote_id = data.lote_id ? data.lote_id.id : null;
+    return alquiler;
   }
 
   buscarPropiedad() { // boton buscar (propiedad) en el formulario
@@ -261,7 +271,7 @@ export class VentaFormularioComponent implements OnInit {
     const modalRef = this.modalService.open(ApartamentosListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
       codigo: this.codigo,
-      contrato: 'V',
+      contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
@@ -269,10 +279,10 @@ export class VentaFormularioComponent implements OnInit {
     modalRef.result.then((result) => {
       this.propiedad = result;
       this.codigo = result.codigo; // result es casaTO
-      this.venta.apartamento_id = result.id;
+      this.alquiler.apartamento_id = result.id;
       // para consultar y editar en modal casa
       this.cargando = true;
-      this.apartamentoService.mostrarApartamento(this.venta.apartamento_id, this);
+      this.apartamentoService.mostrarApartamento(this.alquiler.apartamento_id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
@@ -292,7 +302,7 @@ export class VentaFormularioComponent implements OnInit {
     const modalRef = this.modalService.open(CasasListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
       codigo: this.codigo,
-      contrato: 'V',
+      contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
@@ -300,10 +310,10 @@ export class VentaFormularioComponent implements OnInit {
     modalRef.result.then((result) => {
       this.propiedad = result;
       this.codigo = result.codigo; // result es casaTO
-      this.venta.casa_id = result.id;
+      this.alquiler.casa_id = result.id;
       // para consultar y editar en modal casa
       this.cargando = true;
-      this.casasService.mostrarCasa(this.venta.casa_id, this);
+      this.casasService.mostrarCasa(this.alquiler.casa_id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
@@ -323,7 +333,7 @@ export class VentaFormularioComponent implements OnInit {
     const modalRef = this.modalService.open(CocherasListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
       codigo: this.codigo,
-      contrato: 'V',
+      contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
@@ -331,10 +341,10 @@ export class VentaFormularioComponent implements OnInit {
     modalRef.result.then((result) => {
       this.propiedad = result;
       this.codigo = result.codigo; // result es casaTO
-      this.venta.cochera_id = result.id;
+      this.alquiler.cochera_id = result.id;
       // para consultar y editar en modal casa
       this.cargando = true;
-      this.cocheraService.mostrarCochera(this.venta.cochera_id, this);
+      this.cocheraService.mostrarCochera(this.alquiler.cochera_id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
@@ -354,7 +364,7 @@ export class VentaFormularioComponent implements OnInit {
     const modalRef = this.modalService.open(LocalesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
       codigo: this.codigo,
-      contrato: 'V',
+      contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
@@ -362,10 +372,10 @@ export class VentaFormularioComponent implements OnInit {
     modalRef.result.then((result) => {
       this.propiedad = result;
       this.codigo = result.codigo; // result es casaTO
-      this.venta.local_id = result.id;
+      this.alquiler.local_id = result.id;
       // para consultar y editar en modal casa
       this.cargando = true;
-      this.localService.mostrarLocal(this.venta.local_id, this);
+      this.localService.mostrarLocal(this.alquiler.local_id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
@@ -385,7 +395,7 @@ export class VentaFormularioComponent implements OnInit {
     const modalRef = this.modalService.open(LotesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
       codigo: this.codigo,
-      contrato: 'V',
+      contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
@@ -393,10 +403,10 @@ export class VentaFormularioComponent implements OnInit {
     modalRef.result.then((result) => {
       this.propiedad = result;
       this.codigo = result.codigo; // result es casaTO
-      this.venta.lote_id = result.id;
+      this.alquiler.lote_id = result.id;
       // para consultar y editar en modal casa
       this.cargando = true;
-      this.loteService.mostrarLote(this.venta.lote_id, this);
+      this.loteService.mostrarLote(this.alquiler.lote_id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
@@ -416,49 +426,52 @@ export class VentaFormularioComponent implements OnInit {
     modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
       this.cliente = result;
-      this.venta.persona_id = result.id;
+      this.alquiler.persona_id = result.id;
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
   }
 
-  insertarVenta() {
+  insertarAlquiler() {
     // this.setearValoresRhBonoMotivo();
     this.cargando = true;
     console.log(this.utilService.obtenerFechaActual());
     console.log(new Date(this.utilService.obtenerFechaActual()));
-    this.venta.fecha = this.utilService.obtenerFechaActual();
-    console.log(this.venta.fecha);
-    console.log('Venta antes de ingresar');
-    console.log(this.venta);
-    this.ventaService.ingresarVenta(this.venta, this);
+    this.alquiler.fecha = this.utilService.obtenerFechaActual();
+    console.log('fecha contrato');
+    console.log(this.fechacontrato);
+    this.alquiler.fechacontrato = this.utilService.formatearDateToStringYYYYMMDD(this.fechacontrato);
+    console.log(this.alquiler.fecha);
+    console.log('Alquiler antes de ingresar');
+    console.log(this.alquiler);
+    this.alquilerService.ingresarAlquiler(this.alquiler, this);
   }
 
-  despuesDeIngresarVenta(data) {
+  despuesDeIngresarAlquiler(data) {
     this.cargando = false;
-    let ventaTO = this.convertirVentaAVentaTO(data);
+    let alquilerTO = this.convertirAlquilerAAlquilerTO(data);
     let parametros = {
       accion : this.accion,
-      ventaTO: ventaTO
+      alquilerTO: alquilerTO
     }
-    console.log('despues de insertar venta');
+    console.log('despues de insertar alquiler');
     console.log(parametros);
     this.enviarAccion.emit(parametros);
   }
 
-  convertirVentaAVentaTO(data): VentaTO {
-    let ventaTO = new VentaTO();
-    ventaTO.id = data.id;
-    ventaTO.estadocontrato = 'V';
-    ventaTO.foto = this.propiedad.foto
-    ventaTO.propiedad_id = this.propiedad.id;
-    ventaTO.propiedad_codigo = this.propiedad.codigo;
-    ventaTO.propietario = this.propiedad.propietario;
-    ventaTO.cliente = this.cliente.nombres;
-    ventaTO.ubicacion = this.propiedad.ubicacion;
-    ventaTO.direccion = this.propiedad.direccion;
-    return this.ventaTO;
+  convertirAlquilerAAlquilerTO(data): AlquilerTO {
+    let alquilerTO = new AlquilerTO();
+    alquilerTO.id = data.id;
+    alquilerTO.estadocontrato = 'A';
+    alquilerTO.foto = this.propiedad.foto
+    alquilerTO.propiedad_id = this.propiedad.id;
+    alquilerTO.propiedad_codigo = this.propiedad.codigo;
+    alquilerTO.propietario = this.propiedad.propietario;
+    alquilerTO.cliente = this.cliente.nombres;
+    alquilerTO.ubicacion = this.propiedad.ubicacion;
+    alquilerTO.direccion = this.propiedad.direccion;
+    return this.alquilerTO;
   }
 
   cambiarActivar(estado) {
@@ -469,7 +482,7 @@ export class VentaFormularioComponent implements OnInit {
   cancelar() {
     let parametros = {
       accion : this.accion,
-      ventaTO: this.ventaTO
+      alquilerTO: this.alquilerTO
     }
     this.enviarAccion.emit(parametros);
   }

@@ -8,13 +8,13 @@
       <div class="col-md-9">
         <h3 class="h3">
           <strong><i class="fa fa-home" aria-hidden="true"></i> COCHERA 
-            <span *ngIf="cochera.tiposervicio=='A'">(Alquiler)</span>
-            <span *ngIf="cochera.tiposervicio=='V'">(Venta)</span>
+            <span *ngIf="cochera.estadocontrato=='A'">(Alquiler)</span>
+            <span *ngIf="cochera.estadocontrato=='V'">(Venta)</span>
           </strong>
         </h3>
       </div>
       <div class="col-md-3">
-        <h2 class="h3"><strong>S/ {{cochera.precio}}</strong></h2>
+        <h2 class="h3"><strong>S/ {{cochera.preciocontrato}}</strong></h2>
       </div>
     </div>
   </div>

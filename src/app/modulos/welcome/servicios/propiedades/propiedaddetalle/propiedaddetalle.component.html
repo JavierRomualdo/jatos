@@ -8,13 +8,13 @@
       <div class="col-md-9">
         <h3 class="h3">
           <strong><i class="fa fa-home" aria-hidden="true"></i> CASA
-            <span *ngIf="casa.tiposervicio=='A'">(Alquiler)</span>
-            <span *ngIf="casa.tiposervicio=='V'">(Venta)</span>
+            <span *ngIf="casa.estadocontrato=='A'">(Alquiler)</span>
+            <span *ngIf="casa.estadocontrato=='V'">(Venta)</span>
           </strong>
         </h3>
       </div>
       <div class="col-md-3">
-        <h2 class="h3"><strong>S/ {{casa.precio}}</strong></h2>
+        <h2 class="h3"><strong>S/ {{casa.preciocontrato}}</strong></h2>
       </div>
     </div>
   </div>

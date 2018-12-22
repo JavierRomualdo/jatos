@@ -22,12 +22,12 @@
                   </label>
                   <div class="row">
                     <div class="col-md-6">
-                      <p-checkbox name="group1" value="V" label="Venta" [(ngModel)]="ubigeo.tiposervicio" inputId="ny"
-                        (onChange)="ubigeo.tiposervicio ? listarPropiedades() : null"></p-checkbox>
+                      <p-checkbox name="group1" value="V" label="Venta" [(ngModel)]="ubigeo.contrato" inputId="ny"
+                        (onChange)="ubigeo.contrato ? listarPropiedades() : null"></p-checkbox>
                     </div>
                     <div class="col-md-6">
-                      <p-checkbox name="group1" value="A" label="Alquiler" [(ngModel)]="ubigeo.tiposervicio" inputId="sf"
-                        (onChange)="ubigeo.tiposervicio ? listarPropiedades() : null"></p-checkbox>
+                      <p-checkbox name="group1" value="A" label="Alquiler" [(ngModel)]="ubigeo.contrato" inputId="sf"
+                        (onChange)="ubigeo.contrato ? listarPropiedades() : null"></p-checkbox>
                     </div>
                   </div>
                 </div>
@@ -163,8 +163,8 @@
                       <div class="text">
                         <h6 style="color: rgb(87, 139, 62)"><strong>{{ubigeo.departamento.ubigeo}} -
                             {{propiedad.ubigeo}}</strong></h6>
-                        <p class="author-category"><strong><span style="color: rgb(87, 139, 62)" *ngIf="propiedad.precio">S/
-                              {{propiedad.precio}}</span>
+                        <p class="author-category"><strong><span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">S/
+                              {{propiedad.preciocontrato}}</span>
                             | Area: <span style="color: rgb(87, 139, 62)">{{redondear(propiedad.largo)}}x{{redondear(propiedad.ancho)}}
                               m<sup>2</sup></span></strong></p>
                         <!--<p class="intro">Direccion: Mz. A. Lote 7 San Valentin</p>-->

@@ -7,7 +7,8 @@ export class UbigeoGuardar {
   distrito: Ubigeo = new Ubigeo();
   ubigeo: Ubigeo = new Ubigeo();
   rangoprecio: Rangoprecios = new Rangoprecios();
-  tiposervicio ?: String[] = [];
+  tiposervicio ?: String[] = [];// ya no va
+  contrato ?: String[] = [];
   propiedad ?: String;
   servicios: number[] = [];
 
@@ -22,6 +23,7 @@ export class UbigeoGuardar {
     this.ubigeo = data.ubigeo ? data.ubigeo : this.ubigeo;
     this.rangoprecio = data.rangoprecio ? data.rangoprecio : this.rangoprecio;
     this.tiposervicio = data.tiposervicio ? data.tiposervicio : this.tiposervicio;
+    this.contrato = data.contrato ? data.contrato : this.contrato;
     this.servicios = data.servicios ? data.servicios : this.servicios;
   }
 }

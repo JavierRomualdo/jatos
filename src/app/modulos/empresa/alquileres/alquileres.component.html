@@ -1,3 +1,138 @@
-<p>
-  alquileres works!
-</p>
+<div class="row">
+  <div [ngClass]="{'sr-only':activar}" class="col-lg-3 col-md-4 col-sm-5">
+    <form #frmAlquiler='ngForm' name="frmAlquiler" class="card m-2 mb-2" autocomplete="off">
+      <fieldset [disabled]="vistaFormulario">
+        <div class="card-header">
+          <span>
+            <i class="{{constantes.ICON_FILTRAR}}"></i>
+            <b> {{constantes.TITULO_FILTROS}}</b>
+          </span>
+        </div>
+        <div class="card-body pb-0 pt-1">
+          <!--FORMULARIO EMPRESA-->
+          <div class="form-group form-group-sm">
+            <label class="control-label">
+              <b>{{constantes.TAG_PROPIEDAD}}</b>
+            </label>
+            <select class="form-control form-control-sm mousetrap" name="propiedad" required [(ngModel)]="propiedadSeleccionado"
+              (ngModelChange)="cambiarPropiedadSeleccionado()">
+              <option selected disabled value="">{{constantes.TAG_SELECCIONE}}</option>
+              <option [ngValue]="propiedad" *ngFor="let propiedad of listaPropiedades">{{propiedad}}</option>
+            </select>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="control-label">
+              <b>{{constantes.TAG_UBIGEO}}</b>
+            </label>
+            <select class="form-control form-control-sm mousetrap" name="departamento" required [(ngModel)]="departamentoSeleccionado"
+              (ngModelChange)="mostrarprovincias(departamentoSeleccionado)">
+              <option selected disabled value=undefined>Seleccione despartamento...</option>
+              <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of listaDepartamentos"  >{{ubigeodepartamento.ubigeo}}</option>
+            </select>
+            <select class="form-control form-control-sm mousetrap" name="provincia" required [(ngModel)]="provinciaSeleccionado"
+              (change)="mostrardistritos(provinciaSeleccionado)">
+              <option selected disabled value=undefined>Seleccione provincia...</option>
+              <option [ngValue]="ubigeoprovincia" *ngFor="let ubigeoprovincia of listaProvincias"  >{{ubigeoprovincia.ubigeo}}</option>
+            </select>
+            <select class="form-control form-control-sm mousetrap" name="distrito" required [(ngModel)]="distritoSeleccionado"
+              (change)="seleccionarDistrito(distritoSeleccionado)">
+              <option selected disabled value=undefined>Seleccione distrito...</option>
+              <option [ngValue]="ubigeodistrito" *ngFor="let ubigeodistrito of listaDistritos"  >{{ubigeodistrito.ubigeo}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          <div class="text-right">
+            <div class="btn-group mr-1">
+              <button type="button" id="btnBuscar" class="btn btn-sm btn-primary" [disabled]="!frmAlquiler.valid" (click)="listarAlquileres(constantes.ETIQUETA_TODOS, frmAlquiler)"
+                title="{{constantes.ATAJO_BUSCAR}}">
+                <i class="{{constantes.ICON_BUSCAR}}" aria-hidden="true"></i>
+                <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
+              </button>
+              <!-- <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="listarAlquileres(constantes.ETIQUETA_PENDIENTES, frmAlquiler)">{{constantes.TAG_PENDIENTES}}</a>
+                <a class="dropdown-item" (click)="listarAlquileres(constantes.ETIQUETA_ANULADOS, frmAlquiler)">{{constantes.TAG_ANULADOS}}</a>
+              </div> -->
+            </div>&nbsp;
+            <button id="btnNuevo" class="btn btn-sm btn-primary" type="button" (click)="nuevoAlquiler(frmAlquiler)" [disabled]="!frmAlquiler.valid" title="{{constantes.ATAJO_NUEVO}}">
+                <i class="{{constantes.ICON_NUEVO}}" aria-hidden="true"></i> {{constantes.LABEL_NUEVO}}</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div [ngClass]="{'col-lg-9 col-md-8 col-sm-7':!activar,'col-lg-12 col-md-12 col-sm-12':activar || isModal}">
+    <!--Formulario-->
+    <div *ngIf="vistaFormulario">
+      <app-alquiler-formulario [parametrosFormulario]="parametrosFormulario" (enviarActivar)="activar=!$event"
+        (enviarAccion)="ejecutarAccion($event)">
+      </app-alquiler-formulario>
+    </div>
+    <!--Listado-->
+    <div class="card m-2" *ngIf="listaResultado?.length>0 && !vistaFormulario">
+      <div class="modal-header p-2" *ngIf="isModal">
+        <h4 class="modal-title">{{constantes.TITULO_ALQUILERES_LISTADO}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="card-header p-1" *ngIf="!isModal">
+        <button id="btnActivar" class="btn btn-sm btn-primary mr-2" *ngIf="isScreamMd" (click)="activar=!activar" type="button"
+          title="{{constantes.ATAJO_MOSTRAR_OCULTAR_FILTROS}}">
+          <i class="{{activar?constantes.ICON_MOSTRAR_FILTRO:constantes.ICON_OCULTAR_FILTRO}}" aria-hidden="true"></i>
+        </button>
+        <strong>{{constantes.TITULO_ALQUILERES_LISTADO}}</strong>
+
+        <div class="card-header-actions">
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top"
+              ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
+              <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
+              <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top"
+              ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
+              <i class="{{constantes.ICON_EXPORTAR}}" aria-hidden="true"></i>
+              <span class="d-none d-md-inline"> {{constantes.LABEL_EXPORTAR}}</span>
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div class="row">
+            <div class="col-sm-5 col-md-6">
+              <div class="input-group p-1">
+                <input type="text" [(ngModel)]="filtroGlobal" (input)="filtrarRapido()" class="form-control form-control-sm input-filter mousetrap"
+                  size="100" style="font-family: Arial, FontAwesome;" placeholder="&#xf0b0; {{constantes.TAG_FILTRAR}}..." size="100">
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="{{constantes.ICON_BUSCAR}}"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-7 col-md-6">
+              <div class="float-right pr-1">
+                <p-multiSelect [options]="columnDefs" [(ngModel)]="columnDefsSelected" optionLabel="headerName" maxSelectedLabels="1" selectedItemsLabel="{0} {{constantes.MSJ_COLUMNAS}}"
+                  defaultLabel="{{constantes.TAG_SELECCIONE}}"></p-multiSelect>
+              </div>
+            </div>
+          </div>
+          <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listaResultado"
+            [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
+            [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="alquilerSeleccionado = $event.node.data"
+            (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
+            (cellFocused)="filaFocused($event)" (cellDoubleClicked)="alquilerSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()">
+          </ag-grid-angular>
+          <!--(filterChanged)="actualizarFilas()"-->
+        </div>
+      </div>
+    </div>
+    <p-contextMenu #menuOpciones appendTo="body" [model]="opciones" [baseZIndex]="1100"></p-contextMenu>
+  </div>
+</div>
+<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>

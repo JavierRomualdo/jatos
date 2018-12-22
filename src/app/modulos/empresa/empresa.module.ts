@@ -12,6 +12,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {MenubarModule} from 'primeng/menubar';
 import {DialogModule} from 'primeng/dialog';
+import {CalendarModule} from 'primeng/calendar';
 
 import { HomeComponent } from './home/home.component';
 import { ApartamentosComponent } from './propiedades/apartamentos/apartamentos.component';
@@ -63,6 +64,7 @@ import { PinnedCellComponent } from '../componentes/pinned-cell/pinned-cell.comp
 import { ImagenModalComponent } from '../componentes/imagen-modal/imagen-modal.component';
 import { IconAccionComponent } from '../componentes/icon-accion/icon-accion.component';
 import { VentaFormularioComponent } from './componentes/venta-formulario/venta-formulario.component';
+import { AlquilerFormularioComponent } from './componentes/alquiler-formulario/alquiler-formulario.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -109,7 +111,8 @@ import { VentaFormularioComponent } from './componentes/venta-formulario/venta-f
     TooltipReaderComponent,
     PinnedCellComponent,
     IconAccionComponent,
-    VentaFormularioComponent
+    VentaFormularioComponent,
+    AlquilerFormularioComponent
   ],
   imports: [
     ComponentesModule,
@@ -130,7 +133,8 @@ import { VentaFormularioComponent } from './componentes/venta-formulario/venta-f
     ToolbarModule,
     SplitButtonModule,
     MenubarModule,
-    DialogModule
+    DialogModule,
+    CalendarModule
   ],
   entryComponents: [
     ModalEmpresaComponent,
@@ -147,7 +151,11 @@ import { VentaFormularioComponent } from './componentes/venta-formulario/venta-f
     ModalUsuarioComponent,
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
+    ApartamentosListadoComponent,
     CasasListadoComponent,
+    CocherasListadoComponent,
+    LocalesListadoComponent,
+    LotesListadoComponent,
     ConfirmacionComponent,
     ImagenModalComponent,
 

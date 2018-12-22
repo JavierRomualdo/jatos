@@ -60,32 +60,34 @@ export class LoteDetalleComponent implements OnInit {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
     this.api.get2('lotes/' + id).then(
-      (res) => {
-        // console.log(res);
-        this.lote = res;
-        this.listaLP = res.lotepersonaList;
-        this.persona = this.listaLP[0];
-        this.ubigeo = res.ubigeo;
-        this.servicios = res.serviciosList;
+      (data) => {
+        if (data && data.extraInfo) {
+          // console.log(res);
+          this.lote = data.extraInfo;
+          this.listaLP = data.extraInfo.lotepersonaList;
+          this.persona = this.listaLP[0];
+          this.ubigeo = data.extraInfo.ubigeo;
+          this.servicios = data.extraInfo.serviciosList;
 
-        for (const item of res.fotosList) {
-          console.log('foto: ');
-          console.log(item);
-          this.fotos.push(item);
+          for (const item of data.extraInfo.fotosList) {
+            console.log('foto: ');
+            console.log(item);
+            this.fotos.push(item);
+          }
+          console.log('fotoss : ');
+          console.log(this.fotos);
+          // this.fotos = res.fotosList;
+          console.log('traido para edicion');
+          console.log(this.lote);
+          this.lote.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+          // traer archivos de firebase storage
+          // this._cargaImagenes.getImagenes(res.path);
+
+          // aqui metodo para mostrar todas las imagenes de este lote ....
+          // this.imagen = res.foto;
+          // this.imagenAnterior = res.foto;
+          this.cargando = false;
         }
-        console.log('fotoss : ');
-        console.log(this.fotos);
-        // this.fotos = res.fotosList;
-        console.log('traido para edicion');
-        console.log(this.lote);
-        this.lote.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
-        // traer archivos de firebase storage
-        // this._cargaImagenes.getImagenes(res.path);
-
-        // aqui metodo para mostrar todas las imagenes de este lote ....
-        // this.imagen = res.foto;
-        // this.imagenAnterior = res.foto;
-        this.cargando = false;
       },
       (error) => {
         if (error.status === 422) {
