@@ -1,4 +1,4 @@
-export class CasaTO {
+export class CocheraTO {
     id: number;//
     foto: string = null;
     propietario: string = "";//
@@ -10,11 +10,6 @@ export class CasaTO {
     preciocompra: number = 0.00;
     preciocontrato: number = 0.00;
     ganancia: number = 0.00;
-    npisos: number = 0;
-    ncuartos: number = 0;
-    nbanios: number = 0;
-    tjardin: boolean = false;
-    tcochera: boolean = false;
     contrato: string = "";
     estadocontrato: string = 'L';
     estado: boolean = false;
@@ -35,11 +30,6 @@ export class CasaTO {
         this.preciocompra = data.preciocompra ? data.preciocompra : this.preciocompra;
         this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
         this.ganancia = data.ganancia ? data.ganancia : this.ganancia;
-        this.npisos = data.npisos ? data.npisos : this.npisos;
-        this.ncuartos = data.ncuartos ? data.ncuartos : this.ncuartos;
-        this.nbanios = data.nbanios ? data.nbanios : this.nbanios;
-        this.tjardin = data.tjardin ? data.tjardin : this.tjardin;
-        this.tcochera = data.tcochera ? data.tcochera : this.tcochera;
         this.contrato = data.contrato ? data.contrato : this.contrato;
         this.estadocontrato = data.estadocontrato ? data.estadocontrato : this.estadocontrato;
         this.estado = data.estado ? data.estado : this.estado;

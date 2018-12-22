@@ -31,11 +31,11 @@ export class IconAccionComponent implements OnInit, ICellRendererAngularComp {
         break;
       case 'V':
         this.icono = LS.ICON_VENTA;
-        this.tooltip = LS.TAG_VENDIDO;
+        this.tooltip = LS.TAG_VENTA;
         break;
       case 'A':
         this.icono = LS.ICON_ALQUILER;
-        this.tooltip = LS.TAG_ALQUILADO;
+        this.tooltip = LS.TAG_ALQUILER;
         break;
       case 'R':
         this.icono = LS.ICON_RESERVADO;

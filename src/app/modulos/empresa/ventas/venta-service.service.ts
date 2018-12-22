@@ -31,6 +31,18 @@ export class VentaServiceService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  mostrarVenta(parametro, contexto) {
+    this.api.get2('ventas/'+parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeMostrarVenta(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   ingresarVenta(parametro, contexto) {
     this.api.post2('ventas', parametro).then(
       (data) => {
@@ -72,19 +84,11 @@ export class VentaServiceService {
         cellClass: 'text-md-center'
       },
       {
-        headerName: LS.TAG_PROPIEDAD,
-        width: 100,
-        minWidth: 100,
-        valueGetter: (params) => {
-          return params.data.propiedad;
-        }
-      },
-      {
         headerName: LS.TAG_CODIGO,
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.codigo;
+          return params.data.propiedad_codigo;
         }
       },
       {
@@ -120,11 +124,11 @@ export class VentaServiceService {
         }
       },
       {
-        headerName: LS.TAG_PRECIO_S,
+        headerName: LS.TAG_PRECIO_CONTRATO,
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.precio;
+          return params.data.preciocontrato;
         }
       },
       {

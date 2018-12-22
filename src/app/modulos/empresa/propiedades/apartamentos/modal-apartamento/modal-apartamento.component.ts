@@ -15,6 +15,8 @@ import { ModalServicioComponent } from '../../../configuracion/empresa/modal-ser
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { ApartamentoService } from '../apartamento.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { ApartamentoTO } from 'src/app/entidadesTO/empresa/ApartamentoTO';
 
 @Component({
   selector: 'app-modal-apartamento',
@@ -23,7 +25,8 @@ import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 })
 export class ModalApartamentoComponent implements OnInit {
 
-  @Input() edit;
+  @Input() parametros;
+  @Input() isModal: boolean; // establecemos si este componente es modal o no 
   public verNuevo = false;
   public cargando: Boolean = false;
   public apartamento: Apartamento;
@@ -32,6 +35,9 @@ export class ModalApartamentoComponent implements OnInit {
   public apartamentoservicios: Apartamentoservicio[];
   public fotos: Foto[];
   public ubigeo: UbigeoGuardar;
+  public accion: string = null;
+  public tituloForm: string = null;
+  public constantes: any = LS;
 
   constructor(
     private modalService: NgbModal,
@@ -41,7 +47,9 @@ export class ModalApartamentoComponent implements OnInit {
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.apartamento = new Apartamento();
     this.fotos = [];
     this.servicios = [];
@@ -50,11 +58,39 @@ export class ModalApartamentoComponent implements OnInit {
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
+    this.postInicializarModal();
+  }
+  ngOnChanges(changes) {
+    if (changes.parametros) {
+      if (changes.parametros.currentValue) {
+        this.postInicializarModal();
+      }
+    }
   }
 
-  ngOnInit() {
-    if (this.edit) {
-      this.traerParaEdicion(this.edit);
+  postInicializarModal() {
+    if (this.parametros) {
+      this.accion = this.parametros.accion;
+      switch (this.accion) {
+        case LS.ACCION_CONSULTAR:
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_APARTAMENTO;
+          this.despuesDeMostrarApartamento(this.parametros.apartamento);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_EDITAR:
+          this.tituloForm = LS.TITULO_FORM_NUEVO_APARTAMENTO;
+          this.despuesDeMostrarApartamento(this.parametros.apartamento);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_NUEVO:
+          if (this.isModal) {
+            this.tituloForm = LS.TITULO_FORM_NUEVO_APARTAMENTO;
+            this.postGuardarApartamento();
+          } else {
+            this.tituloForm = LS.TITULO_FORM_CONSULTAR_APARTAMENTO;
+          }
+          break;
+      }
     }
   }
 
@@ -63,7 +99,7 @@ export class ModalApartamentoComponent implements OnInit {
     this.cargando = true;
     this.apartamento.ubigeo_id = this.ubigeo.ubigeo;
     this.apartamento.serviciosList = this.servicios;
-    if (!this.edit) { // guardar nueva apartamento
+    if (this.accion === LS.ACCION_NUEVO) { // guardar nueva apartamento
       // guardar en lista fotos
       for (const item of this.archivos) {
         const foto: Foto = new Foto();
@@ -76,10 +112,11 @@ export class ModalApartamentoComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.apartamento.fotosList);
+      this.apartamento.ganancia = this.apartamento.preciocontrato - this.apartamento.preciocompra;
       console.log('antes de guardar apartamento: ');
       console.log(this.apartamento);
       this.apartamentoService.ingresarApartamento(this.apartamento, this);
-    } else { // guardar el rol editado
+    } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
@@ -95,6 +132,7 @@ export class ModalApartamentoComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.apartamento.fotosList);
+      this.apartamento.ganancia = this.apartamento.preciocontrato - this.apartamento.preciocompra;
       console.log('antes de editar apartamento: ');
       console.log(this.apartamento);
       this.apartamentoService.modificarApartamento(this.apartamento, this);
@@ -106,14 +144,23 @@ export class ModalApartamentoComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.apartamento);
+    let apartamentoTO = this.convertirAparatamentoAApartamentoTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(apartamentoTO);
+  }
+
+  convertirAparatamentoAApartamentoTO(data) {
+    let apartamentoTO = new ApartamentoTO(data);
+    apartamentoTO.ubicacion = this.apartamento.ubigeo_id.ubigeo;
+    return apartamentoTO;
   }
 
   despuesDeModificarApartamento(data) {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.apartamento);
+    let apartamentoTO = this.convertirAparatamentoAApartamentoTO(data); // sirve para actualizar la tabla
+    this.activeModal.close(apartamentoTO);
   }
 
   traerParaEdicion(id) {
@@ -183,6 +230,17 @@ export class ModalApartamentoComponent implements OnInit {
     }, (reason) => {
       this.auth.agregarmodalopenclass();
     });
+  }
+
+  postGuardarApartamento() {
+    // se genera el codigode la cochera cuando la accion es nuevo
+    this.cargando = true;
+    this.apartamentoService.generarCodigoApartamento(this);
+  }
+
+  despuesDeGenerarCodigoApartamento(data) {
+    this.cargando = false;
+    this.apartamento.codigo = data;
   }
 
   cargarImagenes() {

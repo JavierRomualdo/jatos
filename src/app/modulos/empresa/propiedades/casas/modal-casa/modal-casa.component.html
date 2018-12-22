@@ -7,13 +7,14 @@
       </button>
     </div>
     <div class="card-header bg-primary" *ngIf="!isModal">
-        {{tituloForm}} - {{casa.codigo}}
-      <button type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <strong *ngIf="isModal">{{tituloForm}} - {{casa.codigo}}</strong>
+      <strong *ngIf="!isModal">{{tituloForm}}</strong>
+      <button *ngIf="isModal" type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <i class="fa fa-close"></i>
       </button>
     </div>
     
-    <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR">
+    <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR || !isModal">
       <form #propiedad="ngForm" name="propiedad" autocomplete="off"  *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarpropiedad()">
         <div class="card-body pb-0">
           <!--/.card-->
@@ -53,24 +54,24 @@
                 </div>
                 <label class="col-sm-2 form-control-label">{{constantes.TAG_TIPO_CONTRATO}} <span class="text-primary">*</span></label>
                 <div class="col-sm-2">
-                  <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="casa.tiposervicio"
+                  <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="casa.contrato"
                     inputId="opt1"></p-radioButton><!--disabled="accion===constantes.ACCION_CONSULTAR"-->
                 </div>
                 <div class="col-sm-2">
-                  <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="casa.tiposervicio"
+                  <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="casa.contrato"
                     inputId="opt2" ></p-radioButton>
                 </div>
               </div>
               <!--/.row-->
               <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_COSTO}} <span class="text-primary">*</span></label>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_COMPRA}} <span class="text-primary">*</span></label>
                 <div class="col-sm-4">
-                  <input type="text" name="costo" [(ngModel)]="casa.costo" required placeholder="Ingrese el costo" class="form-control"
+                  <input type="text" name="preciocompra" [(ngModel)]="casa.preciocompra" required placeholder="Ingrese el precio compra" class="form-control"
                     maxlength="9" pKeyFilter="pint">
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_S}} <span class="text-primary">*</span></label>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_CONTRATO}} <span class="text-primary">*</span></label>
                 <div class="col-sm-4">
-                  <input type="text" name="precio" [(ngModel)]="casa.precio" required placeholder="Ingrese el precio" class="form-control"
+                  <input type="text" name="preciocontrato" [(ngModel)]="casa.preciocontrato" required placeholder="Ingrese el precio contrato" class="form-control"
                     maxlength="9" pKeyFilter="pint">
                 </div>
               </div>
@@ -191,7 +192,10 @@
                     Asignar Servicios a esta propiedad
                   </div>
                   <div class="col-auto">
-                    <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" (click)="buscarservicio()" title="asignar rol" style="cursor: pointer"><i class="fa fa-plus-circle fa-2x cursor-pointer text-primary"></i></a>
+                    <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
+                      (click)="buscarservicio()" title="asignar rol" style="cursor: pointer">
+                      <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary"></i>
+                    </a>
                   </div>
                 </div>
                 <div class="form-row">
@@ -329,7 +333,7 @@
           </div>
           <br />
         </div>
-        <div class="modal-footer border-primary">
+        <div class="modal-footer border-primary" *ngIf="isModal">
           <button type="submit" class="btn btn-sm btn-primary" [disabled]="!propiedad.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined"><i
               class="fa fa-dot-circle-o"></i> Guardar</button>
           <button type="reset" (click)="limpiarpropiedad()" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Limpiar</button>

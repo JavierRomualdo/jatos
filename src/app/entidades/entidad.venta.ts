@@ -6,8 +6,7 @@ export class Venta {
     local_id: number = null;
     lote_id: number = null;
     persona_id: number;
-    ubigeo_id: number;
-    fecha: Date;
+    fecha: string; // fecha de venta
     estado: boolean = true;
 
     constructor(data?) {
@@ -22,7 +21,6 @@ export class Venta {
         this.local_id = data.local_id ? data.local_id : this.local_id;
         this.lote_id = data.lote_id ? data.lote_id : this.lote_id;
         this.persona_id = data.persona_id ? data.persona_id : this.persona_id;
-        this.ubigeo_id = data.ubigeo_id ? data.ubigeo_id : this.ubigeo_id;
         this.fecha = data.fecha ? data.fecha : this.fecha;
         this.estado = data.estado ? data.estado : this.estado;
     }

@@ -17,6 +17,8 @@ import { ModalServicioComponent } from '../../../configuracion/empresa/modal-ser
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { LocalService } from '../local.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { LocalTO } from 'src/app/entidadesTO/empresa/LocalTO';
 
 @Component({
   selector: 'app-modal-local',
@@ -25,7 +27,8 @@ import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 })
 export class ModalLocalComponent implements OnInit {
 
-  @Input() edit;
+  @Input() parametros;
+  @Input() isModal: boolean; // establecemos si este componente es modal o no 
   public verNuevo = false;
   public cargando: Boolean = false;
   public local: Local;
@@ -36,7 +39,10 @@ export class ModalLocalComponent implements OnInit {
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
-
+  public accion: string = null;
+  public tituloForm: string = null;
+  public constantes: any = LS;
+  
   constructor(
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
@@ -45,7 +51,9 @@ export class ModalLocalComponent implements OnInit {
     private _cargaImagenes: CargaImagenesService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.local = new Local();
     this.fotos = [];
     this.servicios = [];
@@ -56,11 +64,41 @@ export class ModalLocalComponent implements OnInit {
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
+
+    this.postInicializarModal();
   }
 
-  ngOnInit() {
-    if (this.edit) {
-      this.traerParaEdicion(this.edit);
+  ngOnChanges(changes) {
+    if (changes.parametros) {
+      if (changes.parametros.currentValue) {
+        this.postInicializarModal();
+      }
+    }
+  }
+
+  postInicializarModal() {
+    if (this.parametros) {
+      this.accion = this.parametros.accion;
+      switch (this.accion) {
+        case LS.ACCION_CONSULTAR:
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_LOCAL;
+          this.despuesDeMostrarLocal(this.parametros.local);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_EDITAR:
+          this.tituloForm = LS.TITULO_FORM_EDITAR_LOCAL;
+          this.despuesDeMostrarLocal(this.parametros.local);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_NUEVO:
+          if (this.isModal) {
+            this.tituloForm = LS.TITULO_FORM_NUEVO_LOCAL;
+            this.postGuardarLocal();
+          } else {
+            this.tituloForm = LS.TITULO_FORM_CONSULTAR_LOCAL;
+          }
+          break;
+      }
     }
   }
 
@@ -71,7 +109,7 @@ export class ModalLocalComponent implements OnInit {
     this.local.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.local.ubigeo_id = this.ubigeo.ubigeo;
     this.local.serviciosList = this.servicios;
-    if (!this.edit) { // guardar nueva local
+    if (this.accion === LS.ACCION_NUEVO) { // guardar nueva local
       // guardar en lista fotos
       for (const item of this.archivos) {
         const foto: Foto = new Foto();
@@ -84,10 +122,11 @@ export class ModalLocalComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.local.fotosList);
+      this.local.ganancia = this.local.preciocontrato - this.local.preciocompra;
       console.log('antes de guardar local: ');
       console.log(this.local);
       this.localService.ingresarLocal(this.local, this);
-    } else { // guardar el rol editado
+    } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
@@ -103,6 +142,7 @@ export class ModalLocalComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.local.fotosList);
+      this.local.ganancia = this.local.preciocontrato - this.local.preciocompra;
       console.log('antes de editar local: ');
       console.log(this.local);
       this.localService.modificarLocal(this.local, this);
@@ -114,14 +154,24 @@ export class ModalLocalComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.local);
+    let localTO = this.convertirLocalALocalTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(localTO);
+  }
+
+  convertirLocalALocalTO(data) {
+    let cocheraTO = new LocalTO(data);
+    cocheraTO.propietario = this.local.persona_id.nombres;
+    cocheraTO.ubicacion = this.local.ubigeo_id.ubigeo;
+    return cocheraTO;
   }
 
   despuesDeModificarLocal(data) {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.local);
+    let cocheraTO = this.convertirLocalALocalTO(data); // sirve para actualizar la tabla
+    this.activeModal.close(cocheraTO);
   }
   traerParaEdicion(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
@@ -204,6 +254,17 @@ export class ModalLocalComponent implements OnInit {
     }, (reason) => {
       this.auth.agregarmodalopenclass();
     });
+  }
+
+  postGuardarLocal() {
+    // se genera el codigode la cochera cuando la accion es nuevo
+    this.cargando = true;
+    this.localService.generarCodigoLocal(this);
+  }
+
+  despuesDeGenerarCodigoLocal(data) {
+    this.cargando = false;
+    this.local.codigo = data;
   }
 
   cargarImagenes() {

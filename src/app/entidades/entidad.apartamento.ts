@@ -2,7 +2,11 @@ import { Ubigeo } from './entidad.ubigeo';
 
 export class Apartamento {
   id: number;
-  ubigeo_id: Ubigeo;
+  ubigeo_id: Ubigeo = new Ubigeo();
+  codigo: string = null;
+  preciocompra: number = 0.00;
+  preciocontrato: number = 0.00;
+  ganancia: number = 0.00;
   largo: number;
   ancho: number;
   npisos: number;
@@ -16,7 +20,8 @@ export class Apartamento {
   // fotos: Blob [];
   // tslint:disable-next-line:no-inferrable-types
   nmensajes: number = 0;
-  tiposervicio: string;
+  contrato: string;
+  estadocontrato: string = 'L';
   estado: Boolean = true;
   fotosList: any = {};
   serviciosList: any = {};

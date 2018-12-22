@@ -36,6 +36,19 @@ export class CasasService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  listarCasasParaTipoContrato(parametro, contexto) {
+    this.api.post2('listarCasasParaTipoContrato', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeListarCasasParaTipoContrato(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.despuesDeListarCasasParaTipoContrato([]);
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   listarCasasPorEstadoContrato(parametro, contexto) {
     this.api.post2('listarCasasPorEstadoContrato', parametro).then(
       (data) => {
@@ -193,21 +206,30 @@ export class CasasService {
     let columnas: Array<any> = [];
     columnas.push(
       {
-        headerName: 'Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
-        field: 'estadocontrato',
-        width: 115,
-        minWidth: 115,
-        cellRendererFramework: IconAccionComponent,
-        cellClass: 'text-md-center'
-      },
-      {
         headerName: LS.TAG_IMAGEN,
         headerClass: 'text-md-center',//Clase a nivel de th
         field: 'foto',
         width: 115,
         minWidth: 115,
         cellRendererFramework: ImagenAccionComponent,
+        cellClass: 'text-md-center'
+      },
+      {
+        headerName: 'Contrato',
+        headerClass: 'text-md-center',//Clase a nivel de th
+        field: 'contrato',
+        width: 115,
+        minWidth: 115,
+        cellRendererFramework: IconAccionComponent,
+        cellClass: 'text-md-center'
+      },
+      {
+        headerName: 'Estado Contrato',
+        headerClass: 'text-md-center',//Clase a nivel de th
+        field: 'estadocontrato',
+        width: 115,
+        minWidth: 115,
+        cellRendererFramework: IconAccionComponent,
         cellClass: 'text-md-center'
       },
       {
@@ -251,19 +273,27 @@ export class CasasService {
         }
       },
       {
-        headerName: LS.TAG_COSTO,
+        headerName: LS.TAG_PRECIO_COMPRA,
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.costo;
+          return params.data.preciocompra;
         }
       },
       {
-        headerName: LS.TAG_PRECIO_S,
+        headerName: LS.TAG_PRECIO_CONTRATO,
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.precio;
+          return params.data.preciocontrato;
+        }
+      },
+      {
+        headerName: LS.TAG_GANANCIA,
+        width: 100,
+        minWidth: 100,
+        valueGetter: (params) => {
+          return params.data.ganancia;
         }
       },
       {

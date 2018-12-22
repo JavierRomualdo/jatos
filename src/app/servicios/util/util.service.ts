@@ -38,6 +38,14 @@ export class UtilService {
     return moment().format('hh_mm_ss DD-MM-YYYY');
   }
 
+  obtenerFechaActual() { // DE LA PC DE USUARIO
+    return moment().format('YYYY-MM-DD'); // DD-MM-YYYY
+  }
+
+  obtenerFechaActualYTiempo() { // DE LA PC DE USUARIO
+    return moment().format('YYYY-MM-DD H:MM:SS');
+  }
+
   setLocaleDate(): any {
     return {
       firstDayOfWeek: 0,

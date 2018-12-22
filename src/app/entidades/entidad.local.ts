@@ -3,9 +3,12 @@ import { Ubigeo } from './entidad.ubigeo';
 
 export class Local {
     id: number;
-    persona_id: Persona;
-    ubigeo_id: Ubigeo;
-    precio: number;
+    persona_id: Persona = new Persona;
+    ubigeo_id: Ubigeo = new Ubigeo();
+    codigo: string = null;
+    preciocompra: number = 0.00;
+    preciocontrato: number = 0.00;
+    ganancia: number = 0.00;
     largo: number;
     ancho: number;
     direccion: string;
@@ -17,7 +20,8 @@ export class Local {
     path: string = null; // camino o ruta de imagenes en cloud storage de firebase
     // foto: Blob;
     // fotos: Blob[];
-    tiposervicio: string;
+    contrato: string;
+    estadocontrato: string = 'L';
     estado: Boolean = true;
     localpersonaList: any = {};
     fotosList: any = {};

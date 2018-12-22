@@ -17,6 +17,8 @@ import { ModalServicioComponent } from '../../../configuracion/empresa/modal-ser
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { CocheraService } from '../cochera.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { CocheraTO } from 'src/app/entidadesTO/empresa/CocheraTO';
 
 @Component({
   selector: 'app-modal-cochera',
@@ -25,7 +27,8 @@ import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 })
 export class ModalCocheraComponent implements OnInit {
 
-  @Input() edit;
+  @Input() parametros;
+  @Input() isModal: boolean; // establecemos si este componente es modal o no 
   public verNuevo = false;
   public cargando: Boolean = false;
   public cochera: Cochera;
@@ -36,6 +39,9 @@ export class ModalCocheraComponent implements OnInit {
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
+  public accion: string = null;
+  public tituloForm: string = null;
+  public constantes: any = LS;
 
   constructor(
     private modalService: NgbModal,
@@ -45,7 +51,9 @@ export class ModalCocheraComponent implements OnInit {
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.cochera = new Cochera();
     this.fotos = [];
     this.servicios = [];
@@ -56,11 +64,41 @@ export class ModalCocheraComponent implements OnInit {
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
+
+    this.postInicializarModal();
   }
 
-  ngOnInit() {
-    if (this.edit) {
-      this.traerParaEdicion(this.edit);
+  ngOnChanges(changes) {
+    if (changes.parametros) {
+      if (changes.parametros.currentValue) {
+        this.postInicializarModal();
+      }
+    }
+  }
+
+  postInicializarModal() {
+    if (this.parametros) {
+      this.accion = this.parametros.accion;
+      switch (this.accion) {
+        case LS.ACCION_CONSULTAR:
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_COCHERA;
+          this.despuesDeMostrarCochera(this.parametros.cochera);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_EDITAR:
+          this.tituloForm = LS.TITULO_FORM_EDITAR_COCHERA;
+          this.despuesDeMostrarCochera(this.parametros.cochera);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_NUEVO:
+          if (this.isModal) {
+            this.tituloForm = LS.TITULO_FORM_NUEVA_COCHERA;
+            this.postGuardarCochera();
+          } else {
+            this.tituloForm = LS.TITULO_FORM_CONSULTAR_COCHERA;
+          }
+          break;
+      }
     }
   }
 
@@ -71,7 +109,7 @@ export class ModalCocheraComponent implements OnInit {
     this.cochera.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.cochera.ubigeo_id = this.ubigeo.ubigeo;
     this.cochera.serviciosList = this.servicios;
-    if (!this.edit) {
+    if (this.accion === LS.ACCION_NUEVO) {
       // guardar nueva cochera
       // guardar en lista fotos
       for (const item of this.archivos) {
@@ -85,10 +123,11 @@ export class ModalCocheraComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.cochera.fotosList);
+      this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.preciocompra;
       console.log('antes de guardar cochera: ');
       console.log(this.cochera);
       this.cocheraService.ingresarCochera(this.cochera, this);
-    } else {
+    } else if (this.accion === LS.ACCION_EDITAR) {
       // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
@@ -105,6 +144,7 @@ export class ModalCocheraComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.cochera.fotosList);
+      this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.preciocompra;
       console.log('antes de editar cochera: ');
       console.log(this.cochera);
       this.cocheraService.modificarCochera(this.cochera, this);
@@ -116,14 +156,24 @@ export class ModalCocheraComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.cochera);
+    let cocheraTO = this.convertirCocheraACocheraTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(cocheraTO);
+  }
+
+  convertirCocheraACocheraTO(data) {
+    let cocheraTO = new CocheraTO(data);
+    cocheraTO.propietario = this.cochera.persona_id.nombres;
+    cocheraTO.ubicacion = this.cochera.ubigeo_id.ubigeo;
+    return cocheraTO;
   }
 
   despuesDeModificarCochera(data) {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.cochera);
+    let cocheraTO = this.convertirCocheraACocheraTO(data); // sirve para actualizar la tabla
+    this.activeModal.close(cocheraTO);
   }
 
   traerParaEdicion(id) {
@@ -225,6 +275,17 @@ export class ModalCocheraComponent implements OnInit {
         this.auth.agregarmodalopenclass();
       }
     );
+  }
+
+  postGuardarCochera() {
+    // se genera el codigode la cochera cuando la accion es nuevo
+    this.cargando = true;
+    this.cocheraService.generarCodigoCochera(this);
+  }
+
+  despuesDeGenerarCodigoCochera(data) {
+    this.cargando = false;
+    this.cochera.codigo = data;
   }
 
   cargarImagenes() {

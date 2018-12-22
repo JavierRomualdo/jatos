@@ -47,9 +47,16 @@ export class LS {
   static TAG_EXITO = "Exito";
   static TAG_INACTIVO = "Inactivo";
   static TAG_INCLUIR_INACTIVOS = "Incluir inactivos";
+  static TAG_APARTAMENTO = 'Apartamento';
+  static TAG_APARTAMENTO_LISTADO = 'Listado de apartamentos';
   static TAG_CASA = "Casa";
   static TAG_CASAS_LISTADO = "Listado de casas";
+  static TAG_COCHERA = "Cochera";
+  static TAG_COCHERA_LISTADO = "Listado de cocheras";
+  static TAG_LOCAL = "Local";
+  static TAG_LOCAL_LISTADO = "Listado de locales";
   static TAG_LOTE = "Lote";
+  static TAG_LOTE_LISTADO = "Listado de lotes";
   static TAG_PROPIEDAD = "Propiedad";
   static TAG_PROPIETARIO = "Propietario";
   static TAG_CLIENTE = "Cliente";
@@ -63,6 +70,9 @@ export class LS {
   static TAG_CODIGO = "Código";
   static TAG_COSTO = "Costo";
   static TAG_PRECIO = "Precio";
+  static TAG_PRECIO_COMPRA = "Precio compra";
+  static TAG_PRECIO_CONTRATO = "Precio contrato";
+  static TAG_GANANCIA = "Ganancia";
   static TAG_PRECIO_S = "Precio (S/)";
   static TAG_UBIGEO = "Ubigeo";
   static TAG_DIRECCION = "Dirección";
@@ -70,6 +80,7 @@ export class LS {
   static TAG_CUARTOS = "Cuartos";
   static TAG_HABITACIONES = "Habitacciones";
   static TAG_BANIOS = "Baños";
+  static TAG_BANIO_PREG = "¿Baño?";
   static TAG_JARDIN_PREG = "¿Jardin?";
   static TAG_COCHERA_PREG = "¿Cochera?";
   static TAG_DESCRIPCION = "Descripcion";
@@ -138,20 +149,27 @@ export class LS {
   static ETIQUETA_RESERVADOS = "RESERVADOS";
 
   //TITULOS DE CARDS
+  public static TITULO_FILTROS = 'Filtros';
   public static TITULO_FORM_NUEVA_CASA = "Nueva casa";
   public static TITULO_FORM_EDITAR_CASA = "Editar casa";
   public static TITULO_FORM_CONSULTAR_CASA = "Consultar casa";
   public static TITULO_FORM_NUEVO_LOTE = "Nuevo lote";
   public static TITULO_FORM_EDITAR_LOTE = "Editar lote";
+  public static TITULO_FORM_CONSULTAR_LOTE = 'Consultar lote'
   public static TITULO_FORM_NUEVA_HABITACION = "Nueva habitación";
+  public static TITULO_FORM_EDITAR_HABITACION = "Editar habitación";
   public static TITULO_FORM_NUEVO_LOCAL = "Nuevo local";
   public static TITULO_FORM_EDITAR_LOCAL = "Editar local";
+  public static TITULO_FORM_CONSULTAR_LOCAL = "Consultar local";
   public static TITULO_FORM_NUEVA_COCHERA = "Nueva cochera";
   public static TITULO_FORM_EDITAR_COCHERA = "Editar cochera";
+  public static TITULO_FORM_CONSULTAR_COCHERA = "Concultar cochera";
   public static TITULO_FORM_NUEVO_APARTAMENTO = "Nuevo apartamento";
   public static TITULO_FORM_EDITAR_APARTAMENTO = "Editar apartamento";
+  public static TITULO_FORM_CONSULTAR_APARTAMENTO = "Consultar apartamento";
   public static TITULO_FORM_NUEVA_VENTA = "Nueva venta";
   public static TITULO_FORM_EDITAR_VENTA = "Editar venta";
+  public static TITULO_FORM_CONSULTAR_VENTA = "Consultar venta";
   public static TITULO_VENTAS_LISTADO = "Listado de ventas";
 
   //

@@ -4,11 +4,11 @@ export class VentaTO {
     foto: string = null;
     propiedad_id: number;
     propiedad_codigo: string;
-    propietario: string = "";
     cliente: string = "";
-    ubicacion: string = "";// casa
-    direccion: string = ""; // casa
-    precio: number;
+    propietario: string = "";
+    ubicacion: string = "";// propiedad
+    direccion: string = ""; // propiedad
+    preciocontrato: number;
     fechaVenta: Date;
     
     constructor(data?) {
@@ -25,7 +25,7 @@ export class VentaTO {
         this.propietario = data.propietario ? data.propietario : this.propietario;
         this.ubicacion = data.ubicacion ? data.ubicacion : this.ubicacion;
         this.direccion = data.direccion ? data.direccion : this.direccion;
-        this.precio = data.precio ? data.precio : this.precio;
+        this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
         this.fechaVenta = data.fechaVenta ? data.fechaVenta : this.fechaVenta;
     }
 }

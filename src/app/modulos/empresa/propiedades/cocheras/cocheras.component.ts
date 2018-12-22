@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CocheraMensaje } from 'src/app/entidades/entidad.cocheramensaje';
 import { Cochera } from 'src/app/entidades/entidad.cochera';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/servicios/auth.service';
 import { Persona } from 'src/app/entidades/entidad.persona';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { ModalCocheraComponent } from './modal-cochera/modal-cochera.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { CocheraService } from './cochera.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { UtilService } from 'src/app/servicios/util/util.service';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-cocheras',
@@ -22,17 +22,19 @@ export class CocherasComponent implements OnInit {
   public vermensajes: Boolean = false;
   public estadomensajes: Boolean = true;
   public confirmarcambioestado: Boolean = false;
-  public cocheras: any = []; // lista proyecto
+  public cocheras: any = []; // lista cocheras
   public cochera_id: number;
   public mensajes: CocheraMensaje[];
   public parametros: Cochera;
-  errors: Array<Object> = [];
+  public parametrosListado: any = {};
+  public activar: boolean = false;
+  public constantes: any = LS;
 
+  public items: MenuItem[];
   constructor(
     private modalService: NgbModal,
-    private api: ApiRequest2Service,
     private cocheraService: CocheraService,
-    private toastr: ToastrService,
+    private utilService: UtilService,
   ) {
     this.parametros = new Cochera();
     this.mensajes = [];
@@ -41,68 +43,67 @@ export class CocherasComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listarCocheras();
+    this.listarCocheras(true);
+    this.items = this.utilService.generarItemsMenuesPropiedades(this);
+  }
+
+  // proviene del menu
+  nuevo() {
+    let parametros = {
+      accion: LS.ACCION_NUEVO,
+      objetoSeleccionado: null
+    }
+    this.abrirCocheras(parametros);
   }
 
   limpiar() {
     this.parametros = new Cochera();
     this.parametros.persona_id = new Persona();
     this.parametros.ubigeo_id = new Ubigeo();
+    this.parametrosListado = {};
+    this.parametrosListado.listar = false;
     this.cocheras = [];
-    this.listarCocheras();
+    this.listarCocheras(true);
   }
 
-  busqueda() {
-    let nohayvacios: Boolean = false;
-    if (this.parametros.persona_id.nombres !== undefined &&
-      this.parametros.persona_id.nombres !== '') {
-        nohayvacios = true;
-      }
-    if (this.parametros.ubigeo_id.ubigeo !== undefined && this.parametros.ubigeo_id.ubigeo !== '') {
-      // this.toastr.info('Hay servicio datos: ' + this.parametros.servicio);
-      nohayvacios = true;
-    }
-    if (this.parametros.direccion !== undefined && this.parametros.direccion !== '') {
-      // this.toastr.info('Hay detalle datos: ' + this.parametros.detalle);
-      nohayvacios = true;
-    }
-    if (nohayvacios) {
-      this.cargando = true;
-      console.log(this.parametros);
-      this.cocheraService.busquedaCocheras(this.parametros, this);
-    } else {
-      this.toastr.info('Ingrese datos');
-    }
+  consultarGeneral(activos: boolean) {
+    this.listarCocheras(activos);
   }
 
-  despuesDeBusquedaCocheras(data) {
-    console.log(data);
-    this.cocheras = data;
-    this.cargando = false;
+  consultarEstadoContrato(estadoContrato: string) {
+    this.parametrosListado = {
+      listar: true,
+      activos: true,
+      estadoContrato: estadoContrato
+    };
   }
 
-  abrirCocheras(): void {
+  abrirCocheras(parametros): void {
     const modalRef = this.modalService.open(ModalCocheraComponent, {size: 'lg', keyboard: false});
-    modalRef.result.then((result) => {
-      this.listarCocheras();
+    modalRef.componentInstance.parametros = parametros;
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((data) => {
+      console.log('se cerro modal propiedades');
+      this.refrescarTabla(parametros.accion, data);
+      // this.listarCocheras();
     }, (reason) => {
     });
   }
 
-  editarCochera(id) {
-    const modalRef = this.modalService.open(ModalCocheraComponent, {size: 'lg', keyboard: false});
-    modalRef.componentInstance.edit = id;
-    modalRef.result.then((result) => {
-      this.listarCocheras();
-    }, (reason) => {
-    });
+  refrescarTabla(accion: string, data) {
+    this.parametrosListado = {
+      listar: true,
+      accion: accion,
+      data: data,
+    };
   }
 
   confirmarcambiodeestado(cochera): void {
     const modalRef = this.modalService.open(ConfirmacionComponent, {windowClass: 'nuevo-modal', size: 'sm', keyboard: false});
     modalRef.result.then((result) => {
       this.confirmarcambioestado = true;
-      this.cambiarestadoservicio(cochera);
+      this.cargando = true;
+      this.cocheraService.cambiarEstadoCochera(cochera.id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       cochera.estado = !cochera.estado;
@@ -110,14 +111,8 @@ export class CocherasComponent implements OnInit {
     });
   }
 
-  cambiarestadoservicio(cochera) {
-    this.cargando = true;
-    this.cocheraService.cambiarEstadoCochera(cochera.id, this);
-  }
-
-  despuesDeCambiarEstadoCochera(data) {
-    console.log(data);
-    this.listarCocheras();
+  despuesCambiarEstadoCasa(data) {
+    this.listarCocheras(true);
     this.cargando = false;
   }
 
@@ -138,16 +133,16 @@ export class CocherasComponent implements OnInit {
     this.listarmensajes(this.cochera_id, this.estadomensajes);
   }
 
-  listarCocheras() {
-    this.cargando = true;
-    this.cocheraService.listarCocheras(this);
+  listarCocheras(activos: boolean) {
+    this.parametrosListado = {
+      listar: true,
+      activos: activos,
+      estadoContrato: null
+    };
   }
 
-  despuesDeListarCocheras(data) {
-    this.cocheras = data;
-    this.cargando = false;
-    console.log('resultado: ');
-    console.log(this.cocheras);
+  ejecutarAccion(parametros) {
+    this.abrirCocheras(parametros);
   }
 
   listarmensajes(cochera_id, estado) {
@@ -175,6 +170,6 @@ export class CocherasComponent implements OnInit {
 
   cerrarmensajes() {
     this.vermensajes = false;
-    this.listarCocheras();
+    this.listarCocheras(true);
   }
 }

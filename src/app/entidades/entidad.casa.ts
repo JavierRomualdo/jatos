@@ -6,8 +6,9 @@ export class Casa {
   persona_id: Persona = new Persona;
   ubigeo_id: Ubigeo = new Ubigeo();
   codigo: string = null;
-  costo: number;
-  precio: number;
+  preciocompra: number = 0.00;
+  preciocontrato: number = 0.00;
+  ganancia: number = 0.00;
   largo: number;
   ancho: number;
   direccion: string;
@@ -23,7 +24,7 @@ export class Casa {
   // fotos: Blob [];
   // tslint:disable-next-line:no-inferrable-types
   nmensajes: number = 0;
-  tiposervicio: string;
+  contrato: string;
   estadocontrato: string = 'L';
   estado: boolean = true;
   casapersonaList: any = {};
@@ -40,8 +41,9 @@ export class Casa {
     this.persona_id = data.persona_id ? data.persona_id : this.persona_id;
     this.ubigeo_id = data.ubigeo_id ? data.ubigeo_id : this.ubigeo_id;
     this.codigo = data.codigo ? data.codigo : this.codigo;
-    this.costo = data.costo ? data.costo : this.costo;
-    this.precio = data.precio ? data.precio : this.precio;
+    this.preciocompra = data.preciocompra ? data.preciocompra : this.preciocompra;
+    this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
+    this.ganancia = data.ganancia ? data.ganancia : this.ganancia;
     this.largo = data.largo ? data.largo : this.largo;
     this.ancho = data.ancho ? data.ancho : this.ancho;
     this.direccion = data.direccion ? data.direccion : this.direccion;
@@ -54,7 +56,7 @@ export class Casa {
     this.foto = data.foto ? data.foto : this.foto;
     this.path = data.path ? data.path : this.path;
     this.nmensajes = data.nmensajes ? data.nmensajes : this.nmensajes;
-    this.tiposervicio = data.tiposervicio ? data.tiposervicio : this.tiposervicio;
+    this.contrato = data.contrato ? data.contrato : this.contrato;
     this.estadocontrato = data.estadocontrato ? data.estadocontrato : this.estadocontrato;
     this.estado = data.estado ? data.estado : this.estado;
     this.casapersonaList = data.casapersonaList ? data.casapersonaList : this.casapersonaList;

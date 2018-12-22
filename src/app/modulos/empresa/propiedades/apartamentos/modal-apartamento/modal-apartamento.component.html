@@ -1,347 +1,387 @@
-<div class="card mb-0 card-accent-primary">
-  <div class="card-header bg-primary">
-    <span *ngIf="!verNuevo" class="h6">NUEVA APARTAMENTO</span>
-    <span *ngIf="verNuevo" class="h6">EDITAR APARTAMENTO</span>
-    <button type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-      <i class="fa fa-close"></i>
-      <!--*ngIf="!proveedores && !captadores"-->
-    </button>
-  </div>
-  <div *ngIf="cargando">
-    <app-cargando></app-cargando>
-  </div>
-  <form #formapartamento="ngForm" *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarapartamento()">
-    <div class="card-body pb-0">
-      <!--/.card-->
-      <div class="card border-primary">
-        <div class="card-header bg-primary border-primary">
-          <i class="fa fa-align-justify"></i> General
-          <p-inputSwitch [(ngModel)]="apartamento.estado" name="estado"></p-inputSwitch>
-          <!-- <ui-switch [checked]="true" name="estado1" class="float-right" title="estado">estado</ui-switch> -->
-        </div>
-        <div class="card-body">
-          <!--/.row-->
-          <div class="form-group row">
-            <label class="col-sm-2 form-control-label">Foto Principal</label>
-            <div class="col-sm-4">
-              <a [href]="apartamento.foto" target="_blank" *ngIf="apartamento.foto!=null">
-                <img [src]="apartamento.foto" class="rounded mx-auto d-block" width="100" />
+<div class="modal-primary">
+  <div class="card mb-0 card-accent-primary">
+    <div class="modal-header p-2" *ngIf="isModal">
+      {{tituloForm}} - {{apartamento.codigo}}
+      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-header bg-primary" *ngIf="!isModal">
+      <strong *ngIf="isModal">{{tituloForm}} - {{apartamento.codigo}}</strong>
+      <strong *ngIf="!isModal">{{tituloForm}}</strong>
+      <button *ngIf="isModal" type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    
+    <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR || !isModal">
+      <form #formapartamento="ngForm" name="apartamento" autocomplete="off" *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarapartamento()">
+        <div class="card-body pb-0">
+          <!--/.card-->
+          <div class="card border-primary">
+            <div class="card-header bg-primary border-primary">
+              <i class="fa fa-align-justify"></i> {{constantes.TAG_DATOS_GENERALES}}
+              <div class="float-right">
+                <label class="switch switch-label switch-pill switch-primary">
+                  <input type="checkbox" class="switch-input" [(ngModel)]="apartamento.estado" name="estado">
+                  <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
+                </label>
+              </div>
+              <!-- <ui-switch [checked]="true" name="estado1" class="float-right" title="estado">estado</ui-switch> -->
+            </div>
+            <div class="card-body">
+              <!--/.row-->
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">Foto Principal</label>
+                <div class="col-sm-4">
+                  <a [href]="apartamento.foto" target="_blank" *ngIf="apartamento.foto!=null">
+                    <img [src]="apartamento.foto" class="rounded mx-auto d-block" width="100" />
+                  </a>
+                  <label class="form-control-label" *ngIf="apartamento.foto==null"><i class="fa fa-file-image-o"></i></label>
+                  <!--<input type="text" class="form-control" [(ngModel)]="lote.foto" name="foto" placeholder="Ingrese foto" disabled>-->
+                </div>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_TIPO_CONTRATO}} <span class="text-primary">*</span></label>
+                <div class="col-sm-2">
+                  <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="apartamento.contrato" 
+                  inputId="opt1"></p-radioButton>
+                </div>
+                <div class="col-sm-2">
+                  <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="apartamento.contrato"
+                    inputId="opt2"></p-radioButton>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_COMPRA}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <input type="text" name="preciocompra" [(ngModel)]="apartamento.preciocompra" required placeholder="Ingrese el precio compra" class="form-control"
+                    maxlength="9" pKeyFilter="pint">
+                </div>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_CONTRATO}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <input type="text" name="preciocontrato" [(ngModel)]="apartamento.preciocontrato" required placeholder="Ingrese el precio contrato" class="form-control"
+                    maxlength="9" pKeyFilter="pint">
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="form-group row form-group-sm has-feedback">
+                <label class="col-sm-2 form-control-label">
+                  {{constantes.TAG_LARGO_MTS}}<span class="text-primary">*</span>
+                  <span class="fa fa-question-circle" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                    triggers="mouseenter:mouseleave" container="body"></span>
+                </label>
+                <div class="col-sm-4">
+                  <input type="text" name="largo" [(ngModel)]="apartamento.largo" required class="form-control" placeholder="Ingrese largo (area)"
+                    maxlength="8" pKeyFilter="pint">
+                </div>
+                <label class="col-sm-2 form-control-label">
+                  {{constantes.TAG_ANCHO_MTS}}<span class="text-primary">*</span>
+                  <span class="fa fa-question-circle" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                    triggers="mouseenter:mouseleave" container="body"></span>
+                </label>
+                <div class="col-sm-4">
+                  <input type="text" name="ancho" [(ngModel)]="apartamento.ancho" required class="form-control" placeholder="Ingrese ancho (area)"
+                    maxlength="8" pKeyFilter="pint">
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_UBIGEO}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <!--<label type="text" class="form-control">{ {ingeniero.idubigeo.nombre}}</label>-->
+                      <label class="form-control">
+                        {{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}
+                      </label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>
+                        <!--(click)="abrirModalUbigeo()"-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <input type="text" name="direccion" [(ngModel)]="apartamento.direccion" required placeholder="Ingrese direccion"
+                    class="form-control" maxlength="255">
+                </div>
+              </div>
+              <!--/.row-->
+            </div>
+          </div>
+          <!--/.card-->
+
+          <ul class="nav nav-tabs border-primary" role="tablist">
+            <li class="nav-item border-primary">
+              <a class="nav-link active" data-toggle="tab" href="#home2" role="tab" aria-controls="home" ngbTooltip="{{constantes.TAG_MAS_OPCIONES}}">
+                <i class="icon-calculator"></i>
               </a>
-              <label class="form-control-label" *ngIf="apartamento.foto==null"><i class="fa fa-file-image-o"></i></label>
-              <!--<input type="text" class="form-control" [(ngModel)]="lote.foto" name="foto" placeholder="Ingrese foto" disabled>-->
-            </div>
-            <label class="col-sm-2 form-control-label">Asignado en <span class="text-primary">*</span></label>
-            <div class="col-sm-2">
-              <p-radioButton name="group1" required value="V" label="Venta" [(ngModel)]="apartamento.tiposervicio"
-                inputId="opt1"></p-radioButton>
-            </div>
-            <div class="col-sm-2">
-              <p-radioButton name="group1" required value="A" label="Alquiler" [(ngModel)]="apartamento.tiposervicio"
-                inputId="opt2"></p-radioButton>
-            </div>
-          </div>
-          <!--/.row-->
-          <div class="form-group row">
-            <label class="col-sm-2 form-control-label">Largo (mts.) <span class="text-primary">*</span></label>
-            <div class="col-sm-4">
-              <input type="text" name="largo" [(ngModel)]="apartamento.largo" required class="form-control" placeholder="Ingrese largo (area)"
-                maxlength="8" pKeyFilter="pint">
-              <small class="help-block-none">Atributo para el área de la apartamento.</small>
-            </div>
-            <label class="col-sm-2 form-control-label">Ancho (mts.) <span class="text-primary">*</span></label>
-            <div class="col-sm-4">
-              <input type="text" name="ancho" [(ngModel)]="apartamento.ancho" required class="form-control" placeholder="Ingrese ancho (area)"
-                maxlength="8" pKeyFilter="pint">
-              <small class="help-block-none">Atributo para el área de la apartamento.</small>
-            </div>
-          </div>
-          <!--/.row-->
-          <div class="form-group row">
-            <label class="col-sm-2 form-control-label">Ubigeo <span class="text-primary">*</span></label>
-            <div class="col-sm-4">
-              <div class="form-group">
-                <div class="input-group">
-                  <!--<label type="text" class="form-control">{ {ingeniero.idubigeo.nombre}}</label>-->
-                  <label class="form-control">
-                    {{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" ngbTooltip="{{constantes.TAG_SERVICIOS}}">
+                <i class="icon-basket-loaded"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#messages2" role="tab" aria-controls="messages" ngbTooltip="{{constantes.TAG_IMAGENES}}">
+                <i class="fa fa-file-image-o"></i>
+              </a>
+            </li>
+          </ul>
+
+          <div class="tab-content border-primary">
+            <div class="tab-pane active" id="home2" role="tabpanel">
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_PISOS}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <input type="number" value="1" name="npisos" [(ngModel)]="apartamento.npisos" max="10" min="1" required
+                    class="form-control" placeholder="Ingrese cantidad pisos" maxlength="8" pKeyFilter="pint">
+                  <!--[(ngModel)]="ingeniero.dni"-->
+                </div>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_COCHERA_PREG}}<span class="text-primary"></span></label>
+                <div class="col-sm-1">
+                  <label class="switch switch-label switch-pill switch-primary">
+                    <input type="checkbox" class="switch-input" [(ngModel)]="apartamento.tcochera" name="tcochera">
+                    <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
                   </label>
-                  <div class="input-group-append">
-                    <button type="button" class="btn btn-primary" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>
-                    <!--(click)="abrirModalUbigeo()"-->
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" [(ngModel)]="apartamento.descripcion" required name="descripcion"
+                    placeholder="Ingrese la descripcion" maxlength="255"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="profile2" role="tabpanel">
+              <div class="form-group">
+                <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-2"
+                  style="background-color: antiquewhite">
+                  <div class="col">
+                    Asignar Servicios a esta apartamento
+                  </div>
+                  <div class="col-auto">
+                    <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
+                      (click)="buscarservicio()" title="asignar rol" style="cursor: pointer"><i class="fa fa-plus-circle fa-2x cursor-pointer text-primary"></i></a>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="col table-responsive" *ngIf="servicios && servicios.length>0">
+                    <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline">
+                      <!--table table-sigro table-hover-->
+                      <thead class="thead-inverse">
+                        <tr>
+                          <th>#</th>
+                          <th>Servicio</th>
+                          <th>Detalle</th>
+                          <th style="width:30px;">Opciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="cursor-pointer" *ngFor="let servicio of servicios; let i = index;">
+                          <th class="text-center">{{i+1}}</th>
+                          <td>
+                            {{servicio.servicio}}
+                            <!--item.idrol.rol-->
+                          </td>
+                          <td>
+                            {{servicio.detalle}}
+                            <!--item.idrol.rol-->
+                          </td>
+                          <td class="text-center">
+                            <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}"
+                              style="cursor: pointer" title="quitar" (click)="quitarservicio(servicio)">
+                              <i class="fa fa-remove text-primary" style="font-size: 23px; "></i>
+                            </a>
+                          </td>
+                          <!--<td style="padding-top: 0px; padding-bottom: 0px;">
+                              <ui-switch size="small" *ngIf="persona.id" [(ngModel)]="item.estado" name="es5-{{i}}" >estado</ui-switch>
+                            </td>-->
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
-            <label class="col-sm-2 form-control-label">Direccion <span class="text-primary">*</span></label>
-            <div class="col-sm-4">
-              <input type="text" name="direccion" [(ngModel)]="apartamento.direccion" required placeholder="Ingrese direccion"
-                class="form-control" maxlength="255">
-            </div>
-          </div>
-          <!--/.row-->
-        </div>
-      </div>
-      <!--/.card-->
-
-      <ul class="nav nav-tabs border-primary" role="tablist">
-        <li class="nav-item border-primary">
-          <a class="nav-link active" data-toggle="tab" href="#home2" role="tab" aria-controls="home">
-            <i class="icon-calculator"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile">
-            <i class="icon-basket-loaded"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#messages2" role="tab" aria-controls="messages">
-            <i class="fa fa-file-image-o"></i>
-          </a>
-        </li>
-      </ul>
-
-      <div class="tab-content border-primary">
-        <div class="tab-pane active" id="home2" role="tabpanel">
-          <div class="form-group row">
-            <label class="col-sm-2 form-control-label">Pisos <span class="text-primary">*</span></label>
-            <div class="col-sm-4">
-              <input type="number" value="1" name="npisos" [(ngModel)]="apartamento.npisos" max="10" min="1" required
-                class="form-control" placeholder="Ingrese cantidad pisos" maxlength="8" pKeyFilter="pint">
-              <!--[(ngModel)]="ingeniero.dni"-->
-            </div>
-            <label class="col-sm-2 form-control-label">¿Cochera?<span class="text-primary"></span></label>
-            <div class="col-sm-1">
-              <p-inputSwitch [(ngModel)]="apartamento.tcochera" name="tcochera"></p-inputSwitch>
-              <!-- <ui-switch [(ngModel)]="apartamento.tcochera" name="tcochera" title="¿cochera?">estado</ui-switch> -->
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-sm-2 form-control-label">Descripcion <span class="text-primary">*</span></label>
-            <div class="col-sm-10">
-              <textarea class="form-control" [(ngModel)]="apartamento.descripcion" required name="descripcion"
-                placeholder="Ingrese la descripcion" maxlength="255"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" id="profile2" role="tabpanel">
-          <div class="form-group">
-            <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-2"
-              style="background-color: antiquewhite">
-              <div class="col">
-                Asignar Servicios a esta apartamento
+            <div class="tab-pane" id="messages2" role="tabpanel">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="button" (click)="cargarImagenes()" [disabled]="archivos.length==0" class="btn btn-success btn-sm">Subir
+                      Imagenes</button>
+                    <button type="button" (click)="limpiarArchivos()" [disabled]="archivos.length==0" class="btn btn-danger btn-sm"><i
+                        class="fa fa-eraser"></i> Limpiar</button>
+                    <!--/.table-responsive-->
+                    <div class="table-responsive" *ngIf="fotos.length!=0">
+                      <!--/.table-->
+                      <table class="table table-bordered table-striped table-hover table-outline">
+                        <thead class="thead-light">
+                          <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center"><i class="fa fa-file-image-o"></i></th>
+                            <th class="text-center">Tamaño</th>
+                            <th class="text-center">Pogreso</th>
+                            <th class="text-center">Detalle</th>
+                            <th class="text-center">Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let foto of fotos; let i = index;">
+                            <td>{{i+1}}</td>
+                            <td>
+                              <img [src]="foto.foto" class="rounded mx-auto d-block" style="cursor: pointer" (click)="mostrarFotoPrincipalExistente(fotos[i])"
+                                width="10" />
+                            </td>
+                            <td>MB</td>
+                            <td>
+                              <div class="progress">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': 100 + '%'}">100 %</div>
+                              </div>
+                            </td>
+                            <td>
+                              <input class="form-control" (blur)="guardardetallefoto(fotos[i])" [(ngModel)]="foto.detalle"
+                                [name]="foto.detalle" placeholder="Ingrese descripcion">
+                            </td>
+                            <td class="text-center">
+                              <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfotoapartamento(fotos[i])"><i
+                                  class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!--/.table-->
+                    </div>
+                    <!--/.table-responsive: archivos de fotos par subirse-->
+                    <div class="table-responsive" *ngIf="archivos.length!=0">
+                      <!--/.table-->
+                      <table class="table table-bordered table-striped table-hover table-outline">
+                        <thead class="thead-light">
+                          <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center"><i class="fa fa-file-image-o"></i></th>
+                            <th class="text-center">Tamaño</th>
+                            <th class="text-center">Pogreso</th>
+                            <th class="text-center">Detalle</th>
+                            <th class="text-center">Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let archivo of archivos; let i = index;">
+                            <td>{{i+1}}</td>
+                            <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer" (click)="mostrarFotoPrincipal(archivos[i])">{{archivo.nombreArchivo}}</td>
+                            <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
+                            <td>
+                              <div class="progress">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': archivo.progreso + '%'}">{{archivo.progreso
+                                  | number: '.2-2'}} %</div>
+                              </div>
+                            </td>
+                            <td>
+                              <input class="form-control" [(ngModel)]="archivos[i].detalle" name="detalle" placeholder="Ingrese descripcion">
+                            </td>
+                            <td class="text-center">
+                              <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfoto(archivos[i])"><i
+                                  class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!--/.table-->
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <div appNgDropFile [archivos]="archivos" (mouseSobre)="estaSobreElemento = $event" [ngClass]="{'file-over': estaSobreElemento}"
+                      class="well drop-zone file-over">
+                      <h5>Deje caer aqui los archivos</h5>
+                      <img src="assets/drop-images.png">
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col-auto">
-                <a (click)="buscarservicio()" title="asignar rol" style="cursor: pointer"><i class="fa fa-plus-circle fa-2x cursor-pointer text-primary"></i></a>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col table-responsive" *ngIf="servicios && servicios.length>0">
-                <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline">
-                  <!--table table-sigro table-hover-->
-                  <thead class="thead-inverse">
-                    <tr>
-                      <th>#</th>
-                      <th>Servicio</th>
-                      <th>Detalle</th>
-                      <th style="width:30px;">Opciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="cursor-pointer" *ngFor="let servicio of servicios; let i = index;">
-                      <th class="text-center">{{i+1}}</th>
-                      <td>
-                        {{servicio.servicio}}
-                        <!--item.idrol.rol-->
-                      </td>
-                      <td>
-                        {{servicio.detalle}}
-                        <!--item.idrol.rol-->
-                      </td>
-                      <td class="text-center">
-                        <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarservicio(servicio)"><i
-                            class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
-                      </td>
-                      <!--<td style="padding-top: 0px; padding-bottom: 0px;">
-                          <ui-switch size="small" *ngIf="persona.id" [(ngModel)]="item.estado" name="es5-{{i}}" >estado</ui-switch>
-                        </td>-->
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" id="messages2" role="tabpanel">
-          <div class="form-group">
-            <div class="row">
-              <div class="col-md-12">
-                <button type="button" (click)="cargarImagenes()" [disabled]="archivos.length==0" class="btn btn-success btn-sm">Subir
-                  Imagenes</button>
-                <button type="button" (click)="limpiarArchivos()" [disabled]="archivos.length==0" class="btn btn-danger btn-sm"><i
-                    class="fa fa-eraser"></i> Limpiar</button>
-                <!--/.table-responsive-->
-                <div class="table-responsive" *ngIf="fotos.length!=0">
-                  <!--/.table-->
-                  <table class="table table-bordered table-striped table-hover table-outline">
+              <!--<div class="form-group">
+                  <div class="input-group">
+                    <input type="text" class="form-control border-primary" placeholder="aqui cargue cada foto de la apartamento" disabled name="idubigeo">
+                    <button type="button" class="input-group-addon btn btn-square btn-primary"><i class="fa fa-search"></i></button>
+                    <input type="text" class="form-control border-primary" placeholder="ingrese el detalle de la foto"/>
+                    <button type="button" class="input-group-addon btn btn-square btn-primary"><i class="fa fa-plus"></i></button>
+                  </div>
+                  <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline mb-0">
                     <thead class="thead-light">
                       <tr>
                         <th class="text-center">#</th>
-                        <th class="text-center"><i class="fa fa-file-image-o"></i></th>
-                        <th class="text-center">Tamaño</th>
-                        <th class="text-center">Pogreso</th>
-                        <th class="text-center">Detalle</th>
+                        <th class="text-center">
+                          <i class="fa fa-file-image-o"></i>
+                        </th>
+                        <th>Detalle</th>
                         <th class="text-center">Opciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let foto of fotos; let i = index;">
-                        <td>{{i+1}}</td>
-                        <td>
-                          <img [src]="foto.foto" class="rounded mx-auto d-block" style="cursor: pointer" (click)="mostrarFotoPrincipalExistente(fotos[i])"
-                            width="10" />
-                        </td>
-                        <td>MB</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{'width': 100 + '%'}">100 %</div>
-                          </div>
-                        </td>
-                        <td>
-                          <input class="form-control" (blur)="guardardetallefoto(fotos[i])" [(ngModel)]="foto.detalle"
-                            [name]="foto.detalle" placeholder="Ingrese descripcion">
-                        </td>
+                      <tr class="cursor-pointer">
+                        <th scope="row" class="text-center">1</th>
+                        <td></td>
+                        <td></td>
                         <td class="text-center">
-                          <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfotoapartamento(fotos[i])"><i
-                              class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
+                          <a class="btn btn-sm btn-link" title="editar"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
+                          <a class="btn btn-sm btn-link" title="eliminar"><i class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
                         </td>
                       </tr>
+                      <tr class="cursor-pointer">
+                        <th scope="row" class="text-center">2</th>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center">
+                          <a class="btn-link btn-sm" style="cursor: pointer" title="editar"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
+                          <a class="btn-link btn-sm" style="cursor: pointer" title="eliminar"><i class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
+                        </td>
+                        </tr>
                     </tbody>
                   </table>
-                  <!--/.table-->
-                </div>
-                <!--/.table-responsive: archivos de fotos par subirse-->
-                <div class="table-responsive" *ngIf="archivos.length!=0">
-                  <!--/.table-->
-                  <table class="table table-bordered table-striped table-hover table-outline">
-                    <thead class="thead-light">
-                      <tr>
-                        <th class="text-center">#</th>
-                        <th class="text-center"><i class="fa fa-file-image-o"></i></th>
-                        <th class="text-center">Tamaño</th>
-                        <th class="text-center">Pogreso</th>
-                        <th class="text-center">Detalle</th>
-                        <th class="text-center">Opciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let archivo of archivos; let i = index;">
-                        <td>{{i+1}}</td>
-                        <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer" (click)="mostrarFotoPrincipal(archivos[i])">{{archivo.nombreArchivo}}</td>
-                        <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{'width': archivo.progreso + '%'}">{{archivo.progreso
-                              | number: '.2-2'}} %</div>
-                          </div>
-                        </td>
-                        <td>
-                          <input class="form-control" [(ngModel)]="archivos[i].detalle" name="detalle" placeholder="Ingrese descripcion">
-                        </td>
-                        <td class="text-center">
-                          <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfoto(archivos[i])"><i
-                              class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <!--/.table-->
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <div appNgDropFile [archivos]="archivos" (mouseSobre)="estaSobreElemento = $event" [ngClass]="{'file-over': estaSobreElemento}"
-                  class="well drop-zone file-over">
-                  <h5>Deje caer aqui los archivos</h5>
-                  <img src="assets/drop-images.png">
-                </div>
-              </div>
+                  <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#">Prev</a>
+                      </li>
+                      <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">4</a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                      </li>
+                  </ul>
+                </div>-->
             </div>
           </div>
-          <!--<div class="form-group">
-              <div class="input-group">
-                <input type="text" class="form-control border-primary" placeholder="aqui cargue cada foto de la apartamento" disabled name="idubigeo">
-                <button type="button" class="input-group-addon btn btn-square btn-primary"><i class="fa fa-search"></i></button>
-                <input type="text" class="form-control border-primary" placeholder="ingrese el detalle de la foto"/>
-                <button type="button" class="input-group-addon btn btn-square btn-primary"><i class="fa fa-plus"></i></button>
-              </div>
-              <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline mb-0">
-                <thead class="thead-light">
-                  <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">
-                      <i class="fa fa-file-image-o"></i>
-                    </th>
-                    <th>Detalle</th>
-                    <th class="text-center">Opciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="cursor-pointer">
-                    <th scope="row" class="text-center">1</th>
-                    <td></td>
-                    <td></td>
-                    <td class="text-center">
-                      <a class="btn btn-sm btn-link" title="editar"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
-                      <a class="btn btn-sm btn-link" title="eliminar"><i class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
-                    </td>
-                  </tr>
-                  <tr class="cursor-pointer">
-                    <th scope="row" class="text-center">2</th>
-                    <td></td>
-                    <td></td>
-                    <td class="text-center">
-                      <a class="btn-link btn-sm" style="cursor: pointer" title="editar"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
-                      <a class="btn-link btn-sm" style="cursor: pointer" title="eliminar"><i class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
-                    </td>
-                    </tr>
-                </tbody>
-              </table>
-              <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#">Prev</a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">4</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-              </ul>
-            </div>-->
+          <br />
         </div>
-      </div>
-      <br />
-    </div>
-    <div class="modal-footer border-primary">
-      <button type="submit" class="btn btn-sm btn-primary" [disabled]="!formapartamento.form.valid || ubigeo.ubigeo.id==undefined"><i
-          class="fa fa-dot-circle-o"></i> Guardar</button>
-      <!--*ngIf="!ingeniero.id" [disabled]="!formulario.form.valid || !ingeniero.idubigeo.nombre"-->
-      <!--<button type="submit" class="btn btn-primary" *ngIf="ingeniero.id" [disabled]="!formulario.form.valid || !ingeniero.idubigeo.nombre">Actualizar</button>-->
-      <button type="reset" (click)="limpiarapartamento()" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>
-        Limpiar</button>
-      <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')"><i class="fa fa-remove"></i>
-        Cerrar</button>
-    </div>
-  </form>
+        <div class="modal-footer border-primary">
+          <button type="submit" class="btn btn-sm btn-primary" [disabled]="!formapartamento.form.valid || ubigeo.ubigeo.id==undefined"><i
+              class="fa fa-dot-circle-o"></i> Guardar</button>
+          <!--*ngIf="!ingeniero.id" [disabled]="!formulario.form.valid || !ingeniero.idubigeo.nombre"-->
+          <!--<button type="submit" class="btn btn-primary" *ngIf="ingeniero.id" [disabled]="!formulario.form.valid || !ingeniero.idubigeo.nombre">Actualizar</button>-->
+          <button type="reset" (click)="limpiarapartamento()" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i>
+            Limpiar</button>
+          <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')"><i class="fa fa-remove"></i>
+            Cerrar</button>
+        </div>
+      </form>
+    </fieldset>
+    
+  </div>
+</div>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
 </div>

@@ -31,6 +31,7 @@ export class VentasComponent implements OnInit {
   public ubigeoSeleccionado: UbigeoTO;
 
   public parametrosListado: any;
+  public parametrosFormulario: any
   //
   public listaResultado: Array<VentaTO> = [];
   public ventaSeleccionado: VentaTO;
@@ -40,6 +41,8 @@ export class VentasComponent implements OnInit {
 
   public filtroGlobal: string = "";
   public enterKey: number = 0;//Suma el numero de enter
+
+  public parametrosFoto: any = null
   //AG-GRID
   public opciones: MenuItem[];
   public gridApi: GridApi;
@@ -121,16 +124,88 @@ export class VentasComponent implements OnInit {
 
   listarVentas(parametro, form: NgForm) {
     if (form && form.valid) {
-      this.parametrosListado = {
+      this.cargando = true;
+      let parametros = {
         propiedad: this.propiedadSeleccionado,
         ubigeo: this.ubigeoSeleccionado,
-        parametro: parametro
+        parametro: parametro // esto ya no va
       };
+      this.ventaService.listarVentas(parametros, this);
     }
   }
 
+  despuesDeListarVentas(data) {
+    this.cargando = false;
+    this.listaResultado = data;
+  }
+
   nuevaVenta(form: NgForm) {
-    
+    if (form && form.valid) {
+      this.parametrosFormulario = {
+        accion: LS.ACCION_NUEVO,
+        propiedad: this.propiedadSeleccionado,
+        ubigeo: this.ubigeoSeleccionado,
+      }
+      this.vistaFormulario = true;
+    }
+  }
+
+  consultar() {
+    this.parametrosFormulario = {
+      accion: LS.ACCION_CONSULTAR,
+      propiedad: this.propiedadSeleccionado,
+      ubigeo: this.ubigeoSeleccionado,
+      ventaSeleccionado: this.ventaSeleccionado
+    }
+    this.vistaFormulario = true;
+  }
+
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
+
+  ejecutarAccion(data) {
+    this.vistaFormulario = false;
+    this.parametrosFormulario = null;
+    this.refrescarTabla(data.accon, data.ventaTO);
+  }
+
+  refrescarTabla(accion: string, ventaTO: VentaTO) {
+    switch(accion) {
+      case LS.ACCION_NUEVO: { // Insertar un elemento en la tabla
+        let listaTemporal = [... this.listaResultado];
+        listaTemporal.unshift(ventaTO);
+        this.listaResultado = listaTemporal;
+        // this.seleccionarFila(0);
+        break;
+      }
+      case LS.ACCION_EDITAR: { // Actualiza un elemento en la tabla
+        var indexTemp = this.listaResultado.findIndex(item => item.id === ventaTO.id);
+        let listaTemporal = [... this.listaResultado];
+        listaTemporal[indexTemp] = ventaTO;
+        this.listaResultado = listaTemporal;
+        this.ventaSeleccionado = this.listaResultado[indexTemp];
+        // this.seleccionarFila(indexTemp);
+        break;
+      }
+      case LS.ACCION_ELIMINAR: { // Elimina un elemento en la tabla
+        //Actualizan las listas 
+        var indexTemp = this.listaResultado.findIndex(item => item.id === ventaTO.id);
+        let listaTemporal = [...this.listaResultado];
+        listaTemporal.splice(indexTemp, 1);
+        this.listaResultado = listaTemporal;
+        // (this.listaResultado.length > 0) ? this.seleccionarFila((indexTemp === 0) ? 0 : (indexTemp - 1)) : null;
+        break;
+      }
+    }
   }
 
   //#region [R3] [AG-GRID] 

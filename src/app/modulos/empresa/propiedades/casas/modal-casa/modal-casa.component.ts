@@ -69,21 +69,35 @@ export class ModalCasaComponent implements OnInit {
     this.postInicializarModal();
   }
 
+  ngOnChanges(changes) {
+    if (changes.parametros) {
+      if (changes.parametros.currentValue) {
+        this.postInicializarModal();
+      }
+    }
+  }
+
   postInicializarModal() {
     if (this.parametros) {
       this.accion = this.parametros.accion;
       switch (this.accion) {
         case LS.ACCION_CONSULTAR:
           this.tituloForm = LS.TITULO_FORM_CONSULTAR_CASA;
-          this.traerParaEdicion(this.parametros.objetoSeleccionado.id);
+          this.despuesDeMostrarCasa(this.parametros.casa);
+          // this.traerParaEdicion(this.parametros.idCasa);
           break;
         case LS.ACCION_EDITAR:
           this.tituloForm = LS.TITULO_FORM_EDITAR_CASA;
-          this.traerParaEdicion(this.parametros.objetoSeleccionado.id);
+          this.despuesDeMostrarCasa(this.parametros.casa);
+          // this.traerParaEdicion(this.parametros.idCasa);
           break;
         case LS.ACCION_NUEVO:
-          this.tituloForm = LS.TITULO_FORM_NUEVA_CASA;
-          this.postGuardarCasa();
+          if (this.isModal) {
+            this.tituloForm = LS.TITULO_FORM_NUEVA_CASA;
+            this.postGuardarCasa();
+          } else {
+            this.tituloForm = LS.TITULO_FORM_CONSULTAR_CASA;
+          }
           break;
       }
     }
@@ -109,6 +123,7 @@ export class ModalCasaComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.casa.fotosList);
+      this.casa.ganancia = this.casa.preciocontrato - this.casa.preciocompra;
       console.log('antes de guardar propiedad: ');
       console.log(this.casa);
       this.casasService.ingresarCasa(this.casa, this);
@@ -128,6 +143,7 @@ export class ModalCasaComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.casa.fotosList);
+      this.casa.ganancia = this.casa.preciocontrato - this.casa.preciocompra;
       console.log('antes de editar propiedad: ');
       console.log(this.casa);
       this.casasService.modificarCasa(this.casa, this);

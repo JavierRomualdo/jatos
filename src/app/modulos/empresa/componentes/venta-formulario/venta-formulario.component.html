@@ -1,13 +1,13 @@
-<div class="card m-0">
+<div class="card m-2">
   <div class="card-header p-1">
-    <button id="btnActivar" class="btn btn-sm btn-primary mr-2" *ngIf="isScreamMd" (click)="activar=!activar"
+    <button id="btnActivar" class="btn btn-sm btn-primary mr-2" *ngIf="isScreamMd" (click)="cambiarActivar(activar)"
       type="button" title="{{constantes.ATAJO_MOSTRAR_OCULTAR_FILTROS}}">
       <i class="{{activar?constantes.ICON_MOSTRAR_FILTRO:constantes.ICON_OCULTAR_FILTRO}}" aria-hidden="true"></i>
     </button>
     <b>{{tituloForm}}</b>
     <div class="card-header-actions">
-      <button *ngIf="accion === constantes.ACCION_CREAR" id="btnGuardar" type="button" (click)="insertarVenta(frmVenta)"
-        class="btn btn-sm btn-primary mr-1" [disabled]="cargando" title="{{constantes.ATAJO_GUARDAR}}">
+      <button *ngIf="accion === constantes.ACCION_NUEVO" id="btnGuardar" type="button" (click)="insertarVenta()"
+        class="btn btn-sm btn-primary mr-1" [disabled]="!venta.casa_id || !venta.persona_id" title="{{constantes.ATAJO_GUARDAR}}">
         <i class="{{constantes.ICON_GUARDAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
       </button>
@@ -28,4 +28,49 @@
       </button>
     </div>
   </div>
+  <div class="card-body p-1">
+    <fieldset [disabled]="accion === constantes.ACCION_CONSULTAR">
+        <div class="card mb-1">
+          <div class="card-header">
+            <b> {{constantes.TAG_PROPIEDAD}}</b>
+          </div>
+          <div class="card-body">
+            <form #frmVenta="ngForm" name="frmVenta" autocomplete="off">
+              <div class="form-group row">
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_PROPIEDAD}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <!-- <input class="form-control"/> -->
+                      <label class="form-control">{{codigo}}</label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" (click)="buscarPropiedad()"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label class="col-sm-2 form-control-label">{{constantes.TAG_CLIENTE}} <span class="text-primary">*</span></label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group">
+                    <label class="form-control">{{cliente.nombres}} - {{cliente.dni}}</label>
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-primary" (click)="buscarcliente()"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!--Panel formulario de propiedad (casa o lote...etc)-->
+        <div *ngIf="tipopropiedad===constantes.TAG_CASA">
+          <app-modal-casa [parametros]="parametroFormulario"></app-modal-casa>
+        </div>
+    </fieldset>
+  </div>
+</div>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
 </div>

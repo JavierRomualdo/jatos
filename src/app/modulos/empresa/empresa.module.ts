@@ -147,6 +147,7 @@ import { VentaFormularioComponent } from './componentes/venta-formulario/venta-f
     ModalUsuarioComponent,
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
+    CasasListadoComponent,
     ConfirmacionComponent,
     ImagenModalComponent,
 

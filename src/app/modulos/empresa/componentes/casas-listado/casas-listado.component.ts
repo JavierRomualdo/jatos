@@ -15,7 +15,7 @@ import { CasaTO } from 'src/app/entidadesTO/empresa/CasaTO';
 export class CasasListadoComponent implements OnInit {
 
   @Input() parametrosBusqueda: any = null;//parametros de busqueda
-  @Input() isModal: boolean; // establecemos si este componente es modal o no 
+  @Input() isModal: boolean = false; // establecemos si este componente es modal o no 
   @Output() enviarActivar = new EventEmitter();
   @Output() enviarAccion = new EventEmitter();
 
@@ -27,9 +27,12 @@ export class CasasListadoComponent implements OnInit {
   public enterKey: number = 0;//Suma el numero de enter
   public activar: boolean = false;
   public constantes: any = LS;
+  public accion: string = null;
 
   public parametrosFoto: any = null
 
+  innerWidth: number;
+  isScreamMd: boolean;//Identifica si la pantalla es tamaño MD
   //AG-GRID
   public opciones: MenuItem[];
   public gridApi: GridApi;
@@ -47,13 +50,17 @@ export class CasasListadoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
+    this.isScreamMd = this.innerWidth <= 576 ? false : true;
     if (this.isModal) {
-      this.listarCasas(false);
+      // this.listarCasas(false);
+      this.listarCasasParaTipoContrato(this.parametrosBusqueda);
     }
     this.iniciarAgGrid();
   }
 
   ngOnChanges(changes) {
+    console.log('change casa listado');
     if (changes.parametrosBusqueda) {
       if (changes.parametrosBusqueda.currentValue && changes.parametrosBusqueda.currentValue.listar) {
         if (this.parametrosBusqueda.accion) {
@@ -62,7 +69,7 @@ export class CasasListadoComponent implements OnInit {
           console.log(this.parametrosBusqueda.data);
           this.refrescarTabla(this.parametrosBusqueda.accion, this.parametrosBusqueda.data);
         } else {
-          // aca solo consulta el listado de casas
+          // aca son las consultas en general para listado de casas
           if (this.parametrosBusqueda.estadoContrato === null) {
             this.listarCasas(this.parametrosBusqueda.activos);
           } else {
@@ -125,6 +132,17 @@ export class CasasListadoComponent implements OnInit {
   }
 
   despuesDeListarCasasPorEstadoContrato(data) {
+    this.listadoCasas = data;
+    this.cargando = false;
+  }
+
+  // listado que muestra como modal en ventas y alquileres
+  listarCasasParaTipoContrato(parametro) {
+    this.cargando = true;
+    this.casasService.listarCasasParaTipoContrato(parametro, this);
+  }
+
+  despuesDeListarCasasParaTipoContrato(data) {
     this.listadoCasas = data;
     this.cargando = false;
   }
@@ -207,10 +225,32 @@ export class CasasListadoComponent implements OnInit {
     ];
   }
 
+  // aca pasa los parametros pasa a casaComponent y luego al modal casa
   emitirAccion(accion, seleccionado) {
+    this.accion = accion;
+    if (accion === LS.ACCION_CONSULTAR || accion === LS.ACCION_EDITAR) {
+      this.cargando = true;
+      this.mostrarCasa(seleccionado.id);
+    } else {
+      let parametros = {
+        accion: accion, // accion nuevo
+        casa: null
+      }
+      this.enviarAccion.emit(parametros);
+    }
+  }
+
+  mostrarCasa(id) {
+    // para consultar y editar en modal casa
+    this.cargando = true;
+    this.casasService.mostrarCasa(id, this);
+  }
+
+  despuesDeMostrarCasa(data) {
+    this.cargando = false;
     let parametros = {
-      accion: accion,
-      objetoSeleccionado: seleccionado
+      accion: this.accion,
+      casa: data
     }
     this.enviarAccion.emit(parametros);
   }

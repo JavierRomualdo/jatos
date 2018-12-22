@@ -3,9 +3,12 @@ import { Ubigeo } from './entidad.ubigeo';
 
 export class Lote {
     id: number;
-    persona_id: Persona;
-    ubigeo_id: Ubigeo;
-    precio: number;
+    persona_id: Persona = new Persona;
+    ubigeo_id: Ubigeo = new Ubigeo();
+    codigo: string = null;
+    preciocompra: number = 0.00;
+    preciocontrato: number = 0.00;
+    ganancia: number = 0.00;
     largo: number;
     ancho: number;
     nmensajes: number = 0;
@@ -14,7 +17,8 @@ export class Lote {
     foto: string = null;
     path: string = null; // camino o ruta de imagenes en cloud storage de firebase
     // fotos: Blob[];
-    tiposervicio: string;
+    contrato: string;
+    estadocontrato: string = 'L';
     estado: boolean = true;
     lotepersonaList: any = {};
     fotosList: any = {};

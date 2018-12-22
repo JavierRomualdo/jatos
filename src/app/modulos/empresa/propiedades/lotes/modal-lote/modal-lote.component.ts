@@ -14,6 +14,8 @@ import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { LoteService } from '../lote.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { LoteTO } from 'src/app/entidadesTO/empresa/LoteTO';
 
 @Component({
   selector: 'app-modal-lote',
@@ -22,7 +24,8 @@ import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 })
 export class ModalLoteComponent implements OnInit {
 
-  @Input() edit;
+  @Input() parametros;
+  @Input() isModal: boolean; // establecemos si este componente es modal o no 
   public verNuevo = false;
   public cargando: Boolean = false;
   public lote: Lote;
@@ -31,6 +34,9 @@ export class ModalLoteComponent implements OnInit {
   public persona: Persona;
   public listaLP: any = []; // lista de persona-roles
   public ubigeo: UbigeoGuardar;
+  public accion: string = null;
+  public tituloForm: string = null;
+  public constantes: any = LS;
 
   constructor(
     private modalService: NgbModal,
@@ -40,7 +46,9 @@ export class ModalLoteComponent implements OnInit {
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.lote = new Lote();
     this.fotos = [];
     this.persona = new Persona();
@@ -50,11 +58,41 @@ export class ModalLoteComponent implements OnInit {
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
+
+    this.postInicializarModal();
   }
 
-  ngOnInit() {
-    if (this.edit) {
-      this.traerParaEdicion(this.edit);
+  ngOnChanges(changes) {
+    if (changes.parametros) {
+      if (changes.parametros.currentValue) {
+        this.postInicializarModal();
+      }
+    }
+  }
+
+  postInicializarModal() {
+    if (this.parametros) {
+      this.accion = this.parametros.accion;
+      switch (this.accion) {
+        case LS.ACCION_CONSULTAR:
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_LOTE;
+          this.despuesDeMostrarLote(this.parametros.lote);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_EDITAR:
+          this.tituloForm = LS.TITULO_FORM_EDITAR_LOTE;
+          this.despuesDeMostrarLote(this.parametros.lote);
+          // this.traerParaEdicion(this.parametros.idCochera);
+          break;
+        case LS.ACCION_NUEVO:
+          if (this.isModal) {
+            this.tituloForm = LS.TITULO_FORM_NUEVO_LOTE;
+            this.postGuardarLote();
+          } else {
+            this.tituloForm = LS.TITULO_FORM_CONSULTAR_LOTE;
+          }
+          break;
+      }
     }
   }
 
@@ -64,7 +102,7 @@ export class ModalLoteComponent implements OnInit {
     this.lote.lotepersonaList = this.listaLP;
     this.lote.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.lote.ubigeo_id = this.ubigeo.ubigeo;
-    if (!this.edit) { // guardar nuevo rol
+    if (this.accion === LS.ACCION_NUEVO) { // guardar nuevo rol
       // guardar en lista fotos
       for (const item of this.archivos) {
         const foto: Foto = new Foto();
@@ -77,10 +115,11 @@ export class ModalLoteComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.lote.fotosList);
+      this.lote.ganancia = this.lote.preciocontrato - this.lote.preciocompra;
       console.log('antes de guardar lote: ');
       console.log(this.lote);
       this.loteService.ingresarLote(this.lote, this);
-    } else { // guardar el rol editado
+    } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
@@ -95,6 +134,7 @@ export class ModalLoteComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.lote.fotosList);
+      this.lote.ganancia = this.lote.preciocontrato - this.lote.preciocompra;
       console.log('antes de editar lote: ');
       console.log(this.lote);
       this.loteService.modificarLote(this.lote, this);
@@ -106,14 +146,25 @@ export class ModalLoteComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.lote);
+
+    let loteTO = this.convertirCocheraACocheraTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(loteTO);
+  }
+
+  convertirCocheraACocheraTO(data) {
+    let loteTO = new LoteTO(data);
+    loteTO.propietario = this.lote.persona_id.nombres;
+    loteTO.ubicacion = this.lote.ubigeo_id.ubigeo;
+    return loteTO;
   }
 
   despuesDeModificarLote(data) {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.lote);
+    let loteTO = this.convertirCocheraACocheraTO(data); // sirve para actualizar la tabla
+    this.activeModal.close(loteTO);
   }
 
   traerParaEdicion(id) {
@@ -173,6 +224,17 @@ export class ModalLoteComponent implements OnInit {
     }, (reason) => {
       this.auth.agregarmodalopenclass();
     });
+  }
+
+  postGuardarLote() {
+    // se genera el codigode la cochera cuando la accion es nuevo
+    this.cargando = true;
+    this.loteService.generarCodigoLote(this);
+  }
+
+  despuesDeGenerarCodigoLote(data) {
+    this.cargando = false;
+    this.lote.codigo = data;
   }
 
   cargarImagenes() {
