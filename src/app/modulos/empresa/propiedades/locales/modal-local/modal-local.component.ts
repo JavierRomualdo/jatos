@@ -42,6 +42,7 @@ export class ModalLocalComponent implements OnInit {
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
+  public parametrosFoto: any = null;
   
   constructor(
     private modalService: NgbModal,
@@ -122,7 +123,7 @@ export class ModalLocalComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.local.fotosList);
-      this.local.ganancia = this.local.preciocontrato - this.local.preciocompra;
+      this.local.ganancia = this.local.preciocontrato - this.local.precioadquisicion;
       console.log('antes de guardar local: ');
       console.log(this.local);
       this.localService.ingresarLocal(this.local, this);
@@ -142,7 +143,7 @@ export class ModalLocalComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.local.fotosList);
-      this.local.ganancia = this.local.preciocontrato - this.local.preciocompra;
+      this.local.ganancia = this.local.preciocontrato - this.local.precioadquisicion;
       console.log('antes de editar local: ');
       console.log(this.local);
       this.localService.modificarLocal(this.local, this);
@@ -375,4 +376,16 @@ export class ModalLocalComponent implements OnInit {
   mostrarFotoPrincipalExistente(foto: Foto) {
     this.local.foto = foto.foto;
   }
+
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
 }

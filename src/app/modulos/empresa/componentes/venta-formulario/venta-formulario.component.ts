@@ -112,20 +112,20 @@ export class VentaFormularioComponent implements OnInit {
           }
         }
         break;
-      case LS.TAG_COCHERA:
-        // PARA COCHERA
-        if (this.accion === LS.ACCION_CONSULTAR) {
-          this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
-          this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id)
-        } else if (this.accion === LS.ACCION_NUEVO) {
-          this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
-          this.parametroFormulario = {
-            accion: this.accion,
-            cochera: null
-          }
-        }
+      // case LS.TAG_COCHERA:
+      //   // PARA COCHERA
+      //   if (this.accion === LS.ACCION_CONSULTAR) {
+      //     this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
+      //     this.traerParaEdicion(this.parametrosFormulario.ventaSeleccionado.id)
+      //   } else if (this.accion === LS.ACCION_NUEVO) {
+      //     this.tituloForm = LS.TITULO_FORM_NUEVA_VENTA;
+      //     this.parametroFormulario = {
+      //       accion: this.accion,
+      //       cochera: null
+      //     }
+      //   }
         
-        break;
+      //   break;
       case LS.TAG_LOCAL:
         // PARA LOCAL
         if (this.accion === LS.ACCION_CONSULTAR) {
@@ -191,15 +191,15 @@ export class VentaFormularioComponent implements OnInit {
           casa: ventaDto.casa_id // casa_id es el dtoCasa
         }
         break;
-      case LS.TAG_COCHERA:
-        // MOSTRAR COCHERA
-        this.propiedad = ventaDto.cochera_id;
-        this.codigo = ventaDto.cochera_id.codigo;
-        this.parametroFormulario = {
-          accion: this.accion,
-          cochera: ventaDto.cochera_id // cochera_id es el dtoCochera
-        }
-        break;
+      // case LS.TAG_COCHERA:
+      //   // MOSTRAR COCHERA
+      //   this.propiedad = ventaDto.cochera_id;
+      //   this.codigo = ventaDto.cochera_id.codigo;
+      //   this.parametroFormulario = {
+      //     accion: this.accion,
+      //     cochera: ventaDto.cochera_id // cochera_id es el dtoCochera
+      //   }
+      //   break;
       case LS.TAG_LOCAL:
         // MOSTRAR LOCAL
         this.propiedad = ventaDto.local_id;

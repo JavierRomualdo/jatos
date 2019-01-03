@@ -260,11 +260,11 @@ export class ApartamentoService {
         }
       },
       {
-        headerName: LS.TAG_PRECIO_COMPRA,
+        headerName: LS.TAG_PRECIO_ADQUISICION,
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.preciocompra;
+          return params.data.precioadquisicion;
         }
       },
       {

@@ -42,6 +42,7 @@ export class ModalCocheraComponent implements OnInit {
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
+  public parametrosFoto: any = null;
 
   constructor(
     private modalService: NgbModal,
@@ -123,7 +124,7 @@ export class ModalCocheraComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.cochera.fotosList);
-      this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.preciocompra;
+      this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.precioadquisicion;
       console.log('antes de guardar cochera: ');
       console.log(this.cochera);
       this.cocheraService.ingresarCochera(this.cochera, this);
@@ -144,7 +145,7 @@ export class ModalCocheraComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.cochera.fotosList);
-      this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.preciocompra;
+      this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.precioadquisicion;
       console.log('antes de editar cochera: ');
       console.log(this.cochera);
       this.cocheraService.modificarCochera(this.cochera, this);
@@ -286,6 +287,7 @@ export class ModalCocheraComponent implements OnInit {
   despuesDeGenerarCodigoCochera(data) {
     this.cargando = false;
     this.cochera.codigo = data;
+    this.cochera.contrato = 'A';
   }
 
   cargarImagenes() {
@@ -408,4 +410,16 @@ export class ModalCocheraComponent implements OnInit {
   mostrarFotoPrincipalExistente(foto: Foto) {
     this.cochera.foto = foto.foto;
   }
+
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
 }

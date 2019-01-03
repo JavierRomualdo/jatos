@@ -38,6 +38,7 @@ export class ModalApartamentoComponent implements OnInit {
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
+  public parametrosFoto: any = null;
 
   constructor(
     private modalService: NgbModal,
@@ -112,7 +113,7 @@ export class ModalApartamentoComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.apartamento.fotosList);
-      this.apartamento.ganancia = this.apartamento.preciocontrato - this.apartamento.preciocompra;
+      this.apartamento.ganancia = this.apartamento.preciocontrato - this.apartamento.precioadquisicion;
       console.log('antes de guardar apartamento: ');
       console.log(this.apartamento);
       this.apartamentoService.ingresarApartamento(this.apartamento, this);
@@ -132,7 +133,7 @@ export class ModalApartamentoComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.apartamento.fotosList);
-      this.apartamento.ganancia = this.apartamento.preciocontrato - this.apartamento.preciocompra;
+      this.apartamento.ganancia = this.apartamento.preciocontrato - this.apartamento.precioadquisicion;
       console.log('antes de editar apartamento: ');
       console.log(this.apartamento);
       this.apartamentoService.modificarApartamento(this.apartamento, this);
@@ -344,4 +345,16 @@ export class ModalApartamentoComponent implements OnInit {
   mostrarFotoPrincipalExistente(foto: Foto) {
     this.apartamento.foto = foto.foto;
   }
+
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
 }

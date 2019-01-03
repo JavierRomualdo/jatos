@@ -4,7 +4,7 @@ export class Apartamento {
   id: number;
   ubigeo_id: Ubigeo = new Ubigeo();
   codigo: string = null;
-  preciocompra: number = 0.00;
+  precioadquisicion: number = 0.00;
   preciocontrato: number = 0.00;
   ganancia: number = 0.00;
   largo: number;

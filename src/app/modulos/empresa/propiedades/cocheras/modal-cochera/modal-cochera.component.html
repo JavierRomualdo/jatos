@@ -1,125 +1,129 @@
-<div class="modal-primary">
+<div class="modal-primary" *ngIf="!cargando">
   <div class="card mb-0 card-accent-primary">
-    <div class="modal-header p-2" *ngIf="isModal">
-      {{tituloForm}} - {{cochera.codigo}}
+    <div class="card-header bg-primary p-2" *ngIf="isModal">
+      <strong>{{tituloForm}} - {{cochera.codigo}}</strong>
       <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="card-header bg-primary" *ngIf="!isModal">
-      <strong *ngIf="isModal">{{tituloForm}} - {{cochera.codigo}}</strong>
+    <div class="card-header p-2" *ngIf="!isModal">
       <strong *ngIf="!isModal">{{tituloForm}}</strong>
-      <button *ngIf="isModal" type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <i class="fa fa-close"></i>
-      </button>
     </div>
-    
     <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR || !isModal">
-      <form #cocheraform="ngForm" name="cochera" autocomplete="off" *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarcochera()">
-        <div class="card-body pb-0">
+      <form #cocheraform="ngForm" name="cochera" autocomplete="off" class="form-horizontal" (ngSubmit)="guardarcochera()">
+        <div class="card-body pb-0 p-1">
           <!--/.card-->
-          <div class="card border-primary">
-            <div class="card-header bg-primary border-primary">
-              <i class="fa fa-align-justify"></i> {{constantes.TAG_DATOS_GENERALES}}
-              <div class="float-right">
-                <label class="switch switch-label switch-pill switch-primary">
-                  <input type="checkbox" class="switch-input" [(ngModel)]="cochera.estado" name="estado">
-                  <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
-                </label>
+          <div class="card"><!--border-primary-->
+            <div class="card-header pt-2 pb-2"><!--bg-primary border-primary-->
+              <strong>{{constantes.TAG_DATOS_GENERALES}}</strong>
+              <div class="card-header-actions">
+                <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosGeneral"
+                  aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                  <i class="fa fa-minus"></i>
+                </a>
               </div>
+              <!-- <ui-switch [checked]="true" name="estado1" class="float-right" title="estado">estado</ui-switch> -->
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosGeneral">
               <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PROPIETARIO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-10">
+              <div class="row">
+                <!--Propietario-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PROPIETARIO}} <span class="text-primary">*</span></strong>
+                  </label>
                   <div class="form-group">
                     <div class="input-group">
-                      <!--<label type="text" class="form-control">{ {ingeniero.idubigeo.nombre}}</label>-->
-                      <label class="form-control">{{persona.nombres}} - {{persona.dni}}</label>
+                      <label class="form-control form-control-sm">{{persona.nombres}} - {{persona.dni}}</label>
                       <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" (click)="buscarpropietario()"><i class="fa fa-search"></i></button>
-                        <!--(click)="abrirModalUbigeo()"-->
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarpropietario()"><i class="fa fa-search"></i></button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_FOTO_PRINCIPAL}}</label>
-                <div class="col-sm-4">
-                  <a [href]="cochera.foto" target="_blank" *ngIf="cochera.foto!=null">
-                    <img [src]="cochera.foto" class="rounded mx-auto d-block" width="100" />
-                  </a>
-                  <label class="form-control-label" *ngIf="cochera.foto==null"><i class="fa fa-file-image-o"></i></label>
-                  <!--<input type="text" class="form-control" [(ngModel)]="lote.foto" name="foto" placeholder="Ingrese foto" disabled>-->
-                </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_TIPO_CONTRATO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-2">
-                  <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="cochera.contrato" 
-                  inputId="opt1"></p-radioButton>
-                </div>
-                <div class="col-sm-2">
-                  <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="cochera.contrato"
-                    inputId="opt2"></p-radioButton>
-                </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_COMPRA}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <input type="text" name="preciocompra" [(ngModel)]="cochera.preciocompra" required placeholder="Ingrese el precio compra" class="form-control"
-                    maxlength="9" pKeyFilter="pint">
-                </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_CONTRATO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <input type="text" name="preciocontrato" [(ngModel)]="cochera.preciocontrato" required placeholder="Ingrese el precio contrato" class="form-control"
-                    maxlength="9" pKeyFilter="pint">
-                </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row form-group-sm has-feedback">
-                <label class="col-sm-2 form-control-label">
-                  {{constantes.TAG_LARGO_MTS}}<span class="text-primary">*</span>
-                  <span class="fa fa-question-circle" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
-                    triggers="mouseenter:mouseleave" container="body"></span>
-                </label>
-                <div class="col-sm-4">
-                  <input type="text" name="largo" [(ngModel)]="cochera.largo" required class="form-control" placeholder="Ingrese largo (area)"
-                    maxlength="8" pKeyFilter="pint">
-                </div>
-                <label class="col-sm-2 form-control-label">
-                  {{constantes.TAG_ANCHO_MTS}}<span class="text-primary">*</span>
-                  <span class="fa fa-question-circle" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
-                    triggers="mouseenter:mouseleave" container="body"></span>
-                </label>
-                <div class="col-sm-4">
-                  <input type="text" name="ancho" [(ngModel)]="cochera.ancho" required class="form-control" placeholder="Ingrese ancho (area)"
-                    maxlength="8" pKeyFilter="pint">
-                </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_UBIGEO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <!--<label type="text" class="form-control">{ {ingeniero.idubigeo.nombre}}</label>-->
-                      <label class="form-control">
-                        {{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}
-                      </label>
-                      <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>
-                        <!--(click)="abrirModalUbigeo()"-->
-                      </div>
+                <!--Contrato-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_CONTRATO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="ui-g" style="width:250px;">
+                    <!-- <div class="ui-g-6">
+                      <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="cochera.contrato"
+                      inputId="opt2" [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
+                    </div> -->
+                    <div class="ui-g-12">
+                      <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="cochera.contrato"
+                      inputId="opt2" [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
                     </div>
                   </div>
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
+                <!--Imagen-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_FOTO_PRINCIPAL}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <img [src]="cochera.foto" (click)="mostrarModalImagen(cochera)" class="form-control form-control-sm" style="cursor: pointer" *ngIf="cochera.foto!=null"
+                    class="rounded mx-auto d-block" width="100" />
+                  <label class="form-control form-control-sm mousetrap" *ngIf="cochera.foto==null"><i class="fa fa-file-image-o"></i></label>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PRECIO_ADQUISICION}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="precioadquisicion" [(ngModel)]="cochera.precioadquisicion" required placeholder="Ingrese el precio compra" 
+                    class="form-control form-control-sm mousetrap" (updateValue)="cochera.precioadquisicion=$event" [appAutonumeric2]="cochera.precioadquisicion"
+                    value="{{cochera.precioadquisicion}}">
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PRECIO_CONTRATO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="preciocontrato" [(ngModel)]="cochera.preciocontrato" required placeholder="Ingrese el precio contrato" 
+                    class="form-control form-control-sm mousetrap" (updateValue)="cochera.preciocontrato=$event" [appAutonumeric2]="cochera.preciocontrato" 
+                    value="{{cochera.preciocontrato}}">
+                </div>
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="largo" [(ngModel)]="cochera.largo" required placeholder="Ingrese largo (area)" 
+                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
+                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                    triggers="mouseenter:mouseleave" container="body"></span>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="ancho" [(ngModel)]="cochera.ancho" required placeholder="Ingrese ancho (area)" 
+                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
+                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                    triggers="mouseenter:mouseleave" container="body"></span>
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_UBIGEO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="form-control form-control-sm">{{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}</label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
+                  </label>
                   <input type="text" name="direccion" [(ngModel)]="cochera.direccion" required placeholder="Ingrese direccion"
-                    class="form-control" maxlength="255">
+                    class="form-control form-control-sm" maxlength="255">
                 </div>
               </div>
               <!--/.row-->
@@ -147,10 +151,12 @@
 
           <div class="tab-content border-primary">
             <div class="tab-pane active" id="home2" role="tabpanel">
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></label>
-                <div class="col-sm-10">
-                  <textarea class="form-control" [(ngModel)]="cochera.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-12">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <textarea class="form-control form-control-sm" [(ngModel)]="cochera.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
                     maxlength="255"></textarea>
                 </div>
               </div>
@@ -323,6 +329,8 @@
     </fieldset>
   </div>
 </div>
+
+<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
 
 <div *ngIf="cargando">
   <app-cargando></app-cargando>

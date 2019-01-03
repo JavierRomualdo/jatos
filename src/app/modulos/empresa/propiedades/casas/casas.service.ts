@@ -206,6 +206,14 @@ export class CasasService {
     let columnas: Array<any> = [];
     columnas.push(
       {
+        headerName: LS.TAG_CODIGO,
+        width: 100,
+        minWidth: 100,
+        valueGetter: (params) => {
+          return params.data.codigo;
+        }
+      },
+      {
         headerName: LS.TAG_IMAGEN,
         headerClass: 'text-md-center',//Clase a nivel de th
         field: 'foto',
@@ -227,18 +235,10 @@ export class CasasService {
         headerName: 'Estado Contrato',
         headerClass: 'text-md-center',//Clase a nivel de th
         field: 'estadocontrato',
-        width: 115,
-        minWidth: 115,
+        width: 140,
+        minWidth: 140,
         cellRendererFramework: IconAccionComponent,
         cellClass: 'text-md-center'
-      },
-      {
-        headerName: LS.TAG_CODIGO,
-        width: 100,
-        minWidth: 100,
-        valueGetter: (params) => {
-          return params.data.codigo;
-        }
       },
       {
         headerName: LS.TAG_PROPIETARIO,
@@ -273,17 +273,17 @@ export class CasasService {
         }
       },
       {
-        headerName: LS.TAG_PRECIO_COMPRA,
-        width: 100,
-        minWidth: 100,
+        headerName: LS.TAG_PRECIO_ADQUISICION,
+        width: 150,
+        minWidth: 150,
         valueGetter: (params) => {
-          return params.data.preciocompra;
+          return params.data.precioadquisicion;
         }
       },
       {
         headerName: LS.TAG_PRECIO_CONTRATO,
-        width: 100,
-        minWidth: 100,
+        width: 125,
+        minWidth: 125,
         valueGetter: (params) => {
           return params.data.preciocontrato;
         }
@@ -322,16 +322,16 @@ export class CasasService {
       },
       {
         headerName: LS.TAG_JARDIN_PREG,
-        width: 80,
-        minWidth: 80,
+        width: 90,
+        minWidth: 90,
         valueGetter: (params) => {
           return params.data.tjardin ? 'SI' : 'NO';
         }
       },
       {
         headerName: LS.TAG_COCHERA_PREG,
-        width: 90,
-        minWidth: 90,
+        width: 100,
+        minWidth: 100,
         valueGetter: (params) => {
           return params.data.tcochera ? 'SI' : 'NO';
         }
@@ -343,8 +343,8 @@ export class CasasService {
           headerName: LS.TAG_ACTIVO,
           headerClass: 'text-md-center',//Clase a nivel de th
           field: 'estado',
-          width: 115,
-          minWidth: 115,
+          width: 90,
+          minWidth: 90,
           cellRendererFramework: InputEstadoComponent,
           cellClass: 'text-md-center'
         },
@@ -367,6 +367,10 @@ export class CasasService {
         },
         // this.utilService.getColumnaOpciones()
       );
+    } else {
+      columnas.push(
+        this.utilService.getSpanSelect()
+      )
     }
     return columnas;
   }

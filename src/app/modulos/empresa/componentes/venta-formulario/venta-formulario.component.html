@@ -1,4 +1,4 @@
-<div class="card m-2">
+<div class="card mb-0">
   <div class="card-header p-1">
     <button id="btnActivar" class="btn btn-sm btn-primary mr-2" *ngIf="isScreamMd" (click)="cambiarActivar(activar)"
       type="button" title="{{constantes.ATAJO_MOSTRAR_OCULTAR_FILTROS}}">
@@ -31,32 +31,37 @@
   <div class="card-body p-1">
     <fieldset [disabled]="accion === constantes.ACCION_CONSULTAR">
         <div class="card mb-1">
-          <div class="card-header">
-            <b> {{constantes.TAG_PROPIEDAD}}</b>
+          <div class="card-header pt-2 pb-2">
+            <strong>{{constantes.TAG_PROPIEDAD}}</strong>
+            <div class="card-header-actions">
+              <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapsePropiedad"
+                aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                <i class="fa fa-minus"></i>
+              </a>
+            </div>
           </div>
-          <div class="card-body">
+          <div class="card-body pb-0 pt-1 collapse show" id="collapsePropiedad">
             <form #frmVenta="ngForm" name="frmVenta" autocomplete="off">
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PROPIEDAD}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <!-- <input class="form-control"/> -->
-                      <label class="form-control">{{codigo}}</label>
-                      <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" (click)="buscarPropiedad()"><i class="fa fa-search"></i></button>
-                      </div>
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-6">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_CODIGO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="input-group">
+                    <label class="form-control">{{codigo}}</label>
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-primary btn-sm" (click)="buscarPropiedad()"><i class="fa fa-search"></i></button>
                     </div>
                   </div>
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_CLIENTE}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group">
+                <div class="form-group form-group-sm col-sm-6">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_CLIENTE}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="input-group">
                     <label class="form-control">{{cliente.nombres}} - {{cliente.dni}}</label>
                     <div class="input-group-append">
-                      <button type="button" class="btn btn-primary" (click)="buscarcliente()"><i class="fa fa-search"></i></button>
-                      </div>
+                      <button type="button" class="btn btn-primary btn-sm" (click)="buscarcliente()"><i class="fa fa-search"></i></button>
                     </div>
                   </div>
                 </div>
@@ -71,9 +76,9 @@
         <div *ngIf="tipopropiedad === constantes.TAG_CASA">
           <app-modal-casa [parametros]="parametroFormulario"></app-modal-casa>
         </div>
-        <div *ngIf="tipopropiedad === constantes.TAG_COCHERA">
+        <!-- <div *ngIf="tipopropiedad === constantes.TAG_COCHERA">
           <app-modal-cochera [parametros]="parametroFormulario"></app-modal-cochera>
-        </div>
+        </div> -->
         <div *ngIf="tipopropiedad === constantes.TAG_LOCAL">
           <app-modal-local [parametros]="parametroFormulario"></app-modal-local>
         </div>

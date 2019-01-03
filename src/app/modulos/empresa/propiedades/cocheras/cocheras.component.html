@@ -1,6 +1,6 @@
 <p-menubar [model]="items" [autoDisplay]="false">
 </p-menubar>
-<div class="container-fluid mt-2" *ngIf="!cargando">
+<div class="container-fluid p-2" *ngIf="!cargando">
   <!--Listado-->
   <app-cocheras-listado [parametrosBusqueda]="parametrosListado" (enviarActivar)="activar=!$event"
     (enviarAccion)="ejecutarAccion($event)"></app-cocheras-listado>

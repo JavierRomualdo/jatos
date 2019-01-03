@@ -44,7 +44,7 @@ export class CasasComponent implements OnInit {
 
   ngOnInit() {
     this.listarPropiedades(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this);
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'V');
   }
 
   // proviene del menu

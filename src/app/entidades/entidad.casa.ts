@@ -6,7 +6,7 @@ export class Casa {
   persona_id: Persona = new Persona;
   ubigeo_id: Ubigeo = new Ubigeo();
   codigo: string = null;
-  preciocompra: number = 0.00;
+  precioadquisicion: number = 0.00;
   preciocontrato: number = 0.00;
   ganancia: number = 0.00;
   largo: number;
@@ -41,7 +41,7 @@ export class Casa {
     this.persona_id = data.persona_id ? data.persona_id : this.persona_id;
     this.ubigeo_id = data.ubigeo_id ? data.ubigeo_id : this.ubigeo_id;
     this.codigo = data.codigo ? data.codigo : this.codigo;
-    this.preciocompra = data.preciocompra ? data.preciocompra : this.preciocompra;
+    this.precioadquisicion = data.precioadquisicion ? data.precioadquisicion : this.precioadquisicion;
     this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
     this.ganancia = data.ganancia ? data.ganancia : this.ganancia;
     this.largo = data.largo ? data.largo : this.largo;

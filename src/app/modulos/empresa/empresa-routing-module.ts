@@ -24,7 +24,7 @@ const empresaRoutes: Routes = [
       {path: 'propiedades/locales', component: LocalesComponent},
       {path: 'propiedades/habitaciones', component: HabitacionesComponent},
       {path: 'propiedades/cocheras', component: CocherasComponent},
-      {path: 'propiedades/apartamentos', component: ApartamentosComponent},
+      // {path: 'propiedades/apartamentos', component: ApartamentosComponent},
       {path: 'propiedades/casas', component: CasasComponent},
       {path: 'propiedades/lotes', component: LotesComponent},
       {path: 'alquileres', component: AlquileresComponent},

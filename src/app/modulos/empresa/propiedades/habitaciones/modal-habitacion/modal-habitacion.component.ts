@@ -17,6 +17,8 @@ import { ModalServicioComponent } from '../../../configuracion/empresa/modal-ser
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { HabitacionService } from '../habitacion.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { HabitacionTO } from 'src/app/entidadesTO/empresa/HabitacionTO';
 
 @Component({
   selector: 'app-modal-habitacion',
@@ -25,7 +27,8 @@ import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 })
 export class ModalHabitacionComponent implements OnInit {
 
-  @Input() edit;
+  @Input() parametros;
+  @Input() isModal: boolean; // establecemos si este componente es modal o no 
   public verNuevo = false;
   public cargando: Boolean = false;
   public habitacion: Habitacion;
@@ -34,8 +37,12 @@ export class ModalHabitacionComponent implements OnInit {
   public habitacionservicios: Habitacionservicio[];
   public fotos: Foto[];
   public persona: Persona;
-  public listaLP: any = []; // lista de persona-roles
   public ubigeo: UbigeoGuardar;
+  public listaLP: any = []; // lista de persona-roles
+  public accion: string = null;
+  public tituloForm: string = null;
+  public constantes: any = LS;
+  public parametrosFoto: any = null;
 
   constructor(
     private modalService: NgbModal,
@@ -45,7 +52,9 @@ export class ModalHabitacionComponent implements OnInit {
     private _cargaImagenes: CargaImagenesService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.habitacion = new Habitacion();
     this.fotos = [];
     this.servicios = [];
@@ -56,11 +65,42 @@ export class ModalHabitacionComponent implements OnInit {
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
+
+    this.postInicializarModal();
   }
 
-  ngOnInit() {
-    if (this.edit) {
-      this.traerParaEdicion(this.edit);
+  ngOnChanges(changes) {
+    if (changes.parametros) {
+      if (changes.parametros.currentValue) {
+        this.postInicializarModal();
+      }
+    }
+  }
+  
+  postInicializarModal() {
+    if (this.parametros) {
+      this.accion = this.parametros.accion;
+      switch (this.accion) {
+        case LS.ACCION_CONSULTAR:
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_HABITACION;
+          this.despuesDeMostrarHabitacion(this.parametros.habitacion);
+          // this.traerParaEdicion(this.parametros.idHabitacion);
+          break;
+        case LS.ACCION_EDITAR:
+          this.tituloForm = LS.TITULO_FORM_EDITAR_HABITACION;
+          this.despuesDeMostrarHabitacion(this.parametros.habitacion);
+          // this.traerParaEdicion(this.parametros.idHabitacion);
+          break;
+        case LS.ACCION_NUEVO:
+          if (this.isModal) {
+            this.tituloForm = LS.TITULO_FORM_NUEVA_HABITACION;
+            this.postGuardarHabitacion();
+          } else {
+            this.tituloForm = LS.TITULO_FORM_CONSULTAR_HABITACION;
+            this.accion = LS.ACCION_CONSULTAR;
+          }
+          break;
+      }
     }
   }
 
@@ -71,7 +111,7 @@ export class ModalHabitacionComponent implements OnInit {
     this.habitacion.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.habitacion.ubigeo_id = this.ubigeo.ubigeo;
     this.habitacion.serviciosList = this.servicios;
-    if (!this.edit) { // guardar nueva habitacion
+    if (this.accion === LS.ACCION_NUEVO) { // guardar nueva habitacion
       // guardar en lista fotos
       for (const item of this.archivos) {
         const foto: Foto = new Foto();
@@ -84,10 +124,11 @@ export class ModalHabitacionComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.habitacion.fotosList);
+      this.habitacion.ganancia = this.habitacion.preciocontrato - this.habitacion.precioadquisicion;
       console.log('antes de guardar habitacion: ');
       console.log(this.habitacion);
       this.habitacionService.ingresarHabitacion(this.habitacion, this);
-    } else { // guardar el rol editado
+    } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
@@ -103,6 +144,7 @@ export class ModalHabitacionComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.habitacion.fotosList);
+      this.habitacion.ganancia = this.habitacion.preciocontrato - this.habitacion.precioadquisicion;
       console.log('antes de editar propiedad: ');
       console.log(this.habitacion);
       this.habitacionService.modificarHabitacion(this.habitacion, this);
@@ -114,14 +156,25 @@ export class ModalHabitacionComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.habitacion);
+    let habitacionTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(habitacionTO);
+  }
+
+  convertirCasaACasTO(data) {
+    let habitacionTO = new HabitacionTO(data);
+    habitacionTO.propietario = this.habitacion.persona_id.nombres;
+    habitacionTO.ubicacion = this.habitacion.ubigeo_id.ubigeo;
+    return habitacionTO;
   }
 
   despuesDeModificarHabitacion(data) {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    this.activeModal.close(this.habitacion);
+    let habitacionTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    // luego se guarda las fotos. vale hacer eso en la sgt version
+    this.activeModal.close(habitacionTO);
   }
 
   traerParaEdicion(id) {
@@ -205,6 +258,18 @@ export class ModalHabitacionComponent implements OnInit {
     }, (reason) => {
       this.auth.agregarmodalopenclass();
     });
+  }
+
+  postGuardarHabitacion() {
+    // se genera el codigode la casa cuando la accion es nuevo
+    this.cargando = true;
+    this.habitacionService.generarCodigoHabitacion(this);
+  }
+
+  despuesDeGenerarCodigoHabitacion(data) {
+    this.cargando = false;
+    this.habitacion.codigo = data;
+    this.habitacion.contrato = "A";
   }
 
   cargarImagenes() {
@@ -317,4 +382,16 @@ export class ModalHabitacionComponent implements OnInit {
   mostrarFotoPrincipalExistente(foto: Foto) {
     this.habitacion.foto = foto.foto;
   }
+
+   // modal de mostrar imagen
+   mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
 }

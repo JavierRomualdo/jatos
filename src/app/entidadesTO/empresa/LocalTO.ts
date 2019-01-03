@@ -7,7 +7,7 @@ export class LocalTO {
     largo: number = 0;
     ancho: number = 0;
     codigo: string = "";
-    preciocompra: number = 0.00;
+    precioadquisicion: number = 0.00;
     preciocontrato: number = 0.00;
     ganancia: number = 0.00;
     tbanio: boolean = false;
@@ -28,7 +28,7 @@ export class LocalTO {
         this.largo = data.largo ? data.largo : this.largo;
         this.ancho = data.ancho ? data.ancho : this.ancho;
         this.codigo = data.codigo ? data.codigo : this.codigo;
-        this.preciocompra = data.preciocompra ? data.preciocompra : this.preciocompra;
+        this.precioadquisicion = data.precioadquisicion ? data.precioadquisicion : this.precioadquisicion;
         this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
         this.ganancia = data.ganancia ? data.ganancia : this.ganancia;
         this.tbanio = data.tbanio ? data.tbanio : this.tbanio;

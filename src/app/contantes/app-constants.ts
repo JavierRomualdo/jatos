@@ -24,6 +24,7 @@ export class LS {
   public static ICON_LIBRE = "fa fa-check";
   public static ICON_RESERVADO = "fa fa-user-secret";
   public static ICON_ACTIVAR = "fa fa-check-circle";
+  public static ICON_SELECCIONAR = 'fa fa-check';
 
   //TAGS
   static TAG_AVISO = "Aviso";
@@ -32,7 +33,7 @@ export class LS {
   static TAG_ALQUILADO = "Alquilado";
   static TAG_ALQUILADAS = "Alquiladas";
   static TAG_CONTRATO = "Contrato";
-  static TAG_POST_CONTRATO = "Post - contrato";
+  static TAG_PRE_CONTRATO = "Pre - contrato";
   static TAG_VENDIDO = "Vendido";
   static TAG_VENDIDAS = "Vendidas";
   static TAG_RESERVADO = "Reservado";
@@ -53,6 +54,8 @@ export class LS {
   static TAG_CASAS_LISTADO = "Listado de casas";
   static TAG_COCHERA = "Cochera";
   static TAG_COCHERA_LISTADO = "Listado de cocheras";
+  static TAG_HABITACION = "Habitación";
+  static TAG_HABITACION_LISTADO = "Listado de habitaciones";
   static TAG_LOCAL = "Local";
   static TAG_LOCAL_LISTADO = "Listado de locales";
   static TAG_LOTE = "Lote";
@@ -71,11 +74,13 @@ export class LS {
   static TAG_COSTO = "Costo";
   static TAG_PRECIO = "Precio";
   static TAG_PRECIO_COMPRA = "Precio compra";
+  static TAG_PRECIO_ADQUISICION = "Precion adquisición";
   static TAG_PRECIO_CONTRATO = "Precio contrato";
   static TAG_GANANCIA = "Ganancia";
   static TAG_PRECIO_S = "Precio (S/)";
   static TAG_UBIGEO = "Ubigeo";
   static TAG_DIRECCION = "Dirección";
+  static TAG_CAMAS = "Camas";
   static TAG_PISOS = "Pisos";
   static TAG_CUARTOS = "Cuartos";
   static TAG_HABITACIONES = "Habitacciones";
@@ -93,6 +98,8 @@ export class LS {
   static TAG_FECHA_VENTA = "Fecha venta";
   static TAG_FECHA_ALQUILER = "Fecha alquiler";
   static TAG_FECHA_CONTRATO = "Fecha contrato";
+  static TAG_DESDE = "Desde";
+  static TAG_HASTA = "Hasta";
   static TAG_PENDIENTES = 'Pendientes';
   static TAG_ANULADOS = 'Anulados';
   static TAG_REVERSADOS = 'Reversados';
@@ -110,7 +117,8 @@ export class LS {
   static TAG_SABADO = 'Sábado';
   static TAG_DOM = "Dom";
   static TAG_DOMINGO = "Domingo";
-
+  static TAG_MOSTRAR_OCULTAR = "Ocultar/Mostrar";
+  
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
   public static LABEL_ACEPTAR = "Aceptar";
@@ -143,6 +151,7 @@ export class LS {
   static ACCION_IMPRIMIR = "Imprimir";
   static ACCION_EXPORTAR = "Exportar";
   static ACCION_NUEVO = "Nuevo";
+  static ACCION_SELECCIONAR = 'SELECCIONAR';
 
   //ETIQUETAS
   static ETIQUETA_TODOS = "TODOS";
@@ -160,6 +169,7 @@ export class LS {
   public static TITULO_FORM_CONSULTAR_LOTE = 'Consultar lote'
   public static TITULO_FORM_NUEVA_HABITACION = "Nueva habitación";
   public static TITULO_FORM_EDITAR_HABITACION = "Editar habitación";
+  public static TITULO_FORM_CONSULTAR_HABITACION = "Consultar habitación";
   public static TITULO_FORM_NUEVO_LOCAL = "Nuevo local";
   public static TITULO_FORM_EDITAR_LOCAL = "Editar local";
   public static TITULO_FORM_CONSULTAR_LOCAL = "Consultar local";
@@ -210,10 +220,35 @@ export class LS {
   public static WINDOW_WIDTH_XS = 576;
   // LISTAS
   static LISTA_PROPIEDADES = [
-    "Apartamento",
+    // "Apartamento",
     "Casa",
     "Cochera",
+    "Habitación",
     "Local",
     "Lote"
+  ];
+
+  static LISTA_PROPIEDADES_VENTA = [
+    // "Apartamento",
+    "Casa",
+    "Local",
+    "Lote"
+  ];
+  static LISTA_RANGO_PRECIOS = [
+    {
+      precionminimo: 0,
+      preciomaximo: 5000,
+      detalle: 'Por menos de S/ 5000.00'
+    },
+    {
+      precionminimo: 5000,
+      preciomaximo: 15000,
+      detalle: 'S/ 5000.00 - S/ 15000.00'
+    },
+    {
+      precionminimo: 15000,
+      preciomaximo: 2000000,
+      detalle: 'Por más de S/ 15000.00'
+    }
   ];
 }

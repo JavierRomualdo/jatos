@@ -1,121 +1,129 @@
-<div class="modal-primary"> <!--*ngIf="listadoCasas?.length>0"-->
+<div class="modal-primary" *ngIf="!cargando"> <!--*ngIf="listadoCasas?.length>0"-->
   <div class="card mb-0 card-accent-primary">
-    <div class="modal-header p-2" *ngIf="isModal">
-        {{tituloForm}} - {{casa.codigo}}
+    <div class="card-header bg-primary p-2" *ngIf="isModal">
+      <strong>{{tituloForm}} - {{casa.codigo}}</strong>
       <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="card-header bg-primary" *ngIf="!isModal">
-      <strong *ngIf="isModal">{{tituloForm}} - {{casa.codigo}}</strong>
+    <div class="card-header p-2" *ngIf="!isModal">
       <strong *ngIf="!isModal">{{tituloForm}}</strong>
-      <button *ngIf="isModal" type="button" class="close float-right" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <i class="fa fa-close"></i>
-      </button>
     </div>
-    
     <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR || !isModal">
-      <form #propiedad="ngForm" name="propiedad" autocomplete="off"  *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarpropiedad()">
-        <div class="card-body pb-0">
+      <form #propiedad="ngForm" name="propiedad" autocomplete="off" class="form-horizontal" (ngSubmit)="guardarpropiedad()">
+        <div class="card-body pb-0 p-1">
           <!--/.card-->
-          <div class="card border-primary">
-            <div class="card-header bg-primary border-primary">
-              <i class="fa fa-align-justify"></i> {{constantes.TAG_DATOS_GENERALES}}
-              <div class="float-right">
-                <label class="switch switch-label switch-pill switch-primary">
-                  <input type="checkbox" class="switch-input" [(ngModel)]="casa.estado" name="estado">
-                  <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
-                </label>
+          <div class="card"><!--border-primary-->
+            <div class="card-header pt-2 pb-2"><!--border-primary-->
+              <!-- <i class="fa fa-align-justify"></i> -->
+              <strong>{{constantes.TAG_DATOS_GENERALES}}</strong>
+              <div class="card-header-actions">
+                <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosGeneral"
+                  aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                  <i class="fa fa-minus"></i>
+                </a>
               </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosGeneral">
               <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PROPIETARIO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-10">
+              <div class="row">
+                <!--Propietario-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PROPIETARIO}} <span class="text-primary">*</span></strong>
+                  </label>
                   <div class="form-group">
                     <div class="input-group">
-                      <label class="form-control">{{persona.nombres}} - {{persona.dni}}</label>
+                      <label class="form-control form-control-sm">{{persona.nombres}} - {{persona.dni}}</label>
                       <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" (click)="buscarpropietario()"><i class="fa fa-search"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarpropietario()"><i class="fa fa-search"></i></button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_FOTO_PRINCIPAL}}</label>
-                <div class="col-sm-4">
-                  <a [href]="casa.foto" target="_blank" *ngIf="casa.foto!=null">
-                    <img [src]="casa.foto" class="rounded mx-auto d-block" width="100" />
-                  </a>
-                  <label class="form-control-label" *ngIf="casa.foto==null"><i class="fa fa-file-image-o"></i></label>
-                </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_TIPO_CONTRATO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-2">
-                  <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="casa.contrato"
-                    inputId="opt1"></p-radioButton><!--disabled="accion===constantes.ACCION_CONSULTAR"-->
-                </div>
-                <div class="col-sm-2">
-                  <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="casa.contrato"
-                    inputId="opt2" ></p-radioButton>
-                </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_COMPRA}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <input type="text" name="preciocompra" [(ngModel)]="casa.preciocompra" required placeholder="Ingrese el precio compra" class="form-control"
-                    maxlength="9" pKeyFilter="pint">
-                </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PRECIO_CONTRATO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <input type="text" name="preciocontrato" [(ngModel)]="casa.preciocontrato" required placeholder="Ingrese el precio contrato" class="form-control"
-                    maxlength="9" pKeyFilter="pint">
-                </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row form-group-sm has-feedback">
-                <label class="col-sm-2 form-control-label">
-                  {{constantes.TAG_LARGO_MTS}}<span class="text-primary">*</span>
-                  <span class="fa fa-question-circle" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
-                    triggers="mouseenter:mouseleave" container="body"></span>
-                </label>
-                
-                <div class="col-sm-4">
-                  <input type="text" name="largo" [(ngModel)]="casa.largo" required class="form-control" placeholder="Ingrese largo (area)"
-                    maxlength="8" pKeyFilter="pint">
-                </div>
-                <label class="col-sm-2 form-control-label">
-                  {{constantes.TAG_ANCHO_MTS}}<span class="text-primary">*</span>
-                  <span class="fa fa-question-circle" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
-                    triggers="mouseenter:mouseleave" container="body"></span>
-                </label>
-                <div class="col-sm-4">
-                  <input type="text" name="ancho" [(ngModel)]="casa.ancho" required class="form-control" placeholder="Ingrese ancho (area)"
-                    maxlength="8" pKeyFilter="pint">
-                </div>
-              </div>
-              <!--/.row-->
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_UBIGEO}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <label class="form-control">
-                        {{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}
-                      </label>
-                      <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>
-                      </div>
+                <!--Contrato-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_CONTRATO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="ui-g" style="width:250px;">
+                    <div class="ui-g-6">
+                      <p-radioButton name="group1" required value="V" label="{{constantes.TAG_VENTA}}" [(ngModel)]="casa.contrato"
+                      inputId="opt2" [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
+                    </div>
+                    <div class="ui-g-6">
+                      <p-radioButton name="group1" required value="A" label="{{constantes.TAG_ALQUILER}}" [(ngModel)]="casa.contrato"
+                      inputId="opt2" [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
                     </div>
                   </div>
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
+                <!--Imagen-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_FOTO_PRINCIPAL}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <img [src]="casa.foto" (click)="mostrarModalImagen(casa)" class="form-control form-control-sm" style="cursor: pointer" *ngIf="casa.foto!=null"
+                    class="rounded mx-auto d-block" width="100" />
+                  <label class="form-control form-control-sm mousetrap" *ngIf="casa.foto==null"><i class="fa fa-file-image-o"></i></label>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PRECIO_ADQUISICION}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="precioadquisicion" [(ngModel)]="casa.precioadquisicion" required placeholder="Ingrese el precio compra" 
+                    class="form-control form-control-sm mousetrap" (updateValue)="casa.precioadquisicion=$event" [appAutonumeric2]="casa.precioadquisicion"
+                    value="{{casa.precioadquisicion}}">
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PRECIO_CONTRATO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="preciocontrato" [(ngModel)]="casa.preciocontrato" required placeholder="Ingrese el precio contrato" 
+                    class="form-control form-control-sm mousetrap" (updateValue)="casa.preciocontrato=$event" [appAutonumeric2]="casa.preciocontrato" 
+                    value="{{casa.preciocontrato}}">
+                </div>
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="largo" [(ngModel)]="casa.largo" required placeholder="Ingrese largo (area)" 
+                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
+                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                    triggers="mouseenter:mouseleave" container="body"></span>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="ancho" [(ngModel)]="casa.ancho" required placeholder="Ingrese ancho (area)" 
+                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
+                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                    triggers="mouseenter:mouseleave" container="body"></span>
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_UBIGEO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="form-control form-control-sm">{{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}</label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
+                  </label>
                   <input type="text" name="direccion" [(ngModel)]="casa.direccion" required placeholder="Ingrese direccion"
-                    class="form-control" maxlength="255">
+                    class="form-control form-control-sm" maxlength="255">
                 </div>
               </div>
               <!--/.row-->
@@ -143,43 +151,55 @@
   
           <div class="tab-content border-primary">
             <div class="tab-pane active" id="home2" role="tabpanel">
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_PISOS}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <input type="number" value="1" name="npisos" [(ngModel)]="casa.npisos" max="10" min="1" required class="form-control"
-                    placeholder="Ingrese cantidad pisos" maxlength="8" pKeyFilter="pint">
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_PISOS}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="number" value="1" name="npisos" [(ngModel)]="casa.npisos" max="10" min="1" required 
+                    class="form-control form-control-sm" placeholder="Ingrese cantidad pisos" maxlength="8" pKeyFilter="pint">
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_CUARTOS}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_CUARTOS}} <span class="text-primary">*</span></strong>
+                  </label>
                   <input type="number" value="0" name="ncuartos" [(ngModel)]="casa.ncuartos" max="30" min="0" required
-                    class="form-control" placeholder="Ingrese cantidad cuartos" maxlength="8" pKeyFilter="pint">
+                    class="form-control form-control-sm" placeholder="Ingrese cantidad cuartos" maxlength="8" pKeyFilter="pint">
+                </div>
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_BANIOS}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="number" value="0" name="nbanios" [(ngModel)]="casa.nbanios" max="10" min="0" required 
+                    class="form-control form-control-sm" placeholder="Ingrese cantidad baños" maxlength="8" pKeyFilter="pint">
                 </div>
               </div>
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_BANIOS}} <span class="text-primary">*</span></label>
-                <div class="col-sm-4">
-                  <input type="number" value="0" name="nbanios" [(ngModel)]="casa.nbanios" max="10" min="0" required class="form-control"
-                    placeholder="Ingrese cantidad baños" maxlength="8" pKeyFilter="pint">
-                </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_JARDIN_PREG}}<span class="text-primary"></span></label>
-                <div class="col-sm-1">
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-2">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_JARDIN_PREG}} <span class="text-primary">*</span></strong>
+                  </label>
                   <label class="switch switch-label switch-pill switch-primary">
                     <input type="checkbox" class="switch-input" [(ngModel)]="casa.tjardin" name="tjardin">
                     <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
                   </label>
                 </div>
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_COCHERA_PREG}}<span class="text-primary"></span></label>
-                <div class="col-sm-1">
+                <div class="form-group form-group-sm col-sm-2">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_COCHERA_PREG}} <span class="text-primary">*</span></strong>
+                  </label>
                   <label class="switch switch-label switch-pill switch-primary">
                     <input type="checkbox" class="switch-input" [(ngModel)]="casa.tcochera" name="tcochera">
                     <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
                   </label>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-2 form-control-label">{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></label>
-                <div class="col-sm-10">
-                  <textarea class="form-control" [(ngModel)]="casa.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
+                <div class="form-group form-group-sm col-sm-8">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <textarea class="form-control form-control-sm" [(ngModel)]="casa.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
                     maxlength="255"></textarea>
                 </div>
               </div>
@@ -259,7 +279,7 @@
                             <td>{{i+1}}</td>
                             <td>
                               <img [src]="foto.foto" class="rounded mx-auto d-block" style="cursor: pointer" (click)="mostrarFotoPrincipalExistente(fotos[i])"
-                                width="10" />
+                                width="50"/>
                             </td>
                             <td>MB</td>
                             <td>
@@ -272,8 +292,10 @@
                                 [name]="foto.detalle" placeholder="Ingrese descripcion">
                             </td>
                             <td class="text-center">
-                              <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfotocasa(fotos[i])"><i
-                                  class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
+                              <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
+                                style="cursor: pointer" title="quitar" (click)="quitarfotocasa(fotos[i])">
+                                <i class="fa fa-remove text-primary" style="font-size: 23px; "></i>
+                              </a>
                             </td>
                           </tr>
                         </tbody>
@@ -344,6 +366,8 @@
     </fieldset>
   </div>
 </div>
+
+<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
 
 <div *ngIf="cargando">
   <app-cargando></app-cargando>

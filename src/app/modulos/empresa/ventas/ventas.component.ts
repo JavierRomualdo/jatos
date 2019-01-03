@@ -61,7 +61,7 @@ export class VentasComponent implements OnInit {
   ngOnInit() {
     this.isScreamMd = window.innerWidth <= 576 ? false : true;
 
-    this.listaPropiedades = LS.LISTA_PROPIEDADES;
+    this.listaPropiedades = LS.LISTA_PROPIEDADES_VENTA;
     this.propiedadSeleccionado = this.listaPropiedades ? this.listaPropiedades[0] : null;
     this.departamentoSeleccionado = undefined;
     this.provinciaSeleccionado = undefined;

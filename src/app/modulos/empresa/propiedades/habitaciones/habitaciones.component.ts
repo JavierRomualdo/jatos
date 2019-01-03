@@ -7,6 +7,10 @@ import { Persona } from 'src/app/entidades/entidad.persona';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { ModalHabitacionComponent } from './modal-habitacion/modal-habitacion.component';
 import { HabitacionService } from './habitacion.service';
+import { HabitacionMensaje } from 'src/app/entidades/entidad.habitacionmensaje';
+import { LS } from 'src/app/contantes/app-constants';
+import { MenuItem } from 'primeng/api';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Component({
   selector: 'app-habitaciones',
@@ -16,14 +20,23 @@ import { HabitacionService } from './habitacion.service';
 export class HabitacionesComponent implements OnInit {
 
   public cargando: Boolean = false;
+  public vermensajes: Boolean = false;
+  public estadomensajes: Boolean = true;
   public confirmarcambioestado: Boolean = false;
-  public  habitaciones: any = []; // lista proyecto
+  public habitaciones: Array<any> = []; // lista habitaciones
+  public habitacion_id: number;
+  public mensajes: HabitacionMensaje[];
   public parametros: Habitacion;
+  public parametrosListado: any = {};
+  public activar: boolean = false;
+  public constantes: any = LS;
+
+  public items: MenuItem[];
 
   constructor(
     private modalService: NgbModal,
     private habitacionService: HabitacionService,
-    private toastr: ToastrService,
+    private utilService: UtilService,
   ) {
     this.parametros = new Habitacion();
     this.parametros.ubigeo_id = new Ubigeo();
@@ -31,65 +44,68 @@ export class HabitacionesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listarHabitaciones();
+    this.listarHabitaciones(true);
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'A');
+  }
+
+  // proviene del menu
+  nuevo() {
+    let parametros = {
+      accion: LS.ACCION_NUEVO,
+      objetoSeleccionado: null
+    }
+    this.abrirHabitaciones(parametros);
   }
 
   limpiar() {
     this.parametros = new Habitacion();
     this.parametros.persona_id = new Persona();
     this.parametros.ubigeo_id = new Ubigeo();
+    this.parametrosListado = {};
+    this.parametrosListado.listar = false;
     this.habitaciones = [];
-    this.listarHabitaciones();
+    this.listarHabitaciones(true);
   }
 
-  busqueda() {
-    let nohayvacios: Boolean = false;
-    if (this.parametros.persona_id.nombres !== undefined &&
-      this.parametros.persona_id.nombres !== '') {
-        nohayvacios = true;
-      }
-    if (this.parametros.ubigeo_id.ubigeo !== undefined && this.parametros.ubigeo_id.ubigeo !== '') {
-      nohayvacios = true;
-    }
-    if (this.parametros.direccion !== undefined && this.parametros.direccion !== '') {
-      nohayvacios = true;
-    }
-    if (nohayvacios) {
-      this.cargando = true;
-      console.log(this.parametros);
-      this.habitacionService.busquedaHabitaciones(this.parametros, this);
-    } else {
-      this.toastr.warning('Verifique los datos ingresados.', 'Datos inválidos');
-    }
+  consultarGeneral(activos: boolean) {
+    this.listarHabitaciones(activos);
   }
 
-  despuesDeBusquedaHabitaciones(data) {
-    this.habitaciones = data;
-    this.cargando = false;
+  consultarEstadoContrato(estadoContrato: string) {
+    this.parametrosListado = {
+      listar: true,
+      activos: true,
+      estadoContrato: estadoContrato
+    };
   }
 
-  abrirHabitaciones(): void {
+  abrirHabitaciones(parametros): void {
     const modalRef = this.modalService.open(ModalHabitacionComponent, {size: 'lg', keyboard: false});
-    modalRef.result.then((result) => {
-      this.listarHabitaciones();
+    modalRef.componentInstance.parametros = parametros;
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((data) => {
+      console.log('se cerro modal propiedades');
+      this.refrescarTabla(parametros.accion, data);
+      // this.listarHabitaciones();
     }, (reason) => {
     });
   }
 
-  editarHabitacion(id) {
-    const modalRef = this.modalService.open(ModalHabitacionComponent, {size: 'lg', keyboard: false});
-    modalRef.componentInstance.edit = id;
-    modalRef.result.then((result) => {
-      this.listarHabitaciones();
-    }, (reason) => {
-    });
+  refrescarTabla(accion: string, data) {
+    this.parametrosListado = {
+      listar: true,
+      accion: accion,
+      data: data,
+    };
   }
 
   confirmarcambiodeestado(habitacion): void {
     const modalRef = this.modalService.open(ConfirmacionComponent, {windowClass: 'nuevo-modal', size: 'sm', keyboard: false});
     modalRef.result.then((result) => {
       this.confirmarcambioestado = true;
-      this.cambiarestadoservicio(habitacion);
+      // this.cambiarestadoservicio(habitacion);
+      this.cargando = true;
+      this.habitacionService.cambiarEstadoHabitacion(habitacion.id, this);
       // this.auth.agregarmodalopenclass();
     }, (reason) => {
       habitacion.estado = !habitacion.estado;
@@ -97,26 +113,43 @@ export class HabitacionesComponent implements OnInit {
     });
   }
 
-  cambiarestadoservicio(habitacion) {
-    this.cargando = true;
-    this.habitacionService.cambiarEstadoHabitacion(habitacion.id, this);
-  }
-
   despuesDeCambiarEstadoHabitacion(data) {
-    console.log(data);
-    this.listarHabitaciones();
+    this.listarHabitaciones(true);
     this.cargando = false;
   }
 
-  listarHabitaciones() {
+  listarHabitaciones(activos: boolean) {
+    this.parametrosListado = {
+      listar: true,
+      activos: activos,
+      estadoContrato: null
+    };
+  }
+
+  ejecutarAccion(parametros) {
+    this.abrirHabitaciones(parametros);
+  }
+
+  listarmensajes(habitacion_id, estado) {
+    this.estadomensajes = estado;
+    let valor = 1;
+    if (estado === false) {
+      valor = 0;
+    }
     this.cargando = true;
-    this.habitacionService.listarHabitaciones(this);
+    this.vermensajes = true;
+    this.habitacion_id = habitacion_id;
+    let parametros = {habitacion_id: habitacion_id, valor: valor}
+    this.habitacionService.listarMensajesHabitacion(parametros, this);
   }
 
-  despuesDeListarHabitaciones(data) {
-    this.habitaciones = data;
+  despuesDeListarMensajesCasa(data) {
+    this.mensajes = data;
     this.cargando = false;
-    console.log('resultado: ');
-    console.log(this.habitaciones);
+  }
+
+  cerrarmensajes() {
+    this.vermensajes = false;
+    this.listarHabitaciones(true);
   }
 }

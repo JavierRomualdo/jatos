@@ -113,10 +113,10 @@
                 <a class="nav-link" [routerLink]="['propiedades/cocheras']" routerLinkActive="active">
                   <i class="nav-icon icon-puzzle"></i> Cocheras</a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" [routerLink]="['propiedades/apartamentos']" routerLinkActive="active">
                   <i class="nav-icon icon-puzzle"></i> Apartamentos</a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-title">Operaciones</li>
@@ -153,7 +153,9 @@
       <button class="sidebar-minimizer brand-minimizer" type="button"></button>
     </div>
     <main class="main">
-      <router-outlet></router-outlet>
+      <div class="animated fadeIn">
+          <router-outlet></router-outlet>
+        </div>
     </main>
     <aside class="aside-menu">
       <ul class="nav nav-tabs" role="tablist">

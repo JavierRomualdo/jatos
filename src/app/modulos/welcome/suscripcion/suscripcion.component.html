@@ -1,14 +1,15 @@
 <section class="bar bg-white no-mb animated fadeIn">
   <div class="heading text-center">
-    <h4><strong>CONTACTO</strong></h4>
+    <h3><strong>CONTACTO</strong></h3>
   </div>
   <!-- <h3 class="heading text-center">CONTACTO</h3> -->
   <div class="container animated fadeIn">
     <div class="col-md-8 mx-auto">
       <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" *ngIf="!cargando">
         <div class="row">
-          <p class="lead">
-            Ingrese todos los datos para el envió de su consulta de acuerdo a los servicios brindados por nuestra empresa inmobiliaria:
+          <p class="lead text-justify">
+            Ingrese todos los datos para el envió de su consulta de acuerdo a los servicios brindados 
+            por nuestra empresa inmobiliaria:
           </p>
           <div class="col-sm-6">
             <div class="form-group">

@@ -37,6 +37,7 @@ export class ModalLoteComponent implements OnInit {
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
+  public parametrosFoto: any = null;
 
   constructor(
     private modalService: NgbModal,
@@ -115,7 +116,7 @@ export class ModalLoteComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.lote.fotosList);
-      this.lote.ganancia = this.lote.preciocontrato - this.lote.preciocompra;
+      this.lote.ganancia = this.lote.preciocontrato - this.lote.precioadquisicion;
       console.log('antes de guardar lote: ');
       console.log(this.lote);
       this.loteService.ingresarLote(this.lote, this);
@@ -134,7 +135,7 @@ export class ModalLoteComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.lote.fotosList);
-      this.lote.ganancia = this.lote.preciocontrato - this.lote.preciocompra;
+      this.lote.ganancia = this.lote.preciocontrato - this.lote.precioadquisicion;
       console.log('antes de editar lote: ');
       console.log(this.lote);
       this.loteService.modificarLote(this.lote, this);
@@ -323,4 +324,16 @@ export class ModalLoteComponent implements OnInit {
   mostrarFotoPrincipalExistente(foto: Foto) {
     this.lote.foto = foto.foto;
   }
+
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
 }

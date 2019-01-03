@@ -5,6 +5,7 @@ import { ApiRequest2Service } from "../../../servicios/api-request2.service";
 import { ToastrService } from "ngx-toastr";
 import { Servicios } from "../../../entidades/entidad.servicios";
 import { Ubigeo } from "../../../entidades/entidad.ubigeo";
+import { LS } from 'src/app/contantes/app-constants';
 @Component({
   selector: "app-propiedades",
   templateUrl: "./propiedades.component.html",
@@ -35,6 +36,12 @@ export class PropiedadesComponent implements OnInit {
   public activar: Boolean = false;
   public verServicios: Boolean = false;
 
+  public porescrito: boolean = true;
+
+  public radiobutton: any;
+  public listaRangoPrecios: any = LS.LISTA_RANGO_PRECIOS;
+  public rangoPrecio: any
+
   constructor(public api: ApiRequest2Service, public toastr: ToastrService) {
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
@@ -60,6 +67,10 @@ export class PropiedadesComponent implements OnInit {
     this.listarUbigeos(); // index ubigeos (departamento)
     this.listarRangoPrecios();
     this.rangoprecio.preciominimo = "0";
+  }
+
+  clickRangoPrecio() {
+    console.log(this.rangoPrecio);
   }
 
   cambiarActivar(activar) {

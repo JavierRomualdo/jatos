@@ -76,15 +76,31 @@
                     <b> Rango Precios</b>
                   </label>
                   <div class="row">
+                    <div class="col-md-8">
+                      <label>¿Por escrito?</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-pill switch-primary">
+                        <input type="checkbox" class="switch-input" [(ngModel)]="porescrito" name="porescrito">
+                        <span class="switch-slider" data-checked="si" data-unchecked="no"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="porescrito">
                     <div class="col-md-12">
                       <input type="text" name="precio1" [(ngModel)]="rangoprecio.preciominimo" required placeholder="Rango 1"
                         class="form-control" maxlength="8">
                     </div>
-
                     <div class="col-md-12">
                       <input type="text" name="precio2" [(ngModel)]="rangoprecio.preciomaximo" required placeholder="Rango 2"
                         class="form-control" maxlength="8">
                     </div>
+                  </div>
+                  <div class="ui-g" style="width:250px;margin-bottom:10px" *ngIf="!porescrito">
+                      <div class="ui-g-12" *ngFor="let rangoprecio of listaRangoPrecios; let i = index;">
+                        <p-radioButton name="gruporangoprecio" value="{{i}}" label="{{rangoprecio.detalle}}" 
+                        [(ngModel)]="rangoPrecio" inputId="opt1" (onClick)="clickRangoPrecio()"></p-radioButton>
+                      </div>
                   </div>
                   <!-- <select (change)="mostrarparangoprecios(idRangoPrecio)" [(ngModel)]="idRangoPrecio" class="form-control border-success"
             placeholder="Filtrar por Ubigeo" name="ubigeodistrito">

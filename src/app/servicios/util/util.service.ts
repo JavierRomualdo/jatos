@@ -6,6 +6,7 @@ import { LS } from 'src/app/contantes/app-constants';
 import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opciones/boton-opciones.component';
 import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
+import { SpanAccionComponent } from 'src/app/modulos/componentes/span-accion/span-accion.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -110,7 +111,41 @@ export class UtilService {
     }
   }
 
-  generarItemsMenuesPropiedades(contexto) {
+  public getSpanSelect(tamanio?): any {
+    return {
+      headerName: LS.TAG_SELECCIONE,
+      headerClass: 'cell-header-center',//Clase a nivel de th
+      cellClass: (params) => {
+        if (tamanio) {
+          if (params.data.cuentaCodigo && params.data.cuentaCodigo.length === tamanio) {
+            return 'text-center';
+          } else { return 'ag-hidden'; }
+        } else {
+          return 'text-center';
+        }
+      },
+      width: 70,
+      minWidth: 70,
+      maxWidth: 70,
+      cellRendererFramework: SpanAccionComponent,
+      cellRendererParams: (params) => {
+        return {
+          icono: LS.ICON_SELECCIONAR,
+          tooltip: LS.ACCION_SELECCIONAR,
+          accion: LS.ACCION_SELECCIONAR,
+        }
+      },
+      headerComponentFramework: TooltipReaderComponent,
+      headerComponentParams: {
+        class: LS.ICON_SELECCIONAR,
+        tooltip: LS.TAG_SELECCIONE,
+        text: '',
+        enableSorting: false
+      },
+    }
+  }
+
+  generarItemsMenuesPropiedades(contexto, contrato: string) {
     let items = [
         {
             label: LS.TAG_ARCHIVO,
@@ -152,26 +187,11 @@ export class UtilService {
                 {
                   label: LS.TAG_CONTRATO, 
                   icon: LS.ICON_BUSCAR_MAS,
-                  items: [
-                    {
-                      label: LS.TAG_VENDIDAS, 
-                      icon: LS.ICON_VENTA,
-                      command: () => {
-                        contexto.consultarEstadoContrato('V');
-                      }
-                    },
-                    {
-                      label: LS.TAG_ALQUILADAS, 
-                      icon: LS.ICON_ALQUILER,
-                      command: () => {
-                        contexto.consultarEstadoContrato('A');
-                      }
-                    }
-                  ]
+                  items: this.agregarMenuPorContrato(contexto, contrato)
                 },
                 {separator:true},
                 {
-                  label: LS.TAG_POST_CONTRATO,
+                  label: LS.TAG_PRE_CONTRATO,
                   icon: LS.ICON_BUSCAR_MAS,
                   items: [
                     {
@@ -194,5 +214,35 @@ export class UtilService {
         }
     ];
     return items;
+  }
+
+  agregarMenuPorContrato(contexto, contrato: string) {
+    let columnas = [];
+    if (contrato==='V') { // V y A
+      columnas.push({
+        label: LS.TAG_VENDIDAS, 
+        icon: LS.ICON_VENTA,
+        command: () => {
+          contexto.consultarEstadoContrato('V');
+        }
+      },
+      {
+        label: LS.TAG_ALQUILADAS, 
+        icon: LS.ICON_ALQUILER,
+        command: () => {
+          contexto.consultarEstadoContrato('A');
+        }
+      });
+    } else if (contrato==='A') {
+      columnas.push(
+      {
+        label: LS.TAG_ALQUILADAS, 
+        icon: LS.ICON_ALQUILER,
+        command: () => {
+          contexto.consultarEstadoContrato('A');
+        }
+      });
+    }
+    return columnas;
   }
 }

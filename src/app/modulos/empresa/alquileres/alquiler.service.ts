@@ -132,21 +132,21 @@ export class AlquilerService {
         }
       },
       {
-        headerName: LS.TAG_FECHA_ALQUILER,
-        width: 80,
-        minWidth: 80,
+        headerName: LS.TAG_DESDE,
+        width: 90,
+        minWidth: 90,
         valueGetter: (params) => {
-          return params.data.fechaAlquiler;
+          return params.data.fechadesde;
         }
       },
       {
-        headerName: LS.TAG_FECHA_CONTRATO,
-        width: 80,
-        minWidth: 80,
+        headerName: LS.TAG_HASTA,
+        width: 90,
+        minWidth: 90,
         valueGetter: (params) => {
-          return params.data.fechacontrato;
+          return params.data.fechahasta;
         }
-      }
+      },
     );
     if (!isModal) {
       columnas.push(

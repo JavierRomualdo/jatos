@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DialogModule } from 'primeng/dialog';
+// import { SpanAccionComponent } from './span-accion/span-accion.component';
 // import { IconAccionComponent } from './icon-accion/icon-accion.component';
 // import { BotonOpcionesComponent } from './boton-opciones/boton-opciones.component';
 // import { TooltipReaderComponent } from './tooltip-reader/tooltip-reader.component';
@@ -17,6 +18,7 @@ import { DialogModule } from 'primeng/dialog';
 //   TooltipReaderComponent,
 //   PinnedCellComponent
 // IconAccionComponent
+// SpanAccionComponent
 ],
   imports: [
     CommonModule,

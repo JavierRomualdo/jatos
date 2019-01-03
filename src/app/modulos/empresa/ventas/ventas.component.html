@@ -1,8 +1,8 @@
-<div class="row">
+<div class="row p-2">
   <div [ngClass]="{'sr-only':activar}" class="col-lg-3 col-md-4 col-sm-5">
-    <form #frmVenta='ngForm' name="frmVenta" class="card m-2 mb-2" autocomplete="off">
+    <form #frmVenta='ngForm' name="frmVenta" class="card" autocomplete="off">
       <fieldset [disabled]="vistaFormulario">
-        <div class="card-header">
+        <div class="card-header pt-2 pb-2">
           <span>
             <i class="{{constantes.ICON_FILTRAR}}"></i>
             <b> {{constantes.TITULO_FILTROS}}</b>
@@ -71,7 +71,7 @@
       </app-venta-formulario>
     </div>
     <!--Listado-->
-    <div class="card m-2" *ngIf="listaResultado?.length>0 && !vistaFormulario">
+    <div class="card m-0" *ngIf="listaResultado?.length>0 && !vistaFormulario">
       <div class="modal-header p-2" *ngIf="isModal">
         <h4 class="modal-title">{{constantes.TITULO_VENTAS_LISTADO}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -99,7 +99,8 @@
             </button>
           </div>
         </div>
-        <div class="card-body p-0">
+      </div>
+      <div class="card-body p-0">
           <div class="row">
             <div class="col-sm-5 col-md-6">
               <div class="input-group p-1">
@@ -127,7 +128,6 @@
           </ag-grid-angular>
           <!--(filterChanged)="actualizarFilas()"-->
         </div>
-      </div>
     </div>
     <p-contextMenu #menuOpciones appendTo="body" [model]="opciones" [baseZIndex]="1100"></p-contextMenu>
   </div>

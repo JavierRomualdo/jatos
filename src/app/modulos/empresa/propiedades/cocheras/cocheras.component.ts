@@ -44,7 +44,7 @@ export class CocherasComponent implements OnInit {
 
   ngOnInit() {
     this.listarCocheras(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this);
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'A');
   }
 
   // proviene del menu

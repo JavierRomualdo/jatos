@@ -21,6 +21,7 @@ import { VentaComponent } from './servicios/venta/venta.component';
 import { AlquilerComponent } from './servicios/alquiler/alquiler.component';
 import { CocheradetalleComponent } from './servicios/cocheras/cocheradetalle/cocheradetalle.component';
 import { PaWelcomeCargandoComponent } from 'src/app/componentesgenerales/cargando/cargando.component';
+import { AgmCoreModule } from '@agm/core';
 
 import { ToastrModule } from 'ngx-toastr';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -66,9 +67,9 @@ import { AlquileresComponent } from './servicios/alquileres/alquileres.component
     NgbModule.forRoot(),
     WelcomeRoutingModule,
 
-    // AgmCoreModule.forRoot({
-    //   apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80'
-    // }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80'
+    }),
     ToastrModule.forRoot(),
     WelcomeRoutingModule,
     RadioButtonModule,

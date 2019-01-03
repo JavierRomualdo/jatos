@@ -42,6 +42,7 @@ export class ModalCasaComponent implements OnInit {
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
+  public parametrosFoto: any = null;
   
   constructor(
     private modalService: NgbModal,
@@ -97,6 +98,7 @@ export class ModalCasaComponent implements OnInit {
             this.postGuardarCasa();
           } else {
             this.tituloForm = LS.TITULO_FORM_CONSULTAR_CASA;
+            this.accion = LS.ACCION_CONSULTAR;
           }
           break;
       }
@@ -123,7 +125,7 @@ export class ModalCasaComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.casa.fotosList);
-      this.casa.ganancia = this.casa.preciocontrato - this.casa.preciocompra;
+      this.casa.ganancia = this.casa.preciocontrato - this.casa.precioadquisicion;
       console.log('antes de guardar propiedad: ');
       console.log(this.casa);
       this.casasService.ingresarCasa(this.casa, this);
@@ -143,7 +145,7 @@ export class ModalCasaComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.casa.fotosList);
-      this.casa.ganancia = this.casa.preciocontrato - this.casa.preciocompra;
+      this.casa.ganancia = this.casa.preciocontrato - this.casa.precioadquisicion;
       console.log('antes de editar propiedad: ');
       console.log(this.casa);
       this.casasService.modificarCasa(this.casa, this);
@@ -373,4 +375,16 @@ export class ModalCasaComponent implements OnInit {
   mostrarFotoPrincipalExistente(foto: Foto) {
     this.casa.foto = foto.foto;
   }
+
+  // modal de mostrar imagen
+  mostrarModalImagen(data) {
+    this.parametrosFoto = {
+      display: true,
+      foto: data.foto
+    }
+  }
+
+  onDialogClose(event) {
+    this.parametrosFoto = null;
+ } //
 }

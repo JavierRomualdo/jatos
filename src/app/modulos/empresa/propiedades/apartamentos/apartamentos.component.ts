@@ -45,7 +45,7 @@ export class ApartamentosComponent implements OnInit {
 
   ngOnInit() {
     this.listarApartamentos(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this);
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'V');
   }
 
   // proviene del menu

@@ -13,13 +13,14 @@ import { LocalService } from '../../propiedades/locales/local.service';
 import { LoteService } from '../../propiedades/lotes/lote.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilService } from 'src/app/servicios/util/util.service';
-import { ToastrService } from 'ngx-toastr';
 import { ModalPersonaComponent } from '../../configuracion/empresa/modal-persona/modal-persona.component';
 import { LotesListadoComponent } from '../lotes-listado/lotes-listado.component';
 import { LocalesListadoComponent } from '../locales-listado/locales-listado.component';
 import { CocherasListadoComponent } from '../cocheras-listado/cocheras-listado.component';
 import { CasasListadoComponent } from '../casas-listado/casas-listado.component';
 import { ApartamentosListadoComponent } from '../apartamentos-listado/apartamentos-listado.component';
+import { HabitacionesListadoComponent } from '../habitaciones-listado/habitaciones-listado.component';
+import { HabitacionService } from '../../propiedades/habitaciones/habitacion.service';
 
 @Component({
   selector: 'app-alquiler-formulario',
@@ -49,7 +50,9 @@ export class AlquilerFormularioComponent implements OnInit {
   public ubigeo: Ubigeo = new Ubigeo();
   // cliente
   public cliente: Persona;
-  public fechacontrato: Date = new Date();
+  public fechadesde: Date = new Date();
+  public fechahasta: Date = new Date();
+  public fechaactual: Date = new Date();
   // parametro formulario propiedad
   public parametroFormulario: any = null;
 
@@ -58,11 +61,11 @@ export class AlquilerFormularioComponent implements OnInit {
     private apartamentoService: ApartamentoService,
     private casasService: CasasService,
     private cocheraService: CocheraService,
+    private habitacionService: HabitacionService,
     private localService: LocalService,
     private loteService: LoteService,
     private modalService: NgbModal,
     private utilService: UtilService,
-    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -70,7 +73,7 @@ export class AlquilerFormularioComponent implements OnInit {
     this.es = this.utilService.setLocaleDate();
     moment.locale('es'); // para la fecha
     this.es = this.utilService.setLocaleDate();
-    // this.fechacontrato = this.utilService.setLocaleDate();
+    // this.fechahasta = this.utilService.setLocaleDate();
     this.cliente = new Persona();
   }
 
@@ -82,7 +85,7 @@ export class AlquilerFormularioComponent implements OnInit {
         this.accion = this.parametrosFormulario.accion;
         this.tipopropiedad = this.parametrosFormulario.propiedad;
         this.ubigeo = this.parametrosFormulario.ubigeo;
-        // this.fechacontrato = this.utilService.setLocaleDate();
+        // this.fechahasta = this.utilService.setLocaleDate();
         this.postIniciarVistaFormulario(this.tipopropiedad);
       }
     }
@@ -94,7 +97,7 @@ export class AlquilerFormularioComponent implements OnInit {
       case LS.TAG_APARTAMENTO:
         // PARA APARTAMENTO
         if (this.accion === LS.ACCION_CONSULTAR) {
-          this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_ALQUILER;
           this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id);
         } else if (this.accion === LS.ACCION_NUEVO){
           this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
@@ -107,7 +110,7 @@ export class AlquilerFormularioComponent implements OnInit {
       case LS.TAG_CASA:
         // PARA CASA
         if (this.accion === LS.ACCION_CONSULTAR) {
-          this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_ALQUILER;
           this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id);
         } else if (this.accion === LS.ACCION_NUEVO) {
           this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
@@ -120,7 +123,7 @@ export class AlquilerFormularioComponent implements OnInit {
       case LS.TAG_COCHERA:
         // PARA COCHERA
         if (this.accion === LS.ACCION_CONSULTAR) {
-          this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_ALQUILER;
           this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
         } else if (this.accion === LS.ACCION_NUEVO) {
           this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
@@ -129,12 +132,24 @@ export class AlquilerFormularioComponent implements OnInit {
             cochera: null
           }
         }
-        
+        break;
+      case LS.TAG_HABITACION:
+        // PARA HABITACION
+        if (this.accion === LS.ACCION_CONSULTAR) {
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_ALQUILER;
+          this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
+        } else if (this.accion === LS.ACCION_NUEVO) {
+          this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
+          this.parametroFormulario = {
+            accion: this.accion,
+            habitacion: null
+          }
+        }
         break;
       case LS.TAG_LOCAL:
         // PARA LOCAL
         if (this.accion === LS.ACCION_CONSULTAR) {
-          this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_ALQUILER;
           this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
         } else if (this.accion === LS.ACCION_NUEVO) {
           this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
@@ -147,7 +162,7 @@ export class AlquilerFormularioComponent implements OnInit {
       case LS.TAG_LOTE:
         // PARA LOTE
         if (this.accion === LS.ACCION_CONSULTAR) {
-          this.tituloForm = LS.TITULO_FORM_CONSULTAR_VENTA;
+          this.tituloForm = LS.TITULO_FORM_CONSULTAR_ALQUILER;
           this.traerParaEdicion(this.parametrosFormulario.alquilerSeleccionado.id)
         } else if (this.accion === LS.ACCION_NUEVO) {
           this.tituloForm = LS.TITULO_FORM_NUEVO_ALQUILER;
@@ -177,12 +192,13 @@ export class AlquilerFormularioComponent implements OnInit {
   }
 
   mostrarPropiedadEnFormulario(alquiler: Alquiler, alquilerDto) {
+    this.fechahasta = new Date(alquilerDto.fechahasta);
+    this.fechadesde = new Date(alquilerDto.fechadesde);
     switch (this.tipopropiedad) {
       case LS.TAG_APARTAMENTO:
         // MOSTRAR APARTAMENTO
         this.propiedad = alquilerDto.apartamento_id;
         this.codigo = alquilerDto.apartamento_id.codigo;
-        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
           apartamento: alquilerDto.apartamento_id // apartamento_id es el dtoApartamento
@@ -192,7 +208,6 @@ export class AlquilerFormularioComponent implements OnInit {
         // MOSTRAR CASA
         this.propiedad = alquilerDto.casa_id;
         this.codigo = alquilerDto.casa_id.codigo;
-        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
           casa: alquilerDto.casa_id // casa_id es el dtoCasa
@@ -202,17 +217,24 @@ export class AlquilerFormularioComponent implements OnInit {
         // MOSTRAR COCHERA
         this.propiedad = alquilerDto.cochera_id;
         this.codigo = alquilerDto.cochera_id.codigo;
-        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
           cochera: alquilerDto.cochera_id // cochera_id es el dtoCochera
+        }
+        break;
+      case LS.TAG_HABITACION:
+        // MOSTRAR HABITCION
+        this.propiedad = alquilerDto.habitacion_id;
+        this.codigo = alquilerDto.habitacion_id.codigo;
+        this.parametroFormulario = {
+          accion: this.accion,
+          habitacion: alquilerDto.habitacion_id // habitacion_id es el dtoCochera
         }
         break;
       case LS.TAG_LOCAL:
         // MOSTRAR LOCAL
         this.propiedad = alquilerDto.local_id;
         this.codigo = alquilerDto.local_id.codigo;
-        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
           local: alquilerDto.local_id // local_id es el dtoLocal
@@ -222,7 +244,6 @@ export class AlquilerFormularioComponent implements OnInit {
         // MOSTRAR LOTE
         this.propiedad = alquilerDto.lote_id;
         this.codigo = alquilerDto.lote_id.codigo;
-        this.fechacontrato = new Date(alquilerDto.fechacontrato);
         this.parametroFormulario = {
           accion: this.accion,
           lote: alquilerDto.lote_id // lote_id es el dtoLocal
@@ -254,6 +275,9 @@ export class AlquilerFormularioComponent implements OnInit {
         break;
       case LS.TAG_COCHERA:
         this.buscarCochera();
+        break;
+      case LS.TAG_HABITACION:
+        this.buscarHabitacion();
         break;
       case LS.TAG_LOCAL:
         this.buscaLocal();
@@ -359,6 +383,39 @@ export class AlquilerFormularioComponent implements OnInit {
     }
   }
 
+  // HABITACION
+  buscarHabitacion() {
+    const modalRef = this.modalService.open(HabitacionesListadoComponent, {size: 'lg', keyboard: true });
+    let parametros = {
+      codigo: this.codigo,
+      contrato: 'A',
+      ubigeo: this.ubigeo
+    }
+    modalRef.componentInstance.isModal = true;
+    modalRef.componentInstance.parametrosBusqueda = parametros;
+    modalRef.result.then((result) => {
+      this.propiedad = result;
+      this.codigo = result.codigo; // result es habitacionTO
+      this.alquiler.habitacion_id = result.id;
+      console.log('datos alq');
+      console.log(this.alquiler);
+      // para consultar y editar en modal casa
+      this.cargando = true;
+      this.habitacionService.mostrarHabitacion(this.alquiler.habitacion_id, this);
+      // this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      // this.auth.agregarmodalopenclass();
+    });
+  }
+
+  despuesDeMostrarHabitacion(data) { // el dtoCochera
+    this.cargando = false;
+    this.parametroFormulario = {
+      accion: LS.ACCION_CONSULTAR,
+      habitacion: data
+    }
+  }
+
   // LOCAL
   buscaLocal() {
     const modalRef = this.modalService.open(LocalesListadoComponent, {size: 'lg', keyboard: true });
@@ -438,11 +495,11 @@ export class AlquilerFormularioComponent implements OnInit {
     this.cargando = true;
     console.log(this.utilService.obtenerFechaActual());
     console.log(new Date(this.utilService.obtenerFechaActual()));
-    this.alquiler.fecha = this.utilService.obtenerFechaActual();
-    console.log('fecha contrato');
-    console.log(this.fechacontrato);
-    this.alquiler.fechacontrato = this.utilService.formatearDateToStringYYYYMMDD(this.fechacontrato);
-    console.log(this.alquiler.fecha);
+    console.log('fecha hasta');
+    console.log(this.fechahasta);
+    this.alquiler.fechadesde = this.utilService.formatearDateToStringYYYYMMDD(this.fechadesde);
+    this.alquiler.fechahasta = this.utilService.formatearDateToStringYYYYMMDD(this.fechahasta);
+    console.log(this.alquiler.fechadesde);
     console.log('Alquiler antes de ingresar');
     console.log(this.alquiler);
     this.alquilerService.ingresarAlquiler(this.alquiler, this);

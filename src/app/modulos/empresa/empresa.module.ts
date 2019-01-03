@@ -65,6 +65,8 @@ import { ImagenModalComponent } from '../componentes/imagen-modal/imagen-modal.c
 import { IconAccionComponent } from '../componentes/icon-accion/icon-accion.component';
 import { VentaFormularioComponent } from './componentes/venta-formulario/venta-formulario.component';
 import { AlquilerFormularioComponent } from './componentes/alquiler-formulario/alquiler-formulario.component';
+import { Autonumeric2Directive } from 'src/app/directivas/autonumeric2/autonumeric2.directive';
+import { SpanAccionComponent } from '../componentes/span-accion/span-accion.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -111,8 +113,11 @@ import { AlquilerFormularioComponent } from './componentes/alquiler-formulario/a
     TooltipReaderComponent,
     PinnedCellComponent,
     IconAccionComponent,
+    SpanAccionComponent,
     VentaFormularioComponent,
-    AlquilerFormularioComponent
+    AlquilerFormularioComponent,
+
+    Autonumeric2Directive
   ],
   imports: [
     ComponentesModule,
@@ -154,6 +159,7 @@ import { AlquilerFormularioComponent } from './componentes/alquiler-formulario/a
     ApartamentosListadoComponent,
     CasasListadoComponent,
     CocherasListadoComponent,
+    HabitacionesListadoComponent,
     LocalesListadoComponent,
     LotesListadoComponent,
     ConfirmacionComponent,
@@ -164,7 +170,8 @@ import { AlquilerFormularioComponent } from './componentes/alquiler-formulario/a
     BotonOpcionesComponent,
     TooltipReaderComponent,
     PinnedCellComponent,
-    IconAccionComponent
+    IconAccionComponent,
+    SpanAccionComponent
   ],
   providers: [
     NgbActiveModal,

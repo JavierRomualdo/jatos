@@ -39,7 +39,7 @@ export class LocalesComponent implements OnInit {
 
   ngOnInit() {
     this.listarLocales(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this);
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'V');
   }
 
   // proviene del menu

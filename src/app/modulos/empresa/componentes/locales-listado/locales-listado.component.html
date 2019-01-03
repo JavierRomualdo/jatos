@@ -1,27 +1,28 @@
 <div class="modal-primary"> <!--*ngIf="listadoLocales?.length>0"-->
-  <div class="card border-primary animated fadeIn">
-    <div class="modal-header p-2" *ngIf="isModal">
-      {{constantes.TAG_LOCAL_LISTADO}}
+  <div class="card animated fadeIn">
+    <div class="card-header bg-primary p-2" *ngIf="isModal">
+      <strong>{{constantes.TAG_LOCAL_LISTADO}}</strong>
       <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <div class="card-header p-2 bg-primary" *ngIf="!isModal">
-      <i class="fa fa-align-justify"></i> {{constantes.TAG_LOCAL_LISTADO}}
+    <div class="card-header p-1" *ngIf="!isModal">
+      <!-- <i class="fa fa-align-justify"></i>  -->
+      <strong>{{constantes.TAG_LOCAL_LISTADO}}</strong>
       <div class="card-header-actions">
         <div class="btn-group">
-          <button type="button" class="btn btn-sm btn-default mr-1" id="btnImprimir" placement="top" (click)="nuevoLocal()"
+          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top" (click)="nuevoLocal()"
             ngbTooltip="{{constantes.LABEL_NUEVO}}" container="body" title="{{constantes.ATAJO_NUEVO}}">
             <i class="{{constantes.ICON_NUEVO}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_NUEVO}}</span>
           </button>
-          <button type="button" class="btn btn-sm btn-default mr-1" id="btnImprimir" placement="top"
+          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top"
             ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
             <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
           </button>
-          <button type="button" class="btn btn-sm btn-default mr-1" id="btnExportar" placement="top"
+          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top"
             ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
             <i class="{{constantes.ICON_EXPORTAR}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_EXPORTAR}}</span>
@@ -49,7 +50,7 @@
           </div>
         </div>
       </div>
-      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 268px);" class="ag-theme-balham" [rowData]="listadoLocales"
+      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listadoLocales"
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
@@ -57,9 +58,9 @@
       </ag-grid-angular>
       <!--(filterChanged)="actualizarFilas()"-->
     </div>
+    <p-contextMenu #menuOpciones appendTo="body" [model]="opciones" [baseZIndex]="1100"></p-contextMenu>
   </div>
 </div>
-<p-contextMenu #menuOpciones appendTo="body" [model]="opciones" [baseZIndex]="1100"></p-contextMenu>
 
 <app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
 

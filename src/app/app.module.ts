@@ -23,12 +23,14 @@ import { LoginService } from './login.service';
 import { LoginComponent } from './componentesgenerales/login/login.component';
 import { Error404Component } from './componentesgenerales/error404/error404.component';
 import { ToastrModule } from 'ngx-toastr';
+// import { Autonumeric2Directive } from './directivas/autonumeric2/autonumeric2.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    Error404Component
+    Error404Component,
+    // Autonumeric2Directive
   ],
   exports: [
     Error404Component
