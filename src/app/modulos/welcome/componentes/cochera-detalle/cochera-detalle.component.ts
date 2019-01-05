@@ -1,25 +1,25 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Cochera } from "../../../../../entidades/entidad.cochera";
-import { CocheraMensaje } from "../../../../../entidades/entidad.cocheramensaje";
-import { FileItem } from "../../../../../entidades/file-item";
-import { Cocheraservicio } from "../../../../../entidades/entidad.cocheraservicio";
-import { Foto } from "../../../../../entidades/entidad.foto";
-import { Servicios } from "../../../../../entidades/entidad.servicios";
-import { Persona } from "../../../../../entidades/entidad.persona";
-import { UbigeoGuardar } from "../../../../../entidades/entidad.ubigeoguardar";
-import { ActivatedRoute } from "@angular/router";
-import { ApiRequest2Service } from "../../../../../servicios/api-request2.service";
-import { ToastrService } from "ngx-toastr";
-import { Ubigeo } from "../../../../../entidades/entidad.ubigeo";
+import { Component, OnInit, Input } from '@angular/core';
+import { Cochera } from 'src/app/entidades/entidad.cochera';
+import { CocheraMensaje } from 'src/app/entidades/entidad.cocheramensaje';
+import { FileItem } from 'src/app/entidades/file-item';
+import { Servicios } from 'src/app/entidades/entidad.servicios';
+import { Cocheraservicio } from 'src/app/entidades/entidad.cocheraservicio';
+import { Foto } from 'src/app/entidades/entidad.foto';
+import { Persona } from 'src/app/entidades/entidad.persona';
+import { UbigeoGuardar } from 'src/app/entidades/entidad.ubigeoguardar';
+import { ActivatedRoute } from '@angular/router';
+import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
+import { ToastrService } from 'ngx-toastr';
+import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 
 @Component({
-  selector: "app-cocheradetalle",
-  templateUrl: "./cocheradetalle.component.html",
-  styleUrls: ["./cocheradetalle.component.css"]
+  selector: 'app-cochera-detalle',
+  templateUrl: './cochera-detalle.component.html',
+  styleUrls: ['./cochera-detalle.component.css']
 })
-export class CocheradetalleComponent implements OnInit {
-  @Input()
-  id;
+export class CocheraDetalleComponent implements OnInit {
+
+  @Input() id;
   public cochera: Cochera;
   public mensaje: CocheraMensaje;
   public cargando: Boolean = false;
@@ -34,8 +34,8 @@ export class CocheradetalleComponent implements OnInit {
 
   constructor(
     private _activedRoute: ActivatedRoute,
-    public api: ApiRequest2Service,
-    public toastr: ToastrService
+    private api: ApiRequest2Service,
+    private toastr: ToastrService
   ) {
     this.cochera = new Cochera();
     this.mensaje = new CocheraMensaje();

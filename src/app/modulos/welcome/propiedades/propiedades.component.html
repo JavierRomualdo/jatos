@@ -212,20 +212,20 @@
           <!--Detalle de propiedades-->
           <div class="card-body" *ngIf="!cargando && idPropiedad!=0">
             <div *ngIf="parametros.tipopropiedad=='Casas'">
-              <app-propiedaddetalle [id]="idPropiedad"></app-propiedaddetalle>
+              <app-casa-detalle [id]="idPropiedad"></app-casa-detalle>
             </div>
             <div *ngIf="parametros.tipopropiedad=='Cocheras'" [id]="idPropiedad">
-              <app-cocheradetalle [id]="idPropiedad"></app-cocheradetalle>
+              <app-cochera-detalle [id]="idPropiedad"></app-cochera-detalle>
             </div>
             <div *ngIf="parametros.tipopropiedad=='Apartamentos'" [id]="idPropiedad"></div>
             <div *ngIf="parametros.tipopropiedad=='Habitaciones'" [id]="idPropiedad">
-              <app-habitaciondetalle [id]="idPropiedad"></app-habitaciondetalle>
+              <app-habitacion-detalle [id]="idPropiedad"></app-habitacion-detalle>
             </div>
             <div *ngIf="parametros.tipopropiedad=='Locales'" [id]="idPropiedad">
-              <app-localdetalle [id]="idPropiedad"></app-localdetalle>
+              <app-local-detalle [id]="idPropiedad"></app-local-detalle>
             </div>
             <div *ngIf="parametros.tipopropiedad=='Lotes'">
-              <app-lotedetalle [id]="idPropiedad"></app-lotedetalle>
+              <app-lote-detalle [id]="idPropiedad"></app-lote-detalle>
             </div>
           </div>
         </div>

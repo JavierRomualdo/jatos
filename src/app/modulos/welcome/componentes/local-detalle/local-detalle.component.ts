@@ -1,30 +1,31 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Local } from 'src/app/entidades/entidad.local';
+import { LocalMensaje } from 'src/app/entidades/entidad.localmensaje';
+import { FileItem } from 'src/app/entidades/file-item';
+import { Servicios } from 'src/app/entidades/entidad.servicios';
+import { Localservicio } from 'src/app/entidades/entidad.localservicio';
+import { Foto } from 'src/app/entidades/entidad.foto';
+import { Persona } from 'src/app/entidades/entidad.persona';
+import { UbigeoGuardar } from 'src/app/entidades/entidad.ubigeoguardar';
+import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
-import { ApiRequest2Service } from '../../../../../../servicios/api-request2.service';
-import { FileItem } from '../../../../../../entidades/file-item';
-import { Servicios } from '../../../../../../entidades/entidad.servicios';
-import { Foto } from '../../../../../../entidades/entidad.foto';
-import { Persona } from '../../../../../../entidades/entidad.persona';
-import { UbigeoGuardar } from '../../../../../../entidades/entidad.ubigeoguardar';
-import { Ubigeo } from '../../../../../../entidades/entidad.ubigeo';
-import { Habitacion } from '../../../../../../entidades/entidad.habitacion';
-import { Habitacionservicio } from '../../../../../../entidades/entidad.habitacionservicio';
-import { HabitacionMensaje } from '../../../../../../entidades/entidad.habitacionmensaje';
+import { ActivatedRoute } from '@angular/router';
+import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 
 @Component({
-  selector: 'app-habitaciondetalle',
-  templateUrl: './habitaciondetalle.component.html',
-  styleUrls: ['./habitaciondetalle.component.css']
+  selector: 'app-local-detalle',
+  templateUrl: './local-detalle.component.html',
+  styleUrls: ['./local-detalle.component.css']
 })
-export class HabitacionDetalleComponent implements OnInit {
+export class LocalDetalleComponent implements OnInit {
+
   @Input() id;
-  public habitacion: Habitacion;
-  public mensaje: HabitacionMensaje;
+  public local: Local;
+  public mensaje: LocalMensaje;
   public cargando: Boolean = false;
   public archivos: FileItem[] = [];
   public servicios: Servicios[];
-  public habitacionservicios: Habitacionservicio[];
+  public localservicios: Localservicio[];
   public fotos: Foto[];
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
@@ -36,8 +37,8 @@ export class HabitacionDetalleComponent implements OnInit {
     public api: ApiRequest2Service,
     public toastr: ToastrService,
   ) {
-    this.habitacion = new Habitacion();
-    this.mensaje = new HabitacionMensaje();
+    this.local = new Local();
+    this.mensaje = new LocalMensaje();
     this.fotos = [];
     this.servicios = [];
     this.persona = new Persona();
@@ -51,25 +52,25 @@ export class HabitacionDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarHabitacion(this.id);
+      this.listarLocal(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarHabitacion(params['id']);
+    //   this.listarLocal(params['id']);
     // });
   }
 
-  listarHabitacion(id) {
+  listarLocal(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
-    this.api.get2('habitaciones/' + id).then(
+    this.api.get2('locales/' + id).then(
       (res) => {
         // console.log(res);
-        this.habitacion = res;
-        this.listaLP = res.habitacionpersonaList;
+        this.local = res;
+        this.listaLP = res.localpersonaList;
         this.persona = this.listaLP[0];
         this.ubigeo = res.ubigeo;
         this.servicios = res.serviciosList;
-        this.habitacionservicios = res.habitacionservicioList;
+        this.localservicios = res.localservicioList;
 
         for (const item of res.fotosList) {
           console.log('foto: ');
@@ -80,12 +81,12 @@ export class HabitacionDetalleComponent implements OnInit {
         console.log(this.fotos);
         // this.fotos = res.fotosList;
         console.log('traido para edicion');
-        console.log(this.habitacion);
-        this.habitacion.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+        console.log(this.local);
+        this.local.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
         // traer archivos de firebase storage
         // this._cargaImagenes.getImagenes(res.path);
 
-        // aqui metodo para mostrar todas las imagenes de esta habitacion ....
+        // aqui metodo para mostrar todas las imagenes de este local ....
         // this.imagen = res.foto;
         // this.imagenAnterior = res.foto;
         this.cargando = false;
@@ -106,13 +107,13 @@ export class HabitacionDetalleComponent implements OnInit {
 
   enviarmensaje() {
     this.cargando = true;
-    this.mensaje.habitacion_id = this.habitacion.id;
-    this.api.post2('habitacionmensaje', this.mensaje).then(
+    this.mensaje.local_id = this.local.id;
+    this.api.post2('localmensaje', this.mensaje).then(
       (res) => {
         console.log('se ha enviado mensaje: ');
         console.log(res);
         this.toastr.success('Mensaje enviado');
-        this.mensaje = new HabitacionMensaje();
+        this.mensaje = new LocalMensaje();
         this.cargando = false;
       },
       (error) => {

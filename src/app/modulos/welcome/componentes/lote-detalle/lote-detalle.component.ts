@@ -1,30 +1,29 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Lote } from 'src/app/entidades/entidad.lote';
+import { LoteMensaje } from 'src/app/entidades/entidad.lotemensaje';
+import { FileItem } from 'src/app/entidades/file-item';
+import { Servicios } from 'src/app/entidades/entidad.servicios';
+import { Foto } from 'src/app/entidades/entidad.foto';
+import { Persona } from 'src/app/entidades/entidad.persona';
+import { UbigeoGuardar } from 'src/app/entidades/entidad.ubigeoguardar';
 import { ActivatedRoute } from '@angular/router';
-import { ApiRequest2Service } from '../../../../../servicios/api-request2.service';
-import { Casa } from '../../../../../entidades/entidad.casa';
-import { FileItem } from '../../../../../entidades/file-item';
-import { Servicios } from '../../../../../entidades/entidad.servicios';
-import { Casaservicio } from '../../../../../entidades/entidad.casaservicio';
-import { Foto } from '../../../../../entidades/entidad.foto';
-import { Persona } from '../../../../../entidades/entidad.persona';
-import { UbigeoGuardar } from '../../../../../entidades/entidad.ubigeoguardar';
-import { Ubigeo } from '../../../../../entidades/entidad.ubigeo';
+import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
-import { CasaMensaje } from '../../../../../entidades/entidad.casamensaje';
+import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 
 @Component({
-  selector: 'app-propiedaddetalle',
-  templateUrl: './propiedaddetalle.component.html',
-  styleUrls: ['./propiedaddetalle.component.css']
+  selector: 'app-lote-detalle',
+  templateUrl: './lote-detalle.component.html',
+  styleUrls: ['./lote-detalle.component.css']
 })
-export class PropiedadDetalleComponent implements OnInit {
+export class LoteDetalleComponent implements OnInit {
+
   @Input() id;
-  public casa: Casa;
-  public mensaje: CasaMensaje;
+  public lote: Lote;
+  public mensaje: LoteMensaje;
   public cargando: Boolean = false;
   public archivos: FileItem[] = [];
   public servicios: Servicios[];
-  public casaservicios: Casaservicio[];
   public fotos: Foto[];
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
@@ -36,15 +35,14 @@ export class PropiedadDetalleComponent implements OnInit {
     public api: ApiRequest2Service,
     public toastr: ToastrService,
   ) {
-    this.casa = new Casa();
-    this.mensaje = new CasaMensaje();
+    this.lote = new Lote();
+    this.mensaje = new LoteMensaje();
     this.fotos = [];
     this.servicios = [];
     this.persona = new Persona();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
-    this.ubigeo.distrito = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
     this.archivos = [];
     this.listaLP = [];
@@ -52,26 +50,25 @@ export class PropiedadDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarPropiedad(this.id);
+      this.listarLotes(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarPropiedad(params['id']);
+    //   this.listarLotes(params['id']);
     // });
   }
 
-  listarPropiedad(id) {
+  listarLotes(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
-    this.api.get2('casas/' + id).then(
+    this.api.get2('lotes/' + id).then(
       (data) => {
-        // console.log(data.);
         if (data && data.extraInfo) {
-          this.casa = data.extraInfo;
-          this.listaLP = data.extraInfo.casapersonaList;
+          // console.log(res);
+          this.lote = data.extraInfo;
+          this.listaLP = data.extraInfo.lotepersonaList;
           this.persona = this.listaLP[0];
           this.ubigeo = data.extraInfo.ubigeo;
           this.servicios = data.extraInfo.serviciosList;
-          this.casaservicios = data.extraInfo.casaservicioList;
 
           for (const item of data.extraInfo.fotosList) {
             console.log('foto: ');
@@ -82,12 +79,12 @@ export class PropiedadDetalleComponent implements OnInit {
           console.log(this.fotos);
           // this.fotos = res.fotosList;
           console.log('traido para edicion');
-          console.log(this.casa);
-          this.casa.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+          console.log(this.lote);
+          this.lote.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
           // traer archivos de firebase storage
           // this._cargaImagenes.getImagenes(res.path);
 
-          // aqui metodo para mostrar todas las imagenes de este propiedad ....
+          // aqui metodo para mostrar todas las imagenes de este lote ....
           // this.imagen = res.foto;
           // this.imagenAnterior = res.foto;
           this.cargando = false;
@@ -98,7 +95,7 @@ export class PropiedadDetalleComponent implements OnInit {
           this.errors = [];
           const errors = error.json();
           console.log('Error');
-          // this.cargando = false;
+          this.cargando = false;
           /*for (const key in errors) {
             this.errors.push(errors[key]);
           }*/
@@ -109,13 +106,13 @@ export class PropiedadDetalleComponent implements OnInit {
 
   enviarmensaje() {
     this.cargando = true;
-    this.mensaje.casa_id = this.casa.id;
-    this.api.post2('casamensaje', this.mensaje).then(
+    this.mensaje.lote_id = this.lote.id;
+    this.api.post2('lotemensaje', this.mensaje).then(
       (res) => {
         console.log('se ha enviado mensaje: ');
         console.log(res);
         this.toastr.success('Mensaje enviado');
-        this.mensaje = new CasaMensaje();
+        this.mensaje = new LoteMensaje();
         this.cargando = false;
       },
       (error) => {
@@ -134,7 +131,7 @@ export class PropiedadDetalleComponent implements OnInit {
   }
 
   private handleError(error: any): void {
-    // this.cargando = false;
+    this.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');
   }
 }
