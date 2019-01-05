@@ -19,14 +19,14 @@ import { MenuItem } from 'primeng/api';
 export class CocherasComponent implements OnInit {
 
   public cargando: Boolean = false;
-  public vermensajes: Boolean = false;
+  public vermensajes: boolean = false;
   public estadomensajes: Boolean = true;
   public confirmarcambioestado: Boolean = false;
-  public cocheras: any = []; // lista cocheras
   public cochera_id: number;
   public mensajes: CocheraMensaje[];
   public parametros: Cochera;
-  public parametrosListado: any = {};
+  public parametrosListado: any = null;
+  public parametrosMensaje: any = null;
   public activar: boolean = false;
   public constantes: any = LS;
 
@@ -44,7 +44,7 @@ export class CocherasComponent implements OnInit {
 
   ngOnInit() {
     this.listarCocheras(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'A');
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'A');
   }
 
   // proviene del menu
@@ -62,7 +62,7 @@ export class CocherasComponent implements OnInit {
     this.parametros.ubigeo_id = new Ubigeo();
     this.parametrosListado = {};
     this.parametrosListado.listar = false;
-    this.cocheras = [];
+    this.parametrosMensaje = {};
     this.listarCocheras(true);
   }
 
@@ -142,8 +142,33 @@ export class CocherasComponent implements OnInit {
   }
 
   ejecutarAccion(parametros) {
-    this.abrirCocheras(parametros);
+    if (parametros.verMensajes) {
+      this.verMensajes(parametros);
+    } else {
+      this.parametrosMensaje = null;
+      this.vermensajes = false;
+      this.abrirCocheras(parametros);
+    }
   }
+
+  // cuando hago click en boton de regresar en listado de mensajes
+  ejecutarAccionMensaje(parametros) {
+    if (parametros.cerrarListado) {
+      this.parametrosMensaje = null;
+      this.vermensajes = false;
+      this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'A');
+    }
+  }
+
+  verMensajes(parametros) {
+    this.vermensajes = true;
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, false, 'A');
+    // this.items = this.utilService.generarItemsMenuesNotificaciones(this);
+    this.parametrosMensaje = parametros;
+  }
+
+  // para los mensajes
+  consultarNotificaciones(activos: boolean) {}
 
   listarmensajes(cochera_id, estado) {
     console.log('estado del mensaje: ');

@@ -16,6 +16,7 @@ export class CasaTO {
     tjardin: boolean = false;
     tcochera: boolean = false;
     contrato: string = "";
+    nmensajes: number = 0;
     estadocontrato: string = 'L';
     estado: boolean = false;
 
@@ -41,6 +42,7 @@ export class CasaTO {
         this.tjardin = data.tjardin ? data.tjardin : this.tjardin;
         this.tcochera = data.tcochera ? data.tcochera : this.tcochera;
         this.contrato = data.contrato ? data.contrato : this.contrato;
+        this.nmensajes = data.nmensajes ? data.nmensajes : this.nmensajes;
         this.estadocontrato = data.estadocontrato ? data.estadocontrato : this.estadocontrato;
         this.estado = data.estado ? data.estado : this.estado;
     }

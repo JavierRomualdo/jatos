@@ -124,7 +124,8 @@
             [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
             [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="ventaSeleccionado = $event.node.data"
             (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
-            (cellFocused)="filaFocused($event)" (cellDoubleClicked)="ventaSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()">
+            (cellFocused)="filaFocused($event)" (cellDoubleClicked)="ventaSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
+            [frameworkComponents]="frameworkComponents">
           </ag-grid-angular>
           <!--(filterChanged)="actualizarFilas()"-->
         </div>

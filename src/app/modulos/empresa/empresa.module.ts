@@ -67,6 +67,10 @@ import { VentaFormularioComponent } from './componentes/venta-formulario/venta-f
 import { AlquilerFormularioComponent } from './componentes/alquiler-formulario/alquiler-formulario.component';
 import { Autonumeric2Directive } from 'src/app/directivas/autonumeric2/autonumeric2.directive';
 import { SpanAccionComponent } from '../componentes/span-accion/span-accion.component';
+import { BotonAccionComponent } from '../componentes/boton-accion/boton-accion.component';
+import { MensajesListadoComponent } from './componentes/mensajes-listado/mensajes-listado.component';
+import { SpanMensajeComponent } from '../componentes/span-mensaje/span-mensaje.component';
+import { MensajeModalComponent } from '../componentes/mensaje-modal/mensaje-modal.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -106,6 +110,7 @@ import { SpanAccionComponent } from '../componentes/span-accion/span-accion.comp
     LocalesListadoComponent,
     LotesListadoComponent,
     ImagenModalComponent,
+    MensajeModalComponent,
 
     InputEstadoComponent,
     ImagenAccionComponent,
@@ -114,10 +119,15 @@ import { SpanAccionComponent } from '../componentes/span-accion/span-accion.comp
     PinnedCellComponent,
     IconAccionComponent,
     SpanAccionComponent,
+    SpanMensajeComponent,
     VentaFormularioComponent,
     AlquilerFormularioComponent,
 
-    Autonumeric2Directive
+    Autonumeric2Directive,
+
+    BotonAccionComponent,
+
+    MensajesListadoComponent
   ],
   imports: [
     ComponentesModule,
@@ -164,6 +174,7 @@ import { SpanAccionComponent } from '../componentes/span-accion/span-accion.comp
     LotesListadoComponent,
     ConfirmacionComponent,
     ImagenModalComponent,
+    MensajeModalComponent,
 
     InputEstadoComponent,
     ImagenAccionComponent,
@@ -171,7 +182,9 @@ import { SpanAccionComponent } from '../componentes/span-accion/span-accion.comp
     TooltipReaderComponent,
     PinnedCellComponent,
     IconAccionComponent,
-    SpanAccionComponent
+    SpanAccionComponent,
+    SpanMensajeComponent,
+    BotonAccionComponent
   ],
   providers: [
     NgbActiveModal,

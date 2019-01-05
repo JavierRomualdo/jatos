@@ -11,6 +11,7 @@ export class CocheraTO {
     preciocontrato: number = 0.00;
     ganancia: number = 0.00;
     contrato: string = "";
+    nmensajes: number = 0;
     estadocontrato: string = 'L';
     estado: boolean = false;
 
@@ -31,6 +32,7 @@ export class CocheraTO {
         this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
         this.ganancia = data.ganancia ? data.ganancia : this.ganancia;
         this.contrato = data.contrato ? data.contrato : this.contrato;
+        this.nmensajes = data.nmensajes ? data.nmensajes : this.nmensajes;
         this.estadocontrato = data.estadocontrato ? data.estadocontrato : this.estadocontrato;
         this.estado = data.estado ? data.estado : this.estado;
     }

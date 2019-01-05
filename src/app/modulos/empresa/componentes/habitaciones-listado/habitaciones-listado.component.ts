@@ -168,7 +168,7 @@ export class HabitacionesListadoComponent implements OnInit {
     this.parametrosFoto = null;
  } //
   
-  /**Modal */
+  /**Modal de habitacion-listado*/
   filaSeleccionar() {
     this.enviarItem(this.objetoSeleccionado);
   }
@@ -188,6 +188,7 @@ export class HabitacionesListadoComponent implements OnInit {
 
   generarOpciones() {
     let perConsultar = true;
+    let perMensajes = true;
     let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
@@ -222,6 +223,12 @@ export class HabitacionesListadoComponent implements OnInit {
         icon: LS.ICON_ELIMINAR,
         disabled: !perEliminar,
         command: () => perEliminar ? this.eliminarHabitacion() : null
+      },
+      {
+        label: LS.TAG_MENSAJES,
+        icon: LS.ICON_NOTIFICACION,
+        disabled: !perMensajes,
+        command: () => perMensajes ? this.verMensajes() : null
       }
     ];
   }
@@ -235,7 +242,8 @@ export class HabitacionesListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        habitacion: null
+        habitacion: null,
+        verMensajes: false
       }
       this.enviarAccion.emit(parametros);
     }
@@ -251,7 +259,8 @@ export class HabitacionesListadoComponent implements OnInit {
     this.cargando = false;
     let parametros = {
       accion: this.accion,
-      habitacion: data
+      habitacion: data,
+      verMensajes: false
     }
     this.enviarAccion.emit(parametros);
   }
@@ -324,6 +333,18 @@ export class HabitacionesListadoComponent implements OnInit {
     console.log('se ha elimnado habitacion:');
     console.log(data);
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
+  }
+
+  verMensajes() {
+    let parametros = {
+      propiedad: LS.TAG_HABITACION,
+      propiedad_id: this.objetoSeleccionado.id,
+      codigo: this.objetoSeleccionado.codigo,
+      activos: false,
+      nmensajes: this.objetoSeleccionado.nmensajes,
+      verMensajes: true
+    }
+    this.enviarAccion.emit(parametros);
   }
 
   imprimirHabitaciones() {}

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ApartamentoMensaje } from 'src/app/entidades/entidad.apartamentomensaje';
 import { Apartamento } from 'src/app/entidades/entidad.apartamento';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
-import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { ModalApartamentoComponent } from './modal-apartamento/modal-apartamento.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
@@ -20,7 +18,7 @@ import { UtilService } from 'src/app/servicios/util/util.service';
 export class ApartamentosComponent implements OnInit {
 
   public cargando: Boolean = false;
-  public vermensajes: Boolean = false;
+  public vermensajes: boolean = false;
   public estadomensajes: Boolean = true;
   public confirmarcambioestado: Boolean = false;
   public apartamentos: any = []; // lista apartamentos
@@ -28,7 +26,8 @@ export class ApartamentosComponent implements OnInit {
   public apartamento_id: number;
   public mensajes: ApartamentoMensaje[];
   public parametros: Apartamento;
-  public parametrosListado: any = {};
+  public parametrosListado: any = null;
+  public parametrosMensaje: any = null;
   public activar: boolean = false;
   public constantes: any = LS;
 
@@ -45,7 +44,7 @@ export class ApartamentosComponent implements OnInit {
 
   ngOnInit() {
     this.listarApartamentos(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'V');
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'V');
   }
 
   // proviene del menu
@@ -63,6 +62,7 @@ export class ApartamentosComponent implements OnInit {
     this.parametrosListado = {};
     this.parametrosListado.listar = false;
     this.apartamentos = [];
+    this.parametrosMensaje = {};
     this.listarApartamentos(true);
   }
 
@@ -145,8 +145,33 @@ export class ApartamentosComponent implements OnInit {
   }
 
   ejecutarAccion(parametros) {
-    this.abrirApartamentos(parametros);
+    if (parametros.verMensajes) {
+      this.verMensajes(parametros);
+    } else {
+      this.parametrosMensaje = null;
+      this.vermensajes = false;
+      this.abrirApartamentos(parametros);
+    }
   }
+
+  // cuando hago click en boton de regresar en listado de mensajes
+  ejecutarAccionMensaje(parametros) {
+    if (parametros.cerrarListado) {
+      this.parametrosMensaje = null;
+      this.vermensajes = false;
+      this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'V');
+    }
+  }
+
+  verMensajes(parametros) {
+    this.vermensajes = true;
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, false, 'V');
+    // this.items = this.utilService.generarItemsMenuesNotificaciones(this);
+    this.parametrosMensaje = parametros;
+  }
+
+  // para los mensajes
+  consultarNotificaciones(activos: boolean) {}
 
   listarmensajes(apartamento_id, estado) {
     console.log('estado del mensaje: ');

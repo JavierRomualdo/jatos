@@ -167,7 +167,7 @@ export class CasasListadoComponent implements OnInit {
     this.parametrosFoto = null;
  } //
   
-  /**Modal */
+  /**Modal de casa-listado*/
   filaSeleccionar() {
     this.enviarItem(this.objetoSeleccionado);
   }
@@ -187,6 +187,7 @@ export class CasasListadoComponent implements OnInit {
 
   generarOpciones() {
     let perConsultar = true;
+    let perMensajes = true;
     let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
@@ -221,6 +222,12 @@ export class CasasListadoComponent implements OnInit {
         icon: LS.ICON_ELIMINAR,
         disabled: !perEliminar,
         command: () => perEliminar ? this.eliminarCasa() : null
+      },
+      {
+        label: LS.TAG_MENSAJES,
+        icon: LS.ICON_NOTIFICACION,
+        disabled: !perMensajes,
+        command: () => perMensajes ? this.verMensajes() : null
       }
     ];
   }
@@ -234,7 +241,8 @@ export class CasasListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        casa: null
+        casa: null,
+        verMensajes: false
       }
       this.enviarAccion.emit(parametros);
     }
@@ -250,7 +258,8 @@ export class CasasListadoComponent implements OnInit {
     this.cargando = false;
     let parametros = {
       accion: this.accion,
-      casa: data
+      casa: data,
+      verMensajes: false
     }
     this.enviarAccion.emit(parametros);
   }
@@ -323,6 +332,18 @@ export class CasasListadoComponent implements OnInit {
     console.log('se ha elimnado casa:');
     console.log(data);
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
+  }
+
+  verMensajes() {
+    let parametros = {
+      propiedad: LS.TAG_CASA,
+      propiedad_id: this.objetoSeleccionado.id,
+      codigo: this.objetoSeleccionado.codigo,
+      activos: false,
+      nmensajes: this.objetoSeleccionado.nmensajes,
+      verMensajes: true
+    }
+    this.enviarAccion.emit(parametros);
   }
 
   imprimirCasas() {}

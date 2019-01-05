@@ -13,6 +13,7 @@ export class LS {
   public static ICON_CANCELAR = "fa fa-times";
   public static ICON_REGRESAR = "fa fa-undo";
   public static ICON_ELIMINAR = "fa fa-trash";
+  public static ICON_NOTIFICACION = "fa fa-bell-o";
   public static ICON_OCULTAR_FILTRO = "fa fa-chevron-left";
   public static ICON_MOSTRAR_FILTRO = "fa fa-chevron-right";
   public static ICON_OPCIONES = "fa fa-wrench";
@@ -60,6 +61,7 @@ export class LS {
   static TAG_LOCAL_LISTADO = "Listado de locales";
   static TAG_LOTE = "Lote";
   static TAG_LOTE_LISTADO = "Listado de lotes";
+  static TAG_MENSAJE_LISTADO = "Listado de mensajes";
   static TAG_PROPIEDAD = "Propiedad";
   static TAG_PROPIETARIO = "Propietario";
   static TAG_CLIENTE = "Cliente";
@@ -118,7 +120,15 @@ export class LS {
   static TAG_DOM = "Dom";
   static TAG_DOMINGO = "Domingo";
   static TAG_MOSTRAR_OCULTAR = "Ocultar/Mostrar";
-  
+  static TAG_NOMBRES = "Nombres";
+  static TAG_MENSAJE = "Mensaje";
+  static TAG_MENSAJES = "Mensajes";
+  static TAG_TELEFONO = "Teléfono";
+  static TAG_EMAIL = "Email";
+  static TAG_TITULO = "Titulo";
+  static TAG_ESTADO = "Estado";
+  static TAG_DATOS_PERSONALES = "Datos personales";
+
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
   public static LABEL_ACEPTAR = "Aceptar";
@@ -152,6 +162,8 @@ export class LS {
   static ACCION_EXPORTAR = "Exportar";
   static ACCION_NUEVO = "Nuevo";
   static ACCION_SELECCIONAR = 'SELECCIONAR';
+  static ACCION_VER_ALQUILER = 'Ver alquiler';
+  static ACCION_VER_VENTA = 'Ver venta';
 
   //ETIQUETAS
   static ETIQUETA_TODOS = "TODOS";
@@ -187,6 +199,7 @@ export class LS {
   public static TITULO_FORM_EDITAR_ALQUILER = "Editar alquiler";
   public static TITULO_FORM_CONSULTAR_ALQUILER = "Consultar alquiler";
   public static TITULO_ALQUILERES_LISTADO = "Listado de alquileres";
+  public static TITULO_FORM_CONSULTAR_MENSAJE = "Consultar mensaje";
 
   //
   //MENSAJES

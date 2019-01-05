@@ -1,0 +1,100 @@
+<p-dialog header="{{tituloForm}}" [(visible)]="display" modal="modal" [responsive]="true" [maximizable]="true" 
+    [baseZIndex]="10000" [style]="{width: '550px', minWidth: '550px'}" [minY]="550" (onHide)="onClose()" 
+    appendTo="body">
+    <div class="card m-0">
+      <div class="card-header p-1">
+        <strong>{{constantes.TITULO_FORM_CONSULTAR_MENSAJE}}</strong>
+      </div>
+      <div class="card-body p-1">
+        <fieldset [disabled]="accion === constantes.ACCION_CONSULTAR">
+          <form #frmAlquiler="ngForm" name="frmAlquiler" autocomplete="off">
+            <!--datos personales-->
+            <div class="card mb-1">
+              <div class="card-header pt-2 pb-2">
+                <strong>{{constantes.TAG_DATOS_PERSONALES}}</strong>
+                <div class="card-header-actions">
+                  <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosPersonales"
+                    aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosPersonales">
+                  <div class="row">
+                    <div class="form-group form-group-sm col-sm-4">
+                      <label class="control-label">
+                        <strong>{{constantes.TAG_NOMBRES}} <span class="text-primary">*</span></strong>
+                      </label>
+                      <input type="text" name="nombres" [(ngModel)]="mensaje.nombres" required placeholder="Ingrese nombres"
+                        class="form-control form-control-sm" maxlength="255">
+                    </div>
+                    <div class="form-group form-group-sm col-sm-4">
+                      <label class="control-label">
+                        <strong>{{constantes.TAG_TELEFONO}} <span class="text-primary">*</span></strong>
+                      </label>
+                      <input type="text" name="telefono" [(ngModel)]="mensaje.telefono" required placeholder="Ingrese telefono"
+                        class="form-control form-control-sm" maxlength="255">
+                    </div>
+                    <div class="form-group form-group-sm col-sm-4">
+                      <label class="control-label">
+                        <strong>{{constantes.TAG_EMAIL}} <span class="text-primary">*</span></strong>
+                      </label>
+                      <input type="text" name="email" [(ngModel)]="mensaje.email" required placeholder="Ingrese telefono"
+                        class="form-control form-control-sm" maxlength="255">
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <!--el mensaje-->
+            <div class="card mb-1">
+              <div class="card-header pt-2 pb-2">
+                <strong>{{constantes.TAG_MENSAJE}}</strong>
+                <div class="card-header-actions">
+                  <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseMensaje"
+                    aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                    <i class="fa fa-minus"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body pb-0 pt-1 collapse show" id="collapseMensaje">
+                <div class="row">
+                  <div class="form-group form-group-sm col-sm-4">
+                    <label class="control-label">
+                      <strong>{{constantes.TAG_ESTADO}} <span class="text-primary">*</span></strong>
+                    </label>
+                    <label class="switch switch-label switch-pill switch-primary control-label">
+                      <input type="checkbox" class="switch-input" [(ngModel)]="mensaje.estado" name="estado">
+                      <span class="switch-slider" data-checked="on" data-unchecked="off"></span>
+                    </label>
+                  </div>
+                  <div class="form-group form-group-sm col-sm-8">
+                    <label class="control-label">
+                      <strong>{{constantes.TAG_TITULO}} <span class="text-primary">*</span></strong>
+                    </label>
+                    <input type="text" name="titulo" [(ngModel)]="mensaje.titulo" required placeholder="Ingrese titulo"
+                      class="form-control form-control-sm" maxlength="255">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group form-group-sm col-sm-12">
+                    <label class="control-label">
+                      <strong>{{constantes.TAG_MENSAJE}} <span class="text-primary">*</span></strong>
+                    </label>
+                    <textarea class="form-control form-control-sm" [(ngModel)]="mensaje.mensaje" required name="mensaje" placeholder="Ingrese el mensaje"
+                      maxlength="255"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <!---->
+        </fieldset>
+      </div>
+    </div>
+    <p-footer>
+      <button type="button" class="btn btn-sm btn-primary mr-1" (click)="display=false">
+        <i class="fa fa-remove"></i>
+        Cerrar
+      </button>
+    </p-footer>
+ </p-dialog>

@@ -9,6 +9,7 @@ import { InputEstadoComponent } from 'src/app/modulos/componentes/input-estado/i
 import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opciones/boton-opciones.component';
 import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
+import { SpanMensajeComponent } from 'src/app/modulos/componentes/span-mensaje/span-mensaje.component';
 
 @Injectable({
   providedIn: 'root'
@@ -309,7 +310,16 @@ export class HabitacionService {
         valueGetter: (params) => {
           return params.data.tbanio ? 'SI' : 'NO';
         }
-      }
+      },
+      {
+        headerName: LS.TAG_MENSAJES,
+        headerClass: 'text-md-center',//Clase a nivel de th
+        field: 'nmensajes',
+        width: 95,
+        minWidth: 95,
+        cellRendererFramework: SpanMensajeComponent,
+        cellClass: 'text-md-center'
+      },
     );
     if (!isModal) {
       columnas.push(

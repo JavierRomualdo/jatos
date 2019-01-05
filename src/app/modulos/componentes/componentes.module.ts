@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DialogModule } from 'primeng/dialog';
+// import { MensajeModalComponent } from './mensaje-modal/mensaje-modal.component';
+// import { SpanMensajeComponent } from './span-mensaje/span-mensaje.component';
 // import { SpanAccionComponent } from './span-accion/span-accion.component';
 // import { IconAccionComponent } from './icon-accion/icon-accion.component';
 // import { BotonOpcionesComponent } from './boton-opciones/boton-opciones.component';
@@ -19,6 +21,8 @@ import { DialogModule } from 'primeng/dialog';
 //   PinnedCellComponent
 // IconAccionComponent
 // SpanAccionComponent
+// SpanMensajeComponent
+// MensajeModalComponent
 ],
   imports: [
     CommonModule,

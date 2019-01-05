@@ -168,7 +168,7 @@ export class LotesListadoComponent implements OnInit {
     this.parametrosFoto = null;
  } //
   
-  /**Modal */
+  /**Modal de lote-listado*/
   filaSeleccionar() {
     this.enviarItem(this.objetoSeleccionado);
   }
@@ -188,6 +188,7 @@ export class LotesListadoComponent implements OnInit {
 
   generarOpciones() {
     let perConsultar = true;
+    let perMensajes = true;
     let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
@@ -222,6 +223,12 @@ export class LotesListadoComponent implements OnInit {
         icon: LS.ICON_ELIMINAR,
         disabled: !perEliminar,
         command: () => perEliminar ? this.eliminarCasa() : null
+      },
+      {
+        label: LS.TAG_MENSAJES,
+        icon: LS.ICON_NOTIFICACION,
+        disabled: !perMensajes,
+        command: () => perMensajes ? this.verMensajes() : null
       }
     ];
   }
@@ -235,7 +242,8 @@ export class LotesListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        lote: null
+        lote: null,
+        verMensajes: false
       }
       this.enviarAccion.emit(parametros);
     }
@@ -251,7 +259,8 @@ export class LotesListadoComponent implements OnInit {
     this.cargando = false;
     let parametros = {
       accion: this.accion,
-      lote: data
+      lote: data,
+      verMensajes: false
     }
     this.enviarAccion.emit(parametros);
   }
@@ -326,6 +335,18 @@ export class LotesListadoComponent implements OnInit {
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
   }
 
+  verMensajes() {
+    let parametros = {
+      propiedad: LS.TAG_LOTE,
+      propiedad_id: this.objetoSeleccionado.id,
+      codigo: this.objetoSeleccionado.codigo,
+      activos: false,
+      nmensajes: this.objetoSeleccionado.nmensajes,
+      verMensajes: true
+    }
+    this.enviarAccion.emit(parametros);
+  }
+  
   imprimirCasas() {}
 
   //#region [R3] [AG-GRID] 

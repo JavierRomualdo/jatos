@@ -13,6 +13,7 @@ export class HabitacionTO {
     ncamas: number = 0;
     tbanio: boolean = false;
     contrato: string = "";
+    nmensajes: number = 0;
     estadocontrato: string = 'L';
     estado: boolean = false;
 
@@ -35,6 +36,7 @@ export class HabitacionTO {
         this.ncamas = data.ncamas ? data.ncamas : this.ncamas;
         this.tbanio = data.tbanio ? data.tbanio : this.tbanio;
         this.contrato = data.contrato ? data.contrato : this.contrato;
+        this.nmensajes = data.nmensajes ? data.nmensajes : this.nmensajes;
         this.estadocontrato = data.estadocontrato ? data.estadocontrato : this.estadocontrato;
         this.estado = data.estado ? data.estado : this.estado;
     }

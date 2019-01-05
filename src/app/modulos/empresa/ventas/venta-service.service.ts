@@ -4,9 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { LS } from 'src/app/contantes/app-constants';
 import { IconAccionComponent } from '../../componentes/icon-accion/icon-accion.component';
 import { ImagenAccionComponent } from '../../componentes/imagen-accion/imagen-accion.component';
-import { BotonOpcionesComponent } from '../../componentes/boton-opciones/boton-opciones.component';
-import { TooltipReaderComponent } from '../../componentes/tooltip-reader/tooltip-reader.component';
-import { PinnedCellComponent } from '../../componentes/pinned-cell/pinned-cell.component';
 
 @Injectable({
   providedIn: 'root'
@@ -125,43 +122,51 @@ export class VentaServiceService {
       },
       {
         headerName: LS.TAG_PRECIO_CONTRATO,
-        width: 100,
-        minWidth: 100,
+        width: 110,
+        minWidth: 110,
         valueGetter: (params) => {
           return params.data.preciocontrato;
         }
       },
       {
         headerName: LS.TAG_FECHA_VENTA,
-        width: 80,
-        minWidth: 80,
+        width: 90,
+        minWidth: 90,
         valueGetter: (params) => {
           return params.data.fechaVenta;
         }
+      },
+      {
+        headerName: LS.TAG_OPCIONES,
+        headerClass: 'cell-header-center',
+        field: '',
+        width: LS.WIDTH_OPCIONES,
+        minWidth: LS.WIDTH_OPCIONES,
+        cellRenderer: "botonOpciones",
+        cellClass: 'text-md-center',
+        cellRendererParams: (params) => {
+          if (params.data.id) {
+            return {
+              icono: LS.ICON_BUSCAR,
+              tooltip: LS.ACCION_VER_VENTA,
+              accion: LS.ACCION_CONSULTAR
+            };
+          } else {
+            return {
+              icono: null,
+              tooltip: null,
+              accion: null
+            };
+          }
+        },
+        headerComponent: 'toolTip',
+        headerComponentParams: {
+          class: LS.ICON_OPCIONES,
+          tooltip: LS.TAG_OPCIONES,
+          text: ''
+        }
       }
     );
-    if (!isModal) {
-      columnas.push(
-        {
-          headerName: LS.TAG_OPCIONES,
-          headerClass: 'cell-header-center',//Clase a nivel de th
-          cellClass: 'text-center',
-          width: LS.WIDTH_OPCIONES,
-          minWidth: LS.WIDTH_OPCIONES,
-          maxWidth: LS.WIDTH_OPCIONES,
-          cellRendererFramework: BotonOpcionesComponent,
-          headerComponentFramework: TooltipReaderComponent,
-          headerComponentParams: {
-            class: LS.ICON_OPCIONES,
-            tooltip: LS.TAG_OPCIONES,
-            text: '',
-            enableSorting: false
-          },
-          pinnedRowCellRenderer: PinnedCellComponent,
-        },
-        // this.utilService.getColumnaOpciones()
-      );
-    }
     return columnas;
   }
 }

@@ -18,10 +18,11 @@ import { MenuItem } from 'primeng/api';
 export class LotesComponent implements OnInit {
 
   public cargando: Boolean = false;
+  public vermensajes: boolean = false;
   public confirmarcambioestado: Boolean = false;
-  public lotes: any = []; // lista lotes
   public parametros: Lote;
-  public parametrosListado: any = {};
+  public parametrosListado: any = null;
+  public parametrosMensaje: any = null;
   public activar: boolean = false;
   public constantes: any = LS;
   
@@ -38,7 +39,7 @@ export class LotesComponent implements OnInit {
 
   ngOnInit() {
     this.listarLotes(true);
-    this.items = this.utilService.generarItemsMenuesPropiedades(this, 'V');
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'V');
   }
 
   // proviene del menu
@@ -55,8 +56,8 @@ export class LotesComponent implements OnInit {
     this.parametros.persona_id = new Persona();
     this.parametros.ubigeo_id = new Ubigeo();
     this.parametrosListado = {};
+    this.parametrosMensaje = {};
     this.parametrosListado.listar = false;
-    this.lotes = [];
     this.listarLotes(true);
   }
 
@@ -120,6 +121,31 @@ export class LotesComponent implements OnInit {
   }
 
   ejecutarAccion(parametros) {
-    this.abrirLotes(parametros);
+    if (parametros.verMensajes) {
+      this.verMensajes(parametros);
+    } else {
+      this.parametrosMensaje = null;
+      this.vermensajes = false;
+      this.abrirLotes(parametros);
+    }
   }
+
+  // cuando hago click en boton de regresar en listado de mensajes
+  ejecutarAccionMensaje(parametros) {
+    if (parametros.cerrarListado) {
+      this.parametrosMensaje = null;
+      this.vermensajes = false;
+      this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'V');
+    }
+  }
+
+  verMensajes(parametros) {
+    this.vermensajes = true;
+    this.items = this.utilService.generarItemsMenuesPropiedades(this, false, 'V');
+    // this.items = this.utilService.generarItemsMenuesNotificaciones(this);
+    this.parametrosMensaje = parametros;
+  }
+
+  // para los mensajes
+  consultarNotificaciones(activos: boolean) {}
 }

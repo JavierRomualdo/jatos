@@ -145,11 +145,44 @@ export class UtilService {
     }
   }
 
-  generarItemsMenuesPropiedades(contexto, contrato: string) {
+  generarItemsMenuesNotificaciones(contexto) {
+    let items = [
+      {
+            label: LS.ACCION_CONSULTAR,
+            icon: LS.ICON_CONSULTAR,
+            items: [
+                {
+                    label: LS.TAG_GENERAL, 
+                    icon: LS.ICON_BUSCAR_MAS,
+                    items: [
+                      {
+                        label: LS.TAG_ACTIVOS, 
+                        icon: LS.ICON_ACTIVO,
+                        command: () => {
+                          contexto.consultarNotificaciones(true);
+                        }
+                      },
+                      {
+                        label: LS.TAG_INCLUIR_INACTIVOS, 
+                        icon: LS.ICON_INACTIVO,
+                        command: () => {
+                          contexto.consultarNotificaciones(false);
+                        }
+                      }
+                    ]
+                }
+            ]
+        }
+    ];
+    return items;
+  }
+
+  generarItemsMenuesPropiedades(contexto, vermensajes: boolean, contrato: string) {
     let items = [
         {
             label: LS.TAG_ARCHIVO,
             icon: LS.ICON_ARCHIVO,
+            disabled: !vermensajes,
             items: [{
                     label: LS.ACCION_NUEVO, 
                     icon: LS.ICON_NUEVO,
@@ -162,6 +195,7 @@ export class UtilService {
         {
             label: LS.ACCION_CONSULTAR,
             icon: LS.ICON_CONSULTAR,
+            disabled: !vermensajes,
             items: [
                 {
                     label: LS.TAG_GENERAL, 

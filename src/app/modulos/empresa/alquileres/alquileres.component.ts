@@ -8,6 +8,8 @@ import { ContextMenu } from 'primeng/contextmenu';
 import { UbigeoService } from '../configuracion/ubigeo/modal-ubigeo/ubigeo.service';
 import { AlquilerService } from './alquiler.service';
 import { NgForm } from '@angular/forms';
+import { TooltipReaderComponent } from '../../componentes/tooltip-reader/tooltip-reader.component';
+import { BotonAccionComponent } from '../../componentes/boton-accion/boton-accion.component';
 
 @Component({
   selector: 'app-alquileres',
@@ -42,7 +44,9 @@ export class AlquileresComponent implements OnInit {
   public filtroGlobal: string = "";
   public enterKey: number = 0;//Suma el numero de enter
 
-  public parametrosFoto: any = null
+  public parametrosFoto: any = null;
+  public frameworkComponents;
+  
   //AG-GRID
   public opciones: MenuItem[];
   public gridApi: GridApi;
@@ -175,7 +179,12 @@ export class AlquileresComponent implements OnInit {
   ejecutarAccion(data) {
     this.vistaFormulario = false;
     this.parametrosFormulario = null;
-    this.refrescarTabla(data.accon, data.alquilerTO);
+    this.refrescarTabla(data.accion, data.alquilerTO);
+  }
+
+  // del boton: ver alquiler
+  ejecutarConsultar(data) {
+    this.consultar();
   }
 
   refrescarTabla(accion: string, alquilerTO: AlquilerTO) {
@@ -208,11 +217,21 @@ export class AlquileresComponent implements OnInit {
     }
   }
 
+  generarOpciones() {
+    this.opciones = [
+      { label: LS.ACCION_VER_ALQUILER, icon: LS.ICON_BUSCAR, disabled: false, command: () => this.consultar() },
+    ];
+  }
+
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.alquilerService.generarColumnas(this.isModal);
     this.columnDefsSelected = this.columnDefs.slice();
     this.rowSelection = "single";
+    this.frameworkComponents = {
+      botonOpciones: BotonAccionComponent,
+      toolTip: TooltipReaderComponent
+    };
     this.context = { componentParent: this };
   }
 
@@ -225,21 +244,15 @@ export class AlquileresComponent implements OnInit {
   }
 
   mostrarOpciones(event, dataSelected) { // BOTON OPCIONES
-    if (this.alquilerSeleccionado.estadocontrato === 'L') {
-      this.mostrarContextMenu(dataSelected, event);
-    }
+    this.mostrarContextMenu(dataSelected, event);
   }
 
   mostrarContextMenu(data, event) {
     this.alquilerSeleccionado = data;
     if (!this.isModal) {
-      if (data.estadocontrato === 'L') {
-        // this.generarOpciones();
-        this.menuOpciones.show(event);
-        event.stopPropagation();
-      } else {
-        this.menuOpciones.hide();
-      }
+      this.generarOpciones();
+      this.menuOpciones.show(event);
+      event.stopPropagation();
     }
   }
 

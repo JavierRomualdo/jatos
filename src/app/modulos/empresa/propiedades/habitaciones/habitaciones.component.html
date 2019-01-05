@@ -2,8 +2,14 @@
 </p-menubar>
 <div class="container-fluid p-2" *ngIf="!cargando">
   <!--Listado-->
-  <app-habitaciones-listado [parametrosBusqueda]="parametrosListado" (enviarActivar)="activar=!$event"
+  <div *ngIf="!vermensajes">
+    <app-habitaciones-listado [parametrosBusqueda]="parametrosListado" (enviarActivar)="activar=!$event"
     (enviarAccion)="ejecutarAccion($event)"></app-habitaciones-listado>
+  </div>
+  <!--Mensajes-->
+  <div *ngIf="vermensajes">
+    <app-mensajes-listado [parametrosMensaje]="parametrosMensaje" (enviarAccion)="ejecutarAccionMensaje($event)"></app-mensajes-listado>
+  </div>
 </div>
 <div *ngIf="cargando">
   <app-cargando></app-cargando>

@@ -8,6 +8,8 @@ import { MenuItem } from 'primeng/api';
 import { GridApi } from 'ag-grid';
 import { ContextMenu } from 'primeng/contextmenu';
 import { UbigeoTO } from 'src/app/entidadesTO/empresa/UbigeoTO';
+import { BotonAccionComponent } from '../../componentes/boton-accion/boton-accion.component';
+import { TooltipReaderComponent } from '../../componentes/tooltip-reader/tooltip-reader.component';
 
 @Component({
   selector: 'app-ventas',
@@ -42,7 +44,9 @@ export class VentasComponent implements OnInit {
   public filtroGlobal: string = "";
   public enterKey: number = 0;//Suma el numero de enter
 
-  public parametrosFoto: any = null
+  public parametrosFoto: any = null;
+  public frameworkComponents;
+
   //AG-GRID
   public opciones: MenuItem[];
   public gridApi: GridApi;
@@ -178,6 +182,11 @@ export class VentasComponent implements OnInit {
     this.refrescarTabla(data.accon, data.ventaTO);
   }
 
+  // del boton: ver venta
+  ejecutarConsultar(data) {
+    this.consultar();
+  }
+
   refrescarTabla(accion: string, ventaTO: VentaTO) {
     switch(accion) {
       case LS.ACCION_NUEVO: { // Insertar un elemento en la tabla
@@ -208,11 +217,21 @@ export class VentasComponent implements OnInit {
     }
   }
 
+  generarOpciones() {
+    this.opciones = [
+      { label: LS.ACCION_VER_VENTA, icon: LS.ICON_BUSCAR, disabled: false, command: () => this.consultar() },
+    ];
+  }
+
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.ventaService.generarColumnas(this.isModal);
     this.columnDefsSelected = this.columnDefs.slice();
     this.rowSelection = "single";
+    this.frameworkComponents = {
+      botonOpciones: BotonAccionComponent,
+      toolTip: TooltipReaderComponent
+    };
     this.context = { componentParent: this };
   }
 
@@ -225,21 +244,15 @@ export class VentasComponent implements OnInit {
   }
 
   mostrarOpciones(event, dataSelected) { // BOTON OPCIONES
-    if (this.ventaSeleccionado.estadocontrato === 'L') {
-      this.mostrarContextMenu(dataSelected, event);
-    }
+    this.mostrarContextMenu(dataSelected, event);
   }
 
   mostrarContextMenu(data, event) {
     this.ventaSeleccionado = data;
     if (!this.isModal) {
-      if (data.estadocontrato === 'L') {
-        // this.generarOpciones();
-        this.menuOpciones.show(event);
-        event.stopPropagation();
-      } else {
-        this.menuOpciones.hide();
-      }
+      this.generarOpciones();
+      this.menuOpciones.show(event);
+      event.stopPropagation();
     }
   }
 

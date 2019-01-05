@@ -147,29 +147,37 @@ export class AlquilerService {
           return params.data.fechahasta;
         }
       },
-    );
-    if (!isModal) {
-      columnas.push(
-        {
-          headerName: LS.TAG_OPCIONES,
-          headerClass: 'cell-header-center',//Clase a nivel de th
-          cellClass: 'text-center',
-          width: LS.WIDTH_OPCIONES,
-          minWidth: LS.WIDTH_OPCIONES,
-          maxWidth: LS.WIDTH_OPCIONES,
-          cellRendererFramework: BotonOpcionesComponent,
-          headerComponentFramework: TooltipReaderComponent,
-          headerComponentParams: {
-            class: LS.ICON_OPCIONES,
-            tooltip: LS.TAG_OPCIONES,
-            text: '',
-            enableSorting: false
-          },
-          pinnedRowCellRenderer: PinnedCellComponent,
+      {
+        headerName: LS.TAG_OPCIONES,
+        headerClass: 'cell-header-center',
+        field: '',
+        width: LS.WIDTH_OPCIONES,
+        minWidth: LS.WIDTH_OPCIONES,
+        cellRenderer: "botonOpciones",
+        cellClass: 'text-md-center',
+        cellRendererParams: (params) => {
+          if (params.data.id) {
+            return {
+              icono: LS.ICON_BUSCAR,
+              tooltip: LS.ACCION_VER_ALQUILER,
+              accion: LS.ACCION_CONSULTAR
+            };
+          } else {
+            return {
+              icono: null,
+              tooltip: null,
+              accion: null
+            };
+          }
         },
-        // this.utilService.getColumnaOpciones()
-      );
-    }
+        headerComponent: 'toolTip',
+        headerComponentParams: {
+          class: LS.ICON_OPCIONES,
+          tooltip: LS.TAG_OPCIONES,
+          text: ''
+        }
+      }
+    );
     return columnas;
   }
 }
