@@ -5,8 +5,8 @@
     <div class="row portfolio">
       <!--formulario (filtro)-->
       <div [ngClass]="{'sr-only animated fadeIn':activar}" class="col-lg-3 col-md-4 col-sm-5 animated fadeIn">
-        <form class="card border-success animated fadeIn">
-          <div class="card-header bg-success">
+        <form class="card border-primary animated fadeIn">
+          <div class="card-header bg-primary">
             <span>
               <i class="fa fa-filter"></i>
               <b> Filtros</b>
@@ -18,16 +18,16 @@
               <p-panel header="Principal" [toggleable]="true">
                 <div class="form-group form-group-sm">
                   <label class="control-label">
-                    <b> Tipo contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
+                    <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
                   <div class="row">
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="V" label="Venta" [(ngModel)]="ubigeo.contrato" inputId="ny"
-                        (onChange)="ubigeo.contrato ? listarPropiedades() : null"></p-checkbox>
+                        (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
                     </div>
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="A" label="Alquiler" [(ngModel)]="ubigeo.contrato" inputId="sf"
-                        (onChange)="ubigeo.contrato ? listarPropiedades() : null"></p-checkbox>
+                        (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
                     </div>
                   </div>
                 </div>
@@ -35,8 +35,8 @@
                   <label class="control-label">
                     <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
-                  <select class="form-control border-success" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
-                    (change)="listarPropiedades()">
+                  <select class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
+                    (change)="listarPropiedades()"><!--class="form-control border-success"-->
                     <option value=''>Seleccione...</option>
                     <option [ngValue]="tipopropiedad" *ngFor="let tipopropiedad of tipopropiedades">
                       {{tipopropiedad}}
@@ -45,21 +45,21 @@
                 </div>
                 <div class="form-group form-group-sm">
                   <label class="control-label">
-                    <b> Ubigeo <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
+                    <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
-                  <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control border-success"
+                  <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
                     <option value='0'>Departamento...</option>
                     <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
                   </select>
-                  <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control border-success"
+                  <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
                     <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
                     <option value='0'>Provincia...</option>
                     <option [ngValue]="ubigeoprovincia.id" *ngFor="let ubigeoprovincia of ubigeoprovincias">{{ubigeoprovincia.ubigeo}}</option>
                     <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
                   </select>
-                  <select (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control border-success"
+                  <select (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
                     <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
                     <option value='0'>Distrito...</option>
@@ -72,7 +72,7 @@
               <p-panel header="Opcional" [toggleable]="true">
                 <div class="form-group form-group-sm">
                   <label class="control-label">
-                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
                     <b> Rango Precios</b>
                   </label>
                   <div class="row">
@@ -88,18 +88,18 @@
                   </div>
                   <div class="row" *ngIf="porescrito">
                     <div class="col-md-12">
-                      <input type="text" name="precio1" [(ngModel)]="rangoprecio.preciominimo" required placeholder="Rango 1"
-                        class="form-control" maxlength="8">
+                      <input type="text" name="precio1" [(ngModel)]="rangoprecio.preciominimo" required placeholder="Rango 1" value="{{rangoprecio.preciominimo}}"
+                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecio.preciominimo=$event" [appAutonumeric2]="rangoprecio.preciominimo">
                     </div>
                     <div class="col-md-12">
-                      <input type="text" name="precio2" [(ngModel)]="rangoprecio.preciomaximo" required placeholder="Rango 2"
-                        class="form-control" maxlength="8">
+                      <input type="text" name="precio2" [(ngModel)]="rangoprecio.preciomaximo" required placeholder="Rango 2" value="{{rangoprecio.preciomaximo}}"
+                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecio.preciomaximo=$event" [appAutonumeric2]="rangoprecio.preciomaximo">
                     </div>
                   </div>
                   <div class="ui-g" style="width:250px;margin-bottom:10px" *ngIf="!porescrito">
                       <div class="ui-g-12" *ngFor="let rangoprecio of listaRangoPrecios; let i = index;">
                         <p-radioButton name="gruporangoprecio" value="{{i}}" label="{{rangoprecio.detalle}}" 
-                        [(ngModel)]="rangoPrecio" inputId="opt1" (onClick)="clickRangoPrecio()"></p-radioButton>
+                        [(ngModel)]="rangoPrecio" inputId="opt1"></p-radioButton><!--(onClick)="verificarRangoPrecioRadio()"-->
                       </div>
                   </div>
                   <!-- <select (change)="mostrarparangoprecios(idRangoPrecio)" [(ngModel)]="idRangoPrecio" class="form-control border-success"
@@ -139,8 +139,8 @@
       </div>
       <!--Listado de propiedades-->
       <div [ngClass]="{'col-lg-9 col-md-8 col-sm-7 animated fadeIn':!activar,'col-lg-12 col-md-12 col-sm-12 animated fadeIn':activar}">
-        <div class="card border-success animated fadeIn">
-          <div class="card-header bg-success">
+        <div class="card border-primary animated fadeIn">
+          <div class="card-header bg-primary">
             <button class="btn btn-sm btn-default" (click)="cambiarActivar(activar)" type="button" [pTooltip]="activar ? 'Reducir': 'Ampliar'"
               tooltipPosition="top">
               <i class="{{activar?'fa fa-chevron-right':'fa fa-chevron-left'}}" aria-hidden="true"></i>
@@ -177,11 +177,13 @@
                         </div>
                       </div>
                       <div class="text">
-                        <h6 style="color: rgb(87, 139, 62)"><strong>{{ubigeo.departamento.ubigeo}} -
-                            {{propiedad.ubigeo}}</strong></h6>
+                        <h6 style="color: rgb(87, 139, 62)">
+                          <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>
+                          <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_ALQUILER}}" *ngIf="propiedad.contrato=='A'"></i>
+                          <strong> {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}}</strong></h6>
                         <p class="author-category"><strong><span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">S/
                               {{propiedad.preciocontrato}}</span>
-                            | Area: <span style="color: rgb(87, 139, 62)">{{redondear(propiedad.largo)}}x{{redondear(propiedad.ancho)}}
+                            | Área: <span style="color: rgb(87, 139, 62)">{{redondear(propiedad.largo)}}x{{redondear(propiedad.ancho)}}
                               m<sup>2</sup></span></strong></p>
                         <!--<p class="intro">Direccion: Mz. A. Lote 7 San Valentin</p>-->
                       </div>
@@ -211,20 +213,20 @@
 
           <!--Detalle de propiedades-->
           <div class="card-body" *ngIf="!cargando && idPropiedad!=0">
-            <div *ngIf="parametros.tipopropiedad=='Casas'">
+            <div *ngIf="parametros.tipopropiedad===constantes.TAG_CASA">
               <app-casa-detalle [id]="idPropiedad"></app-casa-detalle>
             </div>
-            <div *ngIf="parametros.tipopropiedad=='Cocheras'" [id]="idPropiedad">
+            <div *ngIf="parametros.tipopropiedad===constantes.TAG_COCHERA" [id]="idPropiedad">
               <app-cochera-detalle [id]="idPropiedad"></app-cochera-detalle>
             </div>
-            <div *ngIf="parametros.tipopropiedad=='Apartamentos'" [id]="idPropiedad"></div>
-            <div *ngIf="parametros.tipopropiedad=='Habitaciones'" [id]="idPropiedad">
+            <div *ngIf="parametros.tipopropiedad===constantes.TAG_APARTAMENTO" [id]="idPropiedad"></div>
+            <div *ngIf="parametros.tipopropiedad===constantes.TAG_HABITACION" [id]="idPropiedad">
               <app-habitacion-detalle [id]="idPropiedad"></app-habitacion-detalle>
             </div>
-            <div *ngIf="parametros.tipopropiedad=='Locales'" [id]="idPropiedad">
+            <div *ngIf="parametros.tipopropiedad===constantes.TAG_LOCAL" [id]="idPropiedad">
               <app-local-detalle [id]="idPropiedad"></app-local-detalle>
             </div>
-            <div *ngIf="parametros.tipopropiedad=='Lotes'">
+            <div *ngIf="parametros.tipopropiedad===constantes.TAG_LOTE">
               <app-lote-detalle [id]="idPropiedad"></app-lote-detalle>
             </div>
           </div>

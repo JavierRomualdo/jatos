@@ -6,6 +6,7 @@ import { ToastrService } from "ngx-toastr";
 import { Servicios } from "../../../entidades/entidad.servicios";
 import { Ubigeo } from "../../../entidades/entidad.ubigeo";
 import { LS } from 'src/app/contantes/app-constants';
+import { UtilService } from 'src/app/servicios/util/util.service';
 @Component({
   selector: "app-propiedades",
   templateUrl: "./propiedades.component.html",
@@ -24,6 +25,7 @@ export class PropiedadesComponent implements OnInit {
   public idPropiedad = 0; // parametro para la propiedad detalle
   public rangoprecio = new Rangoprecios();
   public servicios: Servicios[] = [];
+  public constantes: any = LS;
 
   // tslint:disable-next-line:no-inferrable-types
   public idUbigeoDepartamento: number = 0;
@@ -42,7 +44,11 @@ export class PropiedadesComponent implements OnInit {
   public listaRangoPrecios: any = LS.LISTA_RANGO_PRECIOS;
   public rangoPrecio: any
 
-  constructor(public api: ApiRequest2Service, public toastr: ToastrService) {
+  constructor(
+    private api: ApiRequest2Service,
+    private toastr: ToastrService,
+    private utilService: UtilService
+    ) {
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
@@ -57,20 +63,37 @@ export class PropiedadesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tipopropiedades.push("Casas");
-    this.tipopropiedades.push("Cocheras");
-    this.tipopropiedades.push("Apartamentos");
-    this.tipopropiedades.push("Habitaciones");
-    this.tipopropiedades.push("Locales");
-    this.tipopropiedades.push("Lotes");
-    this.parametros.tipopropiedad = "";
+    this.tipopropiedades = LS.LISTA_PROPIEDADES;
+    // this.parametros.tipopropiedad = "";
     this.listarUbigeos(); // index ubigeos (departamento)
     this.listarRangoPrecios();
     this.rangoprecio.preciominimo = "0";
+    this.parametros.tipopropiedad = LS.KEY_PROPIEDAD_SELECT ? this.utilService.seleccionarPropiedad(this.tipopropiedades) : '';
+    if (LS.KEY_CONTRATO_SELECT) {
+      this.ubigeo.contrato.push(LS.KEY_CONTRATO_SELECT)
+    }
+    // LS.KEY_CONTRATO_SELECT ? this.ubigeo.contrato.push(LS.KEY_CONTRATO_SELECT) : "";
   }
 
-  clickRangoPrecio() {
+  cambiarTipoPropiedad() {
+    if (this.ubigeo.contrato.length > 1) {
+      this.tipopropiedades = LS.LISTA_PROPIEDADES;
+    } else {
+      if (this.ubigeo.contrato[0]==='V') {
+        this.tipopropiedades = LS.LISTA_PROPIEDADES_VENTA;
+      } else {
+        this.tipopropiedades = LS.LISTA_PROPIEDADES;
+      }
+    }
+  }
+
+  verificarRangoPrecioRadio() {
     console.log(this.rangoPrecio);
+    let rango = LS.LISTA_RANGO_PRECIOS.find(item => item.id == this.rangoPrecio);
+    console.log('rango');
+    console.log(rango);
+    this.rangoprecio.preciominimo = rango.precionminimo;
+    this.rangoprecio.preciomaximo = rango.preciomaximo;
   }
 
   cambiarActivar(activar) {
@@ -231,22 +254,22 @@ export class PropiedadesComponent implements OnInit {
     }
     console.log("mensaje.." + mensaje);
     if (mensaje == "") {
-      if (this.parametros.tipopropiedad === "Casas") {
+      if (this.parametros.tipopropiedad === LS.TAG_CASA) {
         this.mostrarPropiedad();
         this.listarServicios();
-      } else if (this.parametros.tipopropiedad === "Cocheras") {
+      } else if (this.parametros.tipopropiedad === LS.TAG_COCHERA) {
         this.mostrarPropiedad();
         this.listarServicios();
-      } else if (this.parametros.tipopropiedad === "Apartamentos") {
+      } else if (this.parametros.tipopropiedad === LS.TAG_APARTAMENTO) {
         this.mostrarPropiedad();
         this.listarServicios();
-      } else if (this.parametros.tipopropiedad === "Habitaciones") {
+      } else if (this.parametros.tipopropiedad === LS.TAG_HABITACION) {
         this.mostrarPropiedad();
         this.listarServicios();
-      } else if (this.parametros.tipopropiedad === "Locales") {
+      } else if (this.parametros.tipopropiedad === LS.TAG_LOCAL) {
         this.mostrarPropiedad();
         this.listarServicios();
-      } else if (this.parametros.tipopropiedad === "Lotes") {
+      } else if (this.parametros.tipopropiedad === LS.TAG_LOTE) {
         this.mostrarPropiedad();
         this.verServicios = false;
       }
@@ -258,6 +281,10 @@ export class PropiedadesComponent implements OnInit {
 
   mostrarPropiedad() {
     this.cargando = true;
+    // para los rangos de precios
+    if(!this.porescrito) {
+      this.verificarRangoPrecioRadio();
+    }
     this.ubigeo.rangoprecio = this.rangoprecio;
     this.ubigeo.propiedad = this.parametros.tipopropiedad;
     console.log("Ubigeo:");

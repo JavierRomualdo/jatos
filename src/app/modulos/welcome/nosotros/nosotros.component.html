@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row mb-small">
       <div class="col-md-12 text-center">
-        <h2 class="text-uppercase">Inmobiliaria Jatos</h2>
+        <h2 class="text-uppercase">Inmobiliaria Jat</h2>
         <h3 class="text-uppercase">Te brindamos el mejor servicio de alquiler y venta de propiedades
           en la región Piura.</h3>
       </div>
@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-md-6 mb-small"><img src="assets/img/template-mac.png" alt="..." class="img-fluid"></div>
       <div class="col-md-6 text-center-sm">
-        <p class="text-uppercase text-bold">Inmobiliaria JATOS<br>Venta y alquiler de lotes.<br />casas, locales,
+        <p class="text-uppercase text-bold">Inmobiliaria JAT<br>Venta y alquiler de lotes.<br />casas, locales,
           y mucho más .</p>
         <p class="no-letter-spacing">Si desea adquirir alguno de estos servicios, o realizar alguna consulta...</p>
         <p><a [href]="['#/welcome/contactos']" class="scroll-to btn btn-template-outlined-white">Contactanos</a></p>
@@ -25,7 +25,7 @@
     <section class="bg-white animated fadeIn">
       <div class="container mapa">
         <div class="heading text-center">
-            <h3>Inmobiliaria Jatos</h3>
+            <h3>Inmobiliaria Jat</h3>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -84,9 +84,9 @@
       <div class="heading text-center">
         <h3>Ubícanos</h3>
       </div>
-      <!-- <agm-map [latitude]="lat" [longitude]="lng">
+      <agm-map [latitude]="lat" [longitude]="lng">
         <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-      </agm-map> -->
+      </agm-map>
     </div>
   </section>
   <!--End contacto-->
@@ -140,8 +140,11 @@
         <p class="lead text-justify" style="font-size: 20px">Cerca a universidades y centros comerciales en la región Piura. Brindamos tambien
           contacto con las mejores constructoras de la region para que haga realidad su sueño de la casa propia.
         </p>
-        <p><a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white"><i class="fa fa-search"
-              aria-hidden="true"></i> Ver propiedades</a></p>
+        <p>
+          <a href="#" (click)="verPropiedades('V'); false" class="btn btn-template-outlined-white">
+            <i class="fa fa-search" aria-hidden="true"></i> Ver propiedades
+          </a>
+        </p>
       </div>
       <div class="col-md-6 text-center"><img src="assets/img/template-easy-customize.png" alt="" class="img-fluid"></div>
     </div>
@@ -158,8 +161,11 @@
         <p class="lead text-justify" style="font-size: 20px">Desde habitaciones departamentos casas cocheras locales y démas de acuerdo a tus
           necesidades y a los mejores precios.
         </p>
-        <p><a [href]="['#/welcome/propiedades']" class=" btn btn-template-main"><i class="fa fa-search" aria-hidden="true"></i>
-            Ver propiedades</a></p>
+        <p>
+          <a href="#" (click)="verPropiedades('A'); false" class=" btn btn-template-main">
+            <i class="fa fa-search" aria-hidden="true"></i> Ver propiedades
+          </a>
+        </p>
       </div>
     </div>
   </div>

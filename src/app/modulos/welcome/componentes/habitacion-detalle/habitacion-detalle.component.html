@@ -1,19 +1,18 @@
-<div *ngIf="cargando">
-  <app-cargando></app-cargando>
-</div>
 <div id="heading-breadcrumbs" *ngIf="!cargando">
   <div class="container">
-    <div class="row d-flex align-items-center flex-wrap">
-      <div class="col-md-10">
+    <div class="row d-flex align-items-center flex-wrap p-1">
+      <div class="col-md-8">
         <h3 class="h3">
-          <strong><i class="fa fa-home" aria-hidden="true"></i> HABITACION
-            <span *ngIf="habitacion.tiposervicio=='A'">(Alquiler)</span>
-            <span *ngIf="habitacion.tiposervicio=='V'">(Venta)</span>
-          </strong>
+          <strong><i class="fa fa-home" aria-hidden="true"></i> HABITACIÓN</strong>
         </h3>
       </div>
-      <div class="col-md-2">
-        <h2 class="h3"><strong>S/ {{habitacion.precio}}</strong></h2>
+      <div class="col-md-4">
+        <h2 class="h3">
+          <strong>
+              <span *ngIf="habitacion.contrato=='A'">Alquiler: </span>
+              <span *ngIf="habitacion.contrato=='V'">Venta: </span> S/ {{habitacion.preciocontrato}}
+          </strong>
+        </h2>
       </div>
     </div>
   </div>
@@ -61,21 +60,22 @@
       <div class="row portfolio-project">
         <div class="col-md-8">
           <div class="heading">
-            <h3>
-              <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Descripcion</strong>
-            </h3>
+            <h4>
+              <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Descripción</strong>
+            </h4>
           </div>
-          <p style="font-size: 17px">{{habitacion.descripcion}}</p>
+          <p style="font-size: 15px" class="text-justify">{{habitacion.descripcion}}</p>
           <div class="heading">
-            <h3>
+            <h4>
               <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
-            </h3>
+            </h4>
           </div>
-          <p class="text-sm">
+
+          <p style="font-size: 15px" class="text-justify">
             Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para
             usted.
           </p>
-          <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()">
+          <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" class="borderPanel p-3">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -119,17 +119,19 @@
             </div>
           </form>
         </div>
-        <div class="col-md-4 project-more">
-          <div class="heading">
-            <h3><strong><i class="fa fa-plus"></i> Mas</strong></h3>
+        <div class="col-md-4 borderPanel p-3"><!--project-more-->
+          <div class="heading text-center">
+            <h4>
+              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
+            </h4>
           </div>
-          <h4><strong>Ubicacion</strong></h4>
+          <h5><strong>Ubicación</strong></h5>
           <p>
             <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
             <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
             <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
           </p>
-          <h4><strong>Direccion</strong></h4>
+          <h5><strong>Dirección</strong></h5>
           <p>
             <i class="fa fa-home" aria-hidden="true"></i> {{habitacion.direccion}}
           </p>
@@ -139,7 +141,7 @@
               <i class="fa fa-check" aria-hidden="true"></i> {{servicio.servicio}}<br />
             </span>
           </p>
-          <h4><strong>Area</strong></h4>
+          <h4><strong>Área</strong></h4>
           <p>{{habitacion.largo}} m. x {{habitacion.ancho}}.</p>
           <h4><strong>Datos</strong></h4>
           <p>
@@ -162,9 +164,9 @@
     <!---->
     <div>
       <!--class="bar pt-0"-->
-      <div class="row portfolio">
+      <div class="row portfolio p-0">
         <div class="col-md-12">
-          <h3 class="text-center">Mas servicios</h3>
+          <h4 class="text-center">Más propiedades</h4>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="box-image">
@@ -248,4 +250,7 @@
     </div>
     <!---->
   </div>
+</div>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
 </div>

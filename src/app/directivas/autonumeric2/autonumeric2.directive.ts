@@ -81,3 +81,5 @@ export class Autonumeric2Directive implements OnChanges, OnInit, AfterViewInit {
     return numeroString.toString().replace(/,/gi, "");
   }
 }
+
+export class Autonumeric2Directive2 extends Autonumeric2Directive{}

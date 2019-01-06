@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Empresa } from '../../../entidades/entidad.empresa';
 import { UbigeoGuardar } from '../../../entidades/entidad.ubigeoguardar';
 import { Ubigeo } from '../../../entidades/entidad.ubigeo';
+import { LS } from 'src/app/contantes/app-constants';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nosotros',
@@ -21,9 +23,12 @@ export class NosotrosComponent implements OnInit {
   lng: Number = -80.630287;
   zoom: Number = 16;
 
+  public constantes: any = LS;
+
   constructor(
     public api: ApiRequest2Service,
     public toastr: ToastrService,
+    private router: Router,
   ) {
     this.empresa = new Empresa();
     this.empresa.ubigeo_id = new Ubigeo();
@@ -36,6 +41,11 @@ export class NosotrosComponent implements OnInit {
 
   ngOnInit() {
     this.listarempresa();
+  }
+
+  verPropiedades(contrato: string) {
+    LS.KEY_CONTRATO_SELECT = contrato;
+    this.router.navigate(['/welcome/propiedades'])
   }
 
   listarempresa() {

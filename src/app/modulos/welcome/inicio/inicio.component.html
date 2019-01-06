@@ -47,7 +47,7 @@
 <section class="bg-white bar animated fadeIn">
   <div class="container">
     <div class="heading text-center">
-      <h2><strong>Inmobiliaria Jatos</strong></h2>
+      <h2><strong>Inmobiliaria Jat</strong></h2>
     </div>
     <p class="lead text-justify" style="font-size: 22px">
       Empresa dedicada a brindar diferentes servicios de venta de propiedades, lotes y alquileres 
@@ -59,8 +59,15 @@
         <div class="home-blog-post">
           <div class="image"><img src="assets\img\home\casa.jpeg" alt="..." class="img-fluid">
             <div class="overlay d-flex align-items-center justify-content-center">
-              <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white"><i class="fa fa-search">
-                </i>Buscar</a>
+              <!-- <button class="btn btn-template-outlined-white" (click)="verPropiedades(constantes.LS_CASA)">
+                <i class="fa fa-search"></i>Buscar
+              </button> -->
+              <a href="#" (click)="verPropiedades(constantes.TAG_CASA); false" class="btn btn-template-outlined-white">
+                <i class="fa fa-search"></i>Buscar
+              </a>
+              <!-- <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white">
+                <i class="fa fa-search"></i>Buscar
+              </a> -->
             </div>
           </div>
           <div class="text">
@@ -78,7 +85,7 @@
         <div class="home-blog-post">
           <div class="image"><img src="assets\img\home\lotes.jpg" alt="..." class="img-fluid">
             <div class="overlay d-flex align-items-center justify-content-center">
-              <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white"><i class="fa fa-search">
+              <a href="#" (click)="verPropiedades(constantes.TAG_LOTE); false" class="btn btn-template-outlined-white"><i class="fa fa-search">
                 </i>Buscar</a>
             </div>
           </div>
@@ -96,7 +103,7 @@
         <div class="home-blog-post">
           <div class="image"><img src="assets\img\home\local.jpeg" alt="..." class="img-fluid">
             <div class="overlay d-flex align-items-center justify-content-center">
-              <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white"><i class="fa fa-search">
+              <a href="#" (click)="verPropiedades(constantes.TAG_LOCAL); false" class="btn btn-template-outlined-white"><i class="fa fa-search">
                 </i>Buscar</a>
             </div>
           </div>
@@ -114,7 +121,7 @@
         <div class="home-blog-post">
           <div class="image"><img src="assets\img\home\habitacion.jpg" alt="..." class="img-fluid">
             <div class="overlay d-flex align-items-center justify-content-center">
-              <a [href]="['#/welcome/servicios/alquileres/locales']" class="btn btn-template-outlined-white"><i class="fa fa-search">
+              <a href="#" (click)="verPropiedades(constantes.TAG_HABITACION); false" class="btn btn-template-outlined-white"><i class="fa fa-search">
                 </i>Buscar</a>
             </div>
           </div>

@@ -53,14 +53,14 @@ export class CasaDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarPropiedad(this.id);
+      this.listarCasas(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarPropiedad(params['id']);
+    //   this.listarCasas(params['id']);
     // });
   }
 
-  listarPropiedad(id) {
+  listarCasas(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
     this.api.get2('casas/' + id).then(

@@ -279,4 +279,23 @@ export class UtilService {
     }
     return columnas;
   }
+
+  /**
+   * Autoselecciona el contrato
+   * @param {Array<any>} contratos
+   * @returns {PermisosEmpresaMenuTO}
+   */
+
+   /**
+   * Autoselecciona la propiedad
+   * @param {Array<string>} propiedades
+   * @returns {string}
+   */
+  seleccionarPropiedad(propiedades: Array<string>): string {
+    let propiedadSeleccionada = null;
+    if (propiedades && propiedades.length > 0) {
+      propiedadSeleccionada = propiedades.find(item => item === LS.KEY_PROPIEDAD_SELECT);
+    }
+    return propiedadSeleccionada;
+  }
 }

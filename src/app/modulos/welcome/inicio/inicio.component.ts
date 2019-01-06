@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LS } from 'src/app/contantes/app-constants';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InicioComponent implements OnInit {
 
-  constructor() { }
+  public constantes: any = LS;
+
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit() {
   }
 
+  verPropiedades(propiedad: string) {
+    LS.KEY_PROPIEDAD_SELECT = propiedad;
+    this.router.navigate(['/welcome/propiedades'])
+  }
 }

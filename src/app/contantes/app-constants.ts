@@ -1,4 +1,8 @@
 export class LS {
+  //KEYS
+  public static KEY_CONTRATO_SELECT = "";
+  public static KEY_PROPIEDAD_SELECT = "";
+
   //ICONOS PARA BOTONES
   public static ICON_ACTIVO = "fa fa-check-square-o";
   public static ICON_ARCHIVO = "fa fa-file";
@@ -249,18 +253,21 @@ export class LS {
   ];
   static LISTA_RANGO_PRECIOS = [
     {
-      precionminimo: 0,
-      preciomaximo: 5000,
+      id: 0,
+      precionminimo: '0',
+      preciomaximo: '5000',
       detalle: 'Por menos de S/ 5000.00'
     },
     {
-      precionminimo: 5000,
-      preciomaximo: 15000,
+      id: 1,
+      precionminimo: '5000',
+      preciomaximo: '15000',
       detalle: 'S/ 5000.00 - S/ 15000.00'
     },
     {
-      precionminimo: 15000,
-      preciomaximo: 2000000,
+      id: 2,
+      precionminimo: '15000',
+      preciomaximo: '2000000',
       detalle: 'Por más de S/ 15000.00'
     }
   ];
