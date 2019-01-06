@@ -23,7 +23,7 @@ export class ModalRolComponent implements OnInit {
   public listado: boolean = false;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private rolService: RolService,
     private toastr: ToastrService,
     private modal: NgbModal,

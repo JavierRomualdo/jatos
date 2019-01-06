@@ -26,7 +26,7 @@ export class ModalEmpresaComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private empresaService: EmpresaService,
     private modalService: NgbModal,
     private auth: AuthService,

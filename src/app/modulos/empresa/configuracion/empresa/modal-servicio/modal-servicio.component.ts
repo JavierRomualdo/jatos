@@ -24,7 +24,7 @@ export class ModalServicioComponent implements OnInit {
   public listado: Boolean = false;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private servicioService: ServicioService,
     private toastr: ToastrService,
     private modal: NgbModal,

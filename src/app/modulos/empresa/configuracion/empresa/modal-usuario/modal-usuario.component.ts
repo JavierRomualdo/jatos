@@ -28,7 +28,7 @@ export class ModalUsuarioComponent implements OnInit {
   file: File = null;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private _cargaImagenes: CargaImagenesService,
     private usuarioService: UsuarioService,
     private toastr: ToastrService

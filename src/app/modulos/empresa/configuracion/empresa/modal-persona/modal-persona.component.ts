@@ -35,7 +35,7 @@ export class ModalPersonaComponent implements OnInit {
   public listaPR: any = []; // lista de persona-roles
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private personaService: PersonaService,
     private rolService: RolService,
     private toastr: ToastrService, // para mensajes de exito o error

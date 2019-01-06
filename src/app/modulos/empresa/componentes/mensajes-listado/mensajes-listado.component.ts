@@ -269,6 +269,8 @@ export class MensajesListadoComponent implements OnInit {
     }
   }
 
+  filaSeleccionar() {}
+
   filaFocused(event) {
     let fila = this.gridApi ? this.gridApi.getRowNode(event.rowIndex) : null;
     this.mensajeSeleccionado = fila ? fila.data : null;

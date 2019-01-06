@@ -25,7 +25,7 @@ export class ModalTipoubigeoComponent implements OnInit {
   public listado: Boolean = false;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
     private tipoUbigeoService: TipoubigeoService,
     private utilService: UtilService,
     private toastr: ToastrService,
