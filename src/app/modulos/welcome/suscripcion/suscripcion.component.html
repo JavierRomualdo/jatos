@@ -7,15 +7,15 @@
     <div class="col-md-8 mx-auto">
       <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" *ngIf="!cargando">
         <div class="row">
-          <p class="lead text-justify">
+          <p class="lead text-justify" style="font-size: 18px">
             Ingrese todos los datos para el envió de su consulta de acuerdo a los servicios brindados 
             por nuestra empresa inmobiliaria:
           </p>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
-              <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
-                required placeholder="Ingrese nombres" ng-focus="true">
+              <input id="nombres" [appFocus]="true" type="text" class="form-control mousetrap" [(ngModel)]="mensaje.nombres" name="nombres"
+                required placeholder="Ingrese nombres">
             </div>
           </div>
           <div class="col-sm-6">

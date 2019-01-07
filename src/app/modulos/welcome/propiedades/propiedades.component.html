@@ -35,7 +35,7 @@
                   <label class="control-label">
                     <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
-                  <select class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
+                  <select [appFocus]="true" class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
                     (change)="listarPropiedades()"><!--class="form-control border-success"-->
                     <option value=''>Seleccione...</option>
                     <option [ngValue]="tipopropiedad" *ngFor="let tipopropiedad of tipopropiedades">

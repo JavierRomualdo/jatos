@@ -27,6 +27,7 @@ import { LoteDetalleComponent } from './componentes/lote-detalle/lote-detalle.co
 import { LocalDetalleComponent } from './componentes/local-detalle/local-detalle.component';
 import { HabitacionDetalleComponent } from './componentes/habitacion-detalle/habitacion-detalle.component';
 import { Autonumeric2Directive2 } from 'src/app/directivas/autonumeric2/autonumeric2.directive';
+import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { Autonumeric2Directive2 } from 'src/app/directivas/autonumeric2/autonume
     LocalDetalleComponent,
     LoteDetalleComponent,
 
-    Autonumeric2Directive2
+    Autonumeric2Directive2,
+    FocusDirective
   ],
   imports: [
     CommonModule,
