@@ -30,7 +30,8 @@ export class LS {
   public static ICON_RESERVADO = "fa fa-user-secret";
   public static ICON_ACTIVAR = "fa fa-check-circle";
   public static ICON_SELECCIONAR = 'fa fa-check';
-
+  public static ICON_MAIL = 'fa fa-envelope-o';
+  
   //TAGS
   static TAG_AVISO = "Aviso";
   static TAG_ARCHIVO = "Archivo";
@@ -168,6 +169,7 @@ export class LS {
   static ACCION_SELECCIONAR = 'SELECCIONAR';
   static ACCION_VER_ALQUILER = 'Ver alquiler';
   static ACCION_VER_VENTA = 'Ver venta';
+  static ACCION_ENVIAR_CORREO = "Enviar correo";
 
   //ETIQUETAS
   static ETIQUETA_TODOS = "TODOS";
@@ -204,7 +206,7 @@ export class LS {
   public static TITULO_FORM_CONSULTAR_ALQUILER = "Consultar alquiler";
   public static TITULO_ALQUILERES_LISTADO = "Listado de alquileres";
   public static TITULO_FORM_CONSULTAR_MENSAJE = "Consultar mensaje";
-
+  public static TITULO_FORM_ENVIAR_MENSAJE = "Enviar mensaje";
   //
   //MENSAJES
   static MSJ_COLUMNAS = "columnas seleccionadas";

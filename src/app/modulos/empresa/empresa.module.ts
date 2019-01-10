@@ -71,6 +71,7 @@ import { BotonAccionComponent } from '../componentes/boton-accion/boton-accion.c
 import { MensajesListadoComponent } from './componentes/mensajes-listado/mensajes-listado.component';
 import { SpanMensajeComponent } from '../componentes/span-mensaje/span-mensaje.component';
 import { MensajeModalComponent } from '../componentes/mensaje-modal/mensaje-modal.component';
+import { FormularioMailComponent } from './componentes/formulario-mail/formulario-mail.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -127,7 +128,9 @@ import { MensajeModalComponent } from '../componentes/mensaje-modal/mensaje-moda
 
     BotonAccionComponent,
 
-    MensajesListadoComponent
+    MensajesListadoComponent,
+
+    FormularioMailComponent
   ],
   imports: [
     ComponentesModule,

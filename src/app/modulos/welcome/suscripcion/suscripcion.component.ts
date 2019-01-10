@@ -27,9 +27,38 @@ export class SuscripcionComponent implements OnInit {
     this.cargando = true;
     console.log('mi mensaje: ');
     console.log(this.mensaje);
-    this.toastr.success('Mensaje enviado');
-    this.mensaje = new CasaMensaje();
-    this.cargando = false;
+    let parametros = {
+      nombres: this.mensaje.nombres,
+      telefono: this.mensaje.telefono,
+      email: this.mensaje.email,
+      titulo: this.mensaje.titulo,
+      mensaje: this.mensaje.mensaje
+    }
+    this.enviarCorreo(parametros);
+    // this.toastr.success('Mensaje enviado');
+    // this.mensaje = new CasaMensaje();
+    // this.cargando = false;
   }
 
+  enviarCorreo(parametros) {
+    this.cargando = true;
+    this.api.post2('enviarMensajeContacto', parametros).then(
+      (data) => {
+        console.log('se ha enviado correo: ');
+        console.log(data);
+        this.toastr.success('Mensaje enviado');
+        this.mensaje = new CasaMensaje();
+        this.cargando = false;
+        
+      },
+      (error) => {
+        
+      }
+    ).catch(err => this.handleError(err));
+  }
+
+  private handleError(error: any): void {
+    // this.cargando = false;
+    this.toastr.error('Error Interno: ' + error, 'Error');
+  }
 }

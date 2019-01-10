@@ -54,6 +54,7 @@
 
 <app-mensaje-modal *ngIf="parametrosFormMensaje" [parametros]="parametrosFormMensaje" (displayChange)="onDialogClose($event)"></app-mensaje-modal>
 
+<app-formulario-mail *ngIf="parametrosFormMail" [parametros]="parametrosFormMail" (displayChange)="onDialogCloseMail($event)"></app-formulario-mail>
 <div *ngIf="cargando">
   <app-cargando></app-cargando>
 </div>

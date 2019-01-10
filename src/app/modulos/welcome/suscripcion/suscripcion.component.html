@@ -5,7 +5,7 @@
   <!-- <h3 class="heading text-center">CONTACTO</h3> -->
   <div class="container animated fadeIn">
     <div class="col-md-8 mx-auto">
-      <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" *ngIf="!cargando">
+      <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()">
         <div class="row">
           <p class="lead text-justify" style="font-size: 18px">
             Ingrese todos los datos para el envió de su consulta de acuerdo a los servicios brindados 
@@ -55,3 +55,6 @@
     </div>
   </div>
 </section>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>

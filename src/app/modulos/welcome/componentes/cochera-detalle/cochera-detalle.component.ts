@@ -120,8 +120,9 @@ export class CocheraDetalleComponent implements OnInit {
           console.log("se ha enviado mensaje: ");
           console.log(res);
           this.toastr.success("Mensaje enviado");
-          this.mensaje = new CocheraMensaje();
-          this.cargando = false;
+          this.enviarCorreo();
+          // this.mensaje = new CocheraMensaje();
+          // this.cargando = false;
         },
         error => {
           if (error.status === 422) {
@@ -137,6 +138,42 @@ export class CocheraDetalleComponent implements OnInit {
         }
       )
       .catch(err => this.handleError(err));
+  }
+
+  enviarCorreo() {
+    let parametros = {
+      propiedad: 'Cochera',
+      propiedad_id: this.cochera.codigo,
+      contrato: 'Alquiler', 
+      cliente: this.mensaje.nombres,
+      telefono: this.mensaje.telefono,
+      email: this.mensaje.email,
+      titulo: this.mensaje.titulo,
+      mensaje: this.mensaje.mensaje
+    }
+    // this.cargando = true;
+    this.api.post2('enviarMensajeCliente', parametros).then(
+      (data) => {
+        console.log('se ha enviado correo: ');
+        console.log(data);
+        this.toastr.success('Correo enviado');
+        this.mensaje = new CocheraMensaje();
+        this.cargando = false;
+        
+      },
+      (error) => {
+        if (error.status === 422) {
+          this.errors = [];
+          const errors = error.json();
+          console.log('Error');
+          this.cargando = false;
+          this.handleError(error);
+          /*for (const key in errors) {
+            this.errors.push(errors[key]);
+          }*/
+        }
+      }
+    ).catch(err => this.handleError(err));
   }
 
   private handleError(error: any): void {

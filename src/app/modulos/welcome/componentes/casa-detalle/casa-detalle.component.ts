@@ -116,8 +116,45 @@ export class CasaDetalleComponent implements OnInit {
         console.log('se ha enviado mensaje: ');
         console.log(res);
         this.toastr.success('Mensaje enviado');
+        this.enviarCorreo();
+        // this.mensaje = new CasaMensaje();
+        // this.cargando = false;
+      },
+      (error) => {
+        if (error.status === 422) {
+          this.errors = [];
+          const errors = error.json();
+          console.log('Error');
+          this.cargando = false;
+          this.handleError(error);
+          /*for (const key in errors) {
+            this.errors.push(errors[key]);
+          }*/
+        }
+      }
+    ).catch(err => this.handleError(err));
+  }
+
+  enviarCorreo() {
+    let parametros = {
+      propiedad: 'Casa',
+      propiedad_id: this.casa.codigo,
+      contrato: this.casa.contrato==='A' ? 'Alquiler' : 'Venta', 
+      cliente: this.mensaje.nombres,
+      telefono: this.mensaje.telefono,
+      email: this.mensaje.email,
+      titulo: this.mensaje.titulo,
+      mensaje: this.mensaje.mensaje
+    }
+    // this.cargando = true;
+    this.api.post2('enviarMensajeCliente', parametros).then(
+      (data) => {
+        console.log('se ha enviado correo: ');
+        console.log(data);
+        this.toastr.success('Correo enviado');
         this.mensaje = new CasaMensaje();
         this.cargando = false;
+        
       },
       (error) => {
         if (error.status === 422) {

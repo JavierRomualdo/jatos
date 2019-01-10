@@ -25,6 +25,7 @@ export class MensajesListadoComponent implements OnInit {
   public codigo: string = "";
   public cargando: boolean = false;
   public parametrosFormMensaje: any = null; // para el modal mensaje
+  public parametrosFormMail: any = null; // para el modal mensaje
 
   //AG-GRID
   public opciones: MenuItem[];
@@ -101,7 +102,14 @@ export class MensajesListadoComponent implements OnInit {
         icon: LS.ICON_ELIMINAR,
         disabled: !perEliminar,
         command: () => perEliminar ? this.eliminarMensaje() : null
-      }
+      },
+      {separator:true},
+      {
+        label: LS.ACCION_ENVIAR_CORREO,
+        icon: LS.ICON_MAIL,
+        disabled: !perConsultar,
+        command: () => perConsultar ? this.enviarMail() : null
+      },
     ];
   }
 
@@ -218,7 +226,25 @@ export class MensajesListadoComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFormMensaje = null;
- } //
+  } //
+
+ // modal formulario enviar mail
+ enviarMail() {
+  this.mostrarModalMail();
+ }
+
+ mostrarModalMail() {
+  this.parametrosFormMail = {
+    display: true,
+    mensajeTO: this.mensajeSeleccionado,
+    codigo: this.codigo,
+    accion: LS.ACCION_EDITAR
+  }
+ }
+
+ onDialogCloseMail(event) {
+  this.parametrosFormMail = null;
+} //
 
   // boton regresar
   cancelar() {
