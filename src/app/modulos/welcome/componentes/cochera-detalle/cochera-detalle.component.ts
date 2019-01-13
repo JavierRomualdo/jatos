@@ -11,6 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
+import { LS } from 'src/app/contantes/app-constants';
+import { MailService } from 'src/app/servicios/mail/mail.service';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-cochera-detalle',
@@ -31,11 +34,17 @@ export class CocheraDetalleComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   errors: Array<Object> = [];
-
+  public constantes: any = LS;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
+  
   constructor(
     private _activedRoute: ActivatedRoute,
     private api: ApiRequest2Service,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private mensajeService: MailService
   ) {
     this.cochera = new Cochera();
     this.mensaje = new CocheraMensaje();
@@ -53,14 +62,14 @@ export class CocheraDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarPropiedad(this.id);
+      this.obtenerCochera(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarPropiedad(params['id']);
+    //   this.obtenerCochera(params['id']);
     // });
   }
 
-  listarPropiedad(id) {
+  obtenerCochera(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
     this.api
@@ -92,6 +101,12 @@ export class CocheraDetalleComponent implements OnInit {
             // aqui metodo para mostrar todas las imagenes de este propiedad ....
             // this.imagen = res.foto;
             // this.imagenAnterior = res.foto;
+            // Mapa
+            this.cochera.latitud = this.cochera.latitud ? this.cochera.latitud : this.latitude+""
+            this.cochera.longitud = this.cochera.longitud ? this.cochera.longitud : this.longitude+""
+            this.latitude = Number.parseFloat(this.cochera.latitud);
+            this.longitude = Number.parseFloat(this.cochera.longitud);
+            // End Mapa
             this.cargando = false;
           }
         },
@@ -180,4 +195,28 @@ export class CocheraDetalleComponent implements OnInit {
     // this.cargando = false;
     this.toastr.error("Error Interno: " + error, "Error");
   }
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+  // End Mapa
 }

@@ -26,7 +26,9 @@ export class Habitacion {
   fotosList: any = {};
   serviciosList: any = {};
   habitacionservicioList: any = {};
-
+  latitud: string = "";
+  longitud: string = "";
+  
   constructor(data?) {
     data ? this.hydrate(data) : null;
   }

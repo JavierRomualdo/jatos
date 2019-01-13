@@ -16,6 +16,8 @@ import { LoteService } from '../lote.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { LoteTO } from 'src/app/entidadesTO/empresa/LoteTO';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, 
+   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-modal-lote',
@@ -38,6 +40,10 @@ export class ModalLoteComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
 
   constructor(
     private modalService: NgbModal,
@@ -181,7 +187,12 @@ export class ModalLoteComponent implements OnInit {
     this.listaLP = data.lotepersonaList;
     this.persona = this.listaLP[0] ;
     this.ubigeo = data.ubigeo;
-
+    // Mapa
+    this.lote.latitud = this.lote.latitud ? this.lote.latitud : this.latitude+""
+    this.lote.longitud = this.lote.longitud ? this.lote.longitud : this.longitude+""
+    this.latitude = Number.parseFloat(this.lote.latitud);
+    this.longitude = Number.parseFloat(this.lote.longitud);
+    // End Mapa
     for (const item of data.fotosList) {
       console.log('foto: ');
       console.log(item);
@@ -230,6 +241,10 @@ export class ModalLoteComponent implements OnInit {
   postGuardarLote() {
     // se genera el codigode la cochera cuando la accion es nuevo
     this.cargando = true;
+    // Mapa
+    this.lote.latitud = this.lote.latitud === "" ? this.latitude + "" : this.lote.latitud;
+    this.lote.longitud = this.lote.longitud === "" ? this.longitude + "" : this.lote.longitud;
+    // End Mapa
     this.loteService.generarCodigoLote(this);
   }
 
@@ -335,5 +350,36 @@ export class ModalLoteComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFoto = null;
- } //
+  } //
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+
+  markerDragEnd($event) { // MouseEvent
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.lote.latitud = this.latitude + "";
+    this.lote.longitud = this.longitude + "";
+  }
+  // End Mapa
 }

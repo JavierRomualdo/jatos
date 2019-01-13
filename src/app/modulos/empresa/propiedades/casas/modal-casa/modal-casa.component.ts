@@ -19,6 +19,8 @@ import { CasasService } from '../casas.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { CasaTO } from 'src/app/entidadesTO/empresa/CasaTO';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions,
+  ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-modal-casa',
@@ -43,7 +45,11 @@ export class ModalCasaComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
-  
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
+
   constructor(
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
@@ -192,7 +198,12 @@ export class ModalCasaComponent implements OnInit {
     this.ubigeo = data.ubigeo;
     this.servicios = data.serviciosList;
     this.casaservicios = data.casaservicioList;
-
+    // Mapa
+    this.casa.latitud = this.casa.latitud ? this.casa.latitud : this.latitude+""
+    this.casa.longitud = this.casa.longitud ? this.casa.longitud : this.longitude+""
+    this.latitude = Number.parseFloat(this.casa.latitud);
+    this.longitude = Number.parseFloat(this.casa.longitud);
+    // End Mapa
     for (const item of data.fotosList) {
       console.log('foto: ');
       console.log(item);
@@ -263,6 +274,10 @@ export class ModalCasaComponent implements OnInit {
   postGuardarCasa() {
     // se genera el codigode la casa cuando la accion es nuevo
     this.cargando = true;
+    // Mapa
+    this.casa.latitud = this.casa.latitud === "" ? this.latitude + "" : this.casa.latitud;
+    this.casa.longitud = this.casa.longitud === "" ? this.longitude + "" : this.casa.longitud;
+    // End Mapa
     this.casasService.generarCodigoCasa(this);
   }
 
@@ -386,5 +401,36 @@ export class ModalCasaComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFoto = null;
- } //
+  } //
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+
+  markerDragEnd($event) { // MouseEvent
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.casa.latitud = this.latitude + "";
+    this.casa.longitud = this.longitude + "";
+  }
+  // End Mapa
 }

@@ -1,7 +1,10 @@
+import { Empresa } from '../entidades/entidad.empresa';
+
 export class LS {
   //KEYS
   public static KEY_CONTRATO_SELECT = "";
   public static KEY_PROPIEDAD_SELECT = "";
+  public static KEY_EMPRESA_SELECT: Empresa;
 
   //ICONOS PARA BOTONES
   public static ICON_ACTIVO = "fa fa-check-square-o";
@@ -31,6 +34,7 @@ export class LS {
   public static ICON_ACTIVAR = "fa fa-check-circle";
   public static ICON_SELECCIONAR = 'fa fa-check';
   public static ICON_MAIL = 'fa fa-envelope-o';
+  public static ICON_MARKER = 'fa fa-map-marker';
   
   //TAGS
   static TAG_AVISO = "Aviso";
@@ -133,7 +137,11 @@ export class LS {
   static TAG_TITULO = "Titulo";
   static TAG_ESTADO = "Estado";
   static TAG_DATOS_PERSONALES = "Datos personales";
-
+  static TAG_LATITUD = "Latitud";
+  static TAG_LONGITUD = "Longitud";
+  static TAG_MAPA = "Mapa";
+  static TAG_EMPRESA = 'Empresa';
+  static TAG_RUC = 'Ruc';
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
   public static LABEL_ACEPTAR = "Aceptar";
@@ -220,6 +228,7 @@ export class LS {
   static MSJ_ATRIBUTO_AREA_PROPIEDAD = "Atributo para el área de la propiedad.";
   static MSJ_CAMPOS_INVALIDOS = 'Verifique los datos ingresados.';
   static MSJ_TITULO_INVALIDOS = 'Datos inválidos';
+  static MSJ_RUC = 'Este atributo es fundamental, se recomienda no cambiarlo.';
 
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

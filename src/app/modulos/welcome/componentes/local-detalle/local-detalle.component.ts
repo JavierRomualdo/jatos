@@ -11,6 +11,9 @@ import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
+import { LS } from 'src/app/contantes/app-constants';
+import { MailService } from 'src/app/servicios/mail/mail.service';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-local-detalle',
@@ -31,11 +34,17 @@ export class LocalDetalleComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   errors: Array<Object> = [];
-
+  public constantes: any = LS;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
+  
   constructor(
     private _activedRoute: ActivatedRoute,
     public api: ApiRequest2Service,
     public toastr: ToastrService,
+    private mensajeService: MailService
   ) {
     this.local = new Local();
     this.mensaje = new LocalMensaje();
@@ -52,14 +61,14 @@ export class LocalDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarLocal(this.id);
+      this.obtenerLocal(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarLocal(params['id']);
+    //   this.obtenerLocal(params['id']);
     // });
   }
 
-  listarLocal(id) {
+  obtenerLocal(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
     this.api.get2('locales/' + id).then(
@@ -90,6 +99,12 @@ export class LocalDetalleComponent implements OnInit {
           // aqui metodo para mostrar todas las imagenes de este local ....
           // this.imagen = res.foto;
           // this.imagenAnterior = res.foto;
+          // Mapa
+          this.local.latitud = this.local.latitud ? this.local.latitud : this.latitude+""
+          this.local.longitud = this.local.longitud ? this.local.longitud : this.longitude+""
+          this.latitude = Number.parseFloat(this.local.latitud);
+          this.longitude = Number.parseFloat(this.local.longitud);
+          // End Mapa
           this.cargando = false;
         }
       },
@@ -174,4 +189,28 @@ export class LocalDetalleComponent implements OnInit {
     this.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');
   }
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+  // End Mapa
 }

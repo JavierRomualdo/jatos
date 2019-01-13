@@ -19,6 +19,8 @@ import { LocalService } from '../local.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { LocalTO } from 'src/app/entidadesTO/empresa/LocalTO';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, 
+  ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-modal-local',
@@ -43,7 +45,11 @@ export class ModalLocalComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
-  
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
+
   constructor(
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
@@ -189,7 +195,12 @@ export class ModalLocalComponent implements OnInit {
     this.ubigeo = data.ubigeo;
     this.servicios = data.serviciosList;
     this.localservicios = data.localservicioList;
-
+    // Mapa
+    this.local.latitud = this.local.latitud ? this.local.latitud : this.latitude+""
+    this.local.longitud = this.local.longitud ? this.local.longitud : this.longitude+""
+    this.latitude = Number.parseFloat(this.local.latitud);
+    this.longitude = Number.parseFloat(this.local.longitud);
+    // End Mapa
     for (const item of data.fotosList) {
       console.log('foto: ');
       console.log(item);
@@ -260,6 +271,10 @@ export class ModalLocalComponent implements OnInit {
   postGuardarLocal() {
     // se genera el codigode la cochera cuando la accion es nuevo
     this.cargando = true;
+    // Mapa
+    this.local.latitud = this.local.latitud === "" ? this.latitude + "" : this.local.latitud;
+    this.local.longitud = this.local.longitud === "" ? this.longitude + "" : this.local.longitud;
+    // End Mapa
     this.localService.generarCodigoLocal(this);
   }
 
@@ -387,5 +402,36 @@ export class ModalLocalComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFoto = null;
- } //
+  } //
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+
+  markerDragEnd($event) { // MouseEvent
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.local.latitud = this.latitude + "";
+    this.local.longitud = this.longitude + "";
+  }
+  // End Mapa
 }

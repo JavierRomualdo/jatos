@@ -11,6 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
+import { MailService } from 'src/app/servicios/mail/mail.service';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
+import { LS } from 'src/app/contantes/app-constants';
 
 @Component({
   selector: 'app-casa-detalle',
@@ -31,11 +34,17 @@ export class CasaDetalleComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   errors: Array<Object> = [];
+  public constantes: any = LS;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
 
   constructor(
     private _activedRoute: ActivatedRoute,
     private api: ApiRequest2Service,
     private toastr: ToastrService,
+    private mensajeService: MailService
   ) {
     this.casa = new Casa();
     this.mensaje = new CasaMensaje();
@@ -53,14 +62,14 @@ export class CasaDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarCasas(this.id);
+      this.obtenerCasa(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarCasas(params['id']);
+    //   this.obtenerCasa(params['id']);
     // });
   }
 
-  listarCasas(id) {
+  obtenerCasa(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
     this.api.get2('casas/' + id).then(
@@ -91,6 +100,12 @@ export class CasaDetalleComponent implements OnInit {
           // aqui metodo para mostrar todas las imagenes de este propiedad ....
           // this.imagen = res.foto;
           // this.imagenAnterior = res.foto;
+          // Mapa
+          this.casa.latitud = this.casa.latitud ? this.casa.latitud : this.latitude+""
+          this.casa.longitud = this.casa.longitud ? this.casa.longitud : this.longitude+""
+          this.latitude = Number.parseFloat(this.casa.latitud);
+          this.longitude = Number.parseFloat(this.casa.longitud);
+          // End Mapa
           this.cargando = false;
         }
       },
@@ -175,4 +190,28 @@ export class CasaDetalleComponent implements OnInit {
     // this.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');
   }
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+  // End Mapa
 }

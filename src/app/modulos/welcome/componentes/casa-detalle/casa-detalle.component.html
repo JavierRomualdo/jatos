@@ -67,6 +67,64 @@
           <p style="font-size: 15px" class="text-justify">{{casa.descripcion}}</p>
           <div class="heading">
             <h4>
+              <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación</strong>
+            </h4>
+          </div>
+          <!--Mapa-->
+          <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+          [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+          [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+          [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+            <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
+              [markerDraggable]="false">
+              <agm-info-window>
+                <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+                <p>Punto de Ubicación</p>
+              </agm-info-window>
+            </agm-marker>
+          </agm-map>
+        </div>
+        <div class="col-md-4 borderPanel p-3 mt-1"><!--project-more-->
+          <div class="heading text-center">
+            <h4>
+              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
+            </h4>
+          </div>
+          <h5><strong>Ubicación</strong></h5>
+          <p>
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
+          </p>
+          <h5><strong>Dirección</strong></h5>
+          <p>
+            <i class="fa fa-home" aria-hidden="true"></i> {{casa.direccion}}
+          </p>
+          <h5><strong>Servicios</strong></h5>
+          <p>
+            <span *ngFor="let servicio of servicios">
+              <i class="fa fa-check" aria-hidden="true"></i> {{servicio.servicio}}<br />
+            </span>
+          </p>
+          <h5><strong>Área</strong></h5>
+          <p>{{casa.largo}} m. x {{casa.ancho}}.</p>
+          <h4><strong>Datos</strong></h4>
+          <p>
+            <i class="fa fa-check" aria-hidden="true"></i> {{casa.npisos}} pisos<br />
+            <i class="fa fa-check" aria-hidden="true"></i> {{casa.ncuartos}} dormitorios<br />
+            <i class="fa fa-check" aria-hidden="true"></i> {{casa.nbanios}} S.H.<br />
+            <span *ngIf="casa.tjardin"><i class="fa fa-check" aria-hidden="true"></i> Jardin</span><br />
+            <span *ngIf="casa.tcochera"><i class="fa fa-check" aria-hidden="true"></i> Cochera</span>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!--Contacto-->
+    <section class="bar">
+      <div class="row portfolio-project">
+        <div class="col-md-12">
+          <div class="heading">
+            <h4>
               <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
             </h4>
           </div>
@@ -118,39 +176,6 @@
               </div>
             </div>
           </form>
-        </div>
-        <div class="col-md-4 borderPanel p-3 mt-1"><!--project-more-->
-          <div class="heading text-center">
-            <h4>
-              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
-            </h4>
-          </div>
-          <h5><strong>Ubicación</strong></h5>
-          <p>
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
-          </p>
-          <h5><strong>Dirección</strong></h5>
-          <p>
-            <i class="fa fa-home" aria-hidden="true"></i> {{casa.direccion}}
-          </p>
-          <h5><strong>Servicios</strong></h5>
-          <p>
-            <span *ngFor="let servicio of servicios">
-              <i class="fa fa-check" aria-hidden="true"></i> {{servicio.servicio}}<br />
-            </span>
-          </p>
-          <h5><strong>Área</strong></h5>
-          <p>{{casa.largo}} m. x {{casa.ancho}}.</p>
-          <h4><strong>Datos</strong></h4>
-          <p>
-            <i class="fa fa-check" aria-hidden="true"></i> {{casa.npisos}} pisos<br />
-            <i class="fa fa-check" aria-hidden="true"></i> {{casa.ncuartos}} dormitorios<br />
-            <i class="fa fa-check" aria-hidden="true"></i> {{casa.nbanios}} S.H.<br />
-            <span *ngIf="casa.tjardin"><i class="fa fa-check" aria-hidden="true"></i> Jardin</span><br />
-            <span *ngIf="casa.tcochera"><i class="fa fa-check" aria-hidden="true"></i> Cochera</span>
-          </p>
         </div>
       </div>
     </section>

@@ -11,6 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
+import { LS } from 'src/app/contantes/app-constants';
+import { MailService } from 'src/app/servicios/mail/mail.service';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-habitacion-detalle',
@@ -31,11 +34,17 @@ export class HabitacionDetalleComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   errors: Array<Object> = [];
-
+  public constantes: any = LS;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
+  
   constructor(
     private _activedRoute: ActivatedRoute,
     private api: ApiRequest2Service,
     private toastr: ToastrService,
+    private mensajeService: MailService
   ) {
     this.habitacion = new Habitacion();
     this.mensaje = new HabitacionMensaje();
@@ -52,14 +61,14 @@ export class HabitacionDetalleComponent implements OnInit {
 
   ngOnInit() {
     if (this.id) {
-      this.listarHabitacion(this.id);
+      this.obtenerHabitacion(this.id);
     }
     // this._activedRoute.params.subscribe(params => {
-    //   this.listarHabitacion(params['id']);
+    //   this.obtenerHabitacion(params['id']);
     // });
   }
 
-  listarHabitacion(id) {
+  obtenerHabitacion(id) {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
     this.api.get2('habitaciones/' + id).then(
@@ -90,6 +99,12 @@ export class HabitacionDetalleComponent implements OnInit {
           // aqui metodo para mostrar todas las imagenes de esta habitacion ....
           // this.imagen = res.foto;
           // this.imagenAnterior = res.foto;
+          // Mapa
+          this.habitacion.latitud = this.habitacion.latitud ? this.habitacion.latitud : this.latitude+""
+          this.habitacion.longitud = this.habitacion.longitud ? this.habitacion.longitud : this.longitude+""
+          this.latitude = Number.parseFloat(this.habitacion.latitud);
+          this.longitude = Number.parseFloat(this.habitacion.longitud);
+          // End Mapa
           this.cargando = false;
         }
       },
@@ -174,4 +189,28 @@ export class HabitacionDetalleComponent implements OnInit {
     this.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');
   }
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+  // End Mapa
 }

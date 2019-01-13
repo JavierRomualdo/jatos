@@ -19,6 +19,8 @@ import { HabitacionService } from '../habitacion.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { HabitacionTO } from 'src/app/entidadesTO/empresa/HabitacionTO';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, 
+  ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-modal-habitacion',
@@ -43,6 +45,10 @@ export class ModalHabitacionComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
 
   constructor(
     private modalService: NgbModal,
@@ -192,7 +198,12 @@ export class ModalHabitacionComponent implements OnInit {
     this.ubigeo = data.ubigeo;
     this.servicios = data.serviciosList;
     this.habitacionservicios = data.habitacionservicioList;
-
+    // Mapa
+    this.habitacion.latitud = this.habitacion.latitud ? this.habitacion.latitud : this.latitude+""
+    this.habitacion.longitud = this.habitacion.longitud ? this.habitacion.longitud : this.longitude+""
+    this.latitude = Number.parseFloat(this.habitacion.latitud);
+    this.longitude = Number.parseFloat(this.habitacion.longitud);
+    // End Mapa
     for (const item of data.fotosList) {
       console.log('foto: ');
       console.log(item);
@@ -261,8 +272,12 @@ export class ModalHabitacionComponent implements OnInit {
   }
 
   postGuardarHabitacion() {
-    // se genera el codigode la casa cuando la accion es nuevo
+    // se genera el codigode la habitacion cuando la accion es nuevo
     this.cargando = true;
+    // Mapa
+    this.habitacion.latitud = this.habitacion.latitud === "" ? this.latitude + "" : this.habitacion.latitud;
+    this.habitacion.longitud = this.habitacion.longitud === "" ? this.longitude + "" : this.habitacion.longitud;
+    // End Mapa
     this.habitacionService.generarCodigoHabitacion(this);
   }
 
@@ -393,5 +408,36 @@ export class ModalHabitacionComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFoto = null;
- } //
+  } //
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+
+  markerDragEnd($event) { // MouseEvent
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.habitacion.latitud = this.latitude + "";
+    this.habitacion.longitud = this.longitude + "";
+  }
+  // End Mapa
 }

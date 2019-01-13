@@ -6,90 +6,166 @@
     </button>
   </div>
   <form #empresaform="ngForm" name="empresaform" autocomplete="off" *ngIf="!cargando" class="form-horizontal" (ngSubmit)="guardarEmpresa()">
-    <div class="card-body pb-0">
-      <div class="form-group row">
-          <label class="col-sm-3 form-control-label">Nombre <span class="text-primary">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" [(ngModel)]="empresa.nombre" placeholder="Ingrese nombre de la empresa" required name="razonsocial"  maxlength="250">
+    <div class="card-body pb-0 p-1">
+      <!--/.card-->
+      <div class="card"><!--border-primary-->
+        <div class="card-header pt-2 pb-2"><!--bg-primary border-primary-->
+          <!-- <i class="fa fa-align-justify"></i>  -->
+          <strong>{{constantes.TAG_DATOS_GENERALES}}</strong>
+          <div class="card-header-actions">
+            <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosGeneral"
+              aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+              <i class="fa fa-minus"></i>
+            </a>
           </div>
         </div>
-        <div class="line"></div>
-        <div class="form-group row">
-          <label class="col-sm-3 form-control-label">Ruc <span class="text-primary">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" [(ngModel)]="empresa.ruc" maxlength="11" placeholder="Ingrese ruc de la empresa" required name="ruc">
-            <small class="help-block-none">Este atributo es fundamental, se recomienda no cambiarlo.</small>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="form-group row">
-        <label class="col-sm-3 form-control-label">Ubigeo <span class="text-primary">*</span></label>
-          <div class="col-sm-9">
-            <div class="form-group">
-              <div class="input-group">
-                <label class="form-control">
-                  {{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}
-                </label>
-                <div class="input-group-append">
-                  <button type="button" class="btn btn-primary" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>
-                </div>
-              </div>
+        <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosGeneral">
+          <!--/.row-->
+          <div class="row">
+            <div class="form-group form-group-sm col-sm-4">
+              <label class="control-label">
+                <strong>{{constantes.TAG_EMPRESA}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="empresa.nombre" 
+                placeholder="Ingrese nombre de la empresa" required name="razonsocial"  maxlength="250">
             </div>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="form-group row">
-          <label class="col-sm-3 form-control-label">Direccion <span class="text-primary">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" name="avcajiron" [(ngModel)]="empresa.direccion" placeholder="Ingrese direccion" required class="form-control">
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="form-group row">
-          <label class="col-sm-3 form-control-label">Telefono <span class="text-primary">*</span></label>
-          <div class="col-sm-9">
-            <input type="text" name="telefono" [(ngModel)]="empresa.telefono" placeholder="Ingrese telefono" required class="form-control" maxlength="100">
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="form-group row">
-          <label class="col-sm-3 form-control-label">Email <span class="text-primary">*</span></label>
-          <div class="col-sm-9">
-            <input type="email" name="email" [(ngModel)]="empresa.correo" placeholder="Ingrese email" required class="form-control" maxlength="100">
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="form-group row">
-            <label class="col-sm-3 form-control-label">Logo</label>
-            <div class="col-sm-9">
+            <div class="form-group form-group-sm col-sm-4 has-feedback">
+              <label class="control-label">
+                <strong>{{constantes.TAG_RUC}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="text" name="ruc" [(ngModel)]="empresa.ruc" required placeholder="Ingrese ruc de la empresa" 
+                class="form-control mousetrap" maxlength="11" pKeyFilter="pint">
+                <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_RUC}}"
+                  triggers="mouseenter:mouseleave" container="body"></span>
+            </div>
+            <div class="form-group form-group-sm col-sm-4">
+              <label class="control-label">
+                <strong>{{constantes.TAG_UBIGEO}} <span class="text-primary">*</span></strong>
+              </label>
               <div class="form-group">
                 <div class="input-group">
-                  <input type="file" class="btn btn-primary form-control-file" accept="image/*" (change)="detectarArchivo($event)">
+                  <label class="form-control form-control-sm">{{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}</label>
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-primary btn-sm" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>                      </div>
                 </div>
               </div>
             </div>
-        </div>
-        <hr class="bg-primary">
-        <div class="form-group row">
-          <div class="col-md-12">
-            <ngb-progressbar type="info" [value]="archivo.progreso">{{archivo.progreso | number: '.2-2'}} %</ngb-progressbar>
+          </div>
+          <!--/.row-->
+          <div class="row">
+            <div class="form-group form-group-sm col-sm-4">
+              <label class="control-label">
+                <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="text" name="avcajiron" [(ngModel)]="empresa.direccion" 
+                placeholder="Ingrese direccion" required class="form-control form-control-sm">
+            </div>
+            <div class="form-group form-group-sm col-sm-4">
+              <label class="control-label">
+                <strong>{{constantes.TAG_TELEFONO}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="text" name="telefono" [(ngModel)]="empresa.telefono" 
+                placeholder="Ingrese telefono" required class="form-control form-control-sm" maxlength="100">
+            </div>
+            <div class="form-group form-group-sm col-sm-4">
+              <label class="control-label">
+                <strong>{{constantes.TAG_EMAIL}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="email" name="email" [(ngModel)]="empresa.correo" placeholder="Ingrese email" 
+                required class="form-control form-control-sm" maxlength="100">
+            </div>
           </div>
         </div>
-        <div class="form-group row">
-          <div class="col-md-12" *ngIf="imagen==null; then imagenDefecto else imagenFirebase">
+      </div>
+      <!--/.card-->
+      <ul class="nav nav-tabs border-primary" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#imagen" role="tab" aria-controls="messages" ngbTooltip="{{constantes.TAG_IMAGENES}}">
+            <i class="fa fa-file-image-o"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#mapa" role="tab" aria-controls="profile" ngbTooltip="{{constantes.TAG_MAPA}}">
+            <i class="fa fa-map-marker"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content border-primary">
+        <div class="tab-pane active" id="imagen" role="tabpanel">
+          <div class="line"></div>
+          <div class="form-group row">
+              <label class="col-sm-3 form-control-label">Logo</label>
+              <div class="col-sm-9">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="file" class="btn btn-primary form-control-file" accept="image/*" (change)="detectarArchivo($event)">
+                  </div>
+                </div>
+              </div>
           </div>
-          <ng-template #imagenDefecto class="text-center">
-            <img src="assets/img-empresa/avatars/no_image.png" class="rounded mx-auto d-block">
-          </ng-template>
-          <ng-template #imagenFirebase class="text-center">
-            <img [src]="imagen" class="rounded mx-auto d-block" width="300" alt="..."/>
-          </ng-template>
-        </div>
-        <div class="form-group row" class="text-center" *ngIf="fotoingresada" >
-          <div class="col-md-12">
-            <button type="button" (click)="subirimagen()" class="btn btn-sm btn-success">Subir Imagen</button>
+          <hr class="bg-primary">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <ngb-progressbar type="info" [value]="archivo.progreso">{{archivo.progreso | number: '.2-2'}} %</ngb-progressbar>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12" *ngIf="imagen==null; then imagenDefecto else imagenFirebase">
+            </div>
+            <ng-template #imagenDefecto class="text-center">
+              <img src="assets/img-empresa/avatars/no_image.png" class="rounded mx-auto d-block">
+            </ng-template>
+            <ng-template #imagenFirebase class="text-center">
+              <img [src]="imagen" class="rounded mx-auto d-block" width="300" alt="..."/>
+            </ng-template>
+          </div>
+          <div class="form-group row" class="text-center" *ngIf="fotoingresada" >
+            <div class="col-md-12">
+              <button type="button" (click)="subirimagen()" class="btn btn-sm btn-success">Subir Imagen</button>
+            </div>
           </div>
         </div>
+
+        <div class="tab-pane" id="mapa" role="tabpanel">
+            <!--/.row-->
+            <div class="row">
+              <div class="form-group form-group-sm col-sm-6">
+                <label class="control-label">
+                  <strong>{{constantes.TAG_LATITUD}} <span class="text-primary">*</span></strong>
+                </label>
+                <input type="text" name="latitud" placeholder="Ingrese latitud" [(ngModel)]="empresa.latitud"
+                  [disabled]="true" class="form-control form-control-sm mousetrap" required>
+              </div>
+              <div class="form-group form-group-sm col-sm-6">
+                <label class="control-label">
+                  <strong>{{constantes.TAG_LONGITUD}} <span class="text-primary">*</span></strong>
+                </label>
+                <input type="text" name="longitud" placeholder="Ingrese longitud" [(ngModel)]="empresa.longitud"
+                  [disabled]="true" class="form-control form-control-sm mousetrap" required>
+              </div>
+            </div>
+            <!--/.row-->
+            <div class="row">
+              <div class="form-group form-group-sm col-sm-12"><!--[mapTypeControlOptions]="mapTypeControlOptions"-->
+                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+                [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+                [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+                [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+                  <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true" (dragEnd)="markerDragEnd($event)"
+                    [markerDraggable]="accion===constantes.ACCION_CONSULTAR ? false : true">
+                    <agm-info-window>
+                      <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+                      <p>Punto de Ubicación</p>
+                    </agm-info-window>
+                  </agm-marker>
+                </agm-map>
+              </div>
+            </div>
+            <!--/.row-->
+        </div>
+      </div>
+
+        
     </div>
     <div class="modal-footer border-primary">
       <button type="submit" class="btn btn-sm btn-primary" [disabled]="!empresaform.form.valid || ubigeo.ubigeo.id==undefined"><i class="fa fa-dot-circle-o"></i> Guardar</button>

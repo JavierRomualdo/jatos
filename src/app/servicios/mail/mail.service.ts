@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root'
 })
-export class MailServiceService {
+export class MailService {
 
   public constantes: any = LS;
   
@@ -30,6 +30,8 @@ export class MailServiceService {
       }
     ).catch(err => this.handleError(err, contexto));
   }
+
+  // Mensajes de que envia el cliente por propiedad
 
   private handleError(error: any, contexto): void {
     this.toastr.error('Error Interno: ' + error, 'Error');

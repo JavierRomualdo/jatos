@@ -27,4 +27,6 @@ export class Cochera {
   fotosList: any = {};
   serviciosList: any = {};
   cocheraservicioList: any = {};
+  latitud: string = "";
+  longitud: string = "";
 }

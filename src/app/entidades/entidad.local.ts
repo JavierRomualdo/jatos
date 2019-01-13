@@ -27,4 +27,6 @@ export class Local {
     fotosList: any = {};
     serviciosList: any = {};
     localservicioList: any = {};
+    latitud: string = "";
+    longitud: string = "";
 }

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiRequest2Service } from '../../../servicios/api-request2.service';
-import { ToastrService } from 'ngx-toastr';
 import { Empresa } from '../../../entidades/entidad.empresa';
 import { UbigeoGuardar } from '../../../entidades/entidad.ubigeoguardar';
 import { Ubigeo } from '../../../entidades/entidad.ubigeo';
 import { LS } from 'src/app/contantes/app-constants';
 import {Router} from '@angular/router';
+import { EmpresaService } from '../../empresa/configuracion/empresa/modal-empresa/empresa.service';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-nosotros',
@@ -17,17 +18,16 @@ export class NosotrosComponent implements OnInit {
   public imagen: string = null;
   public imagenAnterior: string = null; // solo se usara para editar usuario
   public ubigeo: UbigeoGuardar;
-  public fecha = new Date();
-  errors: Array<Object> = [];
-  lat: Number = -5.196395;
-  lng: Number = -80.630287;
-  zoom: Number = 16;
-
   public constantes: any = LS;
+  public fecha = new Date();
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
 
   constructor(
     public api: ApiRequest2Service,
-    public toastr: ToastrService,
+    private empresaService: EmpresaService,
     private router: Router,
   ) {
     this.empresa = new Empresa();
@@ -40,7 +40,7 @@ export class NosotrosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listarempresa();
+    this.traerParaEdicion();
   }
 
   verPropiedades(contrato: string) {
@@ -48,38 +48,54 @@ export class NosotrosComponent implements OnInit {
     this.router.navigate(['/welcome/propiedades'])
   }
 
-  listarempresa() {
-    // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
-    this.api.get2('empresa').then( // va a retornar siempre el primer registro de la tabla empresa en la bd
-      (res) => {
-        if (res !== 'vacio') {
-          console.log('datos empresa: ');
-          console.log(res);
-          this.empresa = res;
-          this.ubigeo = res.ubigeo;
-          console.log('empresa');
-          console.log(this.empresa);
-          this.imagen = res.foto;
-          console.log('res.foto = ' + this.imagen);
-          console.log('nombre empresa = ' + this.empresa.nombre);
-          this.imagenAnterior = res.foto;
-        }
-      },
-      (error) => {
-        if (error.status === 422) {
-          this.errors = [];
-          const errors = error.json();
-          console.log('Error');
-          /*for (const key in errors) {
-            this.errors.push(errors[key]);
-          }*/
-        }
-      }
-    ).catch(err => this.handleError(err));
+  traerParaEdicion() {
+    if (LS.KEY_EMPRESA_SELECT) {
+      this.empresa = LS.KEY_EMPRESA_SELECT;
+      this.cargarMapa();
+    } else {
+      this.empresaService.listarEmpresa(this);
+    }
   }
 
-  private handleError(error: any): void {
-    this.toastr.error('Error Interno: ' + error, 'Error');
+  despuesDeListarEmpresa(data) {
+    this.empresa = data;
+    this.ubigeo = data.ubigeo;
+    this.imagen = data.foto;
+    this.imagenAnterior = data.foto;
+    LS.KEY_EMPRESA_SELECT = this.empresa;
+    this.cargarMapa();
   }
 
+  cargarMapa() {
+    // Mapa
+    this.empresa.latitud = this.empresa.latitud ? this.empresa.latitud : this.latitude+""
+    this.empresa.longitud = this.empresa.longitud ? this.empresa.longitud : this.longitude+""
+    this.latitude = Number.parseFloat(this.empresa.latitud);
+    this.longitude = Number.parseFloat(this.empresa.longitud);
+    // End Mapa
+  }
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.LEFT_TOP,
+  }
+  // End Mapa
 }

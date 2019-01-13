@@ -72,6 +72,7 @@ import { MensajesListadoComponent } from './componentes/mensajes-listado/mensaje
 import { SpanMensajeComponent } from '../componentes/span-mensaje/span-mensaje.component';
 import { MensajeModalComponent } from '../componentes/mensaje-modal/mensaje-modal.component';
 import { FormularioMailComponent } from './componentes/formulario-mail/formulario-mail.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -152,7 +153,13 @@ import { FormularioMailComponent } from './componentes/formulario-mail/formulari
     SplitButtonModule,
     MenubarModule,
     DialogModule,
-    CalendarModule
+    CalendarModule,
+
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80',
+      language: 'en',
+      libraries: ['geometry', 'places']
+    }),
   ],
   entryComponents: [
     ModalEmpresaComponent,

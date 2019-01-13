@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LS } from 'src/app/contantes/app-constants';
 import { MailTO } from 'src/app/entidadesTO/welcome/MailTO';
-import { MailServiceService } from 'src/app/servicios/mail/mail-service.service';
+import { MailService } from 'src/app/servicios/mail/mail.service';
 
 @Component({
   selector: 'app-formulario-mail',
@@ -21,7 +21,7 @@ export class FormularioMailComponent implements OnInit {
   public cargando: boolean = false;
 
   constructor(
-    private mailService: MailServiceService
+    private mailService: MailService
   ) { }
 
   ngOnInit() {

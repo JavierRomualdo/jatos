@@ -8,6 +8,9 @@ import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { ModalUbigeoComponent } from '../../ubigeo/modal-ubigeo/modal-ubigeo.component';
 import { EmpresaService } from './empresa.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions,
+  ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-modal-empresa',
@@ -24,6 +27,11 @@ export class ModalEmpresaComponent implements OnInit {
   public imagenAnterior: string = null; // solo se usara para editar usuario
   public empresa: Empresa;
   public ubigeo: UbigeoGuardar;
+  public constantes: any = LS;
+  // Mapa
+  public latitude: number = -5.196395;
+  public longitude: number = -80.630287;
+  public zoom: number = 16;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -33,7 +41,6 @@ export class ModalEmpresaComponent implements OnInit {
     private _cargaImagenes: CargaImagenesService,
   ) {
     this.empresa = new Empresa();
-    this.empresa.ubigeo_id = new Ubigeo();
     this.archivo = new FileItem(null);
 
     this.ubigeo = new UbigeoGuardar();
@@ -57,6 +64,12 @@ export class ModalEmpresaComponent implements OnInit {
     this.ubigeo = data.ubigeo;
     this.imagen = data.foto;
     this.imagenAnterior = data.foto;
+    // Mapa
+    this.empresa.latitud = this.empresa.latitud ? this.empresa.latitud : this.latitude+""
+    this.empresa.longitud = this.empresa.longitud ? this.empresa.longitud : this.longitude+""
+    this.latitude = Number.parseFloat(this.empresa.latitud);
+    this.longitude = Number.parseFloat(this.empresa.longitud);
+    // End Mapa
     this.cargando = false;
   }
 
@@ -139,4 +152,35 @@ export class ModalEmpresaComponent implements OnInit {
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
   }
+
+  // Mapa
+  zoomControlOptions: ZoomControlOptions = {
+    position: ControlPosition.RIGHT_BOTTOM,
+    style: ZoomControlStyle.LARGE
+  };
+
+  fullscreenControlOptions: FullscreenControlOptions = {
+    position : ControlPosition.TOP_RIGHT
+  };
+
+  // mapTypeControlOptions: MapTypeControlOptions = {
+  //   mapTypeIds: [ MapTypeId.ROADMAP],
+  //   position: ControlPosition.BOTTOM_LEFT,
+  // };
+
+  scaleControlOptions: ScaleControlOptions = {
+    style: ScaleControlStyle.DEFAULT
+  }
+
+  panControlOptions: PanControlOptions = {
+    position: ControlPosition.TOP_LEFT,
+  }
+
+  markerDragEnd($event) { // MouseEvent
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.empresa.latitud = this.latitude + "";
+    this.empresa.longitud = this.longitude + "";
+  }
+  // End Mapa
 }

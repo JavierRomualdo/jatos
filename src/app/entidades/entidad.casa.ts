@@ -31,6 +31,8 @@ export class Casa {
   fotosList: any = {};
   serviciosList: any = {};
   casaservicioList: any = {};
+  latitud: string = "";
+  longitud: string = "";
 
   constructor(data?) {
     data ? this.hydrate(data) : null;
@@ -63,5 +65,7 @@ export class Casa {
     this.fotosList = data.fotosList ? data.fotosList : this.fotosList;
     this.serviciosList = data.serviciosList ? data.serviciosList : this.serviciosList;
     this.casaservicioList = data.casaservicioList ? data.casaservicioList : this.casaservicioList;
+    this.latitud = data.latitud ? data.latitud : this.latitud;
+    this.longitud = data.longitud ? data.longitud : this.longitud;
   }
 }

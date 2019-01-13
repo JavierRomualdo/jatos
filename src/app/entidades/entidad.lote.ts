@@ -22,4 +22,6 @@ export class Lote {
     estado: boolean = true;
     lotepersonaList: any = {};
     fotosList: any = {};
+    latitud: string = "";
+    longitud: string = "";
 }

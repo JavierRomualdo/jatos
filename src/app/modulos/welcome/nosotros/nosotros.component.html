@@ -84,8 +84,18 @@
       <div class="heading text-center">
         <h3>Ubícanos</h3>
       </div>
-      <agm-map [latitude]="lat" [longitude]="lng">
-        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+      <!--mapa-->
+      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+      [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+      [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+      [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+        <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
+          [markerDraggable]="false">
+          <agm-info-window>
+            <h6><strong>Ubicación {{constantes.TAG_EMPRESA}}</strong></h6>
+            <p>Punto de Ubicación</p>
+          </agm-info-window>
+        </agm-marker>
       </agm-map>
     </div>
   </section>

@@ -67,6 +67,56 @@
           <p style="font-size: 15px" class="text-justify">{{lote.descripcion}}</p>
           <div class="heading">
             <h4>
+              <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación</strong>
+            </h4>
+          </div>
+          <!--Mapa-->
+          <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+          [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+          [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+          [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+            <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
+              [markerDraggable]="false">
+              <agm-info-window>
+                <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+                <p>Punto de Ubicación</p>
+              </agm-info-window>
+            </agm-marker>
+          </agm-map>
+        </div>
+        <div class="col-md-4 borderPanel p-3 mt-1"><!--project-more-->
+          <div class="heading text-center">
+            <h4>
+              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
+            </h4>
+          </div>
+          <h5><strong>Ubicación</strong></h5>
+          <p>
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
+            <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
+          </p>
+          <h5><strong>Dirección</strong></h5>
+          <p>
+            <i class="fa fa-home" aria-hidden="true"></i> {{lote.direccion}}
+          </p>
+          <!--<h4><strong>Servicios</strong></h4>
+            <p>
+              <span *ngFor="let servicio of servicios">
+                <i class="fa fa-check" aria-hidden="true"></i> { {servicio.servicio}}<br/>
+              </span>
+            </p>-->
+          <h5><strong>Área</strong></h5>
+          <p>{{lote.largo}} m. x {{lote.ancho}}.</p>
+        </div>
+      </div>
+    </section>
+    <!--Contacto-->
+    <section class="bar">
+      <div class="row portfolio-project">
+        <div class="col-md-12">
+          <div class="heading">
+            <h4>
               <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
             </h4>
           </div>
@@ -109,7 +159,7 @@
                 <div class="form-group">
                   <label for="mensaje"><strong>Mensaje <span class="text-primary">*</span></strong></label>
                   <textarea id="mensaje" class="form-control" [(ngModel)]="mensaje.mensaje" name="mensaje" required
-                    placeholder="Ingrese mensaje"></textarea>
+                    placeholder="Ingrese mensaje" maxlength="255"></textarea>
                 </div>
               </div>
               <div class="col-md-12 text-center">
@@ -118,31 +168,6 @@
               </div>
             </div>
           </form>
-        </div>
-        <div class="col-md-4 borderPanel p-3 mt-1"><!--project-more-->
-          <div class="heading text-center">
-            <h4>
-              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
-            </h4>
-          </div>
-          <h5><strong>Ubicación</strong></h5>
-          <p>
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
-          </p>
-          <h5><strong>Dirección</strong></h5>
-          <p>
-            <i class="fa fa-home" aria-hidden="true"></i> {{lote.direccion}}
-          </p>
-          <!--<h4><strong>Servicios</strong></h4>
-            <p>
-              <span *ngFor="let servicio of servicios">
-                <i class="fa fa-check" aria-hidden="true"></i> { {servicio.servicio}}<br/>
-              </span>
-            </p>-->
-          <h5><strong>Área</strong></h5>
-          <p>{{lote.largo}} m. x {{lote.ancho}}.</p>
         </div>
       </div>
     </section>

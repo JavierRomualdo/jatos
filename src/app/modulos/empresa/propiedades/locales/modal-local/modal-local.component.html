@@ -138,6 +138,11 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#mapa" role="tab" aria-controls="profile" ngbTooltip="{{constantes.TAG_MAPA}}">
+                <i class="fa fa-map-marker"></i>
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile" ngbTooltip="{{constantes.TAG_SERVICIOS}}">
                 <i class="icon-basket-loaded"></i>
               </a>
@@ -161,6 +166,45 @@
                 </div>
               </div>
             </div>
+
+            <div class="tab-pane" id="mapa" role="tabpanel">
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-6">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_LATITUD}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="latitud" placeholder="Ingrese latitud" [(ngModel)]="local.latitud"
+                    [disabled]="true" class="form-control form-control-sm mousetrap" required>
+                </div>
+                <div class="form-group form-group-sm col-sm-6">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_LONGITUD}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="longitud" placeholder="Ingrese longitud" [(ngModel)]="local.longitud"
+                    [disabled]="true" class="form-control form-control-sm mousetrap" required>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-12"><!--[mapTypeControlOptions]="mapTypeControlOptions"-->
+                  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+                  [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+                  [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+                  [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+                    <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true" (dragEnd)="markerDragEnd($event)"
+                      [markerDraggable]="accion===constantes.ACCION_CONSULTAR ? false : true">
+                      <agm-info-window>
+                        <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+                        <p>Punto de Ubicación</p>
+                      </agm-info-window>
+                    </agm-marker>
+                  </agm-map>
+                </div>
+              </div>
+              <!--/.row-->
+            </div>
+            
             <div class="tab-pane" id="profile2" role="tabpanel">
               <div class="form-group">
                 <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-2"

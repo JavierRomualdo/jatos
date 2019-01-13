@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Empresa } from '../../../entidades/entidad.empresa';
 import { ApiRequest2Service } from '../../../servicios/api-request2.service';
 import { UbigeoGuardar } from '../../../entidades/entidad.ubigeoguardar';
-import { Ubigeo } from '../../../entidades/entidad.ubigeo';
-import { ToastrService } from 'ngx-toastr';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginService } from '../../../servicios/login.service';
 import { LoginComponent } from 'src/app/componentesgenerales/login/login.component';
+import { EmpresaService } from '../../empresa/configuracion/empresa/modal-empresa/empresa.service';
+import { LS } from 'src/app/contantes/app-constants';
 // import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
@@ -21,58 +21,36 @@ export class WelcomeComponentComponent implements OnInit {
   public ubigeo: UbigeoGuardar;
   public fecha = new Date();
   public iniciadosesion = false;
-  errors: Array<Object> = [];
+  public constantes: any = LS;
 
   constructor(
-    public modalService: NgbModal,
-    public activeModal: NgbActiveModal,
+    private modalService: NgbModal,
     public api: ApiRequest2Service,
+    private empresaService: EmpresaService,
     // public auth: AuthService,
-    public toastr: ToastrService,
-    public loginservicio: LoginService,
+    private loginservicio: LoginService,
   ) {
-    this.empresa = new Empresa();
-    this.empresa.ubigeo_id = new Ubigeo();
-
-    this.ubigeo = new UbigeoGuardar();
-    this.ubigeo.departamento = new Ubigeo();
-    this.ubigeo.provincia = new Ubigeo();
-    this.ubigeo.ubigeo = new Ubigeo();
-
     // this.iniciadosesion = this.loginservicio.isAuthenticated();
   }
 
   ngOnInit() {
     // this.auth.handleAuthentication(); // auth
-    this.listarempresa();
+    this.empresa = new Empresa();
+    this.ubigeo = new UbigeoGuardar();
+    this.traerParaEdicion();
   }
 
-  listarempresa() {
+  traerParaEdicion() {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
-    this.api.get2('empresa').then( // va a retornar siempre el primer registro de la tabla empresa en la bd
-      (res) => {
-        if (res !== 'vacio') {
-          console.log('datos empresa: ');
-          console.log(res);
-          this.empresa = res;
-          this.ubigeo = res.ubigeo;
-          this.imagen = res.foto;
-          console.log('res.foto = ' + this.imagen);
-          console.log('nombre empresa = ' + this.empresa.nombre);
-          this.imagenAnterior = res.foto;
-        }
-      },
-      (error) => {
-        if (error.status === 422) {
-          this.errors = [];
-          const errors = error.json();
-          console.log('Error');
-          /*for (const key in errors) {
-            this.errors.push(errors[key]);
-          }*/
-        }
-      }
-    ).catch(err => this.handleError(err));
+    this.empresaService.listarEmpresa(this);
+  }
+
+  despuesDeListarEmpresa(data) {
+    this.empresa = data;
+    this.ubigeo = data.ubigeo;
+    this.imagen = data.foto;
+    this.imagenAnterior = data.foto;
+    LS.KEY_EMPRESA_SELECT = this.empresa;
   }
 
   login() {
@@ -86,9 +64,5 @@ export class WelcomeComponentComponent implements OnInit {
 
   salir() {
     // this.loginservicio.logout();
-  }
-
-  private handleError(error: any): void {
-    this.toastr.error('Error Interno: ' + error, 'Error');
   }
 }
