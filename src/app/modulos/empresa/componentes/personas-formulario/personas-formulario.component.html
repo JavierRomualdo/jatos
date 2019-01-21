@@ -1,0 +1,180 @@
+<div class="modal-primary"> <!--*ngIf="listadoCasas?.length>0"-->
+  <div class="card mb-0 card-accent-primary">
+    <div class="card-header bg-primary p-2" *ngIf="isModal">
+      <strong>{{tituloForm}}</strong>
+      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-header p-2" *ngIf="!isModal">
+      <strong *ngIf="!isModal">{{tituloForm}}</strong>
+      <div class="card-header-actions">
+        <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnGuardar" type="button" (click)="guardarPersona()"
+          class="btn btn-sm btn-primary mr-1" [disabled]="!frmpropiedad.form.valid" title="{{constantes.ATAJO_GUARDAR}}">
+        <i class="{{constantes.ICON_GUARDAR}}"></i>
+          <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
+        </button>
+        <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnCancelar" type="button" (click)="cancelar()"
+          class="btn btn-sm btn-default mr-1" title="{{constantes.ATAJO_CANCELAR}}">
+          <i class="{{constantes.ICON_CANCELAR}}"></i>
+          <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
+        </button>
+        <button *ngIf="accion===constantes.ACCION_CONSULTAR" id="btnCancelar" type="button" (click)="cancelar()"
+          class="btn btn-sm btn-default mr-1" title="{{constantes.ATAJO_CANCELAR}}">
+          <i class="{{constantes.ICON_REGRESAR}}" aria-hidden="true"></i>
+          <span class="d-none d-md-inline"> {{constantes.LABEL_REGRESAR}}</span>
+        </button>
+      </div>
+    </div>
+    <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR"><!--|| !isModal-->
+      <form #frmpropiedad="ngForm" name="frmpropiedad" autocomplete="off" class="form-horizontal" (ngSubmit)="guardarPersona()">
+        <div class="card-body pb-0 p-1">
+          <!--/.card-->
+          <div class="card"><!--border-primary-->
+            <div class="card-header pt-2 pb-2"><!--border-primary-->
+              <!-- <i class="fa fa-align-justify"></i> -->
+              <strong>{{constantes.TAG_DATOS_GENERALES}}</strong>
+              <div class="card-header-actions">
+                <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosGeneralPersona"
+                  aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                  <i class="fa fa-minus"></i>
+                </a>
+              </div>
+            </div>
+            <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosGeneralPersona">
+              <!--/.row-->
+              <div class="row">
+                <!--Dni-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_DNI}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="dni" placeholder="Ingrese el precio contrato" required class="form-control form-control-sm"
+                    maxlength="8" pKeyFilter="pint" [(ngModel)]="persona.dni">
+                </div>
+                <!--Nombres-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_NOMBRES}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" class="form-control form-control-sm" name="nombre" required 
+                    placeholder="Ingrese nombre completo" maxlength="50" [(ngModel)]="persona.nombres">
+                </div>
+                <!--Correo-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_EMAIL}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="correo" placeholder="Ingrese email" class="form-control form-control-sm" maxlength="50" 
+                    [(ngModel)]="persona.correo">
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <!--/.card-->
+          <div class="card"><!--border-primary-->
+            <div class="card-header pt-2 pb-2"><!--border-primary-->
+              <!-- <i class="fa fa-align-justify"></i> -->
+              <strong>{{constantes.TAG_MAS_DATOS}}</strong>
+              <div class="card-header-actions">
+                <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosMasDatos"
+                  aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                  <i class="fa fa-minus"></i>
+                </a>
+              </div>
+            </div>
+            <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosMasDatos">
+              <!--/.row-->
+              <div class="row">
+                <!--Ubigeo-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_UBICACION}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="form-control form-control-sm">{{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}</label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--Direccion-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="direccion" required placeholder="Ingrese direccion" 
+                    class="form-control form-control-sm" maxlength="255" [(ngModel)]="persona.direccion">
+                </div>
+                <!--Telefono-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_TELEFONO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="telefono" required  class="form-control form-control-sm" 
+                    placeholder="Ingrese telefono" maxlength="15" [(ngModel)]="persona.telefono">
+                </div>
+              </div>
+              <!--row - roles-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-12">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_ROLES}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div *ngIf="listaPR.length==0"  class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-2" style="background-color: antiquewhite">
+                    <div class="col">
+                      Asignar Roles a esta persona
+                    </div>
+                    <div class="col-auto">
+                      <a (click)="abrirrol()" [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
+                        title="asignar rol" style="cursor: pointer">
+                        <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary" ></i>
+                      </a>
+                    </div>
+                  </div>
+                  <!---->
+                  <div class="form-row" >
+                    <div class="col table-responsive" *ngIf="listaPR && listaPR.length>0"  >
+                      <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline"><!--table table-sigro table-hover-->
+                        <thead class="thead-inverse">
+                          <tr>
+                            <th>#</th>
+                            <th>Roles.</th>
+                            <th style="width:30px;">Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="cursor-pointer" *ngFor="let item of listaPR; let i = index;">
+                            <th class="text-center">{{i+1}}</th>
+                            <td>
+                              {{item.rol}}
+                            </td>
+                            <td class="text-center">
+                              <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
+                                style="cursor: pointer" title="quitar" (click)="quitardelista(item)">
+                                <i class="fa fa-remove text-primary" style="font-size: 23px; "></i>
+                              </a>
+                            </td>
+                            <!--<td style="padding-top: 0px; padding-bottom: 0px;">
+                              <ui-switch size="small" *ngIf="persona.id" [(ngModel)]="item.estado" name="es5-{{i}}" >estado</ui-switch>
+                            </td>-->
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+            </div>
+          </div>
+        </div>
+      </form>
+    </fieldset>
+  </div>
+</div>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>

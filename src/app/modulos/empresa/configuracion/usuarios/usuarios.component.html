@@ -1,0 +1,73 @@
+<ol class="breadcrumb border-primary mb-0">
+  <li class="breadcrumb-item">
+    <a [routerLink]="['home']">Inicio</a>
+  </li>
+  <li class="breadcrumb-item active">Usuarios</li>
+</ol>
+<div class="container-fluid p-2">
+  <div class="modal-primary"> <!--*ngIf="listadoUsuarios?.length>0"-->
+    <!--Formulario-->
+    <div *ngIf="vistaFormulario">
+      <app-usuario-formulario [parametrosFormulario]="parametrosFormulario" (enviarAccion)="ejecutarAccion($event)">
+      </app-usuario-formulario>
+    </div>
+    <!--Listado-->
+    <div class="card animated fadeIn" *ngIf="!vistaFormulario">
+      <div class="card-header bg-primary p-2" *ngIf="isModal">
+        <strong>{{constantes.TAG_USUARIOS_LISTADO}}</strong>
+        <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+  
+      <div class="card-header p-1" *ngIf="!isModal">
+        <!-- <i class="fa fa-align-justify"></i> -->
+        <strong>{{constantes.TAG_USUARIOS_LISTADO}}</strong>
+        <div class="card-header-actions">
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top" (click)="nuevoUsuario()"
+              ngbTooltip="{{constantes.LABEL_NUEVO}}" container="body" title="{{constantes.ATAJO_NUEVO}}">
+              <i class="{{constantes.ICON_NUEVO}}" aria-hidden="true"></i>
+              <span class="d-none d-md-inline"> {{constantes.LABEL_NUEVO}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div class="row">
+          <div class="col-sm-5 col-md-6">
+            <div class="input-group p-1">
+              <input type="text" [(ngModel)]="filtroGlobal" (input)="filtrarRapido()" class="form-control form-control-sm input-filter mousetrap"
+                size="100" style="font-family: Arial, FontAwesome;" placeholder="&#xf0b0; {{constantes.TAG_FILTRAR}}..." size="100">
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i class="{{constantes.ICON_BUSCAR}}"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-7 col-md-6">
+            <div class="float-right pr-1">
+              <p-multiSelect [options]="columnDefs" [(ngModel)]="columnDefsSelected" optionLabel="headerName" maxSelectedLabels="1" selectedItemsLabel="{0} {{constantes.MSJ_COLUMNAS}}"
+                defaultLabel="{{constantes.TAG_SELECCIONE}}"></p-multiSelect>
+            </div>
+          </div>
+        </div>
+        <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listadoUsuarios"
+          [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
+          [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
+          (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
+          (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultarUsuario()">
+        </ag-grid-angular>
+        <!--(filterChanged)="actualizarFilas()"-->
+      </div>
+      <p-contextMenu #menuOpciones appendTo="body" [model]="opciones" [baseZIndex]="1100"></p-contextMenu>
+    </div>
+  </div>
+</div>
+
+<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
+
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>

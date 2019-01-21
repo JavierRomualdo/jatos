@@ -13,7 +13,6 @@ import { LocalService } from '../../propiedades/locales/local.service';
 import { LoteService } from '../../propiedades/lotes/lote.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilService } from 'src/app/servicios/util/util.service';
-import { ModalPersonaComponent } from '../../configuracion/empresa/modal-persona/modal-persona.component';
 import { LotesListadoComponent } from '../lotes-listado/lotes-listado.component';
 import { LocalesListadoComponent } from '../locales-listado/locales-listado.component';
 import { CocherasListadoComponent } from '../cocheras-listado/cocheras-listado.component';
@@ -21,6 +20,7 @@ import { CasasListadoComponent } from '../casas-listado/casas-listado.component'
 import { ApartamentosListadoComponent } from '../apartamentos-listado/apartamentos-listado.component';
 import { HabitacionesListadoComponent } from '../habitaciones-listado/habitaciones-listado.component';
 import { HabitacionService } from '../../propiedades/habitaciones/habitacion.service';
+import { PersonasComponent } from '../../configuracion/personas/personas.component';
 
 @Component({
   selector: 'app-alquiler-formulario',
@@ -479,7 +479,7 @@ export class AlquilerFormularioComponent implements OnInit {
   }
 
   buscarcliente() {
-    const modalRef = this.modalService.open(ModalPersonaComponent, {size: 'lg', keyboard: true});
+    const modalRef = this.modalService.open(PersonasComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
       this.cliente = result;

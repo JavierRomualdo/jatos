@@ -224,6 +224,11 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
     background: #f6f7f9 0 0 repeat-x !important;
     background: linear-gradient(to bottom, #f6f7f9 0%, #ffffff 100%) !important;
   }
+
+  /*Subir foto en usuario admin*/
+  .usuario .ui-fileupload-content{
+    padding: 0!important;
+  }
   
   /*welcome*/
   #heading-breadcrumbs {

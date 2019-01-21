@@ -8,7 +8,6 @@ import { Venta } from 'src/app/entidades/entidad.venta';
 import { VentaTO } from 'src/app/entidadesTO/empresa/VentaTO';
 import { Persona } from 'src/app/entidades/entidad.persona';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalPersonaComponent } from '../../configuracion/empresa/modal-persona/modal-persona.component';
 import { CasasListadoComponent } from '../casas-listado/casas-listado.component';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { CasasService } from '../../propiedades/casas/casas.service';
@@ -20,6 +19,7 @@ import { ApartamentosListadoComponent } from '../apartamentos-listado/apartament
 import { CocherasListadoComponent } from '../cocheras-listado/cocheras-listado.component';
 import { LocalesListadoComponent } from '../locales-listado/locales-listado.component';
 import { LotesListadoComponent } from '../lotes-listado/lotes-listado.component';
+import { PersonasComponent } from '../../configuracion/personas/personas.component';
 
 @Component({
   selector: 'app-venta-formulario',
@@ -412,7 +412,7 @@ export class VentaFormularioComponent implements OnInit {
   }
 
   buscarcliente() {
-    const modalRef = this.modalService.open(ModalPersonaComponent, {size: 'lg', keyboard: true});
+    const modalRef = this.modalService.open(PersonasComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
       this.cliente = result;

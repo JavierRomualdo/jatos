@@ -1,0 +1,8 @@
+/* .usuario .ui-fileupload-content {
+    padding: 0!important;
+} */
+.foto-perfil, .usuario p-fileupload .ui-fileupload .ui-fileupload-content .ui-fileupload-files .ui-fileupload-row img {
+    width: auto!important;
+    max-width: 100%!important;
+    height: 223px!important;
+}

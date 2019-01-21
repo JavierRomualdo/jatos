@@ -11,9 +11,7 @@ import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
-import { ModalPersonaComponent } from '../../../configuracion/empresa/modal-persona/modal-persona.component';
 import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
-import { ModalServicioComponent } from '../../../configuracion/empresa/modal-servicio/modal-servicio.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { HabitacionService } from '../habitacion.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
@@ -21,6 +19,8 @@ import { LS } from 'src/app/contantes/app-constants';
 import { HabitacionTO } from 'src/app/entidadesTO/empresa/HabitacionTO';
 import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, 
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
+import { PersonasComponent } from '../../../configuracion/personas/personas.component';
+import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 
 @Component({
   selector: 'app-modal-habitacion',
@@ -225,7 +225,8 @@ export class ModalHabitacionComponent implements OnInit {
   }
 
   buscarpropietario() {
-    const modalRef = this.modalService.open(ModalPersonaComponent, {size: 'lg', keyboard: true});
+    const modalRef = this.modalService.open(PersonasComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
       this.persona = result;
       this.habitacion.persona_id = result;
@@ -250,7 +251,8 @@ export class ModalHabitacionComponent implements OnInit {
   }
 
   buscarservicio() {
-    const modalRef = this.modalService.open(ModalServicioComponent, {size: 'lg', keyboard: true});
+    const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
       let tieneservicio: Boolean = false;
       for (const servicio of this.servicios) {

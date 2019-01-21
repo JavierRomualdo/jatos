@@ -12,12 +12,12 @@
         <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
       </button>
       <button *ngIf="accion === constantes.ACCION_EDITAR" id="btnGuardar" type="button" (click)="modificarVenta(frmVenta)"
-        class="btn btn-sm btn-primary mr-1" [disabled]="cargando" title="{{constantes.ATAJO_GUARDAR}}">
+        class="btn btn-sm btn-primary mr-1" title="{{constantes.ATAJO_GUARDAR}}">
       <i class="{{constantes.ICON_GUARDAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
       </button>
       <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnCancelar" type="button" (click)="cancelar()"
-        class="btn btn-sm btn-default mr-1" [disabled]="cargando" title="{{constantes.ATAJO_CANCELAR}}">
+        class="btn btn-sm btn-default mr-1" title="{{constantes.ATAJO_CANCELAR}}">
         <i class="{{constantes.ICON_CANCELAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
       </button>

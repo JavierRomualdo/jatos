@@ -1,0 +1,28 @@
+<p-menubar [model]="items" [autoDisplay]="false" *ngIf="!isModal">
+</p-menubar>
+<div class="modal-primary"> <!--*ngIf="listadoPersonas?.length>0"-->
+  <div class="card">
+    <div class="card-header bg-primary p-2" *ngIf="isModal">
+      <strong>{{constantes.TAG_MANTENIMIENTO_PERSONAS}}</strong>
+      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-header p-1">
+      <!--Listado-->
+      <div [hidden]="vistaFormulario">
+        <app-personas-listado [parametrosBusqueda]="parametrosListado" 
+          (enviarAccion)="ejecutarAccion($event)"></app-personas-listado>
+      </div>
+      <!--Formulario-->
+      <div *ngIf="vistaFormulario">
+        <app-personas-formulario [parametrosFormulario]="parametrosFormulario" 
+          (enviarAccion)="ejecutarAccionPaFormulario($event)">
+        </app-personas-formulario>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>

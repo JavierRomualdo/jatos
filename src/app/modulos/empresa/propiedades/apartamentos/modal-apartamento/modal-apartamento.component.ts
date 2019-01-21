@@ -11,12 +11,12 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
-import { ModalServicioComponent } from '../../../configuracion/empresa/modal-servicio/modal-servicio.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { ApartamentoService } from '../apartamento.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { ApartamentoTO } from 'src/app/entidadesTO/empresa/ApartamentoTO';
+import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 
 @Component({
   selector: 'app-modal-apartamento',
@@ -212,7 +212,8 @@ export class ModalApartamentoComponent implements OnInit {
   }
 
   buscarservicio() {
-    const modalRef = this.modalService.open(ModalServicioComponent, {size: 'lg', keyboard: true});
+    const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
       let tieneservicio: Boolean = false;
       for (const servicio of this.servicios) {

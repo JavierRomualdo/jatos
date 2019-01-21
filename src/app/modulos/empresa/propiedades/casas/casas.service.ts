@@ -109,7 +109,7 @@ export class CasasService {
         if (data && data.extraInfo) {
           contexto.despuesDeMostrarCasa(data.extraInfo);
         } else {
-          this.toastr.warning('Error al mostrar ubigeo', 'Aviso');
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }

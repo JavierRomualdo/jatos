@@ -5,7 +5,10 @@ export class LS {
   public static KEY_CONTRATO_SELECT = "";
   public static KEY_PROPIEDAD_SELECT = "";
   public static KEY_EMPRESA_SELECT: Empresa;
-
+  public static KEY_CURRENT_USER = "currentUser";
+  public static KEY_FOTO_PERFIL = "fotoPerfil";
+  public static KEY_IS_PERFIL_USER: boolean = false;
+  public static KEY_NOTIFICACIONES: any = [];
   //ICONOS PARA BOTONES
   public static ICON_ACTIVO = "fa fa-check-square-o";
   public static ICON_ARCHIVO = "fa fa-file";
@@ -35,6 +38,8 @@ export class LS {
   public static ICON_SELECCIONAR = 'fa fa-check';
   public static ICON_MAIL = 'fa fa-envelope-o';
   public static ICON_MARKER = 'fa fa-map-marker';
+  public static ICON_EYE = 'fa fa-eye';
+  public static ICON_EYE_SLASH = 'fa fa-eye-slash';
   
   //TAGS
   static TAG_AVISO = "Aviso";
@@ -102,6 +107,7 @@ export class LS {
   static TAG_DESCRIPCION = "Descripcion";
   static TAG_MAS_OPCIONES = "Más opciones";
   static TAG_IMAGENES = "Imágenes";
+  static TAG_SERVICIO = "Servicio";
   static TAG_SERVICIOS = "Servicios";
   static TAG_OPCIONES = "Opciones";
   static TAG_UBICACION = "Ubicación";
@@ -129,6 +135,7 @@ export class LS {
   static TAG_DOM = "Dom";
   static TAG_DOMINGO = "Domingo";
   static TAG_MOSTRAR_OCULTAR = "Ocultar/Mostrar";
+  static TAG_NOMBRE = "Nombre";
   static TAG_NOMBRES = "Nombres";
   static TAG_MENSAJE = "Mensaje";
   static TAG_MENSAJES = "Mensajes";
@@ -142,6 +149,20 @@ export class LS {
   static TAG_MAPA = "Mapa";
   static TAG_EMPRESA = 'Empresa';
   static TAG_RUC = 'Ruc';
+  static TAG_USUARIO = 'Usuario';
+  static TAG_USUARIOS_LISTADO = "Listado de usuarios";
+  static TAG_NUEVA_CONTRASENA = 'Contraseña';
+  static TAG_CONFIRMAR_CONTRASENA = 'Confirmar contraseña';
+  static TAG_DNI = 'Dni';
+  static TAG_ROL = 'Rol';
+  static TAG_MANTENIMIENTO_PERSONAS = 'Mantenimiento de personas';
+  static TAG_PERSONAS_LISTADO = 'Listado de personas';
+  static TAG_MANTENIMIENTO_SERVICIOS = 'Mantenimiento de servicios';
+  static TAG_SERVICIOS_LISTADO = 'Listado de servicios';
+  static TAG_MAS_DATOS = 'Más datos';
+  static TAG_ROLES = 'Roles';
+  static TAG_DETALLE = 'Detalle';
+
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
   public static LABEL_ACEPTAR = "Aceptar";
@@ -165,7 +186,12 @@ export class LS {
   public static ATAJO_EXPORTAR = "alt+i";
   public static ATAJO_MOSTRAR_OCULTAR_FILTROS = "alt+enter";
 
+  // TOAST
+  public static TOAST_ERROR = 'Error';
+  public static TOAST_ADVERTENCIA = 'Advertencia';
+  
   //ACCIONES
+  static ACCION_CANCELAR = "Cancelar";
   static ACCION_CONSULTAR = "Consultar";
   static ACCION_EDITAR = "Editar";
   static ACCION_INACTIVAR = "Inactivar";
@@ -215,7 +241,18 @@ export class LS {
   public static TITULO_ALQUILERES_LISTADO = "Listado de alquileres";
   public static TITULO_FORM_CONSULTAR_MENSAJE = "Consultar mensaje";
   public static TITULO_FORM_ENVIAR_MENSAJE = "Enviar mensaje";
-  //
+  public static TITULO_FORM_NUEVO_USUARIO = "Nuevo usuario";
+  public static TITULO_FORM_EDITAR_USUARIO = "Editar usuario";
+  public static TITULO_FORM_CONSULTAR_USUARIO = "Consultar usuario";
+  public static TITULO_CONFIGURACION_GENERAL_CUENTA = 'Configuración general de la cuenta';
+  public static TITULO_SEGURIDAD_INICIO_SESION = 'Seguridad e inicio de sesión';
+  public static TITULO_FORM_NUEVA_PERSONA = 'Nueva persona';
+  public static TITULO_FORM_EDITAR_PERSONA = 'Editar persona';
+  public static TITULO_FORM_CONSULTAR_PERSONA = 'Consultar persona';
+  public static TITULO_FORM_NUEVO_SERVICIO = 'Nuevo servicio';
+  public static TITULO_FORM_EDITAR_SERVICIO = 'Editar servicio';
+  public static TITULO_FORM_CONSULTAR_SERVICIO = 'Consultar servicio';
+  
   //MENSAJES
   static MSJ_COLUMNAS = "columnas seleccionadas";
   static MSJ_PREGUNTA_INACTIVAR = "¿Está seguro que desea inactivar?";
@@ -229,6 +266,7 @@ export class LS {
   static MSJ_CAMPOS_INVALIDOS = 'Verifique los datos ingresados.';
   static MSJ_TITULO_INVALIDOS = 'Datos inválidos';
   static MSJ_RUC = 'Este atributo es fundamental, se recomienda no cambiarlo.';
+  static MSJ_USUARIO_CLAVE_NO_INGRESADA = 'Usuario o clave no ingresados.';
 
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

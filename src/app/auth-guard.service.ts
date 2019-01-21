@@ -3,20 +3,26 @@ import {
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  CanActivate
+  CanActivate,
+  CanActivateChild,
+  CanLoad,
+  Route
 } from "@angular/router";
-import { LoginService } from "./login.service";
-import { Observable } from "rxjs";
+import { AuthService } from './servicios/auth.service';
 // import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: "root"
 })
-export class AuthGuardService implements CanActivate {
+export class AuthGuardService implements CanActivate, CanActivateChild, CanLoad {
   // implements CanActivate
 
-  constructor(private auth: LoginService, private router: Router) {} // private auth: AuthService
-
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {} 
+  // private auth: AuthService
+  // private auth: LoginService, private router: Router
   // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
   //   console.log(next);
   //   console.log('estado del auth: ');
@@ -31,11 +37,11 @@ export class AuthGuardService implements CanActivate {
   //   }
   // }
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+  canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot
   ): boolean {
     console.log('dentro del guard');
+    let url: string = state.url;
+    return this.checkLogin(url);
     /*if (this.auth.getUserLoggedIn()) {
       this.router.navigate(["empresa"]);
       console.log("Paso el guard");
@@ -43,6 +49,23 @@ export class AuthGuardService implements CanActivate {
       this.router.navigate(["/"]);
       console.log("You are not authentication");
     }*/
-    return this.auth.getUserLoggedIn();
+    // return this.auth.getUserLoggedIn();
+  }
+
+  canLoad(route: Route): boolean {
+    let url = `/${route.path}`;
+    return this.checkLogin(url);
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+      return this.canActivate(route, state);
+  }
+
+  checkLogin(url: string): boolean {
+    if (this.authService.hayToken()) {
+        return true;
+    }
+    this.router.navigate(['login']);
+    return false;
   }
 }

@@ -7,10 +7,10 @@ import { Persona } from 'src/app/entidades/entidad.persona';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/servicios/auth.service';
-import { ModalPersonaComponent } from '../../../configuracion/empresa/modal-persona/modal-persona.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { ApartamentocuartoService } from './apartamentocuarto.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
+import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 
 @Component({
   selector: 'app-modal-apartamentocuarto',
@@ -206,10 +206,8 @@ export class ModalApartamentocuartoComponent implements OnInit {
   }
 
   buscarpropietario() {
-    const modalRef = this.modalService.open(ModalPersonaComponent, {
-      size: 'lg',
-      keyboard: true
-    });
+    const modalRef = this.modalService.open(PersonasComponent, { size: 'lg', keyboard: true });
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then(
       result => {
         this.persona = result;

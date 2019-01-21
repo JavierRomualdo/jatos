@@ -7,11 +7,8 @@
       <i class="fa fa-close"></i>
     </button>
   </div>
-  <div *ngIf="cargando">
-    <app-cargando></app-cargando>
-  </div>
   <!--/.form-->
-  <form #frmDatos="ngForm" name="frmDatos" autocomplete="off" *ngIf="!cargando && !vistaFormulario" (ngSubmit)="busqueda()">
+  <form #frmDatos="ngForm" name="frmDatos" autocomplete="off" *ngIf="!vistaFormulario" (ngSubmit)="busqueda()">
     <div class="card-body pb-0" >
       <!--/.card-->
       <div class="card border-primary">
@@ -89,7 +86,7 @@
     </div>
   </form>
   <!--/.form-->
-  <form #formulario="ngForm" autocomplete="off" *ngIf="!cargando && vistaFormulario" class="form-horizontal" (ngSubmit)="guardarRol()">
+  <form #formulario="ngForm" autocomplete="off" *ngIf="vistaFormulario" class="form-horizontal" (ngSubmit)="guardarRol()">
     <div class="card-body" >
       <div class="form-group row">
         <label class="col-sm-3 form-control-label">Estado <span class="text-primary">*</span></label>
@@ -120,4 +117,7 @@
     </div>
   </form>
   <!--/.card-->
+</div>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
 </div>

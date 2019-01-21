@@ -145,7 +145,6 @@ export class CocherasComponent implements OnInit {
     if (parametros.verMensajes) {
       this.verMensajes(parametros);
     } else {
-      this.parametrosMensaje = null;
       this.vermensajes = false;
       this.abrirCocheras(parametros);
     }
@@ -154,7 +153,6 @@ export class CocherasComponent implements OnInit {
   // cuando hago click en boton de regresar en listado de mensajes
   ejecutarAccionMensaje(parametros) {
     if (parametros.cerrarListado) {
-      this.parametrosMensaje = null;
       this.vermensajes = false;
       this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'A');
     }

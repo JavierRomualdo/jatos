@@ -7,12 +7,18 @@ import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opcion
 import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
 import { SpanAccionComponent } from 'src/app/modulos/componentes/span-accion/span-accion.component';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
 
-  constructor() {
+  constructor(
+    public toastr: ToastrService,
+    private router: Router
+  ) {
     moment.locale('es');
   }
 
@@ -280,6 +286,50 @@ export class UtilService {
     return columnas;
   }
 
+  generarItemsMenuesPaActivos(contexto) {
+    let items = [
+    {
+        label: LS.TAG_ARCHIVO,
+        icon: LS.ICON_ARCHIVO,
+        items: [{
+                label: LS.ACCION_NUEVO, 
+                icon: LS.ICON_NUEVO,
+                command: () => {
+                  contexto.nuevo();
+                }
+            }
+        ]
+    },
+    {
+        label: LS.ACCION_CONSULTAR,
+        icon: LS.ICON_CONSULTAR,
+        items: [
+            {
+                label: LS.TAG_GENERAL, 
+                icon: LS.ICON_BUSCAR_MAS,
+                items: [
+                  {
+                    label: LS.TAG_ACTIVOS, 
+                    icon: LS.ICON_ACTIVO,
+                    command: () => {
+                      contexto.consultarGeneral(true);
+                    }
+                  },
+                  {
+                    label: LS.TAG_INCLUIR_INACTIVOS, 
+                    icon: LS.ICON_INACTIVO,
+                    command: () => {
+                      contexto.consultarGeneral(false);
+                    }
+                  }
+                ]
+            },
+          ]
+        }
+      ];
+    return items;
+  }
+
   /**
    * Autoselecciona el contrato
    * @param {Array<any>} contratos
@@ -297,5 +347,27 @@ export class UtilService {
       propiedadSeleccionada = propiedades.find(item => item === LS.KEY_PROPIEDAD_SELECT);
     }
     return propiedadSeleccionada;
+  }
+
+  handleError(error: any, contexto) {
+    switch (error.status) {
+      case 401:
+      case 403:
+        this.toastr.warning('No autorizado', 'Aviso');
+        sessionStorage.clear();
+        localStorage.clear();
+        this.router.navigate(['login']);
+        break;
+      case 404:
+        this.toastr.warning('página solicitada no se encuentra', 'Aviso');
+        break;
+      case 0:
+        this.toastr.warning("No hay conexión con el servidor.", 'Aviso');
+        break;
+      default:
+        this.toastr.error(error.message || error, 'Error');
+        break;
+    }
+    contexto.cargando = false;
   }
 }

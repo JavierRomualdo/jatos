@@ -13,6 +13,7 @@ import {SplitButtonModule} from 'primeng/splitbutton';
 import {MenubarModule} from 'primeng/menubar';
 import {DialogModule} from 'primeng/dialog';
 import {CalendarModule} from 'primeng/calendar';
+import {FileUploadModule} from 'primeng/fileupload';
 
 import { HomeComponent } from './home/home.component';
 import { ApartamentosComponent } from './propiedades/apartamentos/apartamentos.component';
@@ -39,13 +40,10 @@ import { ComponentesModule } from '../componentes/componentes.module';
 import { EstamosTrabajandoComponent } from 'src/app/componentesgenerales/estamos-trabajando/estamos-trabajando.component';
 import { CargandoComponent } from 'src/app/componentesgenerales/cargando/cargando.component';
 import { ModalEmpresaComponent } from './configuracion/empresa/modal-empresa/modal-empresa.component';
-import { ModalPersonaComponent } from './configuracion/empresa/modal-persona/modal-persona.component';
 import { ModalRolComponent } from './configuracion/empresa/modal-rol/modal-rol.component';
-import { ModalServicioComponent } from './configuracion/empresa/modal-servicio/modal-servicio.component';
 import { ModalTipoubigeoComponent } from './configuracion/ubigeo/modal-tipoubigeo/modal-tipoubigeo.component';
 import { ModalUbigeoComponent } from './configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
-import { ModalUsuarioComponent } from './configuracion/empresa/modal-usuario/modal-usuario.component';
 import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { UtilService } from 'src/app/servicios/util/util.service';
 import { CasasListadoComponent } from './componentes/casas-listado/casas-listado.component';
@@ -73,6 +71,14 @@ import { SpanMensajeComponent } from '../componentes/span-mensaje/span-mensaje.c
 import { MensajeModalComponent } from '../componentes/mensaje-modal/mensaje-modal.component';
 import { FormularioMailComponent } from './componentes/formulario-mail/formulario-mail.component';
 import { AgmCoreModule } from '@agm/core';
+import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
+import { UsuarioFormularioComponent } from './componentes/usuario-formulario/usuario-formulario.component';
+import { PersonasComponent } from './configuracion/personas/personas.component';
+import { PersonasListadoComponent } from './componentes/personas-listado/personas-listado.component';
+import { PersonasFormularioComponent } from './componentes/personas-formulario/personas-formulario.component';
+import { ServiciosComponent } from './configuracion/servicios/servicios.component';
+import { ServiciosListadoComponent } from './componentes/servicios-listado/servicios-listado.component';
+import { ServiciosFormularioComponent } from './componentes/servicios-formulario/servicios-formulario.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -98,13 +104,10 @@ import { AgmCoreModule } from '@agm/core';
     CargandoComponent,
     NgDropFileDirective,
     ModalEmpresaComponent,
-    ModalPersonaComponent,
     ModalRolComponent,
-    ModalServicioComponent,
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
     ConfirmacionComponent,
-    ModalUsuarioComponent,
     CasasListadoComponent,
     ApartamentosListadoComponent,
     CocherasListadoComponent,
@@ -130,8 +133,18 @@ import { AgmCoreModule } from '@agm/core';
     BotonAccionComponent,
 
     MensajesListadoComponent,
+    FormularioMailComponent,
 
-    FormularioMailComponent
+    UsuariosComponent,
+    UsuarioFormularioComponent,
+
+    PersonasComponent,
+    PersonasListadoComponent,
+    PersonasFormularioComponent,
+
+    ServiciosComponent,
+    ServiciosListadoComponent,
+    ServiciosFormularioComponent
   ],
   imports: [
     ComponentesModule,
@@ -154,6 +167,7 @@ import { AgmCoreModule } from '@agm/core';
     MenubarModule,
     DialogModule,
     CalendarModule,
+    FileUploadModule,
 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80',
@@ -163,17 +177,14 @@ import { AgmCoreModule } from '@agm/core';
   ],
   entryComponents: [
     ModalEmpresaComponent,
-    ModalPersonaComponent,
     ModalRolComponent,
     ModalCasaComponent,
     ModalLoteComponent,
     ModalHabitacionComponent,
     ModalLocalComponent,
-    ModalServicioComponent,
     ModalCocheraComponent,
     ModalApartamentoComponent,
     ModalApartamentocuartoComponent,
-    ModalUsuarioComponent,
     ModalTipoubigeoComponent,
     ModalUbigeoComponent,
     ApartamentosListadoComponent,
@@ -194,7 +205,13 @@ import { AgmCoreModule } from '@agm/core';
     IconAccionComponent,
     SpanAccionComponent,
     SpanMensajeComponent,
-    BotonAccionComponent
+    BotonAccionComponent,
+    PersonasComponent,
+    PersonasListadoComponent,
+    PersonasFormularioComponent,
+    ServiciosComponent,
+    ServiciosListadoComponent,
+    ServiciosFormularioComponent
   ],
   providers: [
     NgbActiveModal,

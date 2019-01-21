@@ -125,6 +125,15 @@ export class ApiRequest2Service {
     .catch(err => this.handleError(err));
   }
 
+  // login
+  login(url: string, objeto: Object): Promise<any> {
+    return this._http.post(this.appConfig.baseApiPath + url, objeto, {
+      headers: this.appendAuthHeader()
+    }).toPromise()
+    .then(resp => resp.json())
+    .catch(err => this.handleError(err));
+  }
+
   // funcion eliminar
   // delete(url: string): Promise<any> {
   //   return new Promise((resolve, reject) => {

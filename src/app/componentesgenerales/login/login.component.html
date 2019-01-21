@@ -1,108 +1,95 @@
-<div id="content">
+<div class="app flex-row align-items-center">
   <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="box">
-          <p-tabView>
-            <p-tabPanel header="Iniciar Sesion" leftIcon="pi pi-calendar">
-              <form action="customer-orders.html" method="get">
-                <div class="form-group">
-                  <label for="email1">Email</label>
-                  <input id="email1" name="email1" type="text" class="form-control" [(ngModel)]="usuario.email">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card-group">
+          <div class="card p-4">
+            <div class="card-body">
+              <div class="text-center">
+                <img src="assets/images/user.png" alt="Image" width="100" class="img-rounded">
+              </div>
+              <p class="text-muted"></p>
+              <form (ngSubmit)="ingresar()" #formLogin="ngForm">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                  </div>
+                  <input type="text" [(ngModel)]="usuario.name" name="username" #username="ngModel" placeholder="Usuario" class="form-control"
+                    required>
+                  <div class="invalid-feedback"> Campo requerido </div>
                 </div>
-                <div class="form-group">
-                  <label for="password1">Password</label>
-                  <input id="password1" name="password1" type="password" class="form-control" [(ngModel)]="usuario.password">
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-unlock-alt"></i>
+                    </span>
+                  </div>
+                  <input type="password" [(ngModel)]="usuario.password" name="password" placeholder="Contraseña" class="form-control" required>
+                  <div class="invalid-feedback"> Campo requerido </div>
                 </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-template-outlined" (click)="ingresar()"><i class="fa fa-sign-in"></i> Log in</button>
+                <div class="row">
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4" [disabled]="cargando">
+                      Iniciar sesión
+                      <i *ngIf="cargando" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                  </div>
+                  <div class="col-12 text-center">
+                    <a href="https://obinte.zendesk.com/hc/es/requests/new" target="_blank">
+                      <button type="button" class="btn btn-link px-0">¿Olvidaste tu contraseña?</button>
+                    </a>
+                  </div>
                 </div>
               </form>
-            </p-tabPanel>
-            <p-tabPanel header="Nuevo usuario" leftIcon="pi pi-inbox">
-              <form #mensajeform="ngForm" (ngSubmit)="nuevoUsuario()">
-                <div class="form-group">
-                  <label for="nombre"><strong>Nombre</strong> <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top"> *</span></label>
-                  <input id="nombre" name="nombre" type="text" class="form-control border-primary" placeholder="Ingresos nombres" required [(ngModel)]="usuario.name">
-                </div>
-                <div class="form-group">
-                  <label for="email"><strong>Email</strong> <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top"> *</span></label>
-                  <input id="email" name="email" type="text" class="form-control border-primary" placeholder="Ingrese email" required [(ngModel)]="usuario.email">
-                </div>
-                <div class="form-group">
-                  <label for="password"><strong>Password</strong> <span class="text-primary" pTooltip="Obligatorio (min 6 dig)" tooltipPosition="top"> *</span></label>
-                  <input id="password" name="password" [min]="6" type="password" class="form-control border-primary" placeholder="Ingrese password" required [(ngModel)]="usuario.password">
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-template-outlined mr-1" [disabled]="!mensajeform.form.valid"><i class="fa fa-sign-in"></i> Guardar</button>
-                  <button type="reset" class="btn btn-template-outlined" title="limpiar">
-                    <i class="fa fa-eraser"></i> Limpiar
-                  </button>
-                </div>
-              </form>
-            </p-tabPanel>
-          </p-tabView>
-          <!-- <h2 class="text-uppercase text-center">Login</h2>
-          <hr>
-           -->
+            </div>
+          </div>
+          <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+            <div class="card-body text-center">
+              <img src="assets/images/JAT.png" alt="Image" width="200" class="block-center img-rounded">
+              <div>
+                <h2>¡Bienvenido!</h2>
+                <p>¡Gracias por ser nuestro cliente!</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-md-4 offset-md-4">
-        <div class="box" style="border: rgb(170, 161, 161) 2px dashed;">
-          <h2 class="text-uppercase text-center">Inciar Sesion</h2>
-          <hr>
-          <form action="customer-orders.html" method="get">
-            <div class="form-group">
-              <label for="nombre">Nombre</label>
-              <input id="nombre" type="text" class="form-control" [(ngModel)]="usuario.name">
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input id="email" type="text" class="form-control" [(ngModel)]="usuario.email">
-            </div>
-            <div class="form-group">
-              <label for="password" [(ngModel)]="usuario.password">Password</label>
-              <input id="password" type="password" class="form-control">
-            </div>
-            <div class="text-center">
-              <button type="submit" class="btn btn-template-outlined" (click)="ingresar()"><i class="fa fa-sign-in"></i> Log in</button>
-            </div>
-          </form>
+  </div>
+  <div class="footerwrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-sm-center text-center">
+          <span class="text-muted">&copy; 2018 Obinte, Todos los derechos reservados.</span>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-sm-center text-center">
+          <div class="to-right">
+            <span class="text-muted">| &nbsp;
+              <i class="fa fa-envelope"></i> hola@obinte.com</span>
+            <span class="text-muted">&nbsp; &nbsp;
+              <i class="fa fa-phone"></i> (07) 2966 371 </span>
+            <ul class="social-icons icon-circle icon-zoom list-unstyled list-inline">
+              <li>
+                <a href="https://facebook.com/obinte" target="_blank">
+                  <i class="fa fa-facebook"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://instagram.com/obinte_ec" target="_blank">
+                  <i class="fa fa-instagram"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/company/obinte/" target="_blank">
+                  <i class="fa fa-linkedin"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
-
-<!-- <div class="modal-content">
-  <div class="modal-header">
-    <h4 id="login-modalLabel" class="modal-title">Iniciar Sesion</h4>
-    <button type="button" data-dismiss="modal" aria-label="Close" class="close" (click)="activeModal.dismiss('Cross click')">
-      <span aria-hidden="true">X</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <button class="btn btn-outline-primary" (click)="ingresar()">INICIAR SESION CON GOOGLE</button>
-    </div>
-    <div class="form-group">
-      <button class="btn btn-outline-primary">INICIAR SESION CON TWITTER</button>
-    </div>
-    <form>
-      <div class="form-group">
-        <input id="email_modal" type="text" placeholder="email" class="form-control">
-      </div>
-      <div class="form-group">
-        <input id="password_modal" type="password" placeholder="password" class="form-control">
-      </div>
-      <p class="text-center">
-        <button type="button" class="btn btn-template-outlined"><i class="fa fa-sign-in"></i> Iniciar sesion</button>
-      </p>
-    </form>
-    <p class="text-center text-muted">Not registered yet?</p>
-    <p class="text-center text-muted"><a href="customer-register.html"><strong>Register now</strong></a>! It is easy
-      and done in 1 minute and gives you access to special discounts and much more!</p>
-  </div>
-</div> -->

@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'welcome', loadChildren: './modulos/welcome/welcome.module#WelcomeModule' },
   { path : 'empresa',
-    // canActivate: [AuthGuardService],
+    canActivate: [AuthGuardService],
     loadChildren: './modulos/empresa/empresa.module#EmpresaModule'}, // canActivate: [AuthGuardService]
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: '**', component: Error404Component }

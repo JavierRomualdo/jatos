@@ -14,6 +14,9 @@ import { EmpresaConfiguracionComponent } from './configuracion/empresa/empresa.c
 import { UbigeoComponent } from './configuracion/ubigeo/ubigeo.component';
 import { EstamosTrabajandoComponent } from 'src/app/componentesgenerales/estamos-trabajando/estamos-trabajando.component';
 import { VentasComponent } from './ventas/ventas.component';
+import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
+import { PersonasComponent } from './configuracion/personas/personas.component';
+import { ServiciosComponent } from './configuracion/servicios/servicios.component';
 
 const empresaRoutes: Routes = [
   {
@@ -30,6 +33,9 @@ const empresaRoutes: Routes = [
       {path: 'alquileres', component: AlquileresComponent},
       {path: 'ventas', component: VentasComponent},
       {path: 'configuracion/empresa', component: EmpresaConfiguracionComponent},
+      {path: 'configuracion/usuarios', component: UsuariosComponent},
+      {path: 'configuracion/personas', component: PersonasComponent},
+      {path: 'configuracion/servicios', component: ServiciosComponent},
       {path: 'configuracion/ubigeo', component: UbigeoComponent},
       {path: '', redirectTo: 'inicio', pathMatch: 'full'}
     ]
