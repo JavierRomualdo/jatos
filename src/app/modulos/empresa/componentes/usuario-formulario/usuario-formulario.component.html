@@ -1,9 +1,5 @@
 <div class="card mb-0">
   <div class="card-header p-1">
-    <button id="btnActivar" class="btn btn-sm btn-primary mr-2" *ngIf="isScreamMd" (click)="cambiarActivar(activar)"
-      type="button" title="{{constantes.ATAJO_MOSTRAR_OCULTAR_FILTROS}}">
-      <i class="{{activar?constantes.ICON_MOSTRAR_FILTRO:constantes.ICON_OCULTAR_FILTRO}}" aria-hidden="true"></i>
-    </button>
     <b>{{tituloForm}}</b>
     <div class="card-header-actions">
       <button *ngIf="accion === constantes.ACCION_NUEVO" id="btnGuardar" type="button" (click)="guardarusuario()"

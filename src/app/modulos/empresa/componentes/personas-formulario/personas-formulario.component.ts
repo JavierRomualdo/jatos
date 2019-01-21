@@ -20,7 +20,7 @@ export class PersonasFormularioComponent implements OnInit {
   @Output() enviarAccion = new EventEmitter();
   
   public persona: Persona;
-  public cargando: Boolean = false;
+  public cargando: boolean = false;
   public personas: any = [];
   public ubigeo: UbigeoGuardar;
   public listaPR: any = []; // lista de persona-roles

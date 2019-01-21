@@ -152,7 +152,7 @@
                 [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
                 [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
                   <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true" (dragEnd)="markerDragEnd($event)"
-                    [markerDraggable]="accion===constantes.ACCION_CONSULTAR ? false : true">
+                    [markerDraggable]="true">
                     <agm-info-window>
                       <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
                       <p>Punto de Ubicación</p>

@@ -1,12 +1,6 @@
 <div class="card mb-0 card-accent-primary">
-    <div class="card-header bg-primary p-2" *ngIf="isModal">
+    <div class="card-header p-2">
       <strong>{{tituloForm}}</strong>
-      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="card-header p-2" *ngIf="!isModal">
-      <strong *ngIf="!isModal">{{tituloForm}}</strong>
       <div class="card-header-actions">
         <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnGuardar" type="button" (click)="guardarServicio()"
           class="btn btn-sm btn-primary mr-1" [disabled]="!frmpropiedad.form.valid" title="{{constantes.ATAJO_GUARDAR}}">

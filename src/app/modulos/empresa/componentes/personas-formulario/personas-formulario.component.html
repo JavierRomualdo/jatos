@@ -1,13 +1,7 @@
 <div class="modal-primary"> <!--*ngIf="listadoCasas?.length>0"-->
   <div class="card mb-0 card-accent-primary">
-    <div class="card-header bg-primary p-2" *ngIf="isModal">
+    <div class="card-header p-2">
       <strong>{{tituloForm}}</strong>
-      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="card-header p-2" *ngIf="!isModal">
-      <strong *ngIf="!isModal">{{tituloForm}}</strong>
       <div class="card-header-actions">
         <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnGuardar" type="button" (click)="guardarPersona()"
           class="btn btn-sm btn-primary mr-1" [disabled]="!frmpropiedad.form.valid" title="{{constantes.ATAJO_GUARDAR}}">
@@ -26,7 +20,7 @@
         </button>
       </div>
     </div>
-    <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR"><!--|| !isModal-->
+    <fieldset [disabled]="accion===constantes.ACCION_CONSULTAR">
       <form #frmpropiedad="ngForm" name="frmpropiedad" autocomplete="off" class="form-horizontal" (ngSubmit)="guardarPersona()">
         <div class="card-body pb-0 p-1">
           <!--/.card-->

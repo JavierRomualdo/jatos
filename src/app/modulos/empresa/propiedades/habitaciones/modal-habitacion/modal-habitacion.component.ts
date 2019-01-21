@@ -45,6 +45,7 @@ export class ModalHabitacionComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
+  public estaSobreElemento: any;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;

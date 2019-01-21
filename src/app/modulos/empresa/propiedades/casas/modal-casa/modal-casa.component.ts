@@ -49,6 +49,7 @@ export class ModalCasaComponent implements OnInit {
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
   public zoom: number = 16;
+  public estaSobreElemento: any;
 
   constructor(
     private modalService: NgbModal,
