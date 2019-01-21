@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
+import { LS } from 'src/app/contantes/app-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,11 @@ export class EmpresaService {
 
   listarEmpresa(contexto) {
     this.api.get2('empresa').then(
-      (res) => {
-        if (res !== 'vacio') {
-          contexto.despuesDeListarEmpresa(res);
+      (data) => {
+        if (data && data.extraInfo) {
+          contexto.despuesDeListarEmpresa(data.extraInfo);
         } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.imagenAnterior = undefined;
           contexto.cargando = false;
         }
@@ -28,12 +29,12 @@ export class EmpresaService {
 
   ingresarEmpresa(parametro, contexto) {
     this.api.post2('empresa', parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha ingresado correctamente', 'Exito');
-          contexto.despuesDeIngresarEmpresa(res);
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeIngresarEmpresa(data.extraInfo);
         } else {
-          this.toastr.warning('Error al ingresar ubigeo', 'Aviso');
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
@@ -42,12 +43,12 @@ export class EmpresaService {
 
   modificarEmpresa(parametro, contexto) {
     this.api.put2('empresa/' + parametro.id, parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha modificado correctamente', 'Exito');
-          contexto.despuesDeModificarEmpresar(res);
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeModificarEmpresar(data.extraInfo);
         } else {
-          this.toastr.warning('Error al modificar casa', 'Aviso');
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
