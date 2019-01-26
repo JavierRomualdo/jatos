@@ -347,8 +347,26 @@ export class HabitacionesListadoComponent implements OnInit {
     this.enviarAccion.emit(parametros);
   }
 
-  imprimirHabitaciones() {}
+  imprimir() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoHabitaciones,
+      estadocontrato: this.parametrosBusqueda.estadoContrato ? this.parametrosBusqueda.estadoContrato : null,
+      activos: this.parametrosBusqueda.activos ? this.parametrosBusqueda.activos : false
+    }
+    this.habitacionService.imprimirHabitaciones(parametros, this);
+  }
 
+  exportarHabitaciones() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoHabitaciones
+    }
+    this.habitacionService.exportarExcelHabitaciones(parametros, this);
+  }
+  
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.habitacionService.generarColumnas(this.isModal);

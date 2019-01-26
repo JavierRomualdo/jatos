@@ -4,9 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { LS } from 'src/app/contantes/app-constants';
 import { IconAccionComponent } from '../../componentes/icon-accion/icon-accion.component';
 import { ImagenAccionComponent } from '../../componentes/imagen-accion/imagen-accion.component';
-import { BotonOpcionesComponent } from '../../componentes/boton-opciones/boton-opciones.component';
-import { TooltipReaderComponent } from '../../componentes/tooltip-reader/tooltip-reader.component';
-import { PinnedCellComponent } from '../../componentes/pinned-cell/pinned-cell.component';
+import { ArchivoService } from 'src/app/servicios/archivo/archivo.service';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +14,8 @@ export class AlquilerService {
 
   constructor(
     private api: ApiRequest2Service,
+    private archivoService: ArchivoService,
+    private utilService: UtilService,
     private toastr: ToastrService,
   ) { }
 
@@ -55,6 +56,32 @@ export class AlquilerService {
         }
       }
     ).catch(err => this.handleError(err, contexto));
+  }
+
+  imprimirAlquileres(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteAlquileres", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('ListadoAlquileres_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
+  exportarExcelAlquileres(parametro, contexto) {
+    this.archivoService.postExcel("exportarExcelAlquileres", parametro).then(
+      (data) => {
+        if (data) {
+          this.utilService.descargarArchivoExcel(data, "ListadoAlquileres_");
+        } else {
+          this.toastr.warning(LS.MSJ_NO_DATA, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
   }
 
   private handleError(error: any, contexto): void {

@@ -12,7 +12,7 @@
       <i class="{{constantes.ICON_GUARDAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
       </button>
-      <button *ngIf="accion !== constantes.ACCION_CONSULTAR" id="btnCancelar" type="button" (click)="cancelar()"
+      <button *ngIf="accion !== constantes.ACCION_CONSULTAR && !vieneDePerfil" id="btnCancelar" type="button" (click)="cancelar()"
         class="btn btn-sm btn-default mr-1" title="{{constantes.ATAJO_CANCELAR}}">
         <i class="{{constantes.ICON_CANCELAR}}"></i>
         <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
@@ -54,7 +54,7 @@
                       </ng-template> -->
                       <ngb-progressbar type="info"[value]="archivo.progreso">{{archivo.progreso | number: '.2-2'}} %</ngb-progressbar>
                       <div class="card-footer text-muted text-center">
-                        <button (click)="subirimagen()" [disabled]="imagenAnterior === imagen" class="btn btn-sm btn-primary mr-1" title="Subir imagen">
+                        <button (click)="subirimagen()" [disabled]="imagenAnterior === imagen || !imagen" class="btn btn-sm btn-primary mr-1" title="Subir imagen">
                           <i class="fa fa-upload" aria-hidden="true"></i>
                         </button>
                         <button class="btn btn-sm btn-danger mr-1" [disabled]="!imagen" (click)="eliminarImagen()" title="Eliminar">

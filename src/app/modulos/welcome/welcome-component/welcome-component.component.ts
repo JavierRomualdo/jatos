@@ -37,7 +37,11 @@ export class WelcomeComponentComponent implements OnInit {
     // this.auth.handleAuthentication(); // auth
     this.empresa = new Empresa();
     this.ubigeo = new UbigeoGuardar();
-    this.traerParaEdicion();
+    if (LS.KEY_EMPRESA_SELECT) {
+      this.empresa = LS.KEY_EMPRESA_SELECT;
+    } else {
+      this.traerParaEdicion();
+    }
   }
 
   traerParaEdicion() {

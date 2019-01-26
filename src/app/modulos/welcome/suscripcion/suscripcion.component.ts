@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiRequest2Service } from '../../../servicios/api-request2.service';
-import { ToastrService } from 'ngx-toastr';
 import { CasaMensaje } from '../../../entidades/entidad.casamensaje';
+import { LS } from 'src/app/contantes/app-constants';
+import { MailService } from 'src/app/servicios/mail/mail.service';
 
 @Component({
   selector: 'app-suscripcion',
@@ -11,54 +12,34 @@ import { CasaMensaje } from '../../../entidades/entidad.casamensaje';
 export class SuscripcionComponent implements OnInit {
 
   public mensaje: CasaMensaje;
-  public cargando: Boolean = false;
+  public cargando: boolean = false;
 
   constructor(
     public api: ApiRequest2Service,
-    public toastr: ToastrService,
-  ) {
-    this.mensaje = new CasaMensaje();
-  }
+    private mensajeService: MailService
+  ) { }
 
   ngOnInit() {
+    this.mensaje = new CasaMensaje();
   }
 
   enviarmensaje() {
     this.cargando = true;
-    console.log('mi mensaje: ');
-    console.log(this.mensaje);
     let parametros = {
       nombres: this.mensaje.nombres,
       telefono: this.mensaje.telefono,
       email: this.mensaje.email,
       titulo: this.mensaje.titulo,
-      mensaje: this.mensaje.mensaje
+      mensaje: this.mensaje.mensaje,
+      emailReceptor: LS.KEY_EMPRESA_SELECT ? LS.KEY_EMPRESA_SELECT.correo : 'javierromualdo2014@gmail.com'
     }
-    this.enviarCorreo(parametros);
-    // this.toastr.success('Mensaje enviado');
-    // this.mensaje = new CasaMensaje();
-    // this.cargando = false;
+    this.mensajeService.enviarMensajeContacto(parametros, this);
   }
 
-  enviarCorreo(parametros) {
-    this.cargando = true;
-    this.api.post2('enviarMensajeContacto', parametros).then(
-      (data) => {
-        console.log('se ha enviado correo: ');
-        console.log(data);
-        this.toastr.success('Mensaje enviado');
-        this.mensaje = new CasaMensaje();
-        this.cargando = false;
-        
-      },
-      (error) => {
-        
-      }
-    ).catch(err => this.handleError(err));
-  }
-
-  private handleError(error: any): void {
-    // this.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+  despuesDeEnviarMensajeContacto(data) {
+    if (data) {
+      this.mensaje = new CasaMensaje();
+    }
+    this.cargando = false;
   }
 }

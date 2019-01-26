@@ -347,8 +347,25 @@ export class CocherasListadoComponent implements OnInit {
     this.enviarAccion.emit(parametros);
   }
   
-  imprimirCasas() {}
+  imprimir() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoCocheras,
+      estadocontrato: this.parametrosBusqueda.estadoContrato ? this.parametrosBusqueda.estadoContrato : null,
+      activos: this.parametrosBusqueda.activos ? this.parametrosBusqueda.activos : false
+    }
+    this.cocheraService.imprimirCocheras(parametros, this);
+  }
 
+  exportarCocheras() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoCocheras
+    }
+    this.cocheraService.exportarExcelCocheras(parametros, this);
+  }
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.cocheraService.generarColumnas(this.isModal);

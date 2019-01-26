@@ -189,7 +189,8 @@ export class LS {
   // TOAST
   public static TOAST_ERROR = 'Error';
   public static TOAST_ADVERTENCIA = 'Advertencia';
-  
+  public static TOAST_CORRECTO = 'Correcto';
+
   //ACCIONES
   static ACCION_CANCELAR = "Cancelar";
   static ACCION_CONSULTAR = "Consultar";
@@ -267,7 +268,10 @@ export class LS {
   static MSJ_TITULO_INVALIDOS = 'Datos inválidos';
   static MSJ_RUC = 'Este atributo es fundamental, se recomienda no cambiarlo.';
   static MSJ_USUARIO_CLAVE_NO_INGRESADA = 'Usuario o clave no ingresados.';
-
+  static MSJ_DOC_GENERADO = 'Documento generado correctamente';
+  static MSJ_NO_DATA = 'No se encontraron resultados';
+  static MSJ_ERROR_IMPRIMIR = 'El reporte no existe o tiene errores';
+  
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";
   public static SWAL_INCORRECTO = "Error!";

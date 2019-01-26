@@ -10,6 +10,7 @@ import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-read
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
 import { SpanMensajeComponent } from 'src/app/modulos/componentes/span-mensaje/span-mensaje.component';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { ArchivoService } from 'src/app/servicios/archivo/archivo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class LoteService {
 
   constructor(
     private api: ApiRequest2Service,
+    private archivoService: ArchivoService,
     private utilService: UtilService,
     private toastr: ToastrService,
   ) { }
@@ -193,6 +195,32 @@ export class LoteService {
         console.log('error: ');
       }
     ).catch(err => this.handleError(err, contexto));
+  }
+
+  imprimirLotes(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteLotes", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('ListadoLotes_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
+  exportarExcelLotes(parametro, contexto) {
+    this.archivoService.postExcel("exportarExcelLotes", parametro).then(
+      (data) => {
+        if (data) {
+          this.utilService.descargarArchivoExcel(data, "ListadoLotes_");
+        } else {
+          this.toastr.warning(LS.MSJ_NO_DATA, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
   }
 
   private handleError(error: any, contexto): void {

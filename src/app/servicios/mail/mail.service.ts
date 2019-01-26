@@ -17,6 +17,35 @@ export class MailService {
     private toastr: ToastrService,
     ) { }
 
+  
+  envioCorreoDelCliente(parametro, contexto) {
+    this.api.post2('enviarMensajeCliente', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeEnvioCorreoDelCliente(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.despuesDeEnvioCorreoDelCliente(null);
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  enviarMensajeContacto(parametro, contexto) {
+    this.api.post2('enviarMensajeContacto', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeEnviarMensajeContacto(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.despuesDeEnviarMensajeContacto(null);
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   reenviarCorreoPaCliente(parametro, contexto) {
     this.api.post2('reenviarMensajeCliente', parametro).then(
       (data) => {

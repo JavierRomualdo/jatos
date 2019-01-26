@@ -84,14 +84,14 @@ export class ServiciosFormularioComponent implements OnInit {
     console.log('se guardo estos datos: ');
     console.log(data);
     this.cargando = false;
-    let parametros = { accion: this.accion, servicio: this.servicio }
+    let parametros = { accion: this.accion, servicio: new Servicios(data) }
     this.enviarAccion.emit(parametros);
   }
 
   despuesDeModificarServicio(data) {
     console.log(data);
     this.cargando = false;
-    let parametros = { accion: this.accion, servicio: this.servicio }
+    let parametros = { accion: this.accion, servicio: new Servicios(data) }
     this.enviarAccion.emit(parametros);
   }
   

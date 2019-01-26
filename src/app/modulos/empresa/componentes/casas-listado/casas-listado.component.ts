@@ -346,7 +346,25 @@ export class CasasListadoComponent implements OnInit {
     this.enviarAccion.emit(parametros);
   }
 
-  imprimirCasas() {}
+  imprimir() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoCasas,
+      estadocontrato: this.parametrosBusqueda.estadoContrato ? this.parametrosBusqueda.estadoContrato : null,
+      activos: this.parametrosBusqueda.activos ? this.parametrosBusqueda.activos : false
+    }
+    this.casasService.imprimirCasas(parametros, this);
+  }
+
+  exportarCasas() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoCasas
+    }
+    this.casasService.exportarExcelCasas(parametros, this);
+  }
 
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {

@@ -9,6 +9,8 @@ import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pin
 import { SpanAccionComponent } from 'src/app/modulos/componentes/span-accion/span-accion.component';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
+import printJS from 'print-js/src';
 
 @Injectable({
   providedIn: 'root'
@@ -369,5 +371,24 @@ export class UtilService {
         break;
     }
     contexto.cargando = false;
+  }
+
+  descargarArchivoPDF(nombreArchivo, data) {
+    var fileName = nombreArchivo;
+    var file = new Blob([data._body], { type: 'application/pdf' });
+    var url = URL.createObjectURL(file);
+    printJS(url);
+  }
+
+  descargarArchivoExcel(data, nombreReporte) {
+    var blob = new Blob([data._body], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8" });
+    // var objectUrl = URL.createObjectURL(blob);
+    // var a = document.createElement("a");
+    // document.body.appendChild(a);
+    // a.href = objectUrl;
+    // a.download = nombreReporte + this.obtenerHorayFechaActual() + ".xlsx";
+    // a.click();
+    saveAs(blob, nombreReporte + this.obtenerHorayFechaActual()+".xlsx");
+    this.toastr.success(LS.MSJ_DOC_GENERADO, LS.TOAST_CORRECTO);
   }
 }

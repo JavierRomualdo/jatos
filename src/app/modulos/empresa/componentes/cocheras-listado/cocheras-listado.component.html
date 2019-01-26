@@ -17,12 +17,12 @@
             <i class="{{constantes.ICON_NUEVO}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_NUEVO}}</span>
           </button>
-          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top"
+          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top" (click)="imprimir()"
             ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
             <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
           </button>
-          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top"
+          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top" (click)="exportarCocheras()"
             ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
             <i class="{{constantes.ICON_EXPORTAR}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_EXPORTAR}}</span>

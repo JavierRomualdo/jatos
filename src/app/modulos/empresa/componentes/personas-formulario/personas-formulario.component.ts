@@ -112,6 +112,7 @@ export class PersonasFormularioComponent implements OnInit {
     console.log('se guardo estos datos: ');
     console.log(data);
     this.cargando = false;
+    this.persona.id = data.id;
     let parametros = { accion: this.accion, persona: this.persona }
     this.enviarAccion.emit(parametros);
   }
@@ -119,6 +120,7 @@ export class PersonasFormularioComponent implements OnInit {
   despuesDeModificarPersona(data) {
     console.log(data);
     this.cargando = false;
+    this.persona.id = data.id;
     let parametros = { accion: this.accion, persona: this.persona }
     this.enviarAccion.emit(parametros);
   }

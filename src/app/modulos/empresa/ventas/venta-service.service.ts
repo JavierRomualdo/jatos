@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { LS } from 'src/app/contantes/app-constants';
 import { IconAccionComponent } from '../../componentes/icon-accion/icon-accion.component';
 import { ImagenAccionComponent } from '../../componentes/imagen-accion/imagen-accion.component';
+import { ArchivoService } from 'src/app/servicios/archivo/archivo.service';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,8 @@ export class VentaServiceService {
 
   constructor(
     private api: ApiRequest2Service,
+    private archivoService: ArchivoService,
+    private utilService: UtilService,
     private toastr: ToastrService,
   ) { }
 
@@ -52,6 +56,32 @@ export class VentaServiceService {
         }
       }
     ).catch(err => this.handleError(err, contexto));
+  }
+
+  imprimirVentas(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteVentas", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('ListadoVentas_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
+  exportarExcelVentas(parametro, contexto) {
+    this.archivoService.postExcel("exportarExcelVentas", parametro).then(
+      (data) => {
+        if (data) {
+          this.utilService.descargarArchivoExcel(data, "ListadoVentas_");
+        } else {
+          this.toastr.warning(LS.MSJ_NO_DATA, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
   }
 
   private handleError(error: any, contexto): void {

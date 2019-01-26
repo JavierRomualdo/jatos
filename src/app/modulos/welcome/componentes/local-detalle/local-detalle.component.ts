@@ -158,31 +158,18 @@ export class LocalDetalleComponent implements OnInit {
       telefono: this.mensaje.telefono,
       email: this.mensaje.email,
       titulo: this.mensaje.titulo,
-      mensaje: this.mensaje.mensaje
+      mensaje: this.mensaje.mensaje,
+      emailReceptor: LS.KEY_EMPRESA_SELECT ? LS.KEY_EMPRESA_SELECT.correo : 'javierromualdo2014@gmail.com'
     }
     // this.cargando = true;
-    this.api.post2('enviarMensajeCliente', parametros).then(
-      (data) => {
-        console.log('se ha enviado correo: ');
-        console.log(data);
-        this.toastr.success('Correo enviado');
-        this.mensaje = new LocalMensaje();
-        this.cargando = false;
-        
-      },
-      (error) => {
-        if (error.status === 422) {
-          this.errors = [];
-          const errors = error.json();
-          console.log('Error');
-          this.cargando = false;
-          this.handleError(error);
-          /*for (const key in errors) {
-            this.errors.push(errors[key]);
-          }*/
-        }
-      }
-    ).catch(err => this.handleError(err));
+    this.mensajeService.envioCorreoDelCliente(parametros, this);
+  }
+
+  despuesDeEnvioCorreoDelCliente(data) {
+    if (data) {
+      this.mensaje = new LocalMensaje();
+    }
+    this.cargando = false;
   }
 
   private handleError(error: any): void {

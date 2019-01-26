@@ -55,9 +55,10 @@ export class UsuariosComponent implements OnInit {
     if (LS.KEY_IS_PERFIL_USER) {
       let objJWT: ObjetoJWT = JSON.parse(localStorage.getItem(LS.KEY_CURRENT_USER));
       this.editarUsuario(parseInt(objJWT.userId));
+    } else {
+      this.listarUsuarios()
+      this.iniciarAgGrid();
     }
-    this.listarUsuarios()
-    this.iniciarAgGrid();
   }
 
   listarUsuarios() {

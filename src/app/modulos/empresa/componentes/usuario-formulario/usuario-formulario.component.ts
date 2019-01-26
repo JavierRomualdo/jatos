@@ -17,21 +17,22 @@ export class UsuarioFormularioComponent implements OnInit {
   @Input() parametrosFormulario: any;
   @Output() enviarAccion = new EventEmitter();
   @Output() enviarActivar = new EventEmitter();
-  public cargando: Boolean = false;
+  public cargando: boolean = false;
   public fotoingresada = false;
+
   
   public usuario: Users;
 
   public imagen: string = null;
   public imagenAnterior: string = null; // solo se usara para editar usuario
-
+  public vieneDePerfil: boolean = false;
   public archivo: FileItem;
   public file: File = null;
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
   public listadoImagenes: any[] = [];
-  uploadedFiles: any[] = [];
+  public uploadedFiles: any[] = [];
   public parametrosFoto: any = null;
 
   constructor(
@@ -49,6 +50,7 @@ export class UsuarioFormularioComponent implements OnInit {
     if (changes.parametrosFormulario) {
       if (changes.parametrosFormulario.currentValue) {
         this.accion = this.parametrosFormulario.accion;
+        this.vieneDePerfil = LS.KEY_IS_PERFIL_USER;
         LS.KEY_IS_PERFIL_USER = false;
         this.postIniciarVistaFormulario(this.accion);
       }
@@ -189,11 +191,6 @@ export class UsuarioFormularioComponent implements OnInit {
     console.log(event);
   }
 
-  limpiarArchivos() {
-    this.archivo = null;
-    // this.archivos = [];
-  }
-
   verContrasena(idInput, idSpan) {
     let element = document.getElementById(idInput);
     let span = document.getElementById(idSpan);
@@ -247,5 +244,7 @@ export class UsuarioFormularioComponent implements OnInit {
 
   eliminarImagen() {
     this.imagen = null;
+    this.archivo.archivo = null;
+    this.archivo.url = null;
   }
 }
