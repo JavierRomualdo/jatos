@@ -210,6 +210,19 @@ export class LocalService {
     ).catch(err => this.utilService.handleError(err, this));
   }
 
+  imprimirLocalDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteLocalDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleLocal_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
   exportarExcelLocales(parametro, contexto) {
     this.archivoService.postExcel("exportarExcelLocales", parametro).then(
       (data) => {

@@ -210,6 +210,19 @@ export class LoteService {
     ).catch(err => this.utilService.handleError(err, this));
   }
 
+  imprimirLoteDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteLoteDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleLote_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
   exportarExcelLotes(parametro, contexto) {
     this.archivoService.postExcel("exportarExcelLotes", parametro).then(
       (data) => {

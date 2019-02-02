@@ -188,6 +188,7 @@ export class CasasListadoComponent implements OnInit {
   generarOpciones() {
     let perConsultar = true;
     let perMensajes = true;
+    let perImprimir = true;
     let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
@@ -228,6 +229,13 @@ export class CasasListadoComponent implements OnInit {
         icon: LS.ICON_NOTIFICACION,
         disabled: !perMensajes,
         command: () => perMensajes ? this.verMensajes() : null
+      },
+      {separator:true},
+      {
+        label: LS.ACCION_IMPRIMIR,
+        icon: LS.ICON_IMPRIMIR,
+        disabled: !perImprimir,
+        command: () => perImprimir ? this.imprimirDetalleCasa() : null
       }
     ];
   }
@@ -355,6 +363,15 @@ export class CasasListadoComponent implements OnInit {
       activos: this.parametrosBusqueda.activos ? this.parametrosBusqueda.activos : false
     }
     this.casasService.imprimirCasas(parametros, this);
+  }
+
+  imprimirDetalleCasa() {
+    this.cargando = true;
+    let parametros = {
+      casa: this.objetoSeleccionado,
+      fechaActual: this.utilService.obtenerFechaActual()
+    }
+    this.casasService.imprimirCasaDetalle(parametros, this);
   }
 
   exportarCasas() {

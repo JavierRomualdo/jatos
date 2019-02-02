@@ -213,6 +213,19 @@ export class CasasService {
     ).catch(err => this.utilService.handleError(err, this));
   }
 
+  imprimirCasaDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteCasaDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleCasa_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
   exportarExcelCasas(parametro, contexto) {
     this.archivoService.postExcel("exportarExcelCasas", parametro).then(
       (data) => {

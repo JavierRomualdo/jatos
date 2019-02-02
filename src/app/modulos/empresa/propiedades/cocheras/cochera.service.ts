@@ -210,6 +210,19 @@ export class CocheraService {
     ).catch(err => this.utilService.handleError(err, this));
   }
 
+  imprimirCocheraDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteCocheraDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleCochera_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
   exportarExcelCocheras(parametro, contexto) {
     this.archivoService.postExcel("exportarExcelCocheras", parametro).then(
       (data) => {

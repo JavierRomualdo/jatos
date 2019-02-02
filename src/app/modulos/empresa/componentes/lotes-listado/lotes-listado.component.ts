@@ -189,6 +189,7 @@ export class LotesListadoComponent implements OnInit {
   generarOpciones() {
     let perConsultar = true;
     let perMensajes = true;
+    let perImprimir = true;
     let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
@@ -229,6 +230,13 @@ export class LotesListadoComponent implements OnInit {
         icon: LS.ICON_NOTIFICACION,
         disabled: !perMensajes,
         command: () => perMensajes ? this.verMensajes() : null
+      },
+      {separator:true},
+      {
+        label: LS.ACCION_IMPRIMIR,
+        icon: LS.ICON_IMPRIMIR,
+        disabled: !perImprimir,
+        command: () => perImprimir ? this.imprimirDetalleCasa() : null
       }
     ];
   }
@@ -356,6 +364,15 @@ export class LotesListadoComponent implements OnInit {
       activos: this.parametrosBusqueda.activos ? this.parametrosBusqueda.activos : false
     }
     this.loteService.imprimirLotes(parametros, this);
+  }
+
+  imprimirDetalleCasa() {
+    this.cargando = true;
+    let parametros = {
+      lote: this.objetoSeleccionado,
+      fechaActual: this.utilService.obtenerFechaActual()
+    }
+    this.loteService.imprimirLoteDetalle(parametros, this);
   }
 
   exportarLotes() {
