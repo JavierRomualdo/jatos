@@ -154,10 +154,8 @@
               </button>
             </div>
           </div>
-          <div *ngIf="cargando">
-            <app-cargando></app-cargando>
-          </div>
-          <p-scrollPanel [style]="{width: '100%', height: '450px'}" *ngIf="!cargando && idPropiedad==0">
+          
+          <p-scrollPanel [style]="{width: '100%', height: '450px'}" *ngIf="idPropiedad==0">
             <div class="card-body text-center">
               <img src="assets/img-empresa/avatars/no_image.png" class="rounded mx-auto d-block" *ngIf="propiedades.length == 0">
               <div class="container" *ngIf="propiedades.length != 0">
@@ -165,7 +163,7 @@
                   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" *ngFor="let propiedad of propiedades; let i = index;">
                     <div class="home-blog-post" style="background-color: white">
                       <div class="image">
-                        <img [src]="propiedad.foto" alt="..." class="img-fluid" *ngIf="propiedad.foto!=null">
+                        <img [src]="propiedad.foto" alt="..." class="rounded img-fluid" *ngIf="propiedad.foto!=null">
                         <img src="assets/img-empresa/avatars/no-imagen.png" style="border: 1px cadetblue dashed" alt="..."
                           class="img-fluid" *ngIf="propiedad.foto==null">
                         <div class="overlay d-flex align-items-center justify-content-center">
@@ -212,7 +210,7 @@
           </p-scrollPanel>
 
           <!--Detalle de propiedades-->
-          <div class="card-body" *ngIf="!cargando && idPropiedad!=0">
+          <div class="card-body" *ngIf="idPropiedad!=0">
             <div *ngIf="parametros.tipopropiedad===constantes.TAG_CASA">
               <app-casa-detalle [id]="idPropiedad"></app-casa-detalle>
             </div>
@@ -237,3 +235,6 @@
 
   </div>
 </section>
+<div *ngIf="cargando">
+  <app-cargando></app-cargando>
+</div>
