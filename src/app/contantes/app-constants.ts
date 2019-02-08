@@ -90,7 +90,7 @@ export class LS {
   static TAG_COSTO = "Costo";
   static TAG_PRECIO = "Precio";
   static TAG_PRECIO_COMPRA = "Precio compra";
-  static TAG_PRECIO_ADQUISICION = "Precion adquisición";
+  static TAG_PRECIO_ADQUISICION = "Precio adquisición";
   static TAG_PRECIO_CONTRATO = "Precio contrato";
   static TAG_GANANCIA = "Ganancia";
   static TAG_PRECIO_S = "Precio (S/)";
@@ -324,4 +324,5 @@ export class LS {
       detalle: 'Por más de S/ 15000.00'
     }
   ];
+  static LISTA_CONTRATO = ["A", "V"];
 }

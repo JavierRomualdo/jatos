@@ -6,13 +6,13 @@
       <!--formulario (filtro)-->
       <div [ngClass]="{'sr-only animated fadeIn':activar}" class="col-lg-3 col-md-4 col-sm-5 animated fadeIn">
         <form class="card border-primary animated fadeIn">
-          <div class="card-header bg-primary">
+          <div class="card-header pt-2 pb-2 bg-primary">
             <span>
               <i class="fa fa-filter"></i>
               <b> Filtros</b>
             </span>
           </div>
-          <p-scrollPanel [style]="{width: '100%', height: '450px'}">
+          <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
             <div class="card-body">
               <!--FORMULARIO FILTRO-->
               <p-panel header="Principal" [toggleable]="true">
@@ -140,25 +140,26 @@
       <!--Listado de propiedades-->
       <div [ngClass]="{'col-lg-9 col-md-8 col-sm-7 animated fadeIn':!activar,'col-lg-12 col-md-12 col-sm-12 animated fadeIn':activar}">
         <div class="card border-primary animated fadeIn">
-          <div class="card-header bg-primary">
-            <button class="btn btn-sm btn-default" (click)="cambiarActivar(activar)" type="button" [pTooltip]="activar ? 'Reducir': 'Ampliar'"
+          <div class="card-header p-1 bg-primary">
+            <button class="btn btn-sm btn-default mr-2" (click)="cambiarActivar(activar)" type="button" [pTooltip]="activar ? 'Reducir': 'Ampliar'"
               tooltipPosition="top">
               <i class="{{activar?'fa fa-chevron-right':'fa fa-chevron-left'}}" aria-hidden="true"></i>
             </button>
             <strong class="text-uppercase" *ngIf="propiedades.length > 0"> {{parametros.tipopropiedad}}:
               #{{propiedades.length}}</strong>
             <div class="card-header-actions" *ngIf="idPropiedad!=0">
-              <button class="btn btn-sm btn-default" (click)="cerrarPropiedadDetalle()" type="button" pTooltip="Regresar"
-                tooltipPosition="top">
-                <i class="fa fa-reply" aria-hidden="true"></i>
+              <button class="btn btn-sm btn-default mr-2" (click)="cerrarPropiedadDetalle()" type="button" pTooltip="Regresar"
+              tooltipPosition="top">
+                <i class="{{constantes.ICON_REGRESAR}}" aria-hidden="true"></i>
+                <span class="d-none d-md-inline"> {{constantes.LABEL_REGRESAR}}</span>
               </button>
             </div>
           </div>
           
-          <p-scrollPanel [style]="{width: '100%', height: '450px'}" *ngIf="idPropiedad==0">
-            <div class="card-body text-center">
+          <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
+            <div class="card-body text-center" *ngIf="idPropiedad==0">
               <img src="assets/img-empresa/avatars/no_image.png" class="rounded mx-auto d-block" *ngIf="propiedades.length == 0">
-              <div class="container" *ngIf="propiedades.length != 0">
+              <div *ngIf="propiedades.length != 0">
                 <div class="row portfolio">
                   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" *ngFor="let propiedad of propiedades; let i = index;">
                     <div class="home-blog-post" style="background-color: white">
@@ -207,27 +208,26 @@
                 </div>
               </div>
             </div>
+            <!--Detalle de propiedades-->
+            <div class="card-body" *ngIf="idPropiedad!=0">
+              <div *ngIf="parametros.tipopropiedad===constantes.TAG_CASA">
+                <app-casa-detalle [id]="idPropiedad" (enviarAccion)="ejecutarAccion($event)"></app-casa-detalle>
+              </div>
+              <div *ngIf="parametros.tipopropiedad===constantes.TAG_COCHERA" [id]="idPropiedad">
+                <app-cochera-detalle [id]="idPropiedad" (enviarAccion)="ejecutarAccion($event)"></app-cochera-detalle>
+              </div>
+              <div *ngIf="parametros.tipopropiedad===constantes.TAG_APARTAMENTO" [id]="idPropiedad"></div>
+              <div *ngIf="parametros.tipopropiedad===constantes.TAG_HABITACION" [id]="idPropiedad">
+                <app-habitacion-detalle [id]="idPropiedad" (enviarAccion)="ejecutarAccion($event)"></app-habitacion-detalle>
+              </div>
+              <div *ngIf="parametros.tipopropiedad===constantes.TAG_LOCAL" [id]="idPropiedad">
+                <app-local-detalle [id]="idPropiedad" (enviarAccion)="ejecutarAccion($event)"></app-local-detalle>
+              </div>
+              <div *ngIf="parametros.tipopropiedad===constantes.TAG_LOTE">
+                <app-lote-detalle [id]="idPropiedad" (enviarAccion)="ejecutarAccion($event)"></app-lote-detalle>
+              </div>
+            </div>
           </p-scrollPanel>
-
-          <!--Detalle de propiedades-->
-          <div class="card-body" *ngIf="idPropiedad!=0">
-            <div *ngIf="parametros.tipopropiedad===constantes.TAG_CASA">
-              <app-casa-detalle [id]="idPropiedad"></app-casa-detalle>
-            </div>
-            <div *ngIf="parametros.tipopropiedad===constantes.TAG_COCHERA" [id]="idPropiedad">
-              <app-cochera-detalle [id]="idPropiedad"></app-cochera-detalle>
-            </div>
-            <div *ngIf="parametros.tipopropiedad===constantes.TAG_APARTAMENTO" [id]="idPropiedad"></div>
-            <div *ngIf="parametros.tipopropiedad===constantes.TAG_HABITACION" [id]="idPropiedad">
-              <app-habitacion-detalle [id]="idPropiedad"></app-habitacion-detalle>
-            </div>
-            <div *ngIf="parametros.tipopropiedad===constantes.TAG_LOCAL" [id]="idPropiedad">
-              <app-local-detalle [id]="idPropiedad"></app-local-detalle>
-            </div>
-            <div *ngIf="parametros.tipopropiedad===constantes.TAG_LOTE">
-              <app-lote-detalle [id]="idPropiedad"></app-lote-detalle>
-            </div>
-          </div>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Cochera } from 'src/app/entidades/entidad.cochera';
 import { CocheraMensaje } from 'src/app/entidades/entidad.cocheramensaje';
 import { FileItem } from 'src/app/entidades/file-item';
@@ -7,7 +7,6 @@ import { Cocheraservicio } from 'src/app/entidades/entidad.cocheraservicio';
 import { Foto } from 'src/app/entidades/entidad.foto';
 import { Persona } from 'src/app/entidades/entidad.persona';
 import { UbigeoGuardar } from 'src/app/entidades/entidad.ubigeoguardar';
-import { ActivatedRoute } from '@angular/router';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
@@ -23,6 +22,7 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
 export class CocheraDetalleComponent implements OnInit {
 
   @Input() id;
+  @Output() enviarAccion = new EventEmitter();
   public cochera: Cochera;
   public mensaje: CocheraMensaje;
   public cargando: Boolean = false;
@@ -41,7 +41,6 @@ export class CocheraDetalleComponent implements OnInit {
   public zoom: number = 16;
   
   constructor(
-    private _activedRoute: ActivatedRoute,
     private api: ApiRequest2Service,
     private toastr: ToastrService,
     private mensajeService: MailService
@@ -64,9 +63,13 @@ export class CocheraDetalleComponent implements OnInit {
     if (this.id) {
       this.obtenerCochera(this.id);
     }
-    // this._activedRoute.params.subscribe(params => {
-    //   this.obtenerCochera(params['id']);
-    // });
+  }
+
+  verPropiedades(propiedad) {
+    let parametros = {
+      propiedad: propiedad,
+    }
+    this.enviarAccion.emit(parametros);
   }
 
   obtenerCochera(id) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Casa } from 'src/app/entidades/entidad.casa';
 import { CasaMensaje } from 'src/app/entidades/entidad.casamensaje';
 import { FileItem } from 'src/app/entidades/file-item';
@@ -7,7 +7,6 @@ import { Casaservicio } from 'src/app/entidades/entidad.casaservicio';
 import { Foto } from 'src/app/entidades/entidad.foto';
 import { Persona } from 'src/app/entidades/entidad.persona';
 import { UbigeoGuardar } from 'src/app/entidades/entidad.ubigeoguardar';
-import { ActivatedRoute } from '@angular/router';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
@@ -23,6 +22,7 @@ import { LS } from 'src/app/contantes/app-constants';
 export class CasaDetalleComponent implements OnInit {
 
   @Input() id;
+  @Output() enviarAccion = new EventEmitter();
   public casa: Casa;
   public mensaje: CasaMensaje;
   public cargando: boolean = false;
@@ -41,7 +41,6 @@ export class CasaDetalleComponent implements OnInit {
   public zoom: number = 16;
 
   constructor(
-    private _activedRoute: ActivatedRoute,
     private api: ApiRequest2Service,
     private toastr: ToastrService,
     private mensajeService: MailService
@@ -64,9 +63,13 @@ export class CasaDetalleComponent implements OnInit {
     if (this.id) {
       this.obtenerCasa(this.id);
     }
-    // this._activedRoute.params.subscribe(params => {
-    //   this.obtenerCasa(params['id']);
-    // });
+  }
+
+  verPropiedades(propiedad) {
+    let parametros = {
+      propiedad: propiedad,
+    }
+    this.enviarAccion.emit(parametros);
   }
 
   obtenerCasa(id) {

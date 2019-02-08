@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Lote } from 'src/app/entidades/entidad.lote';
 import { LoteMensaje } from 'src/app/entidades/entidad.lotemensaje';
 import { FileItem } from 'src/app/entidades/file-item';
@@ -22,6 +22,7 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
 export class LoteDetalleComponent implements OnInit {
 
   @Input() id;
+  @Output() enviarAccion = new EventEmitter();
   public lote: Lote;
   public mensaje: LoteMensaje;
   public cargando: Boolean = false;
@@ -61,9 +62,13 @@ export class LoteDetalleComponent implements OnInit {
     if (this.id) {
       this.obtenerLote(this.id);
     }
-    // this._activedRoute.params.subscribe(params => {
-    //   this.obtenerLote(params['id']);
-    // });
+  }
+
+  verPropiedades(propiedad) {
+    let parametros = {
+      propiedad: propiedad,
+    }
+    this.enviarAccion.emit(parametros);
   }
 
   obtenerLote(id) {

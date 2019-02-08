@@ -15,7 +15,6 @@ import { UtilService } from 'src/app/servicios/util/util.service';
 export class PropiedadesComponent implements OnInit {
   public tipopropiedades: string[] = [];
   public parametros: any = {};
-  public rangoprecios: Rangoprecios[];
   public ubigeo: UbigeoGuardar;
   public cargando: Boolean = false;
   public ubigeodepartamentos: Ubigeo[];
@@ -42,7 +41,7 @@ export class PropiedadesComponent implements OnInit {
 
   public radiobutton: any;
   public listaRangoPrecios: any = LS.LISTA_RANGO_PRECIOS;
-  public rangoPrecio: any
+  public rangoPrecio: any;
 
   constructor(
     private api: ApiRequest2Service,
@@ -55,7 +54,6 @@ export class PropiedadesComponent implements OnInit {
     this.ubigeo.distrito = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
     this.ubigeo.rangoprecio = new Rangoprecios();
-    this.rangoprecios = [];
 
     this.ubigeodepartamentos = [];
     this.ubigeoprovincias = [];
@@ -66,13 +64,25 @@ export class PropiedadesComponent implements OnInit {
     this.tipopropiedades = LS.LISTA_PROPIEDADES;
     // this.parametros.tipopropiedad = "";
     this.listarUbigeos(); // index ubigeos (departamento)
-    this.listarRangoPrecios();
     this.rangoprecio.preciominimo = "0";
     this.parametros.tipopropiedad = LS.KEY_PROPIEDAD_SELECT ? this.utilService.seleccionarPropiedad(this.tipopropiedades) : '';
     if (LS.KEY_CONTRATO_SELECT) {
-      this.ubigeo.contrato.push(LS.KEY_CONTRATO_SELECT)
+      this.ubigeo.contrato = [];
+      this.ubigeo.contrato.push(LS.KEY_CONTRATO_SELECT);
+      LS.KEY_CONTRATO_SELECT = "";
+    } else {
+      this.ubigeo.contrato = LS.LISTA_CONTRATO;
     }
     // LS.KEY_CONTRATO_SELECT ? this.ubigeo.contrato.push(LS.KEY_CONTRATO_SELECT) : "";
+  }
+
+  ejecutarAccion(parametros) {
+    this.parametros.tipopropiedad = parametros.propiedad;
+    this.propiedades = [];
+    this.cerrarPropiedadDetalle();
+    this.idUbigeoDepartamento = 0;
+    this.idUbigeoProvincia = 0;
+    this.idUbigeoDistrito = 0;
   }
 
   cambiarTipoPropiedad() {
@@ -123,35 +133,6 @@ export class PropiedadesComponent implements OnInit {
         }
       )
       .catch(err => this.handleError(err));
-  }
-
-  listarRangoPrecios() {
-    // this.cargando = true;
-    const rango1 = new Rangoprecios();
-    const rango2 = new Rangoprecios();
-    const rango3 = new Rangoprecios();
-    const rango4 = new Rangoprecios();
-    const rango5 = new Rangoprecios();
-    rango1.id = 1;
-    rango1.preciominimo = "0";
-    rango1.preciomaximo = "20000.00";
-    rango2.id = 3;
-    rango2.preciominimo = "20000.00";
-    rango2.preciomaximo = "50000.00";
-    rango3.id = 3;
-    rango3.preciominimo = "50000.00";
-    rango3.preciomaximo = "100000.00";
-    rango4.id = 4;
-    rango4.preciominimo = "100000.00";
-    rango4.preciomaximo = "300000.00";
-    rango5.id = 5;
-    rango5.preciominimo = "300000.00";
-    rango5.preciomaximo = undefined;
-    this.rangoprecios[0] = rango1;
-    this.rangoprecios[1] = rango2;
-    this.rangoprecios[2] = rango3;
-    this.rangoprecios[3] = rango4;
-    this.rangoprecios[4] = rango5;
   }
 
   mostrarprovincias(idubigeo) {
@@ -218,24 +199,6 @@ export class PropiedadesComponent implements OnInit {
       //this.listarPropiedades();
       // this.parametros.departamento = null;
       // this.listarUbigeos();
-    }
-  }
-
-  mostrarparangoprecios(idrangoprecio) {
-    if (idrangoprecio > 0) {
-      let rangoprecio = new Rangoprecios();
-      for (const rango of this.rangoprecios) {
-        if (idrangoprecio === rango.id) {
-          rangoprecio = rango;
-        }
-      }
-      this.ubigeo.rangoprecio = rangoprecio;
-      console.log("rango de precio:");
-      console.log(rangoprecio);
-      this.listarPropiedades();
-    } else {
-      this.ubigeo.rangoprecio = new Rangoprecios();
-      this.listarPropiedades();
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Habitacion } from 'src/app/entidades/entidad.habitacion';
 import { HabitacionMensaje } from 'src/app/entidades/entidad.habitacionmensaje';
 import { FileItem } from 'src/app/entidades/file-item';
@@ -23,6 +23,7 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
 export class HabitacionDetalleComponent implements OnInit {
 
   @Input() id;
+  @Output() enviarAccion = new EventEmitter();
   public habitacion: Habitacion;
   public mensaje: HabitacionMensaje;
   public cargando: Boolean = false;
@@ -63,9 +64,13 @@ export class HabitacionDetalleComponent implements OnInit {
     if (this.id) {
       this.obtenerHabitacion(this.id);
     }
-    // this._activedRoute.params.subscribe(params => {
-    //   this.obtenerHabitacion(params['id']);
-    // });
+  }
+
+  verPropiedades(propiedad) {
+    let parametros = {
+      propiedad: propiedad,
+    }
+    this.enviarAccion.emit(parametros);
   }
 
   obtenerHabitacion(id) {

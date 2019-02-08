@@ -1,31 +1,24 @@
 <div id="heading-breadcrumbs" class="borderPanel">
-  <div class="container">
+  <div>
     <div class="row d-flex align-items-center flex-wrap p-1">
-      <div class="col-md-8">
-        <h3 class="h3">
+      <div class="col-lg-9 col-md-8 col-sm-6 col-xs-6">
+        <h4 class="h4">
           <strong><i class="fa fa-home" aria-hidden="true"></i> COCHERA</strong>
-        </h3>
+        </h4>
       </div>
-      <div class="col-md-4">
-        <h2 class="h3">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+        <h4 class="h4">
           <strong>
-            <span *ngIf="cochera.estadocontrato=='A'">(Alquiler)</span>
-            <span *ngIf="cochera.estadocontrato=='V'">(Venta)</span> S/ {{cochera.preciocontrato}}
+            <span *ngIf="cochera.estadocontrato=='A'">ALQUILER</span>
+            <span *ngIf="cochera.estadocontrato=='V'">VENTA</span> S/ {{cochera.preciocontrato}}
           </strong>
-        </h2>
+        </h4>
       </div>
     </div>
   </div>
 </div>
 <div id="content" class="bg-white">
-  <div class="container">
-    <!--<section class="no-mb bar">
-        <div class="row">
-          <div class="col-md-12">
-            <p class="lead no-mb">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
-          </div>
-        </div>
-      </section>-->
+  <div>
     <section>
       <!-- Carousel Start-->
       <div class="home-carousel">
@@ -58,7 +51,7 @@
 
     <section class="bar">
       <div class="row portfolio-project">
-        <div class="col-md-8">
+        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
           <div class="heading">
             <h4>
               <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Descripcion</strong>
@@ -84,7 +77,7 @@
             </agm-marker>
           </agm-map>
         </div>
-        <div class="col-md-4 borderPanel p-3 mt-1">
+        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 borderPanel p-3 mt-1">
           <div class="heading text-center">
             <h4>
               <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
@@ -130,7 +123,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
-                  <input id="nombres" [appFocus]="true" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
+                  <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
                     required placeholder="Ingrese nombres">
                 </div>
               </div>
@@ -174,7 +167,7 @@
   </div>
 </div>
 <!-- GET IT-->
-<div class="get-it">
+<div class="get-it p-2 rounded">
   <div class="container">
     <!--<div class="row">
         <div class="col-lg-12 text-center p-3">
@@ -186,7 +179,7 @@
       <!--class="bar pt-0"-->
       <div class="row portfolio p-0">
         <div class="col-md-12">
-          <h4 class="text-center">Más propiedades</h4>
+          <h4 class="text-center">MÁS PROPIEDADES</h4>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="box-image">
@@ -199,7 +192,7 @@
                   <div class="text">
                     <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
                     <p class="buttons">
-                      <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white btn-sm">
+                      <a href="#" (click)="verPropiedades(constantes.TAG_CASA); false" class="btn btn-template-outlined-white btn-sm">
                         <i class="fa fa-search"></i> Casas
                       </a>
                     </p>
@@ -220,7 +213,7 @@
                   <div class="text">
                     <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
                     <p class="buttons">
-                      <a [href]="['#/welcome/servicios/lotes']" class="btn btn-template-outlined-white"><i class="fa fa-search"></i></a>
+                      <a href="#" (click)="verPropiedades(constantes.TAG_LOTE); false" class="btn btn-template-outlined-white"><i class="fa fa-search"></i></a>
                     </p>
                   </div>
                 </div>
@@ -239,7 +232,7 @@
                   <div class="text">
                     <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
                     <p class="buttons">
-                      <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white btn-sm">
+                      <a href="#" (click)="verPropiedades(constantes.TAG_LOCAL); false" class="btn btn-template-outlined-white btn-sm">
                         <i class="fa fa-search"></i> Locales
                       </a>
                     </p>
@@ -260,7 +253,7 @@
                   <div class="text">
                     <p class="d-none">Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
                     <p class="buttons">
-                      <a [href]="['#/welcome/propiedades']" class="btn btn-template-outlined-white btn-sm">
+                      <a href="#" (click)="verPropiedades(constantes.TAG_HABITACION); false" class="btn btn-template-outlined-white btn-sm">
                         <i class="fa fa-search"></i> Habitaciones
                       </a>
                     </p>
