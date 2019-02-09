@@ -146,19 +146,6 @@ export class CasasService {
     ).catch(err => this.handleError(err, contexto));
   }
 
-  busquedaCasas(parametro, contexto) {
-    this.api.post2('buscarcasa', parametro).then(
-      (res) => {
-        if (res) {
-          contexto.despuesDeBusquedaCasas(res);
-        } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
   // Mensajes
   cambiarEstadoMensajeCasa(parametro, contexto) {
     this.api.delete2('casamensaje/' + parametro).then(

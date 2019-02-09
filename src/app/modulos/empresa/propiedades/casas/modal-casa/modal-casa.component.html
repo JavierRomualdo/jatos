@@ -202,12 +202,23 @@
                 </div>
                 <div class="form-group form-group-sm col-sm-8">
                   <label class="control-label">
+                    <strong>{{constantes.TAG_REFERENCIA}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <textarea class="form-control form-control-sm" [(ngModel)]="casa.referencia" required name="referencia" placeholder="Ingrese referencia"
+                    maxlength="255"></textarea>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-12">
+                  <label class="control-label">
                     <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
                   </label>
                   <textarea class="form-control form-control-sm" [(ngModel)]="casa.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
                     maxlength="255"></textarea>
                 </div>
               </div>
+              <!--/.row-->
             </div>
 
             <div class="tab-pane" id="mapa" role="tabpanel">

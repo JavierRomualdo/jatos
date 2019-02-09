@@ -157,19 +157,6 @@ export class CocheraService {
     ).catch(err => this.handleError(err, contexto));
   }
 
-  busquedaCocheras(parametro, contexto) {
-    this.api.post2('buscarcochera', parametro).then(
-      (res) => {
-        if (res) {
-          contexto.despuesDeBusquedaCocheras(res);
-        } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
   cambiarEstadoMensajeCochera(parametro, contexto) {
     this.api.delete2('cocheramensaje/' + parametro).then(
       (res) => {

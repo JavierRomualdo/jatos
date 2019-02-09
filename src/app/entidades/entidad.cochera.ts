@@ -12,6 +12,7 @@ export class Cochera {
   largo: number;
   ancho: number;
   direccion: string;
+  referencia: string = null;
   descripcion: string = null;
   foto: string = null;
   path: string = null; // camino o ruta de imagenes en cloud storage de firebase

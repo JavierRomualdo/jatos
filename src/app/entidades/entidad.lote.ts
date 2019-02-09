@@ -13,6 +13,7 @@ export class Lote {
     ancho: number;
     nmensajes: number = 0;
     direccion: string;
+    referencia: string = null;
     descripcion: string = null;
     foto: string = null;
     path: string = null; // camino o ruta de imagenes en cloud storage de firebase

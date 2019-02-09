@@ -104,6 +104,7 @@ export class LS {
   static TAG_BANIO_PREG = "¿Baño?";
   static TAG_JARDIN_PREG = "¿Jardin?";
   static TAG_COCHERA_PREG = "¿Cochera?";
+  static TAG_REFERENCIA = "Referencia";
   static TAG_DESCRIPCION = "Descripcion";
   static TAG_MAS_OPCIONES = "Más opciones";
   static TAG_IMAGENES = "Imágenes";

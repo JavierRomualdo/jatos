@@ -17,6 +17,7 @@ export class Casa {
   nbanios: number = 0;
   tjardin: boolean = false;
   tcochera: boolean = false;
+  referencia: string = null;
   descripcion: string = null;
   foto: string = null;
   path: string = null; // camino o ruta de imagenes en cloud storage de firebase
@@ -54,6 +55,7 @@ export class Casa {
     this.nbanios = data.nbanios ? data.nbanios : this.nbanios;
     this.tjardin = data.tjardin ? data.tjardin : this.tjardin;
     this.tcochera = data.tcochera ? data.tcochera : this.tcochera;
+    this.referencia = data.referencia ? data.referencia : this.referencia;
     this.descripcion = data.descripcion ? data.descripcion : this.descripcion;
     this.foto = data.foto ? data.foto : this.foto;
     this.path = data.path ? data.path : this.path;

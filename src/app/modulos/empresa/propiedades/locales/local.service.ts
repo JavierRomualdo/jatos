@@ -157,19 +157,6 @@ export class LocalService {
     ).catch(err => this.handleError(err, contexto));
   }
 
-  busquedaLocales(parametro, contexto) {
-    this.api.post2('buscarlocal', parametro).then(
-      (res) => {
-        if (res) {
-          contexto.despuesDeBusquedaLocales(res);
-        } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
   cambiarEstadoMensajeLocal(parametro, contexto) {
     this.api.delete2('cocheramensaje/' + parametro).then(
       (res) => {

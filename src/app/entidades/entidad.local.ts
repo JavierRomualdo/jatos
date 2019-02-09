@@ -15,7 +15,8 @@ export class Local {
     // tslint:disable-next-line:no-inferrable-types
     nmensajes: number = 0;
     tbanio: Boolean = false;
-    descripcion: string;
+    referencia: string = null;
+    descripcion: string = null;
     foto: string = null;
     path: string = null; // camino o ruta de imagenes en cloud storage de firebase
     // foto: Blob;

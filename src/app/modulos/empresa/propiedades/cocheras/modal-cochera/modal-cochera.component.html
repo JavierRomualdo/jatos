@@ -157,7 +157,14 @@
           <div class="tab-content border-primary">
             <div class="tab-pane active" id="home2" role="tabpanel">
               <div class="row">
-                <div class="form-group form-group-sm col-sm-12">
+                <div class="form-group form-group-sm col-sm-6">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_REFERENCIA}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <textarea class="form-control form-control-sm" [(ngModel)]="cochera.referencia" required name="referencia" placeholder="Ingrese referencia"
+                    maxlength="255"></textarea>
+                </div>
+                <div class="form-group form-group-sm col-sm-6">
                   <label class="control-label">
                     <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
                   </label>

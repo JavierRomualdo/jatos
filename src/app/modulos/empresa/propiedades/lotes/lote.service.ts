@@ -157,19 +157,6 @@ export class LoteService {
     ).catch(err => this.handleError(err, contexto));
   }
 
-  busquedaLotes(parametro, contexto) {
-    this.api.post2('buscarlote', parametro).then(
-      (res) => {
-        if (res) {
-          contexto.despuesDeBusquedaLotes(res);
-        } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
   cambiarEstadoMensajeLote(parametro, contexto) {
     this.api.delete2('cocheramensaje/' + parametro).then(
       (res) => {

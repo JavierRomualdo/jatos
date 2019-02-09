@@ -144,19 +144,6 @@ export class HabitacionService {
     ).catch(err => this.handleError(err, contexto));
   }
 
-  busquedaHabitaciones(parametro, contexto) {
-    this.api.post2('buscarhabitacion', parametro).then(
-      (res) => {
-        if (res) {
-          contexto.despuesDeBusquedaHabitaciones(res);
-        } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
-          contexto.cargando = false;
-        }
-      }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
   // Mensajes
   cambiarEstadoMensajeHabitacion(parametro, contexto) {
     this.api.delete2('habitacionmensaje/' + parametro).then(
