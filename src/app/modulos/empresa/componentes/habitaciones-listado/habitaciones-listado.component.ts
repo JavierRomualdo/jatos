@@ -226,7 +226,7 @@ export class HabitacionesListadoComponent implements OnInit {
         command: () => perEliminar ? this.eliminarHabitacion() : null
       },
       {
-        label: LS.TAG_MENSAJES,
+        label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
         icon: LS.ICON_NOTIFICACION,
         disabled: !perMensajes,
         command: () => perMensajes ? this.verMensajes() : null

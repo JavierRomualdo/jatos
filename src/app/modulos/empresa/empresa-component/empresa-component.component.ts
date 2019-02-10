@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LS } from 'src/app/contantes/app-constants';
 import { Router } from '@angular/router';
+import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Component({
   selector: 'app-empresa-component',
@@ -15,10 +17,17 @@ export class EmpresaComponentComponent implements OnInit {
   public notificacionDto: any;
   public cantidad: number = 0;
   public notificaciones = [];
+  public online$: any;
+  public conexion: boolean = true;
   
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    private utilService: UtilService,
+    private api: ApiRequest2Service
+  ) {
+    this.online$ = this.api.verificarConexionInternet();
+    this.networkStatus()
+  }
 
   ngOnInit() {
     this.fechaActual = new Date();
@@ -32,5 +41,25 @@ export class EmpresaComponentComponent implements OnInit {
   verPerfilUsuario() {
     LS.KEY_IS_PERFIL_USER = true;
     this.router.navigate(['/empresa/configuracion/usuarios'])
+  }
+
+  public networkStatus() {
+    this.online$.subscribe(value => {
+      this.conexion = value;
+      if (!this.conexion) {
+        let parametros = {
+          title: LS.ACCION_INTERNET,
+          texto: LS.MSJ_INTERNET_NO_ESTABLECIDA,
+          type: LS.SWAL_WARNING,
+          confirmButtonText: LS.LABEL_ACEPTAR,
+          cancelButtonText: LS.LABEL_CANCELAR
+        };
+        this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
+          if (respuesta) {//Si presiona CONTABILIZAR
+          } else {//Cierra el formulario
+          }
+        });
+      }
+    })
   }
 }

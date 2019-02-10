@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { LS } from 'src/app/contantes/app-constants';
 import { MenuItem } from 'primeng/api';
-import { GridApi } from 'ag-grid-community';
 import { ContextMenu } from 'primeng/contextmenu';
 import { MensajeListadoService } from './mensaje-listado.service';
 import { MensajeTO } from 'src/app/entidadesTO/empresa/MensajeTO';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { GridApi } from 'ag-grid';
 
 @Component({
   selector: 'app-mensajes-listado',
@@ -69,7 +69,6 @@ export class MensajesListadoComponent implements OnInit {
   }
 
   despuesDeListarMensajes(data) {
-    let perConsultar = true;
     this.listaResultado = data;
     this.cargando = false;
   }
@@ -167,11 +166,12 @@ export class MensajesListadoComponent implements OnInit {
       if (respuesta) {//Si presiona CONTABILIZAR
         this.cargando = true;
         // this.objetoSeleccionado.estado = estado;
+        const listaMensajesSeleccionadas = this.utilService.getAGSelectedData(this.gridApi);
         let parametro = {
           propiedad: this.parametrosMensaje.propiedad,
-          id: this.mensajeSeleccionado.id,
           propiedad_id: this.parametrosMensaje.propiedad_id,
           nmensajes: this.parametrosMensaje.nmensajes,
+          listaMensajes: listaMensajesSeleccionadas,
           estado: estado
         }
         this.mensajeListadoService.cambiarEstadoMensaje(parametro, this);
@@ -181,9 +181,11 @@ export class MensajesListadoComponent implements OnInit {
     });
   }
 
-  despuesCambiarEstadoMensaje(data) {
-    this.mensajeSeleccionado.estado = !this.mensajeSeleccionado.estado;
-    this.refrescarTabla(LS.ACCION_EDITAR, this.mensajeSeleccionado);
+  despuesCambiarEstadoMensaje(mensajes) {
+    mensajes.forEach(mensaje => {
+      mensaje.estado = !mensaje.estado;
+      this.refrescarTabla(LS.ACCION_EDITAR, mensaje);
+    });
     this.cargando = false;
   }
 
@@ -259,7 +261,7 @@ export class MensajesListadoComponent implements OnInit {
   iniciarAgGrid() {
     this.columnDefs = this.mensajeListadoService.generarColumnas(this.isModal);
     this.columnDefsSelected = this.columnDefs.slice();
-    this.rowSelection = "single";
+    this.rowSelection = "multiple";
     this.context = { componentParent: this };
   }
 

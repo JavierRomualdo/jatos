@@ -65,7 +65,7 @@ export class MensajeListadoService {
       (data) => {
         if (data && data.extraInfo) {
           this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
-          contexto.despuesCambiarEstadoMensaje(data);
+          contexto.despuesCambiarEstadoMensaje(data.extraInfo);
         } else {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
@@ -82,6 +82,16 @@ export class MensajeListadoService {
   generarColumnas(isModal: boolean): Array<any> {
     let columnas: Array<any> = [];
     columnas.push(
+      {
+        headerName: "",
+        field: "",
+        headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+        checkboxSelection: true,
+        width: 38,
+        minWidth: 38,
+        maxWidth: 38,
+      },
       {
         headerName: LS.TAG_NOMBRES,
         width: 100,

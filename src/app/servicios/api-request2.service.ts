@@ -7,7 +7,8 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import { AppConfig } from '../app-config';
-import { throwError } from 'rxjs'
+import { throwError, fromEvent, merge, of, Observable } from 'rxjs'
+import { mapTo } from 'rxjs/operators';
  throwError(new Error("oops"));
 
 import 'rxjs/add/operator/share';
@@ -192,5 +193,13 @@ export class ApiRequest2Service {
       console.error('página solicitada no se encuentra');
     }
     return Promise.reject(error.message || error);
+  }
+
+  verificarConexionInternet(): Observable<boolean> {
+    return merge(
+      of(navigator.onLine),
+      fromEvent(window, 'online').pipe(mapTo(true)),
+      fromEvent(window, 'offline').pipe(mapTo(false))
+    );
   }
 }

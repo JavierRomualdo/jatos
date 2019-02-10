@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import printJS from 'print-js/src';
+import { GridApi } from 'ag-grid';
 
 @Injectable({
   providedIn: 'root'
@@ -390,5 +391,16 @@ export class UtilService {
     // a.click();
     saveAs(blob, nombreReporte + this.obtenerHorayFechaActual()+".xlsx");
     this.toastr.success(LS.MSJ_DOC_GENERADO, LS.TOAST_CORRECTO);
+  }
+
+  public getAGSelectedData(gridApi: GridApi) {
+    let selectedData = [];
+    if (gridApi) {
+      var selectedRows = gridApi.getSelectedRows();
+      selectedRows.forEach(function (selectedRow, index) {
+        selectedData.push(selectedRow);
+      });
+    }
+    return selectedData;
   }
 }

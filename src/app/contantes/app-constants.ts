@@ -206,6 +206,7 @@ export class LS {
   static ACCION_VER_ALQUILER = 'Ver alquiler';
   static ACCION_VER_VENTA = 'Ver venta';
   static ACCION_ENVIAR_CORREO = "Enviar correo";
+  static ACCION_INTERNET = "Internet";
 
   //ETIQUETAS
   static ETIQUETA_TODOS = "TODOS";
@@ -272,6 +273,8 @@ export class LS {
   static MSJ_DOC_GENERADO = 'Documento generado correctamente';
   static MSJ_NO_DATA = 'No se encontraron resultados';
   static MSJ_ERROR_IMPRIMIR = 'El reporte no existe o tiene errores';
+  static MSJ_INTERNET_ESTABLECIDA = 'Conexión Establecida.';
+  static MSJ_INTERNET_NO_ESTABLECIDA = 'Conexión no establecida.';
   
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

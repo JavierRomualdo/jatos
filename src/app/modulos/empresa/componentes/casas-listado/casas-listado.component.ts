@@ -41,6 +41,7 @@ export class CasasListadoComponent implements OnInit {
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
   public context;
+  overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
 
   constructor(
@@ -225,7 +226,8 @@ export class CasasListadoComponent implements OnInit {
         command: () => perEliminar ? this.eliminarCasa() : null
       },
       {
-        label: LS.TAG_MENSAJES,
+        // <span class="badge badge-danger">{{not.cantidad}}</span>
+        label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
         icon: LS.ICON_NOTIFICACION,
         disabled: !perMensajes,
         command: () => perMensajes ? this.verMensajes() : null
@@ -440,7 +442,12 @@ export class CasasListadoComponent implements OnInit {
   }
 
   filtrarRapido() {
-    this.gridApi ? this.gridApi.setQuickFilter(this.filtroGlobal) : null
+    this.gridApi ? this.gridApi.setQuickFilter(this.filtroGlobal) : null;
+    // if (this.listadoCasas.length>0) {
+    //   this.gridApi.hideOverlay();
+    // } else {
+    //   this.gridApi.showLoadingOverlay();
+    // }
   }
 
   // actualizarFilas() {
