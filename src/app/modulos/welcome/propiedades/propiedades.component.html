@@ -47,10 +47,10 @@
                   <label class="control-label">
                     <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
-                  <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control form-control-sm mousetrap"
+                  <select (change)="mostrarprovincias(departamento)" [(ngModel)]="departamento" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <option value='0'>Departamento...</option>
-                    <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
+                    <option value=null>Departamento...</option>
+                    <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
                   </select>
                   <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">

@@ -9,6 +9,7 @@ export class LS {
   public static KEY_FOTO_PERFIL = "fotoPerfil";
   public static KEY_IS_PERFIL_USER: boolean = false;
   public static KEY_NOTIFICACIONES: any = [];
+  public static KEY_CIUDAD_DEFECTO = "Piura";
   //ICONOS PARA BOTONES
   public static ICON_ACTIVO = "fa fa-check-square-o";
   public static ICON_ARCHIVO = "fa fa-file";
