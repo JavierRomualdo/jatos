@@ -200,45 +200,52 @@ export class HabitacionesListadoComponent implements OnInit {
         icon: LS.ICON_CONSULTAR,
         disabled: !perConsultar,
         command: () => perConsultar ? this.emitirAccion(LS.ACCION_CONSULTAR, this.objetoSeleccionado) : null
-      },
-      {
-        label: LS.ACCION_EDITAR,
-        icon: LS.ICON_EDITAR,
-        disabled: !perModificar,
-        command: () => perModificar ? this.emitirAccion(LS.ACCION_EDITAR, this.objetoSeleccionado) : null
-      },
-      {
-        label: LS.ACCION_INACTIVAR,
-        icon: LS.ICON_INACTIVAR,
-        disabled: !perInactivar,
-        command: () => perModificar ? this.activarHabitacion(false) : null
-      },
-      {
-        label: LS.ACCION_ACTIVAR,
-        icon: LS.ICON_ACTIVAR,
-        disabled: !perActivar,
-        command: () => perActivar ? this.activarHabitacion(true) : null
-      },
-      {
-        label: LS.ACCION_ELIMINAR,
-        icon: LS.ICON_ELIMINAR,
-        disabled: !perEliminar,
-        command: () => perEliminar ? this.eliminarHabitacion() : null
-      },
-      {
-        label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
-        icon: LS.ICON_NOTIFICACION,
-        disabled: !perMensajes,
-        command: () => perMensajes ? this.verMensajes() : null
-      },
-      {separator:true},
-      {
-        label: LS.ACCION_IMPRIMIR,
-        icon: LS.ICON_IMPRIMIR,
-        disabled: !perImprimir,
-        command: () => perImprimir ? this.imprimirDetalleHabitacion() : null
       }
     ];
+
+    this.objetoSeleccionado.estadocontrato === 'L' ? 
+      this.opciones.push(
+        {
+          label: LS.ACCION_EDITAR,
+          icon: LS.ICON_EDITAR,
+          disabled: !perModificar,
+          command: () => perModificar ? this.emitirAccion(LS.ACCION_EDITAR, this.objetoSeleccionado) : null
+        },
+        {
+          label: LS.ACCION_INACTIVAR,
+          icon: LS.ICON_INACTIVAR,
+          disabled: !perInactivar,
+          command: () => perModificar ? this.activarHabitacion(false) : null
+        },
+        {
+          label: LS.ACCION_ACTIVAR,
+          icon: LS.ICON_ACTIVAR,
+          disabled: !perActivar,
+          command: () => perActivar ? this.activarHabitacion(true) : null
+        },
+        {
+          label: LS.ACCION_ELIMINAR,
+          icon: LS.ICON_ELIMINAR,
+          disabled: !perEliminar,
+          command: () => perEliminar ? this.eliminarHabitacion() : null
+        }
+      ) : null;
+      
+      this.opciones.push(
+        {
+          label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
+          icon: LS.ICON_NOTIFICACION,
+          disabled: !perMensajes,
+          command: () => perMensajes ? this.verMensajes() : null
+        },
+        {separator:true},
+        {
+          label: LS.ACCION_IMPRIMIR,
+          icon: LS.ICON_IMPRIMIR,
+          disabled: !perImprimir,
+          command: () => perImprimir ? this.imprimirDetalleHabitacion() : null
+        }
+      );
   }
 
   // aca pasa los parametros pasa a habitacionComponent y luego al modal habitacion
@@ -401,21 +408,16 @@ export class HabitacionesListadoComponent implements OnInit {
   }
 
   mostrarOpciones(event, dataSelected) { // BOTON OPCIONES
-    if (this.objetoSeleccionado.estadocontrato === 'L') {
-      this.mostrarContextMenu(dataSelected, event);
-    }
+    this.mostrarContextMenu(dataSelected, event);
   }
 
   mostrarContextMenu(data, event) {
     this.objetoSeleccionado = data;
     if (!this.isModal) {
-      if (data.estadocontrato === 'L') {
-        this.generarOpciones();
-        this.menuOpciones.show(event);
-        event.stopPropagation();
-      } else {
-        this.menuOpciones.hide();
-      }
+      this.generarOpciones();
+      this.menuOpciones.show(event);
+      event.stopPropagation();
+      // this.menuOpciones.hide();
     }
   }
 

@@ -200,45 +200,52 @@ export class LocalesListadoComponent implements OnInit {
         icon: LS.ICON_CONSULTAR,
         disabled: !perConsultar,
         command: () => perConsultar ? this.emitirAccion(LS.ACCION_CONSULTAR, this.objetoSeleccionado) : null
-      },
-      {
-        label: LS.ACCION_EDITAR,
-        icon: LS.ICON_EDITAR,
-        disabled: !perModificar,
-        command: () => perModificar ? this.emitirAccion(LS.ACCION_EDITAR, this.objetoSeleccionado) : null
-      },
-      {
-        label: LS.ACCION_INACTIVAR,
-        icon: LS.ICON_INACTIVAR,
-        disabled: !perInactivar,
-        command: () => perModificar ? this.activarCasa(false) : null
-      },
-      {
-        label: LS.ACCION_ACTIVAR,
-        icon: LS.ICON_ACTIVAR,
-        disabled: !perActivar,
-        command: () => perActivar ? this.activarCasa(true) : null
-      },
-      {
-        label: LS.ACCION_ELIMINAR,
-        icon: LS.ICON_ELIMINAR,
-        disabled: !perEliminar,
-        command: () => perEliminar ? this.eliminarCasa() : null
-      },
-      {
-        label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
-        icon: LS.ICON_NOTIFICACION,
-        disabled: !perMensajes,
-        command: () => perMensajes ? this.verMensajes() : null
-      },
-      {separator:true},
-      {
-        label: LS.ACCION_IMPRIMIR,
-        icon: LS.ICON_IMPRIMIR,
-        disabled: !perImprimir,
-        command: () => perImprimir ? this.imprimirDetalleLocal() : null
       }
     ];
+
+    this.objetoSeleccionado.estadocontrato === 'L' ? 
+      this.opciones.push(
+        {
+          label: LS.ACCION_EDITAR,
+          icon: LS.ICON_EDITAR,
+          disabled: !perModificar,
+          command: () => perModificar ? this.emitirAccion(LS.ACCION_EDITAR, this.objetoSeleccionado) : null
+        },
+        {
+          label: LS.ACCION_INACTIVAR,
+          icon: LS.ICON_INACTIVAR,
+          disabled: !perInactivar,
+          command: () => perModificar ? this.activarLote(false) : null
+        },
+        {
+          label: LS.ACCION_ACTIVAR,
+          icon: LS.ICON_ACTIVAR,
+          disabled: !perActivar,
+          command: () => perActivar ? this.activarLote(true) : null
+        },
+        {
+          label: LS.ACCION_ELIMINAR,
+          icon: LS.ICON_ELIMINAR,
+          disabled: !perEliminar,
+          command: () => perEliminar ? this.eliminarLocal() : null
+        }
+      ) : null;
+      
+      this.opciones.push(
+        {
+          label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
+          icon: LS.ICON_NOTIFICACION,
+          disabled: !perMensajes,
+          command: () => perMensajes ? this.verMensajes() : null
+        },
+        {separator:true},
+        {
+          label: LS.ACCION_IMPRIMIR,
+          icon: LS.ICON_IMPRIMIR,
+          disabled: !perImprimir,
+          command: () => perImprimir ? this.imprimirDetalleLocal() : null
+        }
+      );
   }
 
   // aca pasa los parametros pasa a localComponent y luego al modal local
@@ -246,7 +253,7 @@ export class LocalesListadoComponent implements OnInit {
     this.accion = accion;
     if (accion === LS.ACCION_CONSULTAR || accion === LS.ACCION_EDITAR) {
       this.cargando = true;
-      this.mostrarCasa(seleccionado.id);
+      this.mostrarLocal(seleccionado.id);
     } else {
       let parametros = {
         accion: accion, // accion nuevo
@@ -257,7 +264,7 @@ export class LocalesListadoComponent implements OnInit {
     }
   }
 
-  mostrarCasa(id) {
+  mostrarLocal(id) {
     // para consultar y editar en modal local
     this.cargando = true;
     this.localService.mostrarLocal(id, this);
@@ -273,7 +280,7 @@ export class LocalesListadoComponent implements OnInit {
     this.enviarAccion.emit(parametros);
   }
 
-  activarCasa(estado) {
+  activarLote(estado) {
     let parametros;
     if (!estado) {
       // this.accion = LS.ACCION_INACTIVAR;
@@ -316,7 +323,7 @@ export class LocalesListadoComponent implements OnInit {
     this.cargando = false;
   }
 
-  eliminarCasa() {
+  eliminarLocal() {
     // this.accion = LS.ACCION_ELIMINAR;
     let parametros = {
       title: LS.MSJ_TITULO_ELIMINAR,
@@ -401,21 +408,16 @@ export class LocalesListadoComponent implements OnInit {
   }
 
   mostrarOpciones(event, dataSelected) { // BOTON OPCIONES
-    if (this.objetoSeleccionado.estadocontrato === 'L') {
-      this.mostrarContextMenu(dataSelected, event);
-    }
+    this.mostrarContextMenu(dataSelected, event);
   }
 
   mostrarContextMenu(data, event) {
     this.objetoSeleccionado = data;
     if (!this.isModal) {
-      if (data.estadocontrato === 'L') {
-        this.generarOpciones();
-        this.menuOpciones.show(event);
-        event.stopPropagation();
-      } else {
-        this.menuOpciones.hide();
-      }
+      this.generarOpciones();
+      this.menuOpciones.show(event);
+      event.stopPropagation();
+      // this.menuOpciones.hide();
     }
   }
 

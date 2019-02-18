@@ -9,7 +9,7 @@ export class VentaTO {
     ubicacion: string = "";// propiedad
     direccion: string = ""; // propiedad
     preciocontrato: number;
-    fechaVenta: Date;
+    fechaVenta: string = "";
     
     constructor(data?) {
         data ? this.hydrate(data) : null;

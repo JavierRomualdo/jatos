@@ -10,6 +10,7 @@ import { AlquilerService } from './alquiler.service';
 import { NgForm } from '@angular/forms';
 import { TooltipReaderComponent } from '../../componentes/tooltip-reader/tooltip-reader.component';
 import { BotonAccionComponent } from '../../componentes/boton-accion/boton-accion.component';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Component({
   selector: 'app-alquileres',
@@ -59,6 +60,7 @@ export class AlquileresComponent implements OnInit {
   
   constructor(
     private ubigeoService: UbigeoService,
+    private utilService: UtilService,
     private alquilerService: AlquilerService
   ) { }
 
@@ -92,6 +94,7 @@ export class AlquileresComponent implements OnInit {
   }
 
   mostrarprovincias(departamentoSeleccionado) {
+    this.limpiarResultado();
     this.ubigeoSeleccionado = departamentoSeleccionado; //
     console.log(departamentoSeleccionado);
     this.mostrarubigeos(departamentoSeleccionado.tipoubigeo_id, departamentoSeleccionado.codigo);
@@ -104,10 +107,12 @@ export class AlquileresComponent implements OnInit {
   }
 
   seleccionarDistrito(distritoSeleccionado) {
+    this.limpiarResultado();
     this.ubigeoSeleccionado = distritoSeleccionado; //
   }
 
   mostrardistritos(provinciaSeleccionado) {
+    this.limpiarResultado();
     this.ubigeoSeleccionado = provinciaSeleccionado; //
     console.log(provinciaSeleccionado);
     this.mostrarubigeos(provinciaSeleccionado.tipoubigeo_id, provinciaSeleccionado.codigo);
@@ -124,7 +129,9 @@ export class AlquileresComponent implements OnInit {
     this.ubigeoService.mostrarUbigeos(parametros, this);
   }
 
-  limpiarResultado() { }
+  limpiarResultado() {
+    this.listaResultado = [];
+  }
 
   listarAlquileres(parametro, form: NgForm) {
     if (form && form.valid) {
@@ -174,7 +181,7 @@ export class AlquileresComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFoto = null;
- } //
+  } //
 
   ejecutarAccion(data) {
     this.vistaFormulario = false;
@@ -185,6 +192,36 @@ export class AlquileresComponent implements OnInit {
   // del boton: ver alquiler
   ejecutarConsultar(data) {
     this.consultar();
+  }
+
+  imprimirAlquileres() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      propiedad: this.propiedadSeleccionado,
+      data: this.listaResultado
+    }
+    this.alquilerService.imprimirAlquileres(parametros, this);
+  }
+
+  imprimirDetalleAlquiler() {
+    this.cargando = true;
+    let parametros = {
+      alquiler: this.alquilerSeleccionado,
+      propiedad: this.propiedadSeleccionado,
+      fechaActual: this.utilService.obtenerFechaActual()
+    }
+    this.alquilerService.imprimirDetalleAlquiler(parametros, this);
+  }
+
+  exportarAlquileres() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      propiedad: this.propiedadSeleccionado,
+      data: this.listaResultado
+    }
+    this.alquilerService.exportarExcelAlquileres(parametros, this);
   }
 
   refrescarTabla(accion: string, alquilerTO: AlquilerTO) {
@@ -218,8 +255,16 @@ export class AlquileresComponent implements OnInit {
   }
 
   generarOpciones() {
+    let perImprimir = true;
     this.opciones = [
       { label: LS.ACCION_VER_ALQUILER, icon: LS.ICON_BUSCAR, disabled: false, command: () => this.consultar() },
+      {separator:true},
+      {
+        label: LS.ACCION_IMPRIMIR,
+        icon: LS.ICON_IMPRIMIR,
+        disabled: !perImprimir,
+        command: () => perImprimir ? this.imprimirDetalleAlquiler() : null
+      }
     ];
   }
 

@@ -192,54 +192,61 @@ export class CasasListadoComponent implements OnInit {
     let perImprimir = true;
     let perModificar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
     let perEliminar = this.objetoSeleccionado.estadocontrato === 'L' ? true : false;
-    let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : !this.objetoSeleccionado.estado; //empInactivo
-    let perActivar = this.objetoSeleccionado.estadocontrato === 'L' ? !this.objetoSeleccionado.estado : this.objetoSeleccionado.estado;
+    let perInactivar = this.objetoSeleccionado.estadocontrato === 'L' ? this.objetoSeleccionado.estado : false; //empInactivo
+    let perActivar = this.objetoSeleccionado.estadocontrato === 'L' ? !this.objetoSeleccionado.estado : false;
     this.opciones = [
       {
         label: LS.ACCION_CONSULTAR,
         icon: LS.ICON_CONSULTAR,
         disabled: !perConsultar,
         command: () => perConsultar ? this.emitirAccion(LS.ACCION_CONSULTAR, this.objetoSeleccionado) : null
-      },
-      {
-        label: LS.ACCION_EDITAR,
-        icon: LS.ICON_EDITAR,
-        disabled: !perModificar,
-        command: () => perModificar ? this.emitirAccion(LS.ACCION_EDITAR, this.objetoSeleccionado) : null
-      },
-      {
-        label: LS.ACCION_INACTIVAR,
-        icon: LS.ICON_INACTIVAR,
-        disabled: !perInactivar,
-        command: () => perModificar ? this.activarCasa(false) : null
-      },
-      {
-        label: LS.ACCION_ACTIVAR,
-        icon: LS.ICON_ACTIVAR,
-        disabled: !perActivar,
-        command: () => perActivar ? this.activarCasa(true) : null
-      },
-      {
-        label: LS.ACCION_ELIMINAR,
-        icon: LS.ICON_ELIMINAR,
-        disabled: !perEliminar,
-        command: () => perEliminar ? this.eliminarCasa() : null
-      },
-      {
-        // <span class="badge badge-danger">{{not.cantidad}}</span>
-        label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
-        icon: LS.ICON_NOTIFICACION,
-        disabled: !perMensajes,
-        command: () => perMensajes ? this.verMensajes() : null
-      },
-      {separator:true},
-      {
-        label: LS.ACCION_IMPRIMIR,
-        icon: LS.ICON_IMPRIMIR,
-        disabled: !perImprimir,
-        command: () => perImprimir ? this.imprimirDetalleCasa() : null
       }
     ];
+
+    this.objetoSeleccionado.estadocontrato === 'L' ? 
+      this.opciones.push(
+        {
+          label: LS.ACCION_EDITAR,
+          icon: LS.ICON_EDITAR,
+          disabled: !perModificar,
+          command: () => perModificar ? this.emitirAccion(LS.ACCION_EDITAR, this.objetoSeleccionado) : null
+        },
+        {
+          label: LS.ACCION_INACTIVAR,
+          icon: LS.ICON_INACTIVAR,
+          disabled: !perInactivar,
+          command: () => perModificar ? this.activarCasa(false) : null
+        },
+        {
+          label: LS.ACCION_ACTIVAR,
+          icon: LS.ICON_ACTIVAR,
+          disabled: !perActivar,
+          command: () => perActivar ? this.activarCasa(true) : null
+        },
+        {
+          label: LS.ACCION_ELIMINAR,
+          icon: LS.ICON_ELIMINAR,
+          disabled: !perEliminar,
+          command: () => perEliminar ? this.eliminarCasa() : null
+        }
+      ) : null;
+      
+      this.opciones.push(
+        {
+          // <span class="badge badge-danger">{{not.cantidad}}</span>
+          label: (this.objetoSeleccionado.nmensajes>0 ? this.objetoSeleccionado.nmensajes+" " : "") + LS.TAG_MENSAJES,
+          icon: LS.ICON_NOTIFICACION,
+          disabled: !perMensajes,
+          command: () => perMensajes ? this.verMensajes() : null
+        },
+        {separator:true},
+        {
+          label: LS.ACCION_IMPRIMIR,
+          icon: LS.ICON_IMPRIMIR,
+          disabled: !perImprimir,
+          command: () => perImprimir ? this.imprimirDetalleCasa() : null
+        }
+      );
   }
 
   // aca pasa los parametros pasa a casaComponent y luego al modal casa
@@ -402,21 +409,16 @@ export class CasasListadoComponent implements OnInit {
   }
 
   mostrarOpciones(event, dataSelected) { // BOTON OPCIONES
-    if (this.objetoSeleccionado.estadocontrato === 'L') {
-      this.mostrarContextMenu(dataSelected, event);
-    }
+    this.mostrarContextMenu(dataSelected, event);
   }
 
   mostrarContextMenu(data, event) {
     this.objetoSeleccionado = data;
     if (!this.isModal) {
-      if (data.estadocontrato === 'L') {
-        this.generarOpciones();
-        this.menuOpciones.show(event);
-        event.stopPropagation();
-      } else {
-        this.menuOpciones.hide();
-      }
+      this.generarOpciones();
+      this.menuOpciones.show(event);
+      event.stopPropagation();
+      // this.menuOpciones.hide();
     }
   }
 

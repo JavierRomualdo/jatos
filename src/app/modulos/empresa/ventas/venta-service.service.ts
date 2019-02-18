@@ -71,6 +71,19 @@ export class VentaServiceService {
     ).catch(err => this.utilService.handleError(err, this));
   }
 
+  imprimirDetalleVenta(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteVentaDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleVenta_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
   exportarExcelVentas(parametro, contexto) {
     this.archivoService.postExcel("exportarExcelVentas", parametro).then(
       (data) => {

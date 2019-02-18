@@ -354,7 +354,8 @@ export class LocalService {
         {
           headerName: LS.TAG_OPCIONES,
           headerClass: 'cell-header-center',//Clase a nivel de th
-          cellClass: (params) => { return (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
+          cellClass: 'text-center',
+          // cellClass: (params) => { return (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
           width: LS.WIDTH_OPCIONES,
           minWidth: LS.WIDTH_OPCIONES,
           maxWidth: LS.WIDTH_OPCIONES,

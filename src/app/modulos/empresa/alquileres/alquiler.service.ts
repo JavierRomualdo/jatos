@@ -71,6 +71,19 @@ export class AlquilerService {
     ).catch(err => this.utilService.handleError(err, this));
   }
 
+  imprimirDetalleAlquiler(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteAlquilerDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleAlquiler_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, this));
+  }
+
   exportarExcelAlquileres(parametro, contexto) {
     this.archivoService.postExcel("exportarExcelAlquileres", parametro).then(
       (data) => {

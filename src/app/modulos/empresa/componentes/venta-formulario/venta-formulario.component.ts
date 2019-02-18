@@ -3,7 +3,6 @@ import { LS } from 'src/app/contantes/app-constants';
 import { VentaServiceService } from '../../ventas/venta-service.service';
 import * as moment from 'moment';
 import { UtilService } from 'src/app/servicios/util/util.service';
-import { ToastrService } from 'ngx-toastr';
 import { Venta } from 'src/app/entidades/entidad.venta';
 import { VentaTO } from 'src/app/entidadesTO/empresa/VentaTO';
 import { Persona } from 'src/app/entidades/entidad.persona';
@@ -61,8 +60,7 @@ export class VentaFormularioComponent implements OnInit {
     private localService: LocalService,
     private loteService: LoteService,
     private modalService: NgbModal,
-    private utilService: UtilService,
-    private toastr: ToastrService,
+    private utilService: UtilService
   ) { }
 
   ngOnInit() {
@@ -260,20 +258,22 @@ export class VentaFormularioComponent implements OnInit {
   buscarApartamento() {
     const modalRef = this.modalService.open(ApartamentosListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'V',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.venta.apartamento_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.apartamentoService.mostrarApartamento(this.venta.apartamento_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.venta.apartamento_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.venta.apartamento_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.apartamentoService.mostrarApartamento(this.venta.apartamento_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -291,20 +291,22 @@ export class VentaFormularioComponent implements OnInit {
   buscarCasas() {
     const modalRef = this.modalService.open(CasasListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'V',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.venta.casa_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.casasService.mostrarCasa(this.venta.casa_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.venta.casa_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.venta.casa_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.casasService.mostrarCasa(this.venta.casa_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -322,20 +324,22 @@ export class VentaFormularioComponent implements OnInit {
   buscarCochera() {
     const modalRef = this.modalService.open(CocherasListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'V',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.venta.cochera_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.cocheraService.mostrarCochera(this.venta.cochera_id, this);
-      // this.auth.agregarmodalopenclass();
+      if(this.venta.cochera_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.venta.cochera_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.cocheraService.mostrarCochera(this.venta.cochera_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -353,20 +357,22 @@ export class VentaFormularioComponent implements OnInit {
   buscaLocal() {
     const modalRef = this.modalService.open(LocalesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'V',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.venta.local_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.localService.mostrarLocal(this.venta.local_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.venta.local_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.venta.local_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.localService.mostrarLocal(this.venta.local_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -384,20 +390,22 @@ export class VentaFormularioComponent implements OnInit {
   buscarLote() {
     const modalRef = this.modalService.open(LotesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'V',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.venta.lote_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.loteService.mostrarLote(this.venta.lote_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.venta.lote_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.venta.lote_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.loteService.mostrarLote(this.venta.lote_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -458,7 +466,9 @@ export class VentaFormularioComponent implements OnInit {
     ventaTO.cliente = this.cliente.nombres;
     ventaTO.ubicacion = this.propiedad.ubicacion;
     ventaTO.direccion = this.propiedad.direccion;
-    return this.ventaTO;
+    ventaTO.preciocontrato = this.propiedad.preciocontrato;
+    ventaTO.fechaVenta = this.venta.fecha;
+    return ventaTO;
   }
 
   cambiarActivar(estado) {
@@ -468,7 +478,7 @@ export class VentaFormularioComponent implements OnInit {
 
   cancelar() {
     let parametros = {
-      accion : this.accion,
+      accion : LS.ACCION_CANCELAR,
       ventaTO: this.ventaTO
     }
     this.enviarAccion.emit(parametros);

@@ -413,6 +413,13 @@ export class ModalHabitacionComponent implements OnInit {
     this.parametrosFoto = null;
   } //
 
+  // se selecciona la imagen y los muestra en el panel
+  onSelectImagenes(event) {
+    for(let file of event.files) {
+      this.archivos.push(new FileItem(file));
+    }
+  }
+
   // Mapa
   zoomControlOptions: ZoomControlOptions = {
     position: ControlPosition.RIGHT_BOTTOM,

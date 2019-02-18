@@ -9,8 +9,8 @@ export class AlquilerTO {
     ubicacion: string = "";// propiedad
     direccion: string = ""; // propiedad
     preciocontrato: number;
-    fechadesde: Date; // fechaVenta
-    fechahasta: Date;
+    fechadesde: string = ""; // fechaVenta
+    fechahasta: string = "";
     
     constructor(data?) {
         data ? this.hydrate(data) : null;

@@ -210,95 +210,120 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="button" (click)="cargarImagenes()" [disabled]="archivos.length==0" class="btn btn-success btn-sm">Subir
-                      Imagenes</button>
-                    <button type="button" (click)="limpiarArchivos()" [disabled]="archivos.length==0" class="btn btn-danger btn-sm"><i
-                        class="fa fa-eraser"></i> Limpiar</button>
-                    <!--/.table-responsive-->
-                    <div class="table-responsive" *ngIf="fotos.length!=0">
-                      <!--/.table-->
-                      <table class="table table-bordered table-striped table-hover table-outline">
-                        <thead class="thead-light">
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center"><i class="fa fa-file-image-o"></i></th>
-                            <th class="text-center">Tamaño</th>
-                            <th class="text-center">Pogreso</th>
-                            <th class="text-center">Detalle</th>
-                            <th class="text-center">Opciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let foto of fotos; let i = index;">
-                            <td>{{i+1}}</td>
-                            <td>
-                              <img [src]="foto.foto" class="rounded mx-auto d-block" style="cursor: pointer" (click)="mostrarFotoPrincipalExistente(fotos[i])"
-                                width="10" />
-                            </td>
-                            <td>MB</td>
-                            <td>
-                              <div class="progress">
-                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': 100 + '%'}">100 %</div>
+                    <!--/.card-->
+                    <div class="card">
+                      <div class="card-header pt-2 pb-2">
+                        <strong>{{constantes.TAG_IMAGENES}}</strong>
+                        <div class="card-header-actions">
+                          <button type="button" (click)="cargarImagenes()" [disabled]="archivos.length==0" class="btn btn-success btn-sm mr-1">
+                            <i class="fa fa-upload" aria-hidden="true"></i>
+                            <span class="d-none d-md-inline"> {{constantes.LABEL_SUBIR}}</span>
+                          </button>
+                          <button type="button" (click)="limpiarArchivos()" [disabled]="archivos.length==0" class="btn btn-danger btn-sm">
+                            <i class="fa fa-eraser"></i>
+                            <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="card-body usuario pb-0 p-1" style="text-align: center;">
+                          <p-fileUpload #fubauto accept="image/*" invalidfilesizemessagedetail="El tamaño máximo de carga es 1 MB." 
+                          maxfilesize="1000000" name="myfile[]" chooseLabel="Seleccione" auto="true"  multiple="multiple"
+                          (onSelect)="onSelectImagenes($event)" customUpload="false"><!--mode="advanced"-->
+                          <ng-template let-file pTemplate="file" class="text-center">
+                            <!-- <img alt="Card image cap" src="{{imagen}}" class="foto-perfil rounded mx-auto d-block" width="50"/> -->
+                          </ng-template>
+                        </p-fileUpload>  
+                        <!--/.table-responsive-->
+                          <div class="table-responsive" *ngIf="fotos.length!=0">
+                            <!--/.table-->
+                            <table class="table table-bordered table-sm table-striped table-hover table-outline m-0">
+                              <thead class="thead-light">
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center"><i class="fa fa-file-image-o"></i></th>
+                                  <th class="text-center">{{constantes.TAG_TAMANIO}}</th>
+                                  <th class="text-center">{{constantes.TAG_PROGRESO}}</th>
+                                  <th class="text-center">{{constantes.TAG_DETALLE}}</th>
+                                  <th class="text-center">{{constantes.TAG_OPCIONES}}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let foto of fotos; let i = index;">
+                                  <td>{{i+1}}</td>
+                                  <td>
+                                    <img [src]="foto.foto" class="rounded mx-auto d-block" style="cursor: pointer" (click)="mostrarFotoPrincipalExistente(fotos[i])"
+                                      width="50"/>
+                                  </td>
+                                  <td>MB</td>
+                                  <td>
+                                    <div class="progress">
+                                      <div class="progress-bar" role="progressbar" [ngStyle]="{'width': 100 + '%'}">100 %</div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input class="form-control" (blur)="guardardetallefoto(fotos[i])" [(ngModel)]="foto.detalle"
+                                      [name]="foto.detalle" placeholder="Ingrese descripcion">
+                                  </td>
+                                  <td class="text-center">
+                                    <a [ngClass]="{'btn btn-sm btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
+                                      style="cursor: pointer" title="quitar" (click)="quitarfotolote(fotos[i])">
+                                      <i class="fa fa-remove text-primary" style="font-size: 23px; "></i>
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <!--/.table-->
+                          </div>
+                          <!--/.table-responsive: archivos de fotos par subirse-->
+                          <div class="table-responsive" *ngIf="archivos.length!=0">
+                            <!--/.table-->
+                            <table class="table table-bordered table-sm table-striped table-hover table-outline m-0">
+                              <thead class="thead-light">
+                                <tr>
+                                  <th class="text-center">#</th>
+                                  <th class="text-center"><i class="fa fa-file-image-o"></i></th>
+                                  <th class="text-center">{{constantes.TAG_TAMANIO}}</th>
+                                  <th class="text-center">{{constantes.TAG_PROGRESO}}</th>
+                                  <th class="text-center">{{constantes.TAG_DETALLE}}</th>
+                                  <th class="text-center">{{constantes.TAG_OPCIONES}}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let archivo of archivos; let i = index;">
+                                  <td>{{i+1}}</td>
+                                  <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer" (click)="mostrarFotoPrincipal(archivos[i])">{{archivo.nombreArchivo}}</td>
+                                  <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
+                                  <td>
+                                    <div class="progress">
+                                      <div class="progress-bar" role="progressbar" [ngStyle]="{'width': archivo.progreso + '%'}">{{archivo.progreso
+                                        | number: '.2-2'}} %</div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input class="form-control" [(ngModel)]="archivos[i].detalle" name="detalle" placeholder="Ingrese descripcion">
+                                  </td>
+                                  <td class="text-center">
+                                    <a class="btn-sm btn-link" style="cursor: pointer" title="quitar" (click)="quitarfoto(archivos[i])"><i
+                                        class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <!--/.table-->
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <div appNgDropFile [archivos]="archivos" (mouseSobre)="estaSobreElemento = $event" [ngClass]="{'file-over': estaSobreElemento}"
+                                class="well drop-zone file-over">
+                                <h5>{{constantes.MSJ_DEJAR_CAER_ARCHIVOS}}</h5>
+                                <img src="assets/drop-images.png">
                               </div>
-                            </td>
-                            <td>
-                              <input class="form-control" (blur)="guardardetallefoto(fotos[i])" [(ngModel)]="foto.detalle"
-                                [name]="foto.detalle" placeholder="Ingrese descripcion">
-                            </td>
-                            <td class="text-center">
-                              <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfotolote(fotos[i])"><i
-                                  class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <!--/.table-->
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div class="table-responsive" *ngIf="archivos.length!=0">
-                      <!--/.table-->
-                      <table class="table table-bordered table-striped table-hover table-outline">
-                        <thead class="thead-light">
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center"><i class="fa fa-file-image-o"></i></th>
-                            <th class="text-center">Tamaño</th>
-                            <th class="text-center">Pogreso</th>
-                            <th class="text-center">Detalle</th>
-                            <th class="text-center">Opciones</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let archivo of archivos; let i = index;">
-                            <td>{{i+1}}</td>
-                            <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer" (click)="mostrarFotoPrincipal(archivos[i])">{{archivo.nombreArchivo}}</td>
-                            <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
-                            <td>
-                              <div class="progress">
-                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': archivo.progreso + '%'}">{{archivo.progreso
-                                  | number: '.2-2'}} %</div>
-                              </div>
-                            </td>
-                            <td>
-                              <input class="form-control" [(ngModel)]="archivos[i].detalle" name="detalle" placeholder="Ingrese descripcion">
-                            </td>
-                            <td class="text-center">
-                              <a class="btn-link" style="cursor: pointer" title="quitar" (click)="quitarfoto(archivos[i])"><i
-                                  class="fa fa-remove text-primary" style="font-size: 23px; "></i></a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <!--/.table-->
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 text-center">
-                    <div appNgDropFile [archivos]="archivos" (mouseSobre)="estaSobreElemento = $event" [ngClass]="{'file-over': estaSobreElemento}"
-                      class="well drop-zone file-over">
-                      <h5>Deje caer aqui los archivos</h5>
-                      <img src="assets/drop-images.png">
-                    </div>
+                    <!--/.card-->
                   </div>
                 </div>
               </div>
@@ -306,11 +331,18 @@
           </div>
         </div>
         <div class="modal-footer border-primary" *ngIf="isModal">
-          <button type="submit" class="btn btn-sm btn-primary" [disabled]="!loteform.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined"><i
-              class="fa fa-dot-circle-o"></i> Guardar</button>
-          <button type="reset" (click)="limpiarlote()" class="btn btn-sm btn-danger"><i class="fa fa-eraser"></i> Limpiar</button>
-          <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')"><i class="fa fa-remove"></i>
-            Cerrar</button>
+          <button type="submit" class="btn btn-sm btn-primary" [disabled]="!loteform.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined">
+              <i class="{{constantes.ICON_GUARDAR}}"></i>
+              <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
+          </button>
+          <button type="reset" (click)="limpiarlote()" class="btn btn-sm btn-danger">
+            <i class="{{constantes.ICON_LIMPIAR}}"></i>
+            <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')">
+            <i class="{{constantes.ICON_CANCELAR}}"></i>
+            <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
+          </button>
         </div>
       </form>
     </fieldset>

@@ -34,6 +34,7 @@ export class LS {
   public static ICON_VENTA = "fa fa-shopping-cart";
   public static ICON_ALQUILER = "fa fa-key";
   public static ICON_LIBRE = "fa fa-check";
+  public static ICON_LIMPIAR = "fa fa-ban";
   public static ICON_RESERVADO = "fa fa-user-secret";
   public static ICON_ACTIVAR = "fa fa-check-circle";
   public static ICON_SELECCIONAR = 'fa fa-check';
@@ -164,6 +165,8 @@ export class LS {
   static TAG_MAS_DATOS = 'Más datos';
   static TAG_ROLES = 'Roles';
   static TAG_DETALLE = 'Detalle';
+  static TAG_TAMANIO = 'Tamaño';
+  static TAG_PROGRESO = 'Progreso';
 
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
@@ -177,6 +180,7 @@ export class LS {
   public static LABEL_REGRESAR = "Regresar";
   public static LABEL_IMPRIMIR = "Imprimir";
   public static LABEL_EXPORTAR = "Exportar";
+  public static LABEL_SUBIR = "Subir";
 
   //ATAJOS
   public static ATAJO_ACEPTAR = "alt+s";
@@ -276,6 +280,8 @@ export class LS {
   static MSJ_ERROR_IMPRIMIR = 'El reporte no existe o tiene errores';
   static MSJ_INTERNET_ESTABLECIDA = 'Conexión Establecida.';
   static MSJ_INTERNET_NO_ESTABLECIDA = 'Conexión no establecida.';
+  static MSJ_ASIGNAR_SERVICIOS_PROPIEDAD = 'Asignar Servicios a esta propiedad';
+  static MSJ_DEJAR_CAER_ARCHIVOS = 'Deje caer aqui los archivos';
   
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

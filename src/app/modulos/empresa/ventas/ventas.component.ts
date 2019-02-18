@@ -10,6 +10,7 @@ import { ContextMenu } from 'primeng/contextmenu';
 import { UbigeoTO } from 'src/app/entidadesTO/empresa/UbigeoTO';
 import { BotonAccionComponent } from '../../componentes/boton-accion/boton-accion.component';
 import { TooltipReaderComponent } from '../../componentes/tooltip-reader/tooltip-reader.component';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Component({
   selector: 'app-ventas',
@@ -59,6 +60,7 @@ export class VentasComponent implements OnInit {
   
   constructor(
     private ubigeoService: UbigeoService,
+    private utilService: UtilService,
     private ventaService: VentaServiceService
   ) { }
 
@@ -92,6 +94,7 @@ export class VentasComponent implements OnInit {
   }
 
   mostrarprovincias(departamentoSeleccionado) {
+    this.limpiarResultado();
     this.ubigeoSeleccionado = departamentoSeleccionado; //
     console.log(departamentoSeleccionado);
     this.mostrarubigeos(departamentoSeleccionado.tipoubigeo_id, departamentoSeleccionado.codigo);
@@ -104,10 +107,12 @@ export class VentasComponent implements OnInit {
   }
 
   seleccionarDistrito(distritoSeleccionado) {
+    this.limpiarResultado();
     this.ubigeoSeleccionado = distritoSeleccionado; //
   }
 
   mostrardistritos(provinciaSeleccionado) {
+    this.limpiarResultado();
     this.ubigeoSeleccionado = provinciaSeleccionado; //
     console.log(provinciaSeleccionado);
     this.mostrarubigeos(provinciaSeleccionado.tipoubigeo_id, provinciaSeleccionado.codigo);
@@ -124,7 +129,9 @@ export class VentasComponent implements OnInit {
     this.ubigeoService.mostrarUbigeos(parametros, this);
   }
 
-  limpiarResultado() { }
+  limpiarResultado() {
+    this.listaResultado = [];
+  }
 
   listarVentas(parametro, form: NgForm) {
     if (form && form.valid) {
@@ -174,17 +181,47 @@ export class VentasComponent implements OnInit {
 
   onDialogClose(event) {
     this.parametrosFoto = null;
- } //
+  } //
 
   ejecutarAccion(data) {
     this.vistaFormulario = false;
     this.parametrosFormulario = null;
-    this.refrescarTabla(data.accon, data.ventaTO);
+    this.refrescarTabla(data.accion, data.ventaTO);
   }
 
   // del boton: ver venta
   ejecutarConsultar(data) {
     this.consultar();
+  }
+
+  imprimirVentas() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      propiedad: this.propiedadSeleccionado,
+      data: this.listaResultado
+    }
+    this.ventaService.imprimirVentas(parametros, this);
+  }
+
+  imprimirDetalleVenta() {
+    this.cargando = true;
+    let parametros = {
+      venta: this.ventaSeleccionado,
+      propiedad: this.propiedadSeleccionado,
+      fechaActual: this.utilService.obtenerFechaActual()
+    }
+    this.ventaService.imprimirDetalleVenta(parametros, this);
+  }
+
+  exportarVentas() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      propiedad: this.propiedadSeleccionado,
+      data: this.listaResultado
+    }
+    this.ventaService.exportarExcelVentas(parametros, this);
   }
 
   refrescarTabla(accion: string, ventaTO: VentaTO) {
@@ -218,8 +255,16 @@ export class VentasComponent implements OnInit {
   }
 
   generarOpciones() {
+    let perImprimir = true;
     this.opciones = [
       { label: LS.ACCION_VER_VENTA, icon: LS.ICON_BUSCAR, disabled: false, command: () => this.consultar() },
+      {separator:true},
+      {
+        label: LS.ACCION_IMPRIMIR,
+        icon: LS.ICON_IMPRIMIR,
+        disabled: !perImprimir,
+        command: () => perImprimir ? this.imprimirDetalleVenta() : null
+      }
     ];
   }
 

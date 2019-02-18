@@ -15,7 +15,7 @@
               <b>{{constantes.TAG_PROPIEDAD}}</b>
             </label>
             <select class="form-control form-control-sm mousetrap" name="propiedad" required [(ngModel)]="propiedadSeleccionado"
-              (ngModelChange)="cambiarPropiedadSeleccionado()">
+              (ngModelChange)="cambiarPropiedadSeleccionado()" (change)="limpiarResultado()">
               <option selected disabled value="">{{constantes.TAG_SELECCIONE}}</option>
               <option [ngValue]="propiedad" *ngFor="let propiedad of listaPropiedades">{{propiedad}}</option>
             </select>
@@ -25,7 +25,7 @@
               <b>{{constantes.TAG_UBIGEO}}</b>
             </label>
             <select class="form-control form-control-sm mousetrap" name="departamento" required [(ngModel)]="departamentoSeleccionado"
-              (ngModelChange)="mostrarprovincias(departamentoSeleccionado)">
+              (ngModelChange)="mostrarprovincias(departamentoSeleccionado)" (change)="limpiarResultado()">
               <option selected disabled value=undefined>Seleccione despartamento...</option>
               <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of listaDepartamentos"  >{{ubigeodepartamento.ubigeo}}</option>
             </select>
@@ -87,12 +87,12 @@
 
         <div class="card-header-actions">
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top"
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top" (click)="imprimirAlquileres()"
               ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
               <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
               <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
             </button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top"
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top" (click)="exportarAlquileres()"
               ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
               <i class="{{constantes.ICON_EXPORTAR}}" aria-hidden="true"></i>
               <span class="d-none d-md-inline"> {{constantes.LABEL_EXPORTAR}}</span>

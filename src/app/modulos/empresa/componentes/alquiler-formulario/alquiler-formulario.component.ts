@@ -65,7 +65,7 @@ export class AlquilerFormularioComponent implements OnInit {
     private localService: LocalService,
     private loteService: LoteService,
     private modalService: NgbModal,
-    private utilService: UtilService,
+    private utilService: UtilService
   ) { }
 
   ngOnInit() {
@@ -294,20 +294,22 @@ export class AlquilerFormularioComponent implements OnInit {
   buscarApartamento() {
     const modalRef = this.modalService.open(ApartamentosListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.alquiler.apartamento_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.apartamentoService.mostrarApartamento(this.alquiler.apartamento_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.alquiler.apartamento_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.alquiler.apartamento_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.apartamentoService.mostrarApartamento(this.alquiler.apartamento_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -325,20 +327,22 @@ export class AlquilerFormularioComponent implements OnInit {
   buscarCasas() {
     const modalRef = this.modalService.open(CasasListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.alquiler.casa_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.casasService.mostrarCasa(this.alquiler.casa_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.alquiler.casa_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.alquiler.casa_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.casasService.mostrarCasa(this.alquiler.casa_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -356,20 +360,22 @@ export class AlquilerFormularioComponent implements OnInit {
   buscarCochera() {
     const modalRef = this.modalService.open(CocherasListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.alquiler.cochera_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.cocheraService.mostrarCochera(this.alquiler.cochera_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.alquiler.cochera_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.alquiler.cochera_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.cocheraService.mostrarCochera(this.alquiler.cochera_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -387,22 +393,24 @@ export class AlquilerFormularioComponent implements OnInit {
   buscarHabitacion() {
     const modalRef = this.modalService.open(HabitacionesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es habitacionTO
-      this.alquiler.habitacion_id = result.id;
-      console.log('datos alq');
-      console.log(this.alquiler);
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.habitacionService.mostrarHabitacion(this.alquiler.habitacion_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.alquiler.habitacion_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es habitacionTO
+        this.alquiler.habitacion_id = result.id;
+        console.log('datos alq');
+        console.log(this.alquiler);
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.habitacionService.mostrarHabitacion(this.alquiler.habitacion_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -420,20 +428,22 @@ export class AlquilerFormularioComponent implements OnInit {
   buscaLocal() {
     const modalRef = this.modalService.open(LocalesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.alquiler.local_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.localService.mostrarLocal(this.alquiler.local_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.alquiler.local_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.alquiler.local_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.localService.mostrarLocal(this.alquiler.local_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -451,20 +461,22 @@ export class AlquilerFormularioComponent implements OnInit {
   buscarLote() {
     const modalRef = this.modalService.open(LotesListadoComponent, {size: 'lg', keyboard: true });
     let parametros = {
-      codigo: this.codigo,
+      codigo: '', // this.codigo
       contrato: 'A',
       ubigeo: this.ubigeo
     }
     modalRef.componentInstance.isModal = true;
     modalRef.componentInstance.parametrosBusqueda = parametros;
     modalRef.result.then((result) => {
-      this.propiedad = result;
-      this.codigo = result.codigo; // result es casaTO
-      this.alquiler.lote_id = result.id;
-      // para consultar y editar en modal casa
-      this.cargando = true;
-      this.loteService.mostrarLote(this.alquiler.lote_id, this);
-      // this.auth.agregarmodalopenclass();
+      if (this.alquiler.lote_id !== result.id) {
+        this.propiedad = result;
+        this.codigo = result.codigo; // result es casaTO
+        this.alquiler.lote_id = result.id;
+        // para consultar y editar en modal casa
+        this.cargando = true;
+        this.loteService.mostrarLote(this.alquiler.lote_id, this);
+        // this.auth.agregarmodalopenclass();
+      }
     }, (reason) => {
       // this.auth.agregarmodalopenclass();
     });
@@ -528,7 +540,10 @@ export class AlquilerFormularioComponent implements OnInit {
     alquilerTO.cliente = this.cliente.nombres;
     alquilerTO.ubicacion = this.propiedad.ubicacion;
     alquilerTO.direccion = this.propiedad.direccion;
-    return this.alquilerTO;
+    alquilerTO.preciocontrato = this.propiedad.preciocontrato;
+    alquilerTO.fechadesde = this.alquiler.fechadesde;
+    alquilerTO.fechahasta = this.alquiler.fechahasta;
+    return alquilerTO;
   }
 
   cambiarActivar(estado) {
@@ -538,7 +553,7 @@ export class AlquilerFormularioComponent implements OnInit {
 
   cancelar() {
     let parametros = {
-      accion : this.accion,
+      accion : LS.ACCION_CANCELAR,
       alquilerTO: this.alquilerTO
     }
     this.enviarAccion.emit(parametros);

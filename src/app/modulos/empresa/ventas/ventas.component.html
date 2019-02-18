@@ -15,7 +15,7 @@
               <b>{{constantes.TAG_PROPIEDAD}}</b>
             </label>
             <select class="form-control form-control-sm mousetrap" name="propiedad" required [(ngModel)]="propiedadSeleccionado"
-              (ngModelChange)="cambiarPropiedadSeleccionado()">
+              (ngModelChange)="cambiarPropiedadSeleccionado()" (change)="limpiarResultado()">
               <option selected disabled value="">{{constantes.TAG_SELECCIONE}}</option>
               <option [ngValue]="propiedad" *ngFor="let propiedad of listaPropiedades">{{propiedad}}</option>
             </select>
@@ -87,12 +87,12 @@
 
         <div class="card-header-actions">
           <div class="btn-group">
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top"
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top" (click)="imprimirVentas()"
               ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
               <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
               <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
             </button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top"
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnExportar" placement="top" (click)="exportarVentas()"
               ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
               <i class="{{constantes.ICON_EXPORTAR}}" aria-hidden="true"></i>
               <span class="d-none d-md-inline"> {{constantes.LABEL_EXPORTAR}}</span>
