@@ -22,7 +22,7 @@ export class PropiedadesComponent implements OnInit {
   public ubigeodistritos: Ubigeo[]; // son ubigeos de distritos que muestra en la tabla
   public propiedades: any = []; // lista proyecto
   public idPropiedad = 0; // parametro para la propiedad detalle
-  public rangoprecio = new Rangoprecios();
+  public rangoprecio: Rangoprecios = undefined;
   public servicios: Servicios[] = [];
   public constantes: any = LS;
 
@@ -67,7 +67,7 @@ export class PropiedadesComponent implements OnInit {
     this.departamento = null;
     // this.parametros.tipopropiedad = "";
     this.listarUbigeos(); // index ubigeos (departamento)
-    this.rangoprecio.preciominimo = "0";
+    // this.rangoprecio.preciominimo = "0";
     this.parametros.tipopropiedad = LS.KEY_PROPIEDAD_SELECT ? this.utilService.seleccionarPropiedad(this.tipopropiedades) : '';
     if (LS.KEY_CONTRATO_SELECT) {
       this.ubigeo.contrato = [];
@@ -105,7 +105,7 @@ export class PropiedadesComponent implements OnInit {
     let rango = LS.LISTA_RANGO_PRECIOS.find(item => item.id == this.rangoPrecio);
     console.log('rango');
     console.log(rango);
-    this.rangoprecio.preciominimo = rango.precionminimo;
+    this.rangoprecio.preciominimo = rango.preciominimo;
     this.rangoprecio.preciomaximo = rango.preciomaximo;
   }
 
@@ -120,7 +120,6 @@ export class PropiedadesComponent implements OnInit {
       .then(
         res => {
           this.ubigeodepartamentos = res;
-          this.departamento = null;
           if (LS.KEY_PROPIEDAD_SELECT) {
             const departamentos = this.ubigeodepartamentos.slice();
             this.departamento = departamentos.find(item => item.ubigeo === LS.KEY_CIUDAD_DEFECTO);
@@ -225,19 +224,19 @@ export class PropiedadesComponent implements OnInit {
     if (mensaje == "") {
       if (this.parametros.tipopropiedad === LS.TAG_CASA) {
         this.mostrarPropiedad();
-        this.listarServicios();
+        // this.listarServicios();
       } else if (this.parametros.tipopropiedad === LS.TAG_COCHERA) {
         this.mostrarPropiedad();
-        this.listarServicios();
+        // this.listarServicios();
       } else if (this.parametros.tipopropiedad === LS.TAG_APARTAMENTO) {
         this.mostrarPropiedad();
-        this.listarServicios();
+        // this.listarServicios();
       } else if (this.parametros.tipopropiedad === LS.TAG_HABITACION) {
         this.mostrarPropiedad();
-        this.listarServicios();
+        // this.listarServicios();
       } else if (this.parametros.tipopropiedad === LS.TAG_LOCAL) {
         this.mostrarPropiedad();
-        this.listarServicios();
+        // this.listarServicios();
       } else if (this.parametros.tipopropiedad === LS.TAG_LOTE) {
         this.mostrarPropiedad();
         this.verServicios = false;
@@ -366,10 +365,12 @@ export class PropiedadesComponent implements OnInit {
 
   /************* Metodos de propiedad detalle ***************/
   verDetalle(id) {
+    this.cambiarActivar(this.activar);
     this.idPropiedad = id;
   }
 
   cerrarPropiedadDetalle() {
+    this.cambiarActivar(this.activar);
     this.idPropiedad = 0;
   }
 }

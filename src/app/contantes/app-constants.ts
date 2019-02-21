@@ -1,4 +1,5 @@
 import { Empresa } from '../entidades/entidad.empresa';
+import { Rangoprecios } from '../entidades/entidadad.rangoprecios';
 
 export class LS {
   //KEYS
@@ -315,22 +316,22 @@ export class LS {
     "Local",
     "Lote"
   ];
-  static LISTA_RANGO_PRECIOS = [
+  static LISTA_RANGO_PRECIOS: Rangoprecios[] = [
     {
       id: 0,
-      precionminimo: '0',
+      preciominimo: '0',
       preciomaximo: '5000',
       detalle: 'Por menos de S/ 5000.00'
     },
     {
       id: 1,
-      precionminimo: '5000',
+      preciominimo: '5000',
       preciomaximo: '15000',
       detalle: 'S/ 5000.00 - S/ 15000.00'
     },
     {
       id: 2,
-      precionminimo: '15000',
+      preciominimo: '15000',
       preciomaximo: '2000000',
       detalle: 'Por más de S/ 15000.00'
     }

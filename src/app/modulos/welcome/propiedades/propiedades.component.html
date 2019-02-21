@@ -75,7 +75,13 @@
                     <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
                     <b> Rango Precios</b>
                   </label>
-                  <div class="row">
+                  <select [(ngModel)]="rangoprecio" class="form-control form-control-sm mousetrap"
+                    placeholder="Filtrar por Ubigeo" name="rangoprecio">
+                    <option selected value=undefined>Seleccione Precio...</option>
+                    <option [ngValue]="rangoprecio" *ngFor="let rangoprecio of listaRangoPrecios">S/ {{rangoprecio.preciominimo}}
+                      - S/ {{rangoprecio.preciomaximo}}</option>
+                  </select>
+                  <!-- <div class="row">
                     <div class="col-md-8">
                       <label>¿Por escrito?</label>
                     </div>
@@ -99,9 +105,9 @@
                   <div class="ui-g" style="width:250px;margin-bottom:10px" *ngIf="!porescrito">
                       <div class="ui-g-12" *ngFor="let rangoprecio of listaRangoPrecios; let i = index;">
                         <p-radioButton name="gruporangoprecio" value="{{i}}" label="{{rangoprecio.detalle}}" 
-                        [(ngModel)]="rangoPrecio" inputId="opt1"></p-radioButton><!--(onClick)="verificarRangoPrecioRadio()"-->
+                        [(ngModel)]="rangoPrecio" inputId="opt1"></p-radioButton>
                       </div>
-                  </div>
+                  </div> -->
                   <!-- <select (change)="mostrarparangoprecios(idRangoPrecio)" [(ngModel)]="idRangoPrecio" class="form-control border-success"
             placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
             <option value='0'>Seleccione Precio...</option>
@@ -141,10 +147,11 @@
       <div [ngClass]="{'col-lg-9 col-md-8 col-sm-7 animated fadeIn':!activar,'col-lg-12 col-md-12 col-sm-12 animated fadeIn':activar}">
         <div class="card border-primary animated fadeIn">
           <div class="card-header p-1 bg-primary">
-            <button class="btn btn-sm btn-default mr-2" (click)="cambiarActivar(activar)" type="button" [pTooltip]="activar ? 'Reducir': 'Ampliar'"
+            <strong class="mr-2">| PROPIEDAD | </strong>
+            <!-- <button class="btn btn-sm btn-default mr-2" (click)="cambiarActivar(activar)" type="button" [pTooltip]="activar ? 'Reducir': 'Ampliar'"
               tooltipPosition="top">
               <i class="{{activar?'fa fa-chevron-right':'fa fa-chevron-left'}}" aria-hidden="true"></i>
-            </button>
+            </button> -->
             <strong class="text-uppercase" *ngIf="propiedades.length > 0"> {{parametros.tipopropiedad}}:
               #{{propiedades.length}}</strong>
             <div class="card-header-actions" *ngIf="idPropiedad!=0">
