@@ -286,6 +286,14 @@ export class CasasService {
         }
       },
       {
+        headerName: LS.TAG_AAHH_URB,
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.asentamientourbano + " "+params.data.nombreaahhurb;
+        }
+      },
+      {
         headerName: LS.TAG_DIRECCION,
         width: 150,
         minWidth: 150,

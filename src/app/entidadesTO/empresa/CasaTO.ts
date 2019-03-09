@@ -3,6 +3,8 @@ export class CasaTO {
     foto: string = null;
     propietario: string = "";//
     ubicacion: string = "";//
+    asentamientourbano: string = "";
+    nombreaahhurb: string = "";
     direccion: string = "";
     largo: number = 0;
     ancho: number = 0;
@@ -29,6 +31,8 @@ export class CasaTO {
         this.foto = data.foto ? data.foto : this.foto;
         this.propietario = data.propietario ? data.propietario : this.propietario;
         this.ubicacion = data.ubicacion ? data.ubicacion : this.ubicacion;
+        this.asentamientourbano = data.asentamientourbano ? data.asentamientourbano : this.asentamientourbano;
+        this.nombreaahhurb = data.nombreaahhurb ? data.nombreaahhurb : this.nombreaahhurb;
         this.direccion = data.direccion ? data.direccion : this.direccion;
         this.largo = data.largo ? data.largo : this.largo;
         this.ancho = data.ancho ? data.ancho : this.ancho;

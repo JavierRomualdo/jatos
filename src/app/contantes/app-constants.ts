@@ -35,7 +35,7 @@ export class LS {
   public static ICON_VENTA = "fa fa-shopping-cart";
   public static ICON_ALQUILER = "fa fa-key";
   public static ICON_LIBRE = "fa fa-check";
-  public static ICON_LIMPIAR = "fa fa-ban";
+  public static ICON_LIMPIAR = "fa fa-eraser";
   public static ICON_RESERVADO = "fa fa-user-secret";
   public static ICON_ACTIVAR = "fa fa-check-circle";
   public static ICON_SELECCIONAR = 'fa fa-check';
@@ -50,6 +50,10 @@ export class LS {
   static TAG_AREA = "Área";
   static TAG_ALQUILADO = "Alquilado";
   static TAG_ALQUILADAS = "Alquiladas";
+  static TAG_ASENTAMIENTO_URBANO = "Asentamiento Urbano";
+  static TAG_AAHH = "AA.HH";
+  static TAG_URB = "Urb.";
+  static TAG_AAHH_URB = "AA.HH / Urb.";
   static TAG_CONTRATO = "Contrato";
   static TAG_PRE_CONTRATO = "Pre - contrato";
   static TAG_VENDIDO = "Vendido";

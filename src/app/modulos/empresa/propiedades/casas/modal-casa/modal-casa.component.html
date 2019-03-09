@@ -117,7 +117,35 @@
                     </div>
                   </div>
                 </div>
+                <!--Asentamiento Urbano-->
                 <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_ASENTAMIENTO_URBANO}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="ui-g" style="width:250px;">
+                    <div class="ui-g-6">
+                      <p-radioButton name="group1" required value="AA.HH" label="{{constantes.TAG_AAHH}}" 
+                      [(ngModel)]="casa.asentamientourbano" inputId="opt3" 
+                      [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
+                    </div>
+                    <div class="ui-g-6">
+                      <p-radioButton name="group1" required value="Urb." label="{{constantes.TAG_URB}}" 
+                      [(ngModel)]="casa.asentamientourbano" inputId="opt3" 
+                      [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{casa.asentamientourbano}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="nombreaahhurb" [(ngModel)]="casa.nombreaahhurb" required placeholder="Ingrese {{casa.asentamientourbano}}"
+                    class="form-control form-control-sm" maxlength="100">
+                </div>
+                <div class="form-group form-group-sm col-sm-8">
                   <label class="control-label">
                     <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
                   </label>

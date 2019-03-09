@@ -277,6 +277,7 @@ export class ModalCasaComponent implements OnInit {
   postGuardarCasa() {
     // se genera el codigode la casa cuando la accion es nuevo
     this.cargando = true;
+    this.casa.asentamientourbano = LS.TAG_AAHH;
     // Mapa
     this.casa.latitud = this.casa.latitud === "" ? this.latitude + "" : this.casa.latitud;
     this.casa.longitud = this.casa.longitud === "" ? this.longitude + "" : this.casa.longitud;

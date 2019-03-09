@@ -11,6 +11,8 @@ export class Casa {
   ganancia: number = 0.00;
   largo: number;
   ancho: number;
+  asentamientourbano: string;
+  nombreaahhurb: string;
   direccion: string;
   npisos: number = 0;
   ncuartos: number = 0;

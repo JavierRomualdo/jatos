@@ -15,7 +15,7 @@
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
             <div class="card-body">
               <!--FORMULARIO FILTRO-->
-              <p-panel header="Principal" [toggleable]="true">
+              <!-- <p-panel header="Principal" [toggleable]="true"> -->
                 <div class="form-group form-group-sm">
                   <label class="control-label">
                     <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
@@ -67,13 +67,10 @@
                     <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
                   </select>
                 </div>
-              </p-panel><br />
-              <!--Panel opcional-->
-              <p-panel header="Opcional" [toggleable]="true">
+                <!--Opcional-->
                 <div class="form-group form-group-sm">
                   <label class="control-label">
-                    <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
-                    <b> Rango Precios</b>
+                    <strong> Precios [ Opcional ]</strong>
                   </label>
                   <select [(ngModel)]="rangoprecio" class="form-control form-control-sm mousetrap"
                     placeholder="Filtrar por Ubigeo" name="rangoprecio">
@@ -81,6 +78,41 @@
                     <option [ngValue]="rangoprecio" *ngFor="let rangoprecio of listaRangoPrecios">S/ {{rangoprecio.preciominimo}}
                       - S/ {{rangoprecio.preciomaximo}}</option>
                   </select>
+                </div>
+                <div class="form-group form-group-sm">
+                  <div class="text-right">
+                    <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
+                      <i class="{{constantes.ICON_BUSCAR}}"></i>
+                      <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
+                    </button>
+                    <!-- <button type="button" class="btn btn-default mr-1" (click)="listarPropiedades()" title="Buscar">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button> -->
+                    <button type="reset" (click)="limpiar()" class="btn btn-sm btn-default">
+                        <i class="{{constantes.ICON_LIMPIAR}}"></i>
+                        <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
+                    </button>
+                    <!-- <div class="btn-group">
+                      <button type="reset" class="btn  btn-default" title="Limpiar" (click)="limpiar()">
+                        <i class="fa fa-eraser"></i>
+                      </button>
+                    </div> -->
+                  </div>
+                </div>
+              <!-- </p-panel><br /> -->
+              <!--Panel opcional-->
+              <!-- <p-panel header="Opcional" [toggleable]="true">
+                <div class="form-group form-group-sm">
+                  <label class="control-label">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <b> Rango Precios</b>
+                  </label>
+                  <select [(ngModel)]="rangoprecio" class="form-control form-control-sm mousetrap"
+                    placeholder="Filtrar por Ubigeo" name="rangoprecio">
+                    <option selected value=undefined>Seleccione Precio...</option>
+                    <option [ngValue]="rangoprecio" *ngFor="let rangoprecio of listaRangoPrecios">S/ {{rangoprecio.preciominimo}}
+                      - S/ {{rangoprecio.preciomaximo}}</option>
+                  </select> -->
                   <!-- <div class="row">
                     <div class="col-md-8">
                       <label>¿Por escrito?</label>
@@ -114,7 +146,7 @@
             <option [ngValue]="rangoprecio.id" *ngFor="let rangoprecio of rangoprecios">S/ {{rangoprecio.preciominimo}}
               - S/ {{rangoprecio.preciomaximo}}</option>
           </select> -->
-                </div>
+                <!-- </div>
                 <div class="form-group form-group-sm" *ngIf="verServicios">
                   <label class="control-label">
                     <b>Servicios</b>
@@ -138,7 +170,7 @@
                     </div>
                   </div>
                 </p-footer>
-              </p-panel>
+              </p-panel> -->
             </div>
           </p-scrollPanel>
         </form>
@@ -147,7 +179,7 @@
       <div [ngClass]="{'col-lg-9 col-md-8 col-sm-7 animated fadeIn':!activar,'col-lg-12 col-md-12 col-sm-12 animated fadeIn':activar}">
         <div class="card border-primary animated fadeIn">
           <div class="card-header p-1 bg-primary">
-            <strong class="mr-2">| PROPIEDAD | </strong>
+            <strong class="mr-2">[ PROPIEDAD ] </strong>
             <!-- <button class="btn btn-sm btn-default mr-2" (click)="cambiarActivar(activar)" type="button" [pTooltip]="activar ? 'Reducir': 'Ampliar'"
               tooltipPosition="top">
               <i class="{{activar?'fa fa-chevron-right':'fa fa-chevron-left'}}" aria-hidden="true"></i>
@@ -186,7 +218,8 @@
                         <h6 style="color: rgb(87, 139, 62)">
                           <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>
                           <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_ALQUILER}}" *ngIf="propiedad.contrato=='A'"></i>
-                          <strong> {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}}</strong></h6>
+                          <strong> {{propiedad.ubigeo}} - {{propiedad.asentamientourbano}} {{propiedad.nombreaahhurb}}</strong></h6>
+                          <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
                         <p class="author-category"><strong><span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">S/
                               {{propiedad.preciocontrato}}</span>
                             | Área: <span style="color: rgb(87, 139, 62)">{{redondear(propiedad.largo)}}x{{redondear(propiedad.ancho)}}

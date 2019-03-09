@@ -1,4 +1,4 @@
-<div id="heading-breadcrumbs" class="borderPanel">
+<div>
   <div>
     <div class="row d-flex align-items-center flex-wrap p-1">
       <div class="col-lg-3 col-md-4 col-sm-3 col-xs-2">
@@ -14,7 +14,7 @@
       </div>
       <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-right">
         <h4 class="h4 m-0">
-          <strong><i class="fa fa-phone" aria-hidden="true"></i> TEL: </strong>
+          <strong><i class="fa fa-phone" aria-hidden="true"></i></strong>
           {{constantes.KEY_EMPRESA_SELECT.telefono}}
         </h4>
       </div>
@@ -53,43 +53,17 @@
         </div>
         <!-- Carousel End-->
       </section>
-      <section class="bar">
-        <div class="heading">
-            <h4>
-              <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación</strong>
-            </h4>
-          </div>
-          <!--Mapa-->
-          <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
-          [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
-          [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
-          [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
-              [markerDraggable]="false">
-              <agm-info-window>
-                <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
-                <p>Punto de Ubicación</p>
-              </agm-info-window>
-            </agm-marker>
-          </agm-map>
-      </section>
     </div>
     <div class="col-md-2 pl-0">
       <section class="borderPanel p-3 mt-1">
-        <div class="heading text-center">
+        <!-- <div class="heading text-center">
             <h4>
               <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
             </h4>
-          </div>
-          <h5><strong>Ubicación</strong></h5>
-          <p>
-            <i class="fa fa-map-marker" aria-hidden="true"></i> {{ubigeo.departamento.ubigeo}}, 
-            {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}}<br/>
-          </p>
-          <h5><strong>Dirección / Referencia</strong></h5>
+          </div> -->
+          <h5><strong>Dirección</strong></h5>
           <p class="text-justify">
-            <i class="fa fa-home" aria-hidden="true"></i> {{casa.direccion}}<br/>
-            <i class="fa fa-address-card-o" aria-hidden="true"></i> {{casa.referencia}}
+            <i class="fa fa-home" aria-hidden="true"></i> {{casa.direccion}}
           </p>
           <h5><strong>Área</strong></h5>
           <p>{{casa.largo}} m. x {{casa.ancho}}.</p>
@@ -112,66 +86,95 @@
       </section>
     </div>
   </div>
-    <!--Contacto-->
-    <section class="bar">
-      <div class="row portfolio-project">
-        <div class="col-md-12">
-          <div class="heading">
-            <h4>
-              <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
-            </h4>
-          </div>
 
-          <p style="font-size: 15px" class="text-justify">
-            Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para
-            usted.
-          </p>
-          <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" class="borderPanel p-3">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
-                  <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
-                    required placeholder="Ingrese nombres">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="telefono"><strong>Telefono <span class="text-primary">*</span></strong></label>
-                  <input id="telefono" type="text" class="form-control" [(ngModel)]="mensaje.telefono" name="telefono"
-                    required placeholder="Ingrese telefono">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="email"><strong>Email <span class="text-primary">*</span></strong></label>
-                  <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email"
-                    placeholder="Ingrese email">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="titulo"><strong>Titulo <span class="text-primary">*</span></strong></label>
-                  <input id="titulo" type="text" class="form-control" [(ngModel)]="mensaje.titulo" name="titulo"
-                    required placeholder="Ingrese titulo del mensaje">
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="mensaje"><strong>Mensaje <span class="text-primary">*</span></strong></label>
-                  <textarea id="mensaje" class="form-control" [(ngModel)]="mensaje.mensaje" name="mensaje" required
-                    placeholder="Ingrese mensaje" maxlength="255"></textarea>
-                </div>
-              </div>
-              <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid"><i class="fa fa-envelope-o"></i>
-                  Enviar mensaje</button>
-              </div>
-            </div>
-          </form>
+  <div class="row">
+    <div class="col-md-10">
+      <!--Mapa-->
+      <section class="bar">
+        <div class="heading">
+          <h6>
+            <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación: </strong> 
+            {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}} / 
+            <strong>Referencia: </strong> {{casa.referencia}}
+          </h6>
         </div>
-      </div>
-    </section>
+        <!--Mapa-->
+        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+        [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+        [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+        [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+          <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
+            [markerDraggable]="false">
+            <agm-info-window>
+              <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+              <p>Punto de Ubicación</p>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </section>
+    </div>
+    <div class="col-md-2 pl-0">
+      <!--Contacto-->
+      <section class="bar">
+        <div class="row portfolio-project">
+          <div class="col-md-12">
+            <div class="heading">
+              <h4>
+                <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
+              </h4>
+            </div>
+            <!-- <p style="font-size: 15px" class="text-justify">
+              Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para
+              usted.
+            </p> -->
+            <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" class="borderPanel p-3">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
+                    <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
+                      required placeholder="Ingrese nombres">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="telefono"><strong>Telefono <span class="text-primary">*</span></strong></label>
+                    <input id="telefono" type="text" class="form-control" [(ngModel)]="mensaje.telefono" name="telefono"
+                      required placeholder="Ingrese telefono">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="email"><strong>Email <span class="text-primary">*</span></strong></label>
+                    <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email"
+                      placeholder="Ingrese email">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="titulo"><strong>Titulo <span class="text-primary">*</span></strong></label>
+                    <input id="titulo" type="text" class="form-control" [(ngModel)]="mensaje.titulo" name="titulo"
+                      required placeholder="Ingrese titulo del mensaje">
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="mensaje"><strong>Mensaje <span class="text-primary">*</span></strong></label>
+                    <textarea id="mensaje" class="form-control" [(ngModel)]="mensaje.mensaje" name="mensaje" required
+                      placeholder="Ingrese mensaje" maxlength="255"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid"><i class="fa fa-envelope-o"></i>
+                    Enviar mensaje</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 </div>
 <!-- GET IT-->
 <div class="get-it p-2 rounded">
