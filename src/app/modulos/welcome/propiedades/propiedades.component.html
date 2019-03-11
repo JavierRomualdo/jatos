@@ -79,25 +79,23 @@
                       - S/ {{rangoprecio.preciomaximo}}</option>
                   </select>
                 </div>
-                <div class="form-group form-group-sm">
-                  <div class="text-right">
-                    <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
-                      <i class="{{constantes.ICON_BUSCAR}}"></i>
-                      <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
+                <div class="form-group form-group-sm text-right">
+                  <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
+                    <i class="{{constantes.ICON_BUSCAR}}"></i>
+                    <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
+                  </button>
+                  <!-- <button type="button" class="btn btn-default mr-1" (click)="listarPropiedades()" title="Buscar">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button> -->
+                  <button type="reset" (click)="limpiar()" class="btn btn-sm btn-default">
+                      <i class="{{constantes.ICON_LIMPIAR}}"></i>
+                      <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
+                  </button>
+                  <!-- <div class="btn-group">
+                    <button type="reset" class="btn  btn-default" title="Limpiar" (click)="limpiar()">
+                      <i class="fa fa-eraser"></i>
                     </button>
-                    <!-- <button type="button" class="btn btn-default mr-1" (click)="listarPropiedades()" title="Buscar">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                    </button> -->
-                    <button type="reset" (click)="limpiar()" class="btn btn-sm btn-default">
-                        <i class="{{constantes.ICON_LIMPIAR}}"></i>
-                        <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
-                    </button>
-                    <!-- <div class="btn-group">
-                      <button type="reset" class="btn  btn-default" title="Limpiar" (click)="limpiar()">
-                        <i class="fa fa-eraser"></i>
-                      </button>
-                    </div> -->
-                  </div>
+                  </div> -->
                 </div>
               <!-- </p-panel><br /> -->
               <!--Panel opcional-->

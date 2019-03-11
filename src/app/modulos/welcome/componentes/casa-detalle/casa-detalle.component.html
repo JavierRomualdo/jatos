@@ -1,24 +1,21 @@
-<div>
-  <div>
-    <div class="row d-flex align-items-center flex-wrap p-1">
-      <div class="col-lg-3 col-md-4 col-sm-3 col-xs-2">
-        <h4 class="h4 m-0">
-          <strong><i class="fa fa-home" aria-hidden="true"></i> CASA</strong>
-        </h4>
-      </div>
-      <div class="col-lg-6 col-md-4 col-sm-9 col-xs-10 text-center">
-        <h4 class="h4 m-0">
-          <span *ngIf="casa.contrato=='A'"> ALQUILER: </span>
-          <span *ngIf="casa.contrato=='V'"> VENTA: </span> S/ {{casa.preciocontrato}}
-        </h4>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-right">
-        <h4 class="h4 m-0">
-          <strong><i class="fa fa-phone" aria-hidden="true"></i></strong>
-          {{constantes.KEY_EMPRESA_SELECT.telefono}}
-        </h4>
-      </div>
-    </div>
+<!--Panel Superior-->
+<div class="row d-flex align-items-center flex-wrap p-1">
+  <div class="col-lg-3 col-md-4 col-sm-3 col-xs-2">
+    <h4 class="h4 m-0">
+      <strong><i class="fa fa-home" aria-hidden="true"></i> CASA</strong>
+    </h4>
+  </div>
+  <div class="col-lg-6 col-md-4 col-sm-9 col-xs-10 text-center">
+    <h4 class="h4 m-0">
+      <span *ngIf="casa.contrato=='A'"> ALQUILER: </span>
+      <span *ngIf="casa.contrato=='V'"> VENTA: </span> S/ {{casa.preciocontrato}}
+    </h4>
+  </div>
+  <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-right">
+    <h4 class="h4 m-0">
+      <strong><i class="fa fa-phone" aria-hidden="true"></i></strong>
+      {{constantes.KEY_EMPRESA_SELECT.telefono}}
+    </h4>
   </div>
 </div>
 <div id="content" class="bg-white">
@@ -52,37 +49,39 @@
           </div>
         </div>
         <!-- Carousel End-->
-      </section>
+      </section><br/>
+      {{casa.descripcion}}
+      <!-- <p class="text-justify">{{casa.descripcion}}</p> -->
     </div>
     <div class="col-md-2 pl-0">
       <section class="borderPanel p-3 mt-1">
         <!-- <div class="heading text-center">
-            <h4>
-              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
-            </h4>
-          </div> -->
-          <h5><strong>Dirección</strong></h5>
-          <p class="text-justify">
-            <i class="fa fa-home" aria-hidden="true"></i> {{casa.direccion}}
-          </p>
-          <h5><strong>Área</strong></h5>
-          <p>{{casa.largo}} m. x {{casa.ancho}}.</p>
-          <h4><strong>Datos</strong></h4>
-          <p>
-            <i class="fa fa-check" aria-hidden="true"></i> {{casa.npisos}} pisos<br />
-            <i class="fa fa-check" aria-hidden="true"></i> {{casa.ncuartos}} dormitorios<br />
-            <i class="fa fa-check" aria-hidden="true"></i> {{casa.nbanios}} S.H.<br />
-            <span *ngIf="casa.tjardin"><i class="fa fa-check" aria-hidden="true"></i> Jardin</span><br />
-            <span *ngIf="casa.tcochera"><i class="fa fa-check" aria-hidden="true"></i> Cochera</span>
-          </p>
-          <h5><strong>Servicios</strong></h5>
-          <p>
-            <span *ngFor="let servicio of servicios">
-              <i class="fa fa-check" aria-hidden="true"></i> {{servicio.servicio}}<br />
-            </span>
-          </p>
-          <h5><strong>Descripción</strong></h5>
-          <p class="text-justify">{{casa.descripcion}}</p>
+          <h4>
+            <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
+          </h4>
+        </div> -->
+        <h5><strong>Dirección</strong></h5>
+        <p class="text-justify">
+          <i class="fa fa-home" aria-hidden="true"></i> {{casa.direccion}}
+        </p>
+        <h5><strong>Área</strong></h5>
+        <p>{{casa.largo}} m. x {{casa.ancho}}.</p>
+        <h4><strong>Datos</strong></h4>
+        <p>
+          <i class="fa fa-check" aria-hidden="true"></i> {{casa.npisos}} pisos<br />
+          <i class="fa fa-check" aria-hidden="true"></i> {{casa.ncuartos}} dormitorios<br />
+          <i class="fa fa-check" aria-hidden="true"></i> {{casa.nbanios}} S.H.<br />
+          <span *ngIf="casa.tjardin"><i class="fa fa-check" aria-hidden="true"></i> Jardin</span><br />
+          <span *ngIf="casa.tcochera"><i class="fa fa-check" aria-hidden="true"></i> Cochera</span>
+        </p>
+        <h5><strong>Servicios</strong></h5>
+        <p>
+          <span *ngFor="let servicio of servicios">
+            <i class="fa fa-check" aria-hidden="true"></i> {{servicio.servicio}}<br />
+          </span>
+        </p>
+        <!-- <h5><strong>Descripción</strong></h5>
+        <p class="text-justify">{{casa.descripcion}}</p> -->
       </section>
     </div>
   </div>
@@ -92,12 +91,13 @@
       <!--Mapa-->
       <section class="bar">
         <div class="heading">
-          <h6>
-            <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación: </strong> 
-            {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}} / 
-            <strong>Referencia: </strong> {{casa.referencia}}
-          </h6>
+          <h4>
+            <i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación
+          </h4>
         </div>
+        <p style="color: black"> {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}} 
+            / <strong>Referencia: </strong> {{casa.referencia}}
+        </p>
         <!--Mapa-->
         <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
         [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
@@ -165,8 +165,9 @@
                   </div>
                 </div>
                 <div class="col-md-12 text-center">
-                  <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid"><i class="fa fa-envelope-o"></i>
-                    Enviar mensaje</button>
+                  <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid">
+                    <i class="fa fa-envelope-o"></i> Enviar
+                  </button>
                 </div>
               </div>
             </form>
