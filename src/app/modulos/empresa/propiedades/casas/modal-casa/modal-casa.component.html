@@ -120,18 +120,14 @@
                 <!--Asentamiento Urbano-->
                 <div class="form-group form-group-sm col-sm-4">
                   <label class="control-label">
-                    <strong>{{constantes.TAG_ASENTAMIENTO_URBANO}} <span class="text-primary">*</span></strong>
+                    <strong>{{constantes.TAG_HABILITACION_URBANA}} <span class="text-primary">*</span></strong>
                   </label>
-                  <div class="ui-g" style="width:250px;">
-                    <div class="ui-g-6">
-                      <p-radioButton name="group1" required value="AA.HH" label="{{constantes.TAG_AAHH}}" 
-                      [(ngModel)]="casa.asentamientourbano" inputId="opt3" 
-                      [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
-                    </div>
-                    <div class="ui-g-6">
-                      <p-radioButton name="group1" required value="Urb." label="{{constantes.TAG_URB}}" 
-                      [(ngModel)]="casa.asentamientourbano" inputId="opt3" 
-                      [disabled]="accion===constantes.ACCION_CONSULTAR"></p-radioButton>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="form-control form-control-sm">{{habilitacionurbana.nombre}}</label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarHabilitacionUrbana()"><i class="fa fa-search"></i></button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -140,9 +136,9 @@
               <div class="row">
                 <div class="form-group form-group-sm col-sm-4">
                   <label class="control-label">
-                    <strong>{{casa.asentamientourbano}} <span class="text-primary">*</span></strong>
+                    <strong>{{constantes.TAG_NOMBRE_HABILITACION_URBANA}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="nombreaahhurb" [(ngModel)]="casa.nombreaahhurb" required placeholder="Ingrese {{casa.asentamientourbano}}"
+                  <input type="text" name="nombrehabilitacionurbana" [(ngModel)]="casa.nombrehabilitacionurbana" required placeholder="Ingrese {{habilitacionurbana.siglas}}"
                     class="form-control form-control-sm" maxlength="100">
                 </div>
                 <div class="form-group form-group-sm col-sm-8">
@@ -460,7 +456,7 @@
           <br/>
         </div>
         <div class="modal-footer border-primary" *ngIf="isModal">
-          <button type="submit" class="btn btn-sm btn-primary" [disabled]="!propiedad.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined">
+          <button type="submit" class="btn btn-sm btn-primary" [disabled]="!propiedad.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined || habilitacionurbana.id==undefined">
             <i class="{{constantes.ICON_GUARDAR}}"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
           </button>

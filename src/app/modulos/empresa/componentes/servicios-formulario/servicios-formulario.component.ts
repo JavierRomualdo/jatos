@@ -2,8 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Servicios } from 'src/app/entidades/entidad.servicios';
 import { LS } from 'src/app/contantes/app-constants';
 import { ServicioService } from '../../configuracion/servicios/servicio.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-servicios-formulario',

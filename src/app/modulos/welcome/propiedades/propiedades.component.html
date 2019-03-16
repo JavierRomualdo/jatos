@@ -49,7 +49,7 @@
                   </label>
                   <select (change)="mostrarprovincias(departamento)" [(ngModel)]="departamento" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <option value=null>Departamento...</option>
+                    <option selected disabled value=undefined>Departamento...</option>
                     <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
                   </select>
                   <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
@@ -185,8 +185,8 @@
             <strong class="text-uppercase" *ngIf="propiedades.length > 0"> {{parametros.tipopropiedad}}:
               #{{propiedades.length}}</strong>
             <div class="card-header-actions" *ngIf="idPropiedad!=0">
-              <button class="btn btn-sm btn-default mr-2" (click)="cerrarPropiedadDetalle()" type="button" pTooltip="Regresar"
-              tooltipPosition="top">
+              <button class="btn btn-sm btn-default mr-2" (click)="cerrarPropiedadDetalle()" type="button"
+                tooltipPosition="top">
                 <i class="{{constantes.ICON_REGRESAR}}" aria-hidden="true"></i>
                 <span class="d-none d-md-inline"> {{constantes.LABEL_REGRESAR}}</span>
               </button>
@@ -213,10 +213,10 @@
                         </div>
                       </div>
                       <div class="text">
-                        <h6 style="color: rgb(87, 139, 62)">
+                        <h6 style="color: rgb(87, 139, 62)" class="m-0">
                           <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>
                           <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_ALQUILER}}" *ngIf="propiedad.contrato=='A'"></i>
-                          <strong> {{propiedad.ubigeo}} - {{propiedad.asentamientourbano}} {{propiedad.nombreaahhurb}}</strong></h6>
+                          <strong> {{propiedad.ubigeo}} - {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}}</strong></h6>
                           <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
                         <p class="author-category"><strong><span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">S/
                               {{propiedad.preciocontrato}}</span>

@@ -95,8 +95,8 @@
             <i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación
           </h4>
         </div>
-        <p style="color: black"> {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}} 
-            / <strong>Referencia: </strong> {{casa.referencia}}
+        <p style="color: black"> {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}}  
+            | {{habilitacionurbana.siglas}} {{casa.nombrehabilitacionurbana}} | <strong>Referencia: </strong> {{casa.referencia}}
         </p>
         <!--Mapa-->
         <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 

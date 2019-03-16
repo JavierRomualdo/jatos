@@ -21,6 +21,8 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
+import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
 
 @Component({
   selector: 'app-modal-casa',
@@ -39,6 +41,7 @@ export class ModalCasaComponent implements OnInit {
   public casaservicios: Casaservicio[];
   public fotos: Foto[];
   public persona: Persona;
+  public habilitacionurbana: HabilitacionUrbana;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   public accion: string = null;
@@ -67,6 +70,7 @@ export class ModalCasaComponent implements OnInit {
     this.fotos = [];
     this.servicios = [];
     this.persona = new Persona();
+    this.habilitacionurbana = new HabilitacionUrbana();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
@@ -117,6 +121,7 @@ export class ModalCasaComponent implements OnInit {
     this.cargando = true;
     this.casa.casapersonaList = this.listaLP;
     this.casa.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
+    this.casa.habilitacionurbana_id = this.habilitacionurbana;
     this.casa.ubigeo_id = this.ubigeo.ubigeo;
     this.casa.serviciosList = this.servicios;
     if (this.accion === LS.ACCION_NUEVO) { // guardar nueva propiedad
@@ -197,6 +202,7 @@ export class ModalCasaComponent implements OnInit {
     this.listaLP = data.casapersonaList;
     this.persona = this.listaLP[0];
     this.ubigeo = data.ubigeo;
+    this.habilitacionurbana = data.habilitacionurbana;
     this.servicios = data.serviciosList;
     this.casaservicios = data.casaservicioList;
     // Mapa
@@ -251,6 +257,20 @@ export class ModalCasaComponent implements OnInit {
     });
   }
 
+  buscarHabilitacionUrbana() {
+    const modalRef = this.modalService.open(HabilitacionurbanaComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((result) => {
+      console.log('ubigeoguardar:');
+      console.log(result);
+      this.habilitacionurbana = result;
+      this.casa.habilitacionurbana_id = this.habilitacionurbana;
+      this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      this.auth.agregarmodalopenclass();
+    });
+  }
+
   buscarservicio() {
     const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
@@ -277,7 +297,6 @@ export class ModalCasaComponent implements OnInit {
   postGuardarCasa() {
     // se genera el codigode la casa cuando la accion es nuevo
     this.cargando = true;
-    this.casa.asentamientourbano = LS.TAG_AAHH;
     // Mapa
     this.casa.latitud = this.casa.latitud === "" ? this.latitude + "" : this.casa.latitud;
     this.casa.longitud = this.casa.longitud === "" ? this.longitude + "" : this.casa.longitud;

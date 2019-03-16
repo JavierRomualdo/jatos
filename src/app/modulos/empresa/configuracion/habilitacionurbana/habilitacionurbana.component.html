@@ -1,0 +1,16 @@
+<p-menubar [model]="items" [autoDisplay]="false" *ngIf="!isModal">
+</p-menubar>
+<div class="modal-primary"> <!--*ngIf="listadoPersonas?.length>0"-->
+  <div class="card">
+    <div class="card-header bg-primary p-2" *ngIf="isModal">
+      <strong>{{constantes.TAG_MANTENIMIENTO_HABILITACION_URBANA}}</strong>
+      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="card-header p-1">
+      <!--Listado-->
+      <app-habilitacionurbana-listado [parametrosBusqueda]="parametrosListado"></app-habilitacionurbana-listado>
+    </div>
+  </div>
+</div>

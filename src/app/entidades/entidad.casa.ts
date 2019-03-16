@@ -1,18 +1,19 @@
 import { Persona } from './entidad.persona';
 import { Ubigeo } from './entidad.ubigeo';
+import { HabilitacionUrbana } from './entidad.habilitacionurbana';
 
 export class Casa {
   id: number;
   persona_id: Persona = new Persona;
   ubigeo_id: Ubigeo = new Ubigeo();
+  habilitacionurbana_id: HabilitacionUrbana =new HabilitacionUrbana();
   codigo: string = null;
   precioadquisicion: number = 0.00;
   preciocontrato: number = 0.00;
   ganancia: number = 0.00;
   largo: number;
   ancho: number;
-  asentamientourbano: string;
-  nombreaahhurb: string;
+  nombrehabilitacionurbana: string;
   direccion: string;
   npisos: number = 0;
   ncuartos: number = 0;
@@ -45,12 +46,14 @@ export class Casa {
     this.id = data.id ? data.id : this.id;
     this.persona_id = data.persona_id ? data.persona_id : this.persona_id;
     this.ubigeo_id = data.ubigeo_id ? data.ubigeo_id : this.ubigeo_id;
+    this.habilitacionurbana_id = data.habilitacionurbana_id ? data.habilitacionurbana_id : this.habilitacionurbana_id;
     this.codigo = data.codigo ? data.codigo : this.codigo;
     this.precioadquisicion = data.precioadquisicion ? data.precioadquisicion : this.precioadquisicion;
     this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;
     this.ganancia = data.ganancia ? data.ganancia : this.ganancia;
     this.largo = data.largo ? data.largo : this.largo;
     this.ancho = data.ancho ? data.ancho : this.ancho;
+    this.nombrehabilitacionurbana = data.nombrehabilitacionurbana ? data.nombrehabilitacionurbana : this.nombrehabilitacionurbana;
     this.direccion = data.direccion ? data.direccion : this.direccion;
     this.npisos = data.npisos ? data.npisos : this.npisos;
     this.ncuartos = data.ncuartos ? data.ncuartos : this.ncuartos;

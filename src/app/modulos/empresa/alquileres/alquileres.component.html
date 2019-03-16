@@ -26,7 +26,7 @@
             </label>
             <select class="form-control form-control-sm mousetrap" name="departamento" required [(ngModel)]="departamentoSeleccionado"
               (ngModelChange)="mostrarprovincias(departamentoSeleccionado)" (change)="limpiarResultado()">
-              <option selected disabled value=undefined>Seleccione despartamento...</option>
+              <option selected disabled value=undefined>Seleccione departamento...</option>
               <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of listaDepartamentos"  >{{ubigeodepartamento.ubigeo}}</option>
             </select>
             <select class="form-control form-control-sm mousetrap" name="provincia" required [(ngModel)]="provinciaSeleccionado"

@@ -17,6 +17,7 @@ import { VentasComponent } from './ventas/ventas.component';
 import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
 import { PersonasComponent } from './configuracion/personas/personas.component';
 import { ServiciosComponent } from './configuracion/servicios/servicios.component';
+import { HabilitacionurbanaComponent } from './configuracion/habilitacionurbana/habilitacionurbana.component';
 
 const empresaRoutes: Routes = [
   {
@@ -37,6 +38,7 @@ const empresaRoutes: Routes = [
       {path: 'configuracion/personas', component: PersonasComponent},
       {path: 'configuracion/servicios', component: ServiciosComponent},
       {path: 'configuracion/ubigeo', component: UbigeoComponent},
+      {path: 'configuracion/habilitacionurbana', component: HabilitacionurbanaComponent},
       {path: '', redirectTo: 'inicio', pathMatch: 'full'}
     ]
   },

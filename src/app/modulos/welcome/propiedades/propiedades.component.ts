@@ -26,7 +26,7 @@ export class PropiedadesComponent implements OnInit {
   public servicios: Servicios[] = [];
   public constantes: any = LS;
 
-  public departamento: Ubigeo = null;
+  public departamento: Ubigeo = undefined;
   // tslint:disable-next-line:no-inferrable-types
   public idUbigeoProvincia: number = 0;
   public provincia: Ubigeo;
@@ -64,7 +64,7 @@ export class PropiedadesComponent implements OnInit {
 
   ngOnInit() {
     this.tipopropiedades = LS.LISTA_PROPIEDADES;
-    this.departamento = null;
+    this.departamento = undefined;
     // this.parametros.tipopropiedad = "";
     this.listarUbigeos(); // index ubigeos (departamento)
     // this.rangoprecio.preciominimo = "0";
@@ -83,7 +83,7 @@ export class PropiedadesComponent implements OnInit {
     this.parametros.tipopropiedad = parametros.propiedad;
     this.propiedades = [];
     this.cerrarPropiedadDetalle();
-    this.departamento = null;
+    this.departamento = undefined;
     this.idUbigeoProvincia = 0;
     this.idUbigeoDistrito = 0;
   }
@@ -118,7 +118,7 @@ export class PropiedadesComponent implements OnInit {
     this.api
       .get2("ubigeos")
       .then(
-        res => {
+        (res) => {
           this.ubigeodepartamentos = res;
           if (LS.KEY_PROPIEDAD_SELECT) {
             const departamentos = this.ubigeodepartamentos.slice();
@@ -130,6 +130,7 @@ export class PropiedadesComponent implements OnInit {
           LS.KEY_PROPIEDAD_SELECT = "";
           this.cargando = false;
           console.log(res);
+          console.log(this.departamento);
         },
         error => {
           if (error.status === 422) {

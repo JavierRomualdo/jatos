@@ -79,6 +79,9 @@ import { PersonasFormularioComponent } from './componentes/personas-formulario/p
 import { ServiciosComponent } from './configuracion/servicios/servicios.component';
 import { ServiciosListadoComponent } from './componentes/servicios-listado/servicios-listado.component';
 import { ServiciosFormularioComponent } from './componentes/servicios-formulario/servicios-formulario.component';
+import { HabilitacionurbanaComponent } from './configuracion/habilitacionurbana/habilitacionurbana.component';
+import { HabilitacionurbanaFormularioComponent } from './componentes/habilitacionurbana-formulario/habilitacionurbana-formulario.component';
+import { HabilitacionurbanaListadoComponent } from './componentes/habilitacionurbana-listado/habilitacionurbana-listado.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -144,7 +147,10 @@ import { ServiciosFormularioComponent } from './componentes/servicios-formulario
 
     ServiciosComponent,
     ServiciosListadoComponent,
-    ServiciosFormularioComponent
+    ServiciosFormularioComponent,
+    HabilitacionurbanaComponent,
+    HabilitacionurbanaListadoComponent,
+    HabilitacionurbanaFormularioComponent
   ],
   imports: [
     ComponentesModule,
@@ -211,7 +217,10 @@ import { ServiciosFormularioComponent } from './componentes/servicios-formulario
     PersonasFormularioComponent,
     ServiciosComponent,
     ServiciosListadoComponent,
-    ServiciosFormularioComponent
+    ServiciosFormularioComponent,
+    HabilitacionurbanaComponent,
+    HabilitacionurbanaListadoComponent,
+    HabilitacionurbanaFormularioComponent
   ],
   providers: [
     NgbActiveModal,

@@ -167,11 +167,15 @@ export class LS {
   static TAG_PERSONAS_LISTADO = 'Listado de personas';
   static TAG_MANTENIMIENTO_SERVICIOS = 'Mantenimiento de servicios';
   static TAG_SERVICIOS_LISTADO = 'Listado de servicios';
+  static TAG_MANTENIMIENTO_HABILITACION_URBANA = 'Mantenimiento de habilitacion urbana';
+  static TAG_HABILITACION_URBANA = 'Habilitación urbana';
+  static TAG_NOMBRE_HABILITACION_URBANA = 'Nombre habilitación urbana';
   static TAG_MAS_DATOS = 'Más datos';
   static TAG_ROLES = 'Roles';
   static TAG_DETALLE = 'Detalle';
   static TAG_TAMANIO = 'Tamaño';
   static TAG_PROGRESO = 'Progreso';
+  static TAG_SIGLAS = 'Siglas';
 
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
@@ -265,6 +269,10 @@ export class LS {
   public static TITULO_FORM_NUEVO_SERVICIO = 'Nuevo servicio';
   public static TITULO_FORM_EDITAR_SERVICIO = 'Editar servicio';
   public static TITULO_FORM_CONSULTAR_SERVICIO = 'Consultar servicio';
+  public static TITULO_HABILITACION_URBANA_LISTADO = 'Listado de habilitación urbana';
+  public static TITULO_FORM_NUEVA_HABILITACION_URBANA = 'Nueva habilitación urbana';
+  public static TITULO_FORM_EDITAR_HABILITACION_URBANA = 'Editar habilitación urbana';
+  public static TITULO_FORM_CONSULTAR_HABILITACION_URBANA = 'Consultar habilitación urbana';
   
   //MENSAJES
   static MSJ_COLUMNAS = "columnas seleccionadas";
