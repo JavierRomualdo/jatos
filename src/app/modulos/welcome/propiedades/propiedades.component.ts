@@ -1,12 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { UbigeoGuardar } from "../../../entidades/entidad.ubigeoguardar";
 import { Rangoprecios } from "../../../entidades/entidadad.rangoprecios";
-import { ApiRequest2Service } from "../../../servicios/api-request2.service";
-import { ToastrService } from "ngx-toastr";
 import { Servicios } from "../../../entidades/entidad.servicios";
 import { Ubigeo } from "../../../entidades/entidad.ubigeo";
 import { LS } from 'src/app/contantes/app-constants';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { UbigeoService } from '../../empresa/configuracion/ubigeo/modal-ubigeo/ubigeo.service';
+import { ServicioService } from '../../empresa/configuracion/servicios/servicio.service';
+import { PropiedadesService } from './propiedades.service';
 @Component({
   selector: "app-propiedades",
   templateUrl: "./propiedades.component.html",
@@ -26,8 +27,8 @@ export class PropiedadesComponent implements OnInit {
   public servicios: Servicios[] = [];
   public constantes: any = LS;
 
-  public departamento: Ubigeo = undefined;
   // tslint:disable-next-line:no-inferrable-types
+  public idUbigeoDepartamento: number = 0;
   public idUbigeoProvincia: number = 0;
   public provincia: Ubigeo;
   // tslint:disable-next-line:no-inferrable-types
@@ -46,8 +47,9 @@ export class PropiedadesComponent implements OnInit {
   public rangoPrecio: any;
 
   constructor(
-    private api: ApiRequest2Service,
-    private toastr: ToastrService,
+    private ubigeoService: UbigeoService,
+    private servicioService: ServicioService,
+    private propiedadesService: PropiedadesService,
     private utilService: UtilService
     ) {
     this.ubigeo = new UbigeoGuardar();
@@ -64,7 +66,6 @@ export class PropiedadesComponent implements OnInit {
 
   ngOnInit() {
     this.tipopropiedades = LS.LISTA_PROPIEDADES;
-    this.departamento = undefined;
     // this.parametros.tipopropiedad = "";
     this.listarUbigeos(); // index ubigeos (departamento)
     // this.rangoprecio.preciominimo = "0";
@@ -80,10 +81,14 @@ export class PropiedadesComponent implements OnInit {
   }
 
   ejecutarAccion(parametros) {
+    LS.KEY_PROPIEDAD_SELECT = parametros.propiedad;
+    this.listarUbigeos();
+    // this.despuesDeListarUbigeos(this.ubigeodepartamentos);
+    // this.listarPropiedades();
     this.parametros.tipopropiedad = parametros.propiedad;
     this.propiedades = [];
     this.cerrarPropiedadDetalle();
-    this.departamento = undefined;
+    this.idUbigeoDepartamento = 0;
     this.idUbigeoProvincia = 0;
     this.idUbigeoDistrito = 0;
   }
@@ -115,43 +120,28 @@ export class PropiedadesComponent implements OnInit {
 
   listarUbigeos() {
     this.cargando = true;
-    this.api
-      .get2("ubigeos")
-      .then(
-        (res) => {
-          this.ubigeodepartamentos = res;
-          if (LS.KEY_PROPIEDAD_SELECT) {
-            const departamentos = this.ubigeodepartamentos.slice();
-            this.departamento = departamentos.find(item => item.ubigeo === LS.KEY_CIUDAD_DEFECTO);
-            this.mostrarprovincias(this.departamento);
-            this.listarPropiedades();
-          }
-          // se limpia KEY_PROPIEDAD_SELECT
-          LS.KEY_PROPIEDAD_SELECT = "";
-          this.cargando = false;
-          console.log(res);
-          console.log(this.departamento);
-        },
-        error => {
-          if (error.status === 422) {
-            // this.errors = [];
-            const errors = error.json();
-            console.log("Error");
-            // this.cargando = false;
-            /*for (const key in errors) {
-            this.errors.push(errors[key]);
-          }*/
-          }
-        }
-      )
-      .catch(err => this.handleError(err));
+    this.ubigeoService.litarUbigeos(this);
   }
 
-  mostrarprovincias(departamento: Ubigeo) {
-    if (departamento !== null) {
-      this.ubigeo.departamento = departamento;
-      console.log(departamento);
-      this.mostrarubigeos(departamento.tipoubigeo_id, departamento.codigo); // provincias
+  despuesDeListarUbigeos(data) {
+    this.ubigeodepartamentos = data;
+    if (LS.KEY_PROPIEDAD_SELECT) {
+      const departamentos = this.ubigeodepartamentos.slice();
+      this.idUbigeoDepartamento = departamentos.find(item => item.ubigeo === LS.KEY_CIUDAD_DEFECTO).id;
+      this.mostrarprovincias(this.idUbigeoDepartamento);
+      this.listarPropiedades();
+    }
+    // se limpia KEY_PROPIEDAD_SELECT
+    LS.KEY_PROPIEDAD_SELECT = "";
+    this.cargando = false;
+    console.log(data);
+  }
+
+  mostrarprovincias(idUbigeoDepartamento) {
+    if (idUbigeoDepartamento > 0) {
+      this.ubigeo.departamento = this.ubigeodepartamentos.find(item => item.id === idUbigeoDepartamento)
+      console.log(this.ubigeo.departamento);
+      this.mostrarubigeos(this.ubigeo.departamento.tipoubigeo_id, this.ubigeo.departamento.codigo); // provincias
       // this.mostrarlotes(departamento.tipoubigeo_id, departamento.codigo);
       //this.listarPropiedades();
     } else {
@@ -165,17 +155,11 @@ export class PropiedadesComponent implements OnInit {
     }
   }
 
-  mostrardistritos(idubigeo) {
-    if (idubigeo > 0) {
-      let provincia: Ubigeo = new Ubigeo();
-      for (const ubigeo of this.ubigeoprovincias) {
-        if (idubigeo === ubigeo.id) {
-          provincia = ubigeo;
-        }
-      }
-      this.ubigeo.provincia = provincia;
-      console.log(provincia);
-      this.mostrarubigeos(provincia.tipoubigeo_id, provincia.codigo); // provincias
+  mostrardistritos(idUbigeoProvincia) {
+    if (idUbigeoProvincia > 0) {
+      this.ubigeo.provincia = this.ubigeoprovincias.find(item => item.id === idUbigeoProvincia)
+      console.log(this.ubigeo.provincia);
+      this.mostrarubigeos(this.ubigeo.provincia.tipoubigeo_id, this.ubigeo.provincia.codigo); // provincias
       //this.listarPropiedades();
     } else {
       this.ubigeodistritos = [];
@@ -188,16 +172,10 @@ export class PropiedadesComponent implements OnInit {
     }
   }
 
-  mostrarpadistritos(idubigeo) {
-    if (idubigeo > 0) {
-      let distrito: Ubigeo = new Ubigeo();
-      for (const ubigeo of this.ubigeodistritos) {
-        if (idubigeo === ubigeo.id) {
-          distrito = ubigeo;
-        }
-      }
-      this.ubigeo.distrito = distrito;
-      console.log(distrito);
+  mostrarpadistritos(idUbigeoDistrito) {
+    if (idUbigeoDistrito > 0) {
+      this.ubigeo.distrito = this.ubigeodistritos.find(item => item.id === idUbigeoDistrito)
+      console.log(this.ubigeo.distrito);
       //this.listarPropiedades();
     } else {
       // this.ubigeodistritos = [];
@@ -218,7 +196,7 @@ export class PropiedadesComponent implements OnInit {
     if (this.parametros.tipopropiedad === "") {
       mensaje += " propiedad. ";
     }
-    if (this.departamento === null) {
+    if (this.idUbigeoDepartamento === 0) {
       mensaje += " ubigeo.";
     }
     console.log("mensaje.." + mensaje);
@@ -258,60 +236,38 @@ export class PropiedadesComponent implements OnInit {
     this.ubigeo.propiedad = this.parametros.tipopropiedad;
     console.log("Ubigeo:");
     console.log(this.ubigeo);
-    this.api
-      .post2("busquedaPropiedad", this.ubigeo)
-      .then(
-        res => {
-          console.log("resultado: ");
-          console.log(res);
-          if (res !== "vacio") {
-            this.propiedades = res;
-            console.log("Ubigeo:");
-            console.log(this.ubigeo);
-            console.log("Los lotes son:");
-            console.log(res);
-          } else {
-            this.propiedades = [];
-          }
-          this.cargando = false;
-        },
-        error => {
-          if (error.status === 422) {
-            // .errors = [];
-            const errors = error.json();
-            console.log("Error");
-            // this.cargando = false;
-            /*for (const key in errors) {
-            this.errors.push(errors[key]);
-          }*/
-          }
-        }
-      )
-      .catch(err => this.handleError(err));
+    this.propiedadesService.busquedaPropiedad(this.ubigeo, this);
+  }
+
+  despuesDeBusquedaPropiedad(data) {
+    console.log("resultado: ");
+    console.log(data);
+    if (data !== "vacio") {
+      this.propiedades = data;
+      console.log("Ubigeo:");
+      console.log(this.ubigeo);
+      console.log("Los lotes son:");
+      console.log(data);
+    } else {
+      this.propiedades = [];
+    }
+    this.cargando = false;
   }
 
   listarServicios() {
     this.verServicios = true;
     if (this.servicios.length === 0) {
-      this.api
-        .get2("servicios")
-        .then(
-          res => {
-            this.servicios = res;
-            console.log("Servicios:");
-            console.log(this.servicios);
-            this.cargando = false;
-          },
-          error => {
-            if (error.status === 422) {
-              const errors = error.json();
-              console.log("Error");
-            }
-          }
-        )
-        .catch(err => this.handleError(err));
+      this.servicioService.listarServicios({activos: true}, this);
     }
   }
+
+  despuesDeListarServicios(data) {
+    this.servicios = data;
+    console.log("Servicios:");
+    console.log(this.servicios);
+    this.cargando = false;
+  }
+
   redondear(numero) {
     return Math.round(numero);
   }
@@ -326,42 +282,19 @@ export class PropiedadesComponent implements OnInit {
 
   mostrarubigeos(idtipoubigeo, codigo) {
     this.cargando = true;
-    this.api
-      .get2("mostrarubigeos/" + idtipoubigeo + "/" + codigo)
-      .then(
-        res => {
-          if (idtipoubigeo === 1) {
-            // departamento
-            // listo las provincias del departamento
-            this.ubigeoprovincias = res;
-            // this.ubigeos = this.ubigeoprovincias;
-          } else if (idtipoubigeo === 2) {
-            // provincia
-            // listo los distritos de la provincia
-            this.ubigeodistritos = res; // distritos
-          }
-          // this.ubigeos = res;
-          this.cargando = false;
-          console.log(res);
-        },
-        error => {
-          if (error.status === 422) {
-            // this.errors = [];
-            const errors = error.json();
-            console.log("Error");
-            // this.cargando = false;
-            /*for (const key in errors) {
-            this.errors.push(errors[key]);
-          }*/
-          }
-        }
-      )
-      .catch(err => this.handleError(err));
+    this.ubigeoService.mostrarUbigeos({idtipoubigeo: idtipoubigeo, codigo: codigo}, this);
   }
 
-  private handleError(error: any): void {
-    // this.cargando = false;
-    this.toastr.error("Error Interno: " + error, "Error");
+  despuesDeMostrarUbigeosProvincias(data) {
+    this.ubigeoprovincias = data;
+    this.cargando = false;
+    console.log(data);
+  }
+
+  despuesDeMostrarUbigeosDistritos(data) {
+    this.ubigeodistritos = data;
+    this.cargando = false;
+    console.log(data);
   }
 
   /************* Metodos de propiedad detalle ***************/

@@ -18,7 +18,7 @@ const welcomeRoutes: Routes = [
       {path: 'propiedades', component: PropiedadesComponent},
       // {path: 'servicios/propiedades', component: PropiedadesComponent},
       // {path: 'lote/:id', component: LoteDetalleComponent},
-      {path: 'contactos', component: SuscripcionComponent},
+      {path: 'contacto', component: SuscripcionComponent},
       {path: '', redirectTo: 'inicio', pathMatch: 'full'}
     ]
   }

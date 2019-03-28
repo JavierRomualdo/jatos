@@ -82,7 +82,7 @@ export class CargaImagenesService {
                 console.log('fin del metdo guardar imagen');
             },
             ( error ) => console.log('No existe la URL')
-          );
+          ).finally(() => console.log("se ha subido la imagen correctamente :)"));
           /* console.log('Imagen cargada correctamente');
           console.log(uploadTask.snapshot.downloadURL);
           item.url = uploadTask.snapshot.downloadURL;

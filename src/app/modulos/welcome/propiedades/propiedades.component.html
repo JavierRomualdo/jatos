@@ -24,10 +24,12 @@
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="V" label="Venta" [(ngModel)]="ubigeo.contrato" inputId="ny"
                         (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
+                      <i class="{{constantes.ICON_VENTA}}" aria-hidden="true"></i>
                     </div>
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="A" label="Alquiler" [(ngModel)]="ubigeo.contrato" inputId="sf"
                         (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
+                        <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true"></i>
                     </div>
                   </div>
                 </div>
@@ -47,10 +49,10 @@
                   <label class="control-label">
                     <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
-                  <select (change)="mostrarprovincias(departamento)" [(ngModel)]="departamento" class="form-control form-control-sm mousetrap"
+                  <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <option selected disabled value=undefined>Departamento...</option>
-                    <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
+                    <option value='0'>Departamento...</option>
+                    <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
                   </select>
                   <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
@@ -182,8 +184,9 @@
               tooltipPosition="top">
               <i class="{{activar?'fa fa-chevron-right':'fa fa-chevron-left'}}" aria-hidden="true"></i>
             </button> -->
-            <strong class="text-uppercase" *ngIf="propiedades.length > 0"> {{parametros.tipopropiedad}}:
-              #{{propiedades.length}}</strong>
+            <strong class="text-uppercase" *ngIf="propiedades.length > 0"> 
+              {{parametros.tipopropiedad}}
+            </strong>
             <div class="card-header-actions" *ngIf="idPropiedad!=0">
               <button class="btn btn-sm btn-default mr-2" (click)="cerrarPropiedadDetalle()" type="button"
                 tooltipPosition="top">
@@ -195,7 +198,7 @@
           
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
             <div class="card-body text-center" *ngIf="idPropiedad==0">
-              <img src="assets/img-empresa/avatars/no_image.png" class="rounded mx-auto d-block" *ngIf="propiedades.length == 0">
+              <img src="assets/img-empresa/avatars/no_image.png" style="width: 200px; height: 100px"class="rounded mx-auto d-block" *ngIf="propiedades.length == 0">
               <div *ngIf="propiedades.length != 0">
                 <div class="row portfolio">
                   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" *ngFor="let propiedad of propiedades; let i = index;">
@@ -214,14 +217,20 @@
                       </div>
                       <div class="text">
                         <h6 style="color: rgb(87, 139, 62)" class="m-0">
+                          <strong>[{{i+1}}.] {{propiedad.ubigeo}} - {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}}</strong></h6>
+                          <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
+                        <p class="author-category">
                           <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>
                           <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_ALQUILER}}" *ngIf="propiedad.contrato=='A'"></i>
-                          <strong> {{propiedad.ubigeo}} - {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}}</strong></h6>
-                          <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
-                        <p class="author-category"><strong><span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">S/
-                              {{propiedad.preciocontrato}}</span>
-                            | Área: <span style="color: rgb(87, 139, 62)">{{redondear(propiedad.largo)}}x{{redondear(propiedad.ancho)}}
-                              m<sup>2</sup></span></strong></p>
+                          <strong>
+                            <span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">
+                              S/ {{propiedad.preciocontrato}}
+                            </span> | Área: 
+                            <span style="color: rgb(87, 139, 62)">
+                              {{redondear(propiedad.largo)}}x{{redondear(propiedad.ancho)}} m<sup>2</sup>
+                            </span>
+                          </strong>
+                        </p>
                         <!--<p class="intro">Direccion: Mz. A. Lote 7 San Valentin</p>-->
                       </div>
                     </div>

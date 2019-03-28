@@ -37,7 +37,9 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   imports: [
     FormsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      closeButton: true
+    }),
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,

@@ -21,15 +21,15 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="telefono"><strong>Telefono <span class="text-primary">*</span></strong></label>
-              <input id="telefono" type="text" class="form-control" [(ngModel)]="mensaje.telefono" name="telefono"
-                required placeholder="Ingrese telefono">
+              <input type="text" id="telefono" name="telefono" placeholder="Ingrese teléfono" required class="form-control form-control-sm"
+                maxlength="9" pKeyFilter="pint" [(ngModel)]="mensaje.telefono">
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="email"><strong>Email <span class="text-primary">*</span></strong></label>
-              <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email" required
-                placeholder="Ingrese email">
+              <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email" required ngModel [email]="true"
+                placeholder="name@example.com">
             </div>
           </div>
           <div class="col-sm-6">

@@ -28,6 +28,7 @@ import { LocalDetalleComponent } from './componentes/local-detalle/local-detalle
 import { HabitacionDetalleComponent } from './componentes/habitacion-detalle/habitacion-detalle.component';
 import { Autonumeric2Directive2 } from 'src/app/directivas/autonumeric2/autonumeric2.directive';
 import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
+import { Title } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,9 @@ import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80'
     }),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      closeButton: true
+    }),
     WelcomeRoutingModule,
     RadioButtonModule,
     CheckboxModule,
@@ -71,5 +74,6 @@ import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
   ],
   providers: [
     NgbActiveModal,
+    Title
   ]})
 export class WelcomeModule { }

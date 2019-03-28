@@ -6,6 +6,7 @@ import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { UsuarioTO } from 'src/app/entidadesTO/empresa/UsuarioTO';
 import { UsuarioService } from '../../configuracion/usuarios/usuario.service';
+import { DataUpdateService } from 'src/app/servicios/dataUpdate/data-update.service';
 
 @Component({
   selector: 'app-usuario-formulario',
@@ -39,6 +40,7 @@ export class UsuarioFormularioComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private _cargaImagenes: CargaImagenesService,
     private usuarioService: UsuarioService,
+    public dataUpdateService: DataUpdateService
   ) { }
 
   ngOnInit() {
@@ -86,8 +88,9 @@ export class UsuarioFormularioComponent implements OnInit {
     this.usuario = data;
     console.log('traido para edicion');
     console.log(this.usuario);
-    this.imagen = data.foto;
-    this.imagenAnterior = data.foto;
+    this.dataUpdateService.setFotoPerfil(data.foto);
+    this.imagen = this.dataUpdateService.fotoPerfil;
+    this.imagenAnterior = this.dataUpdateService.fotoPerfil;
 
     this.cargando = false;
   }
@@ -147,6 +150,11 @@ export class UsuarioFormularioComponent implements OnInit {
     if (this.parametrosFormulario.isModal) {
       this.activeModal.close();
     } else {
+      if (LS.KEY_FOTO_PERFIL) {
+        // aca actualizamos la foto en dataUpdateService
+        this.dataUpdateService.setFotoPerfil(this.usuario.foto);
+        localStorage.setItem(LS.KEY_NOTIFICACIONES, JSON.stringify(this.usuario.foto));
+      }
       this.enviarAccion.emit(this.convertirUsersAUsuarioTO(this.usuario));
     }
   }

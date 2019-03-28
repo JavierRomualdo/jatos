@@ -9,10 +9,18 @@
             class="sr-only">Toggle navigation</span><i class="fa fa-align-justify"></i></button>
         <div id="navigation" class="navbar-collapse collapse">
           <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item dropdown" routerLinkActive="active"><a [routerLink]="['inicio']" class="nav-link">Inicio</a></li>
-            <li class="nav-item dropdown" routerLinkActive="active"><a [routerLink]="['propiedades']" class="nav-link">Propiedades</a></li>
-            <li class="nav-item dropdown" routerLinkActive="active"><a [routerLink]="['nosotros']" class="nav-link">Nosotros</a></li>
-            <li class="nav-item dropdown" routerLinkActive="active"><a [routerLink]="['contactos']" class="nav-link">Contactos</a></li>
+            <li class="nav-item dropdown" routerLinkActive="active">
+              <a [routerLink]="['inicio']" class="nav-link" (click)="setTitle( 'Jatos' )">Inicio</a>
+            </li>
+            <li class="nav-item dropdown" routerLinkActive="active">
+              <a [routerLink]="['propiedades']" class="nav-link" (click)="setTitle( 'Propiedades - Jatos' )">Propiedades</a>
+            </li>
+            <li class="nav-item dropdown" routerLinkActive="active">
+              <a [routerLink]="['nosotros']" class="nav-link" (click)="setTitle( 'Nosotros - Jatos' )">Nosotros</a>
+            </li>
+            <li class="nav-item dropdown" routerLinkActive="active">
+              <a [routerLink]="['contacto']" class="nav-link" (click)="setTitle( 'Contacto - Jatos' )">Contacto</a>
+            </li>
           </ul>
         </div>
       </div>
