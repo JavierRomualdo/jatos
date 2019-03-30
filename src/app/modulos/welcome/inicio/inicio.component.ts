@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { LS } from 'src/app/contantes/app-constants';
 import {Router} from '@angular/router';
 
@@ -13,9 +14,11 @@ export class InicioComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private titleService: Title
   ) { }
 
   ngOnInit() {
+    this.titleService.setTitle( LS.PAGINA_JATOS );
   }
 
   verPropiedades(propiedad: string) {

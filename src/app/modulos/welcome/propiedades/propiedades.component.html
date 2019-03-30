@@ -24,12 +24,12 @@
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="V" label="Venta" [(ngModel)]="ubigeo.contrato" inputId="ny"
                         (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
-                      <i class="{{constantes.ICON_VENTA}}" aria-hidden="true"></i>
+                      [<i class="{{constantes.ICON_VENTA}}" aria-hidden="true"></i>]
                     </div>
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="A" label="Alquiler" [(ngModel)]="ubigeo.contrato" inputId="sf"
                         (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
-                        <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true"></i>
+                        [<i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true"></i>]
                     </div>
                   </div>
                 </div>
@@ -51,20 +51,20 @@
                   </label>
                   <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <option value='0'>Departamento...</option>
+                    <option selected value=0>Departamento...</option>
                     <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
                   </select>
                   <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
                     <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option value='0'>Provincia...</option>
+                    <option selected value=0>Provincia...</option>
                     <option [ngValue]="ubigeoprovincia.id" *ngFor="let ubigeoprovincia of ubigeoprovincias">{{ubigeoprovincia.ubigeo}}</option>
                     <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
                   </select>
-                  <select (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control form-control-sm mousetrap"
+                  <select selected (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
                     <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option value='0'>Distrito...</option>
+                    <option value=0>Distrito...</option>
                     <option [ngValue]="ubigeodistrito.id" *ngFor="let ubigeodistrito of ubigeodistritos">{{ubigeodistrito.ubigeo}}</option>
                     <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
                   </select>
@@ -198,18 +198,18 @@
           
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
             <div class="card-body text-center" *ngIf="idPropiedad==0">
-              <img src="assets/img-empresa/avatars/no_image.png" style="width: 200px; height: 100px"class="rounded mx-auto d-block" *ngIf="propiedades.length == 0">
+              <img src="assets/img-empresa/avatars/no_image.png" class="rounded img-fluid" *ngIf="propiedades.length == 0">
               <div *ngIf="propiedades.length != 0">
                 <div class="row portfolio">
                   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" *ngFor="let propiedad of propiedades; let i = index;">
                     <div class="home-blog-post" style="background-color: white">
-                      <div class="image">
-                        <img [src]="propiedad.foto" alt="..." class="rounded img-fluid" *ngIf="propiedad.foto!=null">
+                      <div class="image" id="galleria">
+                        <img [src]="propiedad.foto" alt="..." class="rounded img-fluid img-thumbnail" *ngIf="propiedad.foto!=null">
                         <img src="assets/img-empresa/avatars/no-imagen.png" style="border: 1px cadetblue dashed" alt="..."
                           class="img-fluid" *ngIf="propiedad.foto==null">
                         <div class="overlay d-flex align-items-center justify-content-center">
                           <!--<a href="#" class="btn btn-template-outlined-white"><i class="fa fa-chain"> </i>Leer mas</a>-->
-                          <button (click)='verDetalle(propiedad.id)' type="button" class="btn btn-template-outlined-white">Leer
+                          <button (click)='verDetalle(propiedad.id)' type="button" class="btn btn-template-outlined-white btn-sm">Leer
                             más</button>
                           <!-- <a [routerLink]="['/welcome/lote',lote.id]" target="_blank" class="btn btn-template-outlined-white">Leer
                       más</a> -->
@@ -217,7 +217,7 @@
                       </div>
                       <div class="text">
                         <h6 style="color: rgb(87, 139, 62)" class="m-0">
-                          <strong>[{{i+1}}.] {{propiedad.ubigeo}} - {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}}</strong></h6>
+                          <strong>[{{i+1}}.] {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}} - {{propiedad.ubigeo}}</strong></h6>
                           <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
                         <p class="author-category">
                           <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>

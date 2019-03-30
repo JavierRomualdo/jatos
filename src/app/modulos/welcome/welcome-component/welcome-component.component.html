@@ -10,16 +10,16 @@
         <div id="navigation" class="navbar-collapse collapse">
           <ul class="nav navbar-nav ml-auto">
             <li class="nav-item dropdown" routerLinkActive="active">
-              <a [routerLink]="['inicio']" class="nav-link" (click)="setTitle( 'Jatos' )">Inicio</a>
+              <a [routerLink]="['inicio']" class="nav-link">Inicio</a>
             </li>
             <li class="nav-item dropdown" routerLinkActive="active">
-              <a [routerLink]="['propiedades']" class="nav-link" (click)="setTitle( 'Propiedades - Jatos' )">Propiedades</a>
+              <a [routerLink]="['propiedades']" class="nav-link">Propiedades</a>
             </li>
             <li class="nav-item dropdown" routerLinkActive="active">
-              <a [routerLink]="['nosotros']" class="nav-link" (click)="setTitle( 'Nosotros - Jatos' )">Nosotros</a>
+              <a [routerLink]="['nosotros']" class="nav-link">Nosotros</a>
             </li>
             <li class="nav-item dropdown" routerLinkActive="active">
-              <a [routerLink]="['contacto']" class="nav-link" (click)="setTitle( 'Contacto - Jatos' )">Contacto</a>
+              <a [routerLink]="['contacto']" class="nav-link">Contacto</a>
             </li>
           </ul>
         </div>
@@ -37,10 +37,10 @@
         <div class="top-bar navbar-expand-sm">
           <div class="container">
             <div class="row d-flex align-items-center">
-              <div class="col-md-4 d-md-block d-none">
+              <div class="col-md-2 d-md-block d-none">
                 <p><strong>&copy; {{empresa.nombre}} | Perú - {{fecha.getFullYear()}}</strong></p>
               </div>
-              <div class="col-md-5 d-md-block d-none">
+              <div class="col-md-4 d-md-block d-none">
                 <p><strong>Teléfono</strong> {{empresa.telefono}} - <strong>Email</strong> {{empresa.correo}}.</p>
               </div>
               <div class="col-md-3">

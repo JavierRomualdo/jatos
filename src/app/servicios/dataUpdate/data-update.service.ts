@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Subject }    from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataUpdateService {
   // aca van los datos a aactualizar en el momento
-  fotoPerfil: string = null;
+  private fotoPerfil = new Subject<string>();
   constructor() {
     console.log('Servicio inicializado');
   }
 
   setFotoPerfil(fotoPerfil: string) {
-    this.fotoPerfil = fotoPerfil;
+    this.fotoPerfil.next(fotoPerfil);
+  }
+
+  getFotoPerfil() {
+    return this.fotoPerfil;
   }
 }

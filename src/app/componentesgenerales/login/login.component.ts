@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { LoginService } from 'src/app/servicios/login.service';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { Router } from '@angular/router';
@@ -25,10 +26,11 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService,
     private loginservicio: LoginService,
     private api: ApiRequest2Service,
-    
+    private titleService: Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle( LS.PAGINA_LOGIN );
     localStorage.clear();
   }
 

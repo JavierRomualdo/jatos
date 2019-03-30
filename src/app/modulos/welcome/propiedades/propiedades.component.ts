@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from '@angular/platform-browser';
 import { UbigeoGuardar } from "../../../entidades/entidad.ubigeoguardar";
 import { Rangoprecios } from "../../../entidades/entidadad.rangoprecios";
 import { Servicios } from "../../../entidades/entidad.servicios";
@@ -8,6 +9,7 @@ import { UtilService } from 'src/app/servicios/util/util.service';
 import { UbigeoService } from '../../empresa/configuracion/ubigeo/modal-ubigeo/ubigeo.service';
 import { ServicioService } from '../../empresa/configuracion/servicios/servicio.service';
 import { PropiedadesService } from './propiedades.service';
+
 @Component({
   selector: "app-propiedades",
   templateUrl: "./propiedades.component.html",
@@ -50,7 +52,8 @@ export class PropiedadesComponent implements OnInit {
     private ubigeoService: UbigeoService,
     private servicioService: ServicioService,
     private propiedadesService: PropiedadesService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private titleService: Title
     ) {
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
@@ -65,6 +68,7 @@ export class PropiedadesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.titleService.setTitle( LS.PAGINA_PROPIEDADES );
     this.tipopropiedades = LS.LISTA_PROPIEDADES;
     // this.parametros.tipopropiedad = "";
     this.listarUbigeos(); // index ubigeos (departamento)
@@ -286,8 +290,10 @@ export class PropiedadesComponent implements OnInit {
   }
 
   despuesDeMostrarUbigeosProvincias(data) {
-    this.ubigeoprovincias = data;
     this.cargando = false;
+    this.ubigeoprovincias = data;
+    this.idUbigeoProvincia = 0;
+    console.log("idUbigeoProvincia", this.idUbigeoProvincia);
     console.log(data);
   }
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataUpdateService } from 'src/app/servicios/dataUpdate/data-update.service';
+import { LS } from 'src/app/contantes/app-constants';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dataUpdateService: DataUpdateService
+    ) { }
 
   ngOnInit() {
+    this.dataUpdateService.setFotoPerfil(JSON.parse(localStorage.getItem(LS.KEY_FOTO_PERFIL)));
   }
 
 }

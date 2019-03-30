@@ -40,7 +40,7 @@ export class UsuarioFormularioComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private _cargaImagenes: CargaImagenesService,
     private usuarioService: UsuarioService,
-    public dataUpdateService: DataUpdateService
+    private dataUpdateService: DataUpdateService
   ) { }
 
   ngOnInit() {
@@ -88,9 +88,8 @@ export class UsuarioFormularioComponent implements OnInit {
     this.usuario = data;
     console.log('traido para edicion');
     console.log(this.usuario);
-    this.dataUpdateService.setFotoPerfil(data.foto);
-    this.imagen = this.dataUpdateService.fotoPerfil;
-    this.imagenAnterior = this.dataUpdateService.fotoPerfil;
+    this.imagen = data.foto;
+    this.imagenAnterior = data.foto;
 
     this.cargando = false;
   }
@@ -153,7 +152,7 @@ export class UsuarioFormularioComponent implements OnInit {
       if (LS.KEY_FOTO_PERFIL) {
         // aca actualizamos la foto en dataUpdateService
         this.dataUpdateService.setFotoPerfil(this.usuario.foto);
-        localStorage.setItem(LS.KEY_NOTIFICACIONES, JSON.stringify(this.usuario.foto));
+        localStorage.setItem(LS.KEY_FOTO_PERFIL, JSON.stringify(this.usuario.foto));
       }
       this.enviarAccion.emit(this.convertirUsersAUsuarioTO(this.usuario));
     }

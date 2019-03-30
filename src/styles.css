@@ -246,3 +246,12 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
     position: relative;
     width: 100%; */
 }
+/*Galeria de imagenes*/
+#galleria .img-fluid {
+  width: 100% !important;
+  height: 120px;
+}
+/*Ajuste de tamaño casa-detalle. etc..*/
+#content .w-100 {
+  height: -webkit-fill-available;
+}

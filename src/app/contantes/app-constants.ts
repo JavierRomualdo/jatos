@@ -274,6 +274,13 @@ export class LS {
   public static TITULO_FORM_EDITAR_HABILITACION_URBANA = 'Editar habilitación urbana';
   public static TITULO_FORM_CONSULTAR_HABILITACION_URBANA = 'Consultar habilitación urbana';
   
+  // PAGINAS
+  public static PAGINA_JATOS = "Jatos";
+  public static PAGINA_PROPIEDADES = "Propiedades - Jatos";
+  public static PAGINA_NOSOTROS = "Nosotros - Jatos";
+  public static PAGINA_CONTACTO = "Contacto - Jatos";
+  public static PAGINA_LOGIN = "Login - Jatos";
+
   //MENSAJES
   static MSJ_COLUMNAS = "columnas seleccionadas";
   static MSJ_PREGUNTA_INACTIVAR = "¿Está seguro que desea inactivar?";

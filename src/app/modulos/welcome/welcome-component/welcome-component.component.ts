@@ -7,7 +7,6 @@ import { LoginService } from '../../../servicios/login.service';
 import { LoginComponent } from 'src/app/componentesgenerales/login/login.component';
 import { EmpresaService } from '../../empresa/configuracion/empresa/modal-empresa/empresa.service';
 import { LS } from 'src/app/contantes/app-constants';
-import { Title } from '@angular/platform-browser';
 // import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
@@ -30,7 +29,6 @@ export class WelcomeComponentComponent implements OnInit {
     private empresaService: EmpresaService,
     // public auth: AuthService,
     private loginservicio: LoginService,
-    private titleService: Title
   ) {
     // this.iniciadosesion = this.loginservicio.isAuthenticated();
   }
@@ -44,10 +42,6 @@ export class WelcomeComponentComponent implements OnInit {
     } else {
       this.traerParaEdicion();
     }
-  }
-
-  public setTitle( newTitle: string) {
-    this.titleService.setTitle( newTitle );
   }
 
   traerParaEdicion() {

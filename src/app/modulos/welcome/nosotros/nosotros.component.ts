@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ApiRequest2Service } from '../../../servicios/api-request2.service';
 import { Empresa } from '../../../entidades/entidad.empresa';
 import { UbigeoGuardar } from '../../../entidades/entidad.ubigeoguardar';
@@ -6,7 +7,8 @@ import { Ubigeo } from '../../../entidades/entidad.ubigeo';
 import { LS } from 'src/app/contantes/app-constants';
 import {Router} from '@angular/router';
 import { EmpresaService } from '../../empresa/configuracion/empresa/modal-empresa/empresa.service';
-import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
+import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions,
+  ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-nosotros',
@@ -29,6 +31,7 @@ export class NosotrosComponent implements OnInit {
     public api: ApiRequest2Service,
     private empresaService: EmpresaService,
     private router: Router,
+    private titleService: Title
   ) {
     this.empresa = new Empresa();
     this.empresa.ubigeo_id = new Ubigeo();
@@ -40,6 +43,7 @@ export class NosotrosComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.titleService.setTitle( LS.PAGINA_NOSOTROS );
     this.traerParaEdicion();
   }
 

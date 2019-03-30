@@ -3,6 +3,7 @@ import { ApiRequest2Service } from '../../../servicios/api-request2.service';
 import { CasaMensaje } from '../../../entidades/entidad.casamensaje';
 import { LS } from 'src/app/contantes/app-constants';
 import { MailService } from 'src/app/servicios/mail/mail.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-suscripcion',
@@ -16,10 +17,12 @@ export class SuscripcionComponent implements OnInit {
 
   constructor(
     public api: ApiRequest2Service,
-    private mensajeService: MailService
+    private mensajeService: MailService,
+    private titleService: Title
   ) { }
 
   ngOnInit() {
+    this.titleService.setTitle( LS.PAGINA_CONTACTO );
     this.mensaje = new CasaMensaje();
   }
 

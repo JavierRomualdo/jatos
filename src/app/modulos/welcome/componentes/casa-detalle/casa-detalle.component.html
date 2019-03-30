@@ -49,8 +49,10 @@
           </div>
         </div>
         <!-- Carousel End-->
-      </section><br/>
-      {{casa.descripcion}}
+      </section>
+      <p style="font-size: 16px; color: black">
+        <strong>Descripción: </strong>{{casa.descripcion}}
+      </p>
       <!-- <p class="text-justify">{{casa.descripcion}}</p> -->
     </div>
     <div class="col-md-2 pl-0">
@@ -95,7 +97,7 @@
             <i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación
           </h4>
         </div>
-        <p style="color: black"> {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}}  
+        <p style="font-size: 16px; color: black"> {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}}  
             | {{habilitacionurbana.siglas}} {{casa.nombrehabilitacionurbana}} | <strong>Referencia: </strong> {{casa.referencia}}
         </p>
         <!--Mapa-->

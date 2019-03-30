@@ -25,7 +25,7 @@ export class EmpresaComponentComponent implements OnInit {
     private router: Router,
     private utilService: UtilService,
     private api: ApiRequest2Service,
-    public dataUpdateServicio: DataUpdateService
+    private dataUpdateService: DataUpdateService
   ) {
     this.online$ = this.api.verificarConexionInternet();
     this.networkStatus()
@@ -34,10 +34,13 @@ export class EmpresaComponentComponent implements OnInit {
   ngOnInit() {
     this.fechaActual = new Date();
     // this.foto = JSON.parse(localStorage.getItem(LS.KEY_FOTO_PERFIL));
-    if (JSON.parse(localStorage.getItem(LS.KEY_FOTO_PERFIL))) {
-      this.dataUpdateServicio.setFotoPerfil(JSON.parse(localStorage.getItem(LS.KEY_FOTO_PERFIL)));
-    }
-    this.foto = this.dataUpdateServicio.fotoPerfil;
+    // if (JSON.parse(localStorage.getItem(LS.KEY_FOTO_PERFIL))) {
+    //   this.dataUpdateService.setFotoPerfil(JSON.parse(localStorage.getItem(LS.KEY_FOTO_PERFIL)));
+    // }
+    this.dataUpdateService.getFotoPerfil().subscribe(data => {
+      console.log("empresa-component", data);
+      this.foto = data;
+    });
     this.notificacionDto = JSON.parse(localStorage.getItem(LS.KEY_NOTIFICACIONES));
     this.notificaciones = this.notificacionDto.notificaciones;
     this.cantidad = this.notificacionDto.cantidad;
