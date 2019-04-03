@@ -284,6 +284,14 @@ export class HabitacionService {
         }
       },
       {
+        headerName: LS.TAG_HAB_URBANA,
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.siglas + " "+params.data.nombrehabilitacionurbana;
+        }
+      },
+      {
         headerName: LS.TAG_DIRECCION,
         width: 150,
         minWidth: 150,

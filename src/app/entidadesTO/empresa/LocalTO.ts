@@ -3,6 +3,8 @@ export class LocalTO {
     foto: string = null;
     propietario: string = "";//
     ubicacion: string = "";//
+    siglas: string = ""; // siglas de habilitacion urbana
+    nombrehabilitacionurbana: string = "";
     direccion: string = "";
     largo: number = 0;
     ancho: number = 0;
@@ -25,6 +27,8 @@ export class LocalTO {
         this.foto = data.foto ? data.foto : this.foto;
         this.propietario = data.propietario ? data.propietario : this.propietario;
         this.ubicacion = data.ubicacion ? data.ubicacion : this.ubicacion;
+        this.siglas = data.siglas ? data.siglas : this.siglas;
+        this.nombrehabilitacionurbana = data.nombrehabilitacionurbana ? data.nombrehabilitacionurbana : this.nombrehabilitacionurbana;
         this.direccion = data.direccion ? data.direccion : this.direccion;
         this.largo = data.largo ? data.largo : this.largo;
         this.ancho = data.ancho ? data.ancho : this.ancho;

@@ -178,6 +178,7 @@ export class ModalCasaComponent implements OnInit {
     let casaTO = new CasaTO(data);
     casaTO.propietario = this.casa.persona_id.nombres;
     casaTO.ubicacion = this.casa.ubigeo_id.ubigeo;
+    casaTO.siglas = this.casa.habilitacionurbana_id.siglas;
     return casaTO;
   }
 

@@ -6,7 +6,7 @@ export class Casa {
   id: number;
   persona_id: Persona = new Persona;
   ubigeo_id: Ubigeo = new Ubigeo();
-  habilitacionurbana_id: HabilitacionUrbana =new HabilitacionUrbana();
+  habilitacionurbana_id: HabilitacionUrbana = new HabilitacionUrbana();
   codigo: string = null;
   precioadquisicion: number = 0.00;
   preciocontrato: number = 0.00;

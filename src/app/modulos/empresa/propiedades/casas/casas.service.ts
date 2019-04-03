@@ -286,11 +286,11 @@ export class CasasService {
         }
       },
       {
-        headerName: LS.TAG_AAHH_URB,
+        headerName: LS.TAG_HAB_URBANA,
         width: 150,
         minWidth: 150,
         valueGetter: (params) => {
-          return params.data.asentamientourbano + " "+params.data.nombreaahhurb;
+          return params.data.siglas + " "+params.data.nombrehabilitacionurbana;
         }
       },
       {

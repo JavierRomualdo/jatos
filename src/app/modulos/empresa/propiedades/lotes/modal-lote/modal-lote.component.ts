@@ -18,6 +18,8 @@ import { LoteTO } from 'src/app/entidadesTO/empresa/LoteTO';
 import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, 
    ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
+import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
 
 @Component({
   selector: 'app-modal-lote',
@@ -34,6 +36,7 @@ export class ModalLoteComponent implements OnInit {
   public archivos: FileItem[] = [];
   public fotos: Foto[];
   public persona: Persona;
+  public habilitacionurbana: HabilitacionUrbana;
   public listaLP: any = []; // lista de persona-roles
   public ubigeo: UbigeoGuardar;
   public accion: string = null;
@@ -60,6 +63,7 @@ export class ModalLoteComponent implements OnInit {
     this.lote = new Lote();
     this.fotos = [];
     this.persona = new Persona();
+    this.habilitacionurbana = new HabilitacionUrbana();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
@@ -109,6 +113,7 @@ export class ModalLoteComponent implements OnInit {
     this.cargando = true;
     this.lote.lotepersonaList = this.listaLP;
     this.lote.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
+    this.lote.habilitacionurbana_id = this.habilitacionurbana;
     this.lote.ubigeo_id = this.ubigeo.ubigeo;
     if (this.accion === LS.ACCION_NUEVO) { // guardar nuevo rol
       // guardar en lista fotos
@@ -155,15 +160,16 @@ export class ModalLoteComponent implements OnInit {
     this.cargando = false;
     this.verNuevo = false;
 
-    let loteTO = this.convertirCocheraACocheraTO(data); // sirve para actualizar la tabla
+    let loteTO = this.convertirLoteALoteTO(data); // sirve para actualizar la tabla
     // luego se guarda las fotos. vale hacer eso en la sgt version
     this.activeModal.close(loteTO);
   }
 
-  convertirCocheraACocheraTO(data) {
+  convertirLoteALoteTO(data) {
     let loteTO = new LoteTO(data);
     loteTO.propietario = this.lote.persona_id.nombres;
     loteTO.ubicacion = this.lote.ubigeo_id.ubigeo;
+    loteTO.siglas = this.lote.habilitacionurbana_id.siglas;
     return loteTO;
   }
 
@@ -171,7 +177,7 @@ export class ModalLoteComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    let loteTO = this.convertirCocheraACocheraTO(data); // sirve para actualizar la tabla
+    let loteTO = this.convertirLoteALoteTO(data); // sirve para actualizar la tabla
     this.activeModal.close(loteTO);
   }
 
@@ -188,6 +194,7 @@ export class ModalLoteComponent implements OnInit {
     this.listaLP = data.lotepersonaList;
     this.persona = this.listaLP[0] ;
     this.ubigeo = data.ubigeo;
+    this.habilitacionurbana = data.habilitacionurbana;
     // Mapa
     this.lote.latitud = this.lote.latitud ? this.lote.latitud : this.latitude+""
     this.lote.longitud = this.lote.longitud ? this.lote.longitud : this.longitude+""
@@ -234,6 +241,20 @@ export class ModalLoteComponent implements OnInit {
       console.log(result);
       this.ubigeo = result;
       this.lote.ubigeo_id = result.ubigeo;
+      this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      this.auth.agregarmodalopenclass();
+    });
+  }
+
+  buscarHabilitacionUrbana() {
+    const modalRef = this.modalService.open(HabilitacionurbanaComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((result) => {
+      console.log('ubigeoguardar:');
+      console.log(result);
+      this.habilitacionurbana = result;
+      this.lote.habilitacionurbana_id = this.habilitacionurbana;
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();

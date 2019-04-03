@@ -118,6 +118,30 @@
                     </div>
                   </div>
                 </div>
+                <!--Habilitación Urbano-->
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_HABILITACION_URBANA}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="form-control form-control-sm">{{habilitacionurbana.nombre}}</label>
+                      <div class="input-group-append">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarHabilitacionUrbana()"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/.row-->
+              <div class="row">
+                <div class="form-group form-group-sm col-sm-4">
+                  <label class="control-label">
+                    <strong>{{constantes.TAG_NOMBRE_HABILITACION_URBANA}} <span class="text-primary">*</span></strong>
+                  </label>
+                  <input type="text" name="nombrehabilitacionurbana" [(ngModel)]="lote.nombrehabilitacionurbana" required placeholder="Ingrese {{habilitacionurbana.siglas}}"
+                    class="form-control form-control-sm" maxlength="100">
+                </div>
                 <div class="form-group form-group-sm col-sm-4">
                   <label class="control-label">
                     <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>

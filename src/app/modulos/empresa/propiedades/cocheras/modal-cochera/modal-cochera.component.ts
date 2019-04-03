@@ -21,6 +21,8 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
+import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
 
 @Component({
   selector: 'app-modal-cochera',
@@ -39,6 +41,7 @@ export class ModalCocheraComponent implements OnInit {
   public cocheraservicios: Cocheraservicio[];
   public fotos: Foto[];
   public persona: Persona;
+  public habilitacionurbana: HabilitacionUrbana;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   public accion: string = null;
@@ -65,6 +68,7 @@ export class ModalCocheraComponent implements OnInit {
     this.fotos = [];
     this.servicios = [];
     this.persona = new Persona();
+    this.habilitacionurbana = new HabilitacionUrbana();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
@@ -114,6 +118,7 @@ export class ModalCocheraComponent implements OnInit {
     this.cargando = true;
     this.cochera.cocherapersonaList = this.listaLP;
     this.cochera.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
+    this.cochera.habilitacionurbana_id = this.habilitacionurbana;
     this.cochera.ubigeo_id = this.ubigeo.ubigeo;
     this.cochera.serviciosList = this.servicios;
     if (this.accion === LS.ACCION_NUEVO) {
@@ -172,6 +177,7 @@ export class ModalCocheraComponent implements OnInit {
     let cocheraTO = new CocheraTO(data);
     cocheraTO.propietario = this.cochera.persona_id.nombres;
     cocheraTO.ubicacion = this.cochera.ubigeo_id.ubigeo;
+    cocheraTO.siglas = this.cochera.habilitacionurbana_id.siglas;
     return cocheraTO;
   }
 
@@ -196,6 +202,7 @@ export class ModalCocheraComponent implements OnInit {
     this.listaLP = data.cocherapersonaList;
     this.persona = this.listaLP[0];
     this.ubigeo = data.ubigeo;
+    this.habilitacionurbana = data.habilitacionurbana;
     this.servicios = data.serviciosList;
     this.cocheraservicios = data.cocheraservicioList;
     // Mapa
@@ -257,6 +264,20 @@ export class ModalCocheraComponent implements OnInit {
         this.auth.agregarmodalopenclass();
       }
     );
+  }
+
+  buscarHabilitacionUrbana() {
+    const modalRef = this.modalService.open(HabilitacionurbanaComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((result) => {
+      console.log('ubigeoguardar:');
+      console.log(result);
+      this.habilitacionurbana = result;
+      this.cochera.habilitacionurbana_id = this.habilitacionurbana;
+      this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      this.auth.agregarmodalopenclass();
+    });
   }
 
   buscarservicio() {

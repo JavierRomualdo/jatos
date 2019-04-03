@@ -21,6 +21,8 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
+import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
 
 @Component({
   selector: 'app-modal-habitacion',
@@ -39,6 +41,7 @@ export class ModalHabitacionComponent implements OnInit {
   public habitacionservicios: Habitacionservicio[];
   public fotos: Foto[];
   public persona: Persona;
+  public habilitacionurbana: HabilitacionUrbana;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   public accion: string = null;
@@ -66,6 +69,7 @@ export class ModalHabitacionComponent implements OnInit {
     this.fotos = [];
     this.servicios = [];
     this.persona = new Persona();
+    this.habilitacionurbana = new HabilitacionUrbana();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
@@ -116,6 +120,7 @@ export class ModalHabitacionComponent implements OnInit {
     this.cargando = true;
     this.habitacion.habitacionpersonaList = this.listaLP;
     this.habitacion.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
+    this.habitacion.habilitacionurbana_id = this.habilitacionurbana;
     this.habitacion.ubigeo_id = this.ubigeo.ubigeo;
     this.habitacion.serviciosList = this.servicios;
     if (this.accion === LS.ACCION_NUEVO) { // guardar nueva habitacion
@@ -163,15 +168,16 @@ export class ModalHabitacionComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    let habitacionTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    let habitacionTO = this.convertirHabitacionAHabitacionTO(data); // sirve para actualizar la tabla
     // luego se guarda las fotos. vale hacer eso en la sgt version
     this.activeModal.close(habitacionTO);
   }
 
-  convertirCasaACasTO(data) {
+  convertirHabitacionAHabitacionTO(data) {
     let habitacionTO = new HabitacionTO(data);
     habitacionTO.propietario = this.habitacion.persona_id.nombres;
     habitacionTO.ubicacion = this.habitacion.ubigeo_id.ubigeo;
+    habitacionTO.siglas = this.habitacion.habilitacionurbana_id.siglas;
     return habitacionTO;
   }
 
@@ -179,7 +185,7 @@ export class ModalHabitacionComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    let habitacionTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    let habitacionTO = this.convertirHabitacionAHabitacionTO(data); // sirve para actualizar la tabla
     // luego se guarda las fotos. vale hacer eso en la sgt version
     this.activeModal.close(habitacionTO);
   }
@@ -197,6 +203,7 @@ export class ModalHabitacionComponent implements OnInit {
     this.listaLP = data.habitacionpersonaList;
     this.persona = this.listaLP[0];
     this.ubigeo = data.ubigeo;
+    this.habilitacionurbana = data.habilitacionurbana;
     this.servicios = data.serviciosList;
     this.habitacionservicios = data.habitacionservicioList;
     // Mapa
@@ -251,6 +258,20 @@ export class ModalHabitacionComponent implements OnInit {
     });
   }
 
+  buscarHabilitacionUrbana() {
+    const modalRef = this.modalService.open(HabilitacionurbanaComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((result) => {
+      console.log('ubigeoguardar:');
+      console.log(result);
+      this.habilitacionurbana = result;
+      this.habitacion.habilitacionurbana_id = this.habilitacionurbana;
+      this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      this.auth.agregarmodalopenclass();
+    });
+  }
+  
   buscarservicio() {
     const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
