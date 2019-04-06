@@ -13,10 +13,10 @@
             </span>
           </div>
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
-            <div class="card-body">
+            <div class="card-body pt-2 pb-2">
               <!--FORMULARIO FILTRO-->
               <!-- <p-panel header="Principal" [toggleable]="true"> -->
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
                     <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
@@ -33,55 +33,64 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
                     <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
                   <select [appFocus]="true" class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
                     (change)="listarPropiedades()"><!--class="form-control border-success"-->
-                    <option value=''>Seleccione...</option>
+                    <option value=''>Seleccione propiedad...</option>
                     <option [ngValue]="tipopropiedad" *ngFor="let tipopropiedad of tipopropiedades">
                       {{tipopropiedad}}
                     </option>
                   </select>
                 </div>
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
                     <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
                   <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <option selected value=0>Departamento...</option>
+                    <option selected value=0>Seleccione departamento...</option>
                     <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
                   </select>
                   <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
                     <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option selected value=0>Provincia...</option>
+                    <option selected value=0>Todas las provincias...</option>
                     <option [ngValue]="ubigeoprovincia.id" *ngFor="let ubigeoprovincia of ubigeoprovincias">{{ubigeoprovincia.ubigeo}}</option>
                     <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
                   </select>
                   <select selected (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control form-control-sm mousetrap"
                     (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
                     <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option value=0>Distrito...</option>
+                    <option value=0>Todos los distritos...</option>
                     <option [ngValue]="ubigeodistrito.id" *ngFor="let ubigeodistrito of ubigeodistritos">{{ubigeodistrito.ubigeo}}</option>
+                    <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
+                  </select>
+                  <select selected  [(ngModel)]="CombohabilitacionUrbanaSeleccionada" class="form-control form-control-sm mousetrap"
+                    (change)="listarPropiedades()" placeholder="Filtrar por habilitacionurbana" name="habilitacionurbana">
+                    <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
+                    <option value=undefined>Todas las habilitaciones urbanas...</option>
+                    <option [ngValue]="habilitacionurbana" *ngFor="let habilitacionurbana of comboHabilitacionesurbanas">
+                      {{habilitacionurbana.siglas}} {{habilitacionurbana.nombrehabilitacionurbana}}
+                    </option>
                     <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
                   </select>
                 </div>
                 <!--Opcional-->
-                <div class="form-group form-group-sm">
+                <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
                     <strong> Precios [ Opcional ]</strong>
                   </label>
                   <select [(ngModel)]="rangoprecio" class="form-control form-control-sm mousetrap"
                     placeholder="Filtrar por Ubigeo" name="rangoprecio">
-                    <option selected value=undefined>Seleccione Precio...</option>
+                    <option selected value=undefined>Todos los precios...</option>
                     <option [ngValue]="rangoprecio" *ngFor="let rangoprecio of listaRangoPrecios">S/ {{rangoprecio.preciominimo}}
                       - S/ {{rangoprecio.preciomaximo}}</option>
                   </select>
                 </div>
-                <div class="form-group form-group-sm text-right">
+                <div class="form-group form-group-sm text-right mb-2">
                   <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
                     <i class="{{constantes.ICON_BUSCAR}}"></i>
                     <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
@@ -197,7 +206,10 @@
           </div>
           
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
-            <div class="card-body text-center" *ngIf="idPropiedad==0">
+            <div class="card-body text-center pt-1" *ngIf="idPropiedad==0">
+              <p-paginator [rows]="4" [totalRecords]="propiedadesCopia.length" [rowsPerPageOptions]="[4,8,12]"
+                (onPageChange)="paginate($event)" styleClass="mb7">
+              </p-paginator>
               <img src="assets/img-empresa/avatars/no_image.png" class="rounded img-fluid" *ngIf="propiedades.length == 0">
               <div *ngIf="propiedades.length != 0">
                 <div class="row portfolio">
@@ -236,21 +248,24 @@
                     </div>
                   </div>
                   <!---->
-                  <div class="container">
-                    <!--<nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                  </li>
-                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-                </ul>
-              </nav>-->
-                  </div>
+                  <!-- <div class="container">
+                    <p-paginator [rows]="4" [totalRecords]="propiedadesCopia.length" [rowsPerPageOptions]="[4,8,12]"
+                      (onPageChange)="paginate($event)">
+                    </p-paginator>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                          <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                          <a class="page-link" href="#">Next</a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div> -->
 
                 </div>
               </div>

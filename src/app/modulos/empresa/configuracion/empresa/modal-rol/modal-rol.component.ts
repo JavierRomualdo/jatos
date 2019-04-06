@@ -19,6 +19,7 @@ export class ModalRolComponent implements OnInit {
   public verNuevo: boolean = false;
   public confirmarcambioestado: boolean = false;
   public roles: any = [];
+  public rolesCopia: any = [];
   public parametros: Rol;
   public listado: boolean = false;
 
@@ -80,6 +81,7 @@ export class ModalRolComponent implements OnInit {
 
   despuesDeListarRoles(data) {
     this.roles = data;
+    this.rolesCopia = data;
     this.cargando = false;
   }
 
@@ -142,5 +144,9 @@ export class ModalRolComponent implements OnInit {
 
   enviarrol(rol: Rol) {
     this.activeModal.close(rol);
+  }
+
+  paginate(event) {
+    this.roles = this.rolesCopia.slice(event.first, event.first+event.rows);
   }
 }

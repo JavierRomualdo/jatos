@@ -21,6 +21,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import {PanelModule} from 'primeng/panel';
 import {SpinnerModule} from 'primeng/spinner';
 import {TooltipModule} from 'primeng/tooltip';
+import {PaginatorModule} from 'primeng/paginator';
 import { CasaDetalleComponent } from './componentes/casa-detalle/casa-detalle.component';
 import { CocheraDetalleComponent } from './componentes/cochera-detalle/cochera-detalle.component';
 import { LoteDetalleComponent } from './componentes/lote-detalle/lote-detalle.component';
@@ -70,7 +71,8 @@ import { Title } from '@angular/platform-browser';
     ScrollPanelModule,
     PanelModule,
     SpinnerModule,
-    TooltipModule
+    TooltipModule,
+    PaginatorModule
   ],
   providers: [
     NgbActiveModal,

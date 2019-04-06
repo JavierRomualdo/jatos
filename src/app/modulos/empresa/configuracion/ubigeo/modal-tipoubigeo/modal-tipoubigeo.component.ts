@@ -21,6 +21,7 @@ export class ModalTipoubigeoComponent implements OnInit {
   public verNuevo: Boolean = false;
   public confirmarcambioestado: Boolean = false;
   public tipoubigeos: any = [];
+  public tipoubigeosCopia: any = [];
   public parametros: UbigeoTipo;
   public listado: Boolean = false;
 
@@ -143,5 +144,9 @@ export class ModalTipoubigeoComponent implements OnInit {
 
   enviartipoubigeo(tipoubigeo: UbigeoTipo) {
     this.activeModal.close(tipoubigeo);
+  }
+
+  paginate(event) {
+    this.tipoubigeos = this.tipoubigeosCopia.slice(event.first, event.first+event.rows);
   }
 }

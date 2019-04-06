@@ -13,6 +13,7 @@ import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { LS } from 'src/app/contantes/app-constants';
 import { MailService } from 'src/app/servicios/mail/mail.service';
 import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions, ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
 
 @Component({
   selector: 'app-cochera-detalle',
@@ -32,6 +33,7 @@ export class CocheraDetalleComponent implements OnInit {
   public fotos: Foto[];
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
+  public habilitacionurbana: HabilitacionUrbana;
   public listaLP: any = []; // lista de persona-roles
   errors: Array<Object> = [];
   public constantes: any = LS;
@@ -51,6 +53,7 @@ export class CocheraDetalleComponent implements OnInit {
     this.servicios = [];
     this.persona = new Persona();
     this.ubigeo = new UbigeoGuardar();
+    this.habilitacionurbana = new HabilitacionUrbana();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.distrito = new Ubigeo();
@@ -84,6 +87,7 @@ export class CocheraDetalleComponent implements OnInit {
             this.listaLP = data.extraInfo.casapersonaList;
             // this.persona = this.listaLP[0];
             this.ubigeo = data.extraInfo.ubigeo;
+            this.habilitacionurbana = data.extraInfo.habilitacionurbana;
             this.servicios = data.extraInfo.serviciosList;
             this.casaservicios = data.extraInfo.casaservicioList;
 

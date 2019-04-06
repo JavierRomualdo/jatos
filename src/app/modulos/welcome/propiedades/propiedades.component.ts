@@ -9,6 +9,8 @@ import { UtilService } from 'src/app/servicios/util/util.service';
 import { UbigeoService } from '../../empresa/configuracion/ubigeo/modal-ubigeo/ubigeo.service';
 import { ServicioService } from '../../empresa/configuracion/servicios/servicio.service';
 import { PropiedadesService } from './propiedades.service';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
+import { ComboHabilitacionUrbana } from 'src/app/entidades/entidadesCombo/entidad.comboHabilitacionUrbana';
 
 @Component({
   selector: "app-propiedades",
@@ -23,7 +25,10 @@ export class PropiedadesComponent implements OnInit {
   public ubigeodepartamentos: Ubigeo[];
   public ubigeoprovincias: Ubigeo[];
   public ubigeodistritos: Ubigeo[]; // son ubigeos de distritos que muestra en la tabla
+  public comboHabilitacionesurbanas: ComboHabilitacionUrbana[];
+  public CombohabilitacionUrbanaSeleccionada: ComboHabilitacionUrbana = undefined;
   public propiedades: any = []; // lista proyecto
+  public propiedadesCopia: any = []; // lista proyecto
   public idPropiedad = 0; // parametro para la propiedad detalle
   public rangoprecio: Rangoprecios = undefined;
   public servicios: Servicios[] = [];
@@ -181,6 +186,7 @@ export class PropiedadesComponent implements OnInit {
       this.ubigeo.distrito = this.ubigeodistritos.find(item => item.id === idUbigeoDistrito)
       console.log(this.ubigeo.distrito);
       //this.listarPropiedades();
+      // se carga las habilitaciones urbanas
     } else {
       // this.ubigeodistritos = [];
       this.ubigeo.distrito = new Ubigeo();
@@ -188,6 +194,9 @@ export class PropiedadesComponent implements OnInit {
       // this.parametros.departamento = null;
       // this.listarUbigeos();
     }
+    // limpio la habilitacion urbana
+    this.comboHabilitacionesurbanas = [];
+    this.CombohabilitacionUrbanaSeleccionada = undefined;
   }
 
   // en ventas solo hay lotes
@@ -232,15 +241,26 @@ export class PropiedadesComponent implements OnInit {
 
   mostrarPropiedad() {
     this.cargando = true;
-    // para los rangos de precios
-    if(!this.porescrito) {
-      this.verificarRangoPrecioRadio();
+    // caca vemos si escogio habilitacionurbana (solo busca el listado anterior)
+    if (!this.CombohabilitacionUrbanaSeleccionada) {
+      // para los rangos de precios
+      if(!this.porescrito) {
+        this.verificarRangoPrecioRadio();
+      }
+      this.ubigeo.rangoprecio = this.rangoprecio;
+      this.ubigeo.propiedad = this.parametros.tipopropiedad;
+      console.log("Ubigeo:");
+      console.log(this.ubigeo);
+      this.propiedadesService.busquedaPropiedad(this.ubigeo, this);
+    } else {
+      // si esta el combo habilitacionselecciondo
+      this.cargando = true;
+      const copiaPropiedeades = this.propiedadesCopia.slice();
+      const nuevasPropiedades = copiaPropiedeades.filter(item => item.idHabilitacionUrbana === this.CombohabilitacionUrbanaSeleccionada.id);
+      this.propiedades = nuevasPropiedades;
+      this.cargando = false;
     }
-    this.ubigeo.rangoprecio = this.rangoprecio;
-    this.ubigeo.propiedad = this.parametros.tipopropiedad;
-    console.log("Ubigeo:");
-    console.log(this.ubigeo);
-    this.propiedadesService.busquedaPropiedad(this.ubigeo, this);
+    
   }
 
   despuesDeBusquedaPropiedad(data) {
@@ -248,14 +268,31 @@ export class PropiedadesComponent implements OnInit {
     console.log(data);
     if (data !== "vacio") {
       this.propiedades = data;
+      this.propiedadesCopia = data;
       console.log("Ubigeo:");
       console.log(this.ubigeo);
       console.log("Los lotes son:");
       console.log(data);
+      //
+      this.listarHabilitacionesUrbanas(data);
     } else {
       this.propiedades = [];
     }
     this.cargando = false;
+  }
+
+  listarHabilitacionesUrbanas(propiedades: any) {
+    if (this.idUbigeoDistrito > 0 ) {
+      propiedades.forEach(element => {
+        const parametros = {
+          id: element.idHabilitacionUrbana,
+          siglas: element.siglas,
+          nombrehabilitacionurbana: element.nombrehabilitacionurbana
+        }
+        const habilitacionurbana: ComboHabilitacionUrbana = new ComboHabilitacionUrbana(parametros);
+        this.comboHabilitacionesurbanas.push(habilitacionurbana);
+      });
+    }
   }
 
   listarServicios() {
@@ -295,12 +332,18 @@ export class PropiedadesComponent implements OnInit {
     this.idUbigeoProvincia = 0;
     console.log("idUbigeoProvincia", this.idUbigeoProvincia);
     console.log(data);
+    // limpio la habilitacion urbana
+    this.comboHabilitacionesurbanas = [];
+    this.CombohabilitacionUrbanaSeleccionada = undefined;
   }
 
   despuesDeMostrarUbigeosDistritos(data) {
     this.ubigeodistritos = data;
     this.cargando = false;
     console.log(data);
+    // limpio la habilitacion urbana
+    this.comboHabilitacionesurbanas = [];
+    this.CombohabilitacionUrbanaSeleccionada = undefined;
   }
 
   /************* Metodos de propiedad detalle ***************/
@@ -312,5 +355,9 @@ export class PropiedadesComponent implements OnInit {
   cerrarPropiedadDetalle() {
     this.cambiarActivar(this.activar);
     this.idPropiedad = 0;
+  }
+
+  paginate(event) {
+    this.propiedades = this.propiedadesCopia.slice(event.first, event.first+event.rows);
   }
 }

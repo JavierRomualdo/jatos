@@ -14,6 +14,7 @@ import {MenubarModule} from 'primeng/menubar';
 import {DialogModule} from 'primeng/dialog';
 import {CalendarModule} from 'primeng/calendar';
 import {FileUploadModule} from 'primeng/fileupload';
+import {PaginatorModule} from 'primeng/paginator';
 
 import { HomeComponent } from './home/home.component';
 import { ApartamentosComponent } from './propiedades/apartamentos/apartamentos.component';
@@ -174,6 +175,7 @@ import { HabilitacionurbanaListadoComponent } from './componentes/habilitacionur
     DialogModule,
     CalendarModule,
     FileUploadModule,
+    PaginatorModule,
 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80',

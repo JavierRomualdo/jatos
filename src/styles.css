@@ -255,3 +255,7 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
 #content .w-100 {
   height: -webkit-fill-available;
 }
+
+.mb7 {
+  margin-bottom: 7px;
+}

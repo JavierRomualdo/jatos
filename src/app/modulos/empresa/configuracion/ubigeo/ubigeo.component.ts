@@ -21,6 +21,7 @@ export class UbigeoComponent implements OnInit {
   public cargando: Boolean = false;
   public confirmarcambioestado: Boolean = false;
   public ubigeos: Array<Ubigeo> = [];
+  public ubigeosCopia: Array<Ubigeo> = [];
   public parametros: UbigeoGuardar;
 
   constructor(
@@ -113,5 +114,9 @@ export class UbigeoComponent implements OnInit {
   despuesDeBusquedaUbigeos(data) {
     this.ubigeos = data;
     this.cargando = false;
+  }
+
+  paginate(event) {
+    this.ubigeos = this.ubigeosCopia.slice(event.first, event.first+event.rows);
   }
 }

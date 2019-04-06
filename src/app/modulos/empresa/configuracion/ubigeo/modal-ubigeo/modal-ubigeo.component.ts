@@ -30,6 +30,7 @@ export class ModalUbigeoComponent implements OnInit {
   public ubigeoprovincias: Ubigeo[];
   public provinciaSeleccionado: Ubigeo;
   public ubigeos: Ubigeo[]; // son ubigeos de distritos que muestra en la tabla
+  public ubigeosCopia: Ubigeo[];
   public distritoSeleccionado: Ubigeo;
   public tipoubigeos: UbigeoTipo[];
   public idTipoUbigeo: number = 0;
@@ -54,6 +55,7 @@ export class ModalUbigeoComponent implements OnInit {
     this.ubigeoprovincias = [];
     this.provinciaSeleccionado = undefined;
     this.ubigeos = [];
+    this.ubigeosCopia = [];
     this.distritoSeleccionado = undefined;
     this.tipoubigeos = [];
     // this.parametros = new Ubigeo();
@@ -135,6 +137,7 @@ export class ModalUbigeoComponent implements OnInit {
   despuesDeListarUbigeos(data) {
     this.ubigeodepartamentos = data;
     this.ubigeos = data;
+    this.ubigeosCopia = data;
     this.cargando = false;
     console.log(data);
   }
@@ -272,5 +275,9 @@ export class ModalUbigeoComponent implements OnInit {
   enviarubigeo(ubigeo: Ubigeo) {
     this.parametros.ubigeo = ubigeo;
     this.activeModal.close(this.parametros);
+  }
+
+  paginate(event) {
+    this.ubigeos = this.ubigeosCopia.slice(event.first, event.first+event.rows);
   }
 }

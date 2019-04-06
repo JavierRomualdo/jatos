@@ -27,7 +27,7 @@
             </div>
             <div class="table-responsive">
               <!--/.table-->
-              <table class="table table-responsive-sm table-bordered table-striped table-hover table-outline">
+              <table class="table table-sm table-responsive-sm table-bordered table-striped table-hover table-outline">
                   <thead class="thead-light">
                     <tr>
                       <th class="text-center">#</th>
@@ -55,27 +55,10 @@
                   </tbody>
               </table>
               <!--/.table-->
-              <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#">Prev</a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">4</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-              </ul>
             </div>
+            <p-paginator [rows]="4" [totalRecords]="rolesCopia.length" [rowsPerPageOptions]="[4,8,12]"
+              (onPageChange)="paginate($event)" styleClass="mb7">
+            </p-paginator>
           </div>
       </div>
       <!--/.card-->
