@@ -49,8 +49,8 @@ body {
 }
 
 select:focus, select.form-control:focus, textarea:focus, textarea.form-control:focus, input.form-control:focus, input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=number]:focus, [type=text].form-control:focus, [type=password].form-control:focus, [type=email].form-control:focus, [type=tel].form-control:focus, [contenteditable].form-control:focus {
-  -webkit-box-shadow: inset 0 -2px 0 rgba(34, 73, 92, 0.86);
-  box-shadow: inset 0 -2px 0 rgba(34, 73, 92, 0.86);
+  -webkit-box-shadow: inset 0 -2px 0 #6aae7a;
+  box-shadow: inset 0 -2px 0 #6aae7a;
 }
 
 textarea, textarea.form-control, input.form-control, input[type=text], input[type=password], input[type=email], input[type=number], [type=text].form-control, [type=password].form-control, [type=email].form-control, [type=tel].form-control, [contenteditable].form-control, p.form-control {
@@ -258,4 +258,42 @@ textarea, textarea.form-control, input.form-control, input[type=text], input[typ
 
 .mb7 {
   margin-bottom: 7px;
+}
+
+/*
+  Select
+*/
+
+#filtrospropiedades .ui-dropdown {
+  width: 100%!important;
+  border-radius: 3px!important;
+  vertical-align: baseline!important;
+}
+
+/* #filtrospropiedades .ui-dropdown:not(.ui-state-disabled):hover, .ui-state-focus, .ui-state-default {
+  background: none!important;
+} */
+#filtrospropiedades .ui-dropdown .ui-dropdown-label {
+  font-size: 0.75rem!important;
+}
+
+#filtrospropiedades .ui-dropdown-panel .ui-dropdown-item {
+  font-size: 0.75rem!important;
+}
+#filtrospropiedades .ui-dropdown.ui-state-focus {
+  box-shadow: inset 0 -2px 0 #6aae7a!important;
+}
+
+#filtrospropiedades .ui-dropdown .ui-dropdown-trigger {
+  padding-top: 0.9em!important;
+}
+
+#filtrospropiedades .ui-inputtext {
+  color: #5c6873!important;
+  padding-left: 10px!important;
+}
+
+#filtrospropiedades .ui-dropdown .ui-dropdown-clear-icon {
+  right: 1em!important;
+  font-size: 1.4em!important;
 }

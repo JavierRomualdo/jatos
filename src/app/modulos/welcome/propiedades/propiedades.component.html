@@ -12,34 +12,35 @@
               <b> Filtros</b>
             </span>
           </div>
-          <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
-            <div class="card-body pt-2 pb-2">
+          <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 180px)'}">
+            <div class="card-body pt-2 pb-2" id="filtrospropiedades">
               <!--FORMULARIO FILTRO-->
               <!-- <p-panel header="Principal" [toggleable]="true"> -->
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
+                    <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">(*)</span></b>
                   </label>
                   <div class="row">
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="V" label="Venta" [(ngModel)]="ubigeo.contrato" inputId="ny"
                         (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
-                      [<i class="{{constantes.ICON_VENTA}}" aria-hidden="true"></i>]
+                      (<i class="{{constantes.ICON_VENTA}}" aria-hidden="true"></i>)
                     </div>
                     <div class="col-md-6">
                       <p-checkbox name="group1" value="A" label="Alquiler" [(ngModel)]="ubigeo.contrato" inputId="sf"
                         (onChange)="listarPropiedades(); cambiarTipoPropiedad();"></p-checkbox>
-                        [<i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true"></i>]
+                      (<i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true"></i>)
                     </div>
                   </div>
                 </div>
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
+                    <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">(*)</span></b>
                   </label>
+                  <!--ComboBox: Propiedades-->
                   <select [appFocus]="true" class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
-                    (change)="listarPropiedades()"><!--class="form-control border-success"-->
-                    <option value=''>Seleccione propiedad...</option>
+                    (change)="listarPropiedades()">
+                    <option value=null>Seleccione propiedad...</option>
                     <option [ngValue]="tipopropiedad" *ngFor="let tipopropiedad of tipopropiedades">
                       {{tipopropiedad}}
                     </option>
@@ -47,56 +48,73 @@
                 </div>
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
+                    <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">(*)</span></b>
                   </label>
-                  <select (change)="mostrarprovincias(idUbigeoDepartamento)" [(ngModel)]="idUbigeoDepartamento" class="form-control form-control-sm mousetrap"
-                    (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <option selected value=0>Seleccione departamento...</option>
-                    <option [ngValue]="ubigeodepartamento.id" *ngFor="let ubigeodepartamento of ubigeodepartamentos">{{ubigeodepartamento.ubigeo}}</option>
-                  </select>
-                  <select (change)="mostrardistritos(idUbigeoProvincia)" [(ngModel)]="idUbigeoProvincia" class="form-control form-control-sm mousetrap"
-                    (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodepartamento">
-                    <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option selected value=0>Todas las provincias...</option>
-                    <option [ngValue]="ubigeoprovincia.id" *ngFor="let ubigeoprovincia of ubigeoprovincias">{{ubigeoprovincia.ubigeo}}</option>
-                    <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
-                  </select>
-                  <select selected (change)="mostrarpadistritos(idUbigeoDistrito)" [(ngModel)]="idUbigeoDistrito" class="form-control form-control-sm mousetrap"
-                    (change)="listarPropiedades()" placeholder="Filtrar por Ubigeo" name="ubigeodistrito">
-                    <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option value=0>Todos los distritos...</option>
-                    <option [ngValue]="ubigeodistrito.id" *ngFor="let ubigeodistrito of ubigeodistritos">{{ubigeodistrito.ubigeo}}</option>
-                    <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
-                  </select>
-                  <select selected  [(ngModel)]="CombohabilitacionUrbanaSeleccionada" class="form-control form-control-sm mousetrap"
-                    (change)="listarPropiedades()" placeholder="Filtrar por habilitacionurbana" name="habilitacionurbana">
-                    <!-- [(ngModel)]="idRol"   [disabled] = "responsable || proveedores || captadores"-->
-                    <option value=undefined>Todas las habilitaciones urbanas...</option>
-                    <option [ngValue]="habilitacionurbana" *ngFor="let habilitacionurbana of comboHabilitacionesurbanas">
-                      {{habilitacionurbana.siglas}} {{habilitacionurbana.nombrehabilitacionurbana}}
-                    </option>
-                    <!--<option [ ngValue]="tip.id" *ngFor="let tip of tiposubigeos"  >{ {tip.nombre}}</option>-->
-                  </select>
+                  <!--ComboBox: Departamentos-->
+                  <p-dropdown [options]="ubigeodepartamentos" name="departamentos" [showClear]="true" [(ngModel)]="departamentoSeleccionado"
+                    [disabled]="false" (ngModelChange)="mostrarprovincias(departamentoSeleccionado);" placeholder="Seleccione departamento..."
+                    optionLabel="ubigeo">
+                    <ng-template let-item pTemplate="selectedItem">
+                      {{departamentoSeleccionado?.ubigeo}}
+                    </ng-template>
+                    <ng-template let-fs pTemplate="item">
+                      <div> {{fs.value.ubigeo}}</div>
+                    </ng-template>
+                  </p-dropdown>
+                  <!--ComboBox: Provincias-->
+                  <p-dropdown [options]="ubigeoprovincias" name="provincias" [showClear]="true" [(ngModel)]="provinciaSeleccionado"
+                    [disabled]="false" (ngModelChange)="mostrardistritos(provinciaSeleccionado);" placeholder="Todas las provincias..."
+                    optionLabel="ubigeo">
+                    <ng-template let-item pTemplate="selectedItem">
+                      {{provinciaSeleccionado?.ubigeo}}
+                    </ng-template>
+                    <ng-template let-fs pTemplate="item">
+                      <div> {{fs.value.ubigeo}}</div>
+                    </ng-template>
+                  </p-dropdown>
+                  <!--ComboBox: Distritos-->
+                  <p-dropdown [options]="ubigeodistritos" name="distritos" [showClear]="true" [(ngModel)]="distritoSeleccionado"
+                    [disabled]="false" (ngModelChange)="mostrarpadistritos(distritoSeleccionado);" placeholder="Todos los distritos..."
+                    optionLabel="ubigeo">
+                    <ng-template let-item pTemplate="selectedItem">
+                      {{distritoSeleccionado?.ubigeo}}
+                    </ng-template>
+                    <ng-template let-fs pTemplate="item">
+                      <div> {{fs.value.ubigeo}}</div>
+                    </ng-template>
+                  </p-dropdown>
+                  <!--ComboBox: Habilitacion Urbana-->
+                  <p-dropdown [options]="comboHabilitacionesurbanas" name="habilitacionurbana" [showClear]="true" [(ngModel)]="combohabilitacionUrbanaSeleccionada"
+                    [disabled]="false" (ngModelChange)="listarPropiedades()" placeholder="Todas las habilitaciones urbanas..."
+                    optionLabel="siglas">
+                    <ng-template let-item pTemplate="selectedItem">
+                      {{combohabilitacionUrbanaSeleccionada?.siglas}} {{combohabilitacionUrbanaSeleccionada?.nombrehabilitacionurbana}}
+                    </ng-template>
+                    <ng-template let-fs pTemplate="item">
+                      <div> {{fs.value.siglas}} {{fs.value.nombrehabilitacionurbana}}</div>
+                    </ng-template>
+                  </p-dropdown>
                 </div>
                 <!--Opcional-->
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <strong> Precios [ Opcional ]</strong>
+                    <strong> Precios</strong>
                   </label>
-                  <select [(ngModel)]="rangoprecio" class="form-control form-control-sm mousetrap"
-                    placeholder="Filtrar por Ubigeo" name="rangoprecio">
-                    <option selected value=undefined>Todos los precios...</option>
-                    <option [ngValue]="rangoprecio" *ngFor="let rangoprecio of listaRangoPrecios">S/ {{rangoprecio.preciominimo}}
-                      - S/ {{rangoprecio.preciomaximo}}</option>
-                  </select>
+                  <!--ComboBox: Rango precios-->
+                  <p-dropdown [options]="listaRangoPrecios" name="rangoprecio" [showClear]="true" [(ngModel)]="rangoprecio"
+                    [disabled]="false" (ngModelChange)="listarPropiedades()" placeholder="Todos los precios..." optionLabel="preciominimo">
+                    <ng-template let-item pTemplate="selectedItem">
+                        S/ {{rangoprecio?.preciominimo}} - S/ {{rangoprecio?.preciomaximo}}
+                    </ng-template>
+                    <ng-template let-fs pTemplate="item">
+                      <div>S/ {{fs.value.preciominimo}} - S/ {{fs.value.preciomaximo}}</div>
+                    </ng-template>
+                  </p-dropdown>
                 </div>
                 <div class="form-group form-group-sm text-right mb-2">
-                  <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
+                  <!-- <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
                     <i class="{{constantes.ICON_BUSCAR}}"></i>
                     <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
-                  </button>
-                  <!-- <button type="button" class="btn btn-default mr-1" (click)="listarPropiedades()" title="Buscar">
-                    <i class="fa fa-search" aria-hidden="true"></i>
                   </button> -->
                   <button type="reset" (click)="limpiar()" class="btn btn-sm btn-default">
                       <i class="{{constantes.ICON_LIMPIAR}}"></i>
@@ -205,13 +223,21 @@
             </div>
           </div>
           
-          <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 190px)'}">
+          <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 175px)'}">
             <div class="card-body text-center pt-1" *ngIf="idPropiedad==0">
-              <p-paginator [rows]="4" [totalRecords]="propiedadesCopia.length" [rowsPerPageOptions]="[4,8,12]"
+              <p-paginator [rows]="8" [totalRecords]="propiedadesCopia.length" [rowsPerPageOptions]="[8,12,24]"
                 (onPageChange)="paginate($event)" styleClass="mb7">
               </p-paginator>
-              <img src="assets/img-empresa/avatars/no_image.png" class="rounded img-fluid" *ngIf="propiedades.length == 0">
-              <div *ngIf="propiedades.length != 0">
+              <div *ngIf="cargando">
+                <div class="content text-center" style="padding-top: 20%; color: #6aae7a">
+                  <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                  <h5>Cargando....</h5>
+                </div>
+              </div>
+              <div class="content text-center" style="padding-top: 10%;" *ngIf="propiedades.length == 0 && !cargando">
+                  <img src="assets/img-empresa/avatars/no_image.png" class="rounded img-fluid">
+              </div>
+              <div *ngIf="propiedades.length != 0 && !cargando">
                 <div class="row portfolio">
                   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" *ngFor="let propiedad of propiedades; let i = index;">
                     <div class="home-blog-post" style="background-color: white">
@@ -229,11 +255,11 @@
                       </div>
                       <div class="text">
                         <h6 style="color: rgb(87, 139, 62)" class="m-0">
-                          <strong>[{{i+1}}.] {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}} - {{propiedad.ubigeo}}</strong></h6>
-                          <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
-                        <p class="author-category">
                           <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>
                           <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_ALQUILER}}" *ngIf="propiedad.contrato=='A'"></i>
+                          <strong> {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}} - {{propiedad.ubigeo}}</strong></h6>
+                          <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
+                        <p class="author-category">
                           <strong>
                             <span style="color: rgb(87, 139, 62)" *ngIf="propiedad.preciocontrato">
                               S/ {{propiedad.preciocontrato}}
@@ -292,11 +318,6 @@
           </p-scrollPanel>
         </div>
       </div>
-
     </div>
-
   </div>
 </section>
-<div *ngIf="cargando">
-  <app-cargando></app-cargando>
-</div>

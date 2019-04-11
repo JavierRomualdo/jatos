@@ -16,6 +16,7 @@ import { AgmCoreModule } from '@agm/core';
 
 import { ToastrModule } from 'ngx-toastr';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import {PanelModule} from 'primeng/panel';
@@ -66,6 +67,7 @@ import { Title } from '@angular/platform-browser';
       closeButton: true
     }),
     WelcomeRoutingModule,
+    DropdownModule,
     RadioButtonModule,
     CheckboxModule,
     ScrollPanelModule,

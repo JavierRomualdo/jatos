@@ -1,176 +1,205 @@
-<div id="heading-breadcrumbs" class="borderPanel">
-  <div>
-    <div class="row d-flex align-items-center flex-wrap p-1">
-      <div class="col-lg-9 col-md-8 col-sm-6 col-xs-6">
-        <h4 class="h4">
-          <strong><i class="fa fa-home" aria-hidden="true"></i> LOTE</strong>
-        </h4>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-        <h4 class="h4">
-          <strong>
-            <span *ngIf="lote.contrato=='A'">ALQUILER: </span>
-            <span *ngIf="lote.contrato=='V'">VENTA: </span> S/ {{lote.preciocontrato}}
-          </strong>
-        </h4>
-      </div>
-    </div>
+<div class="row d-flex align-items-center flex-wrap p-1">
+  <div class="col-lg-3 col-md-4 col-sm-3 col-xs-2">
+    <h4 class="h4 m-0">
+      <strong><i class="fa fa-home" aria-hidden="true"></i> LOTE</strong>
+    </h4>
+  </div>
+  <div class="col-lg-6 col-md-4 col-sm-9 col-xs-10 text-center">
+    <h4 class="h4 m-0">
+      <strong>
+        <span *ngIf="lote.contrato=='A'">ALQUILER: </span>
+        <span *ngIf="lote.contrato=='V'">VENTA: </span> S/ {{lote.preciocontrato}}
+      </strong>
+    </h4>
+  </div>
+  <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-right">
+    <h4 class="h4 m-0">
+      <strong><i class="fa fa-phone" aria-hidden="true"></i></strong>
+      {{constantes.KEY_EMPRESA_SELECT.telefono}}
+    </h4>
   </div>
 </div>
 <div id="content" class="bg-white">
-  <div>
-    <section>
-      <!-- Carousel Start-->
-      <div class="home-carousel">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" *ngFor="let foto of fotos; let i = index;"
-              [attr.data-slide-to]="i" [ngClass]="{'active': i==0}"></li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active" [ngClass]="{'active': i==0}" *ngFor="let foto of fotos; let i = index;">
-              <img class="d-block w-100" [src]="foto.foto" [alt]="foto.nombre">
-              <div class="carousel-caption d-none d-md-block">
-                <h3>LOTE ({{i+1}})</h3>
-                <p>{{foto.detalle}}</p>
+  <div class="row portfolio-project">
+    <div class="col-md-10">
+      <section>
+        <!-- Carousel Start-->
+        <div class="home-carousel">
+          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" *ngFor="let foto of fotos; let i = index;"
+                [attr.data-slide-to]="i" [ngClass]="{'active': i==0}"></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active" [ngClass]="{'active': i==0}" *ngFor="let foto of fotos; let i = index;">
+                <img class="d-block w-100" [src]="foto.foto" [alt]="foto.nombre">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3>LOTE ({{i+1}})</h3>
+                  <p>{{foto.detalle}}</p>
+                </div>
               </div>
             </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
           </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
         </div>
-      </div>
-      <!-- Carousel End-->
-    </section>
+        <!-- Carousel End-->
+      </section>
+      <p style="font-size: 16px; color: black">
+        <strong>Descripción: </strong>{{lote.descripcion}}
+      </p>
+    </div>
+    <div class="col-md-2 pl-0">
+      <section class="borderPanel p-3 mt-1">
+        <h5><strong>Dirección</strong></h5>
+        <p>
+          <i class="fa fa-home" aria-hidden="true"></i> {{lote.direccion}}
+        </p>
+        <h5><strong>Área</strong></h5>
+        <p>{{lote.largo}} m. x {{lote.ancho}}.</p>
 
-    <section class="bar">
-      <div class="row portfolio-project">
-        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
-          <div class="heading">
-            <h4>
-              <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Referencia</strong>
-            </h4>
+        <div class="row portfolio-project">
+          <div class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
+            <div class="heading">
+              <h4>
+                <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Referencia</strong>
+              </h4>
+            </div>
+            <p style="font-size: 15px" class="text-justify">{{lote.referencia}}</p>
+            <div class="heading">
+              <h4>
+                <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Descripción</strong>
+              </h4>
+            </div>
+            <p style="font-size: 15px" class="text-justify">{{lote.descripcion}}</p>
+            <div class="heading">
+              <h4>
+                <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación</strong>
+              </h4>
+            </div>
           </div>
-          <p style="font-size: 15px" class="text-justify">{{lote.referencia}}</p>
-          <div class="heading">
-            <h4>
-              <strong><i class="fa fa-file-text-o" aria-hidden="true"></i> Descripción</strong>
-            </h4>
-          </div>
-          <p style="font-size: 15px" class="text-justify">{{lote.descripcion}}</p>
-          <div class="heading">
-            <h4>
-              <strong><i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación</strong>
-            </h4>
-          </div>
-          <!--Mapa-->
-          <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
-          [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
-          [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
-          [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
-            <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
-              [markerDraggable]="false">
-              <agm-info-window>
-                <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
-                <p>Punto de Ubicación</p>
-              </agm-info-window>
-            </agm-marker>
-          </agm-map>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 borderPanel p-3 mt-1"><!--project-more-->
-          <div class="heading text-center">
-            <h4>
-              <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
-            </h4>
-          </div>
-          <h5><strong>Ubicación</strong></h5>
-          <p>
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
-            <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
-          </p>
-          <h5><strong>Dirección</strong></h5>
-          <p>
-            <i class="fa fa-home" aria-hidden="true"></i> {{lote.direccion}}
-          </p>
-          <!--<h4><strong>Servicios</strong></h4>
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 borderPanel p-3 mt-1"><!--project-more-->
+            <div class="heading text-center">
+              <h4>
+                <strong><i class="fa fa-plus" aria-hidden="true"></i> Más</strong>
+              </h4>
+            </div>
+            <h5><strong>Ubicación</strong></h5>
             <p>
-              <span *ngFor="let servicio of servicios">
-                <i class="fa fa-check" aria-hidden="true"></i> { {servicio.servicio}}<br/>
-              </span>
-            </p>-->
-          <h5><strong>Área</strong></h5>
-          <p>{{lote.largo}} m. x {{lote.ancho}}.</p>
-        </div>
-      </div>
-    </section>
-    <!--Contacto-->
-    <section class="bar">
-      <div class="row portfolio-project">
-        <div class="col-md-12">
-          <div class="heading">
-            <h4>
-              <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
-            </h4>
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Departamento: {{ubigeo.departamento.ubigeo}}<br />
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Provincia: {{ubigeo.provincia.ubigeo}}<br />
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Distrito: {{ubigeo.ubigeo.ubigeo}}
+            </p>
+            
+            <!--<h4><strong>Servicios</strong></h4>
+              <p>
+                <span *ngFor="let servicio of servicios">
+                  <i class="fa fa-check" aria-hidden="true"></i> { {servicio.servicio}}<br/>
+                </span>
+              </p>-->
+            
           </div>
-
-          <p style="font-size: 15px" class="text-justify">
-            Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para
-            usted.
-          </p>
-          <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" class="borderPanel p-3">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
-                  <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
-                    required placeholder="Ingrese nombres">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="telefono"><strong>Telefono <span class="text-primary">*</span></strong></label>
-                  <input id="telefono" type="text" class="form-control" [(ngModel)]="mensaje.telefono" name="telefono"
-                    required placeholder="Ingrese telefono">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="email"><strong>Email <span class="text-primary">*</span></strong></label>
-                  <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email"
-                    placeholder="Ingrese email">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="titulo"><strong>Titulo <span class="text-primary">*</span></strong></label>
-                  <input id="titulo" type="text" class="form-control" [(ngModel)]="mensaje.titulo" name="titulo"
-                    required placeholder="Ingrese titulo del mensaje">
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="mensaje"><strong>Mensaje <span class="text-primary">*</span></strong></label>
-                  <textarea id="mensaje" class="form-control" [(ngModel)]="mensaje.mensaje" name="mensaje" required
-                    placeholder="Ingrese mensaje" maxlength="255"></textarea>
-                </div>
-              </div>
-              <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid"><i class="fa fa-envelope-o"></i>
-                  Enviar mensaje</button>
-              </div>
-            </div>
-          </form>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-10">
+      <section class="bar">
+        <div class="heading">
+          <h4>
+            <i class="{{constantes.ICON_MARKER}}" aria-hidden="true"></i> Ubicación
+          </h4>
+        </div>
+        <p style="font-size: 16px; color: black"> {{ubigeo.departamento.ubigeo}}, {{ubigeo.provincia.ubigeo}}, {{ubigeo.ubigeo.ubigeo}}  
+            | {{habilitacionurbana.siglas}} {{lote.nombrehabilitacionurbana}} | <strong>Referencia: </strong> {{lote.referencia}}
+        </p>
+        <!--Mapa-->
+        <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+        [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+        [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+        [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+          <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true"
+            [markerDraggable]="false">
+            <agm-info-window>
+              <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+              <p>Punto de Ubicación</p>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </section>
+    </div>
+    <div class="col-md-2 pl-0">
+      <!--Contacto-->
+      <section class="bar">
+        <div class="row portfolio-project">
+          <div class="col-md-12">
+            <div class="heading">
+              <h4>
+                <strong><i class="fa fa-envelope-o" aria-hidden="true"></i> Contacto</strong>
+              </h4>
+            </div>
+            <!-- <p style="font-size: 15px" class="text-justify">
+              Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para
+              usted.
+            </p> -->
+            <form #mensajeform="ngForm" (ngSubmit)="enviarmensaje()" class="borderPanel p-3">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group mb-2">
+                    <label for="nombres"><strong>Nombres <span class="text-primary">*</span></strong></label>
+                    <input id="nombres" type="text" class="form-control" [(ngModel)]="mensaje.nombres" name="nombres"
+                      required placeholder="Ingrese nombres">
+                  </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                  <div class="form-group">
+                    <label for="telefono"><strong>Telefono <span class="text-primary">*</span></strong></label>
+                    <input id="telefono" type="text" class="form-control" [(ngModel)]="mensaje.telefono" name="telefono"
+                      required placeholder="Ingrese telefono">
+                  </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                  <div class="form-group">
+                    <label for="email"><strong>Email <span class="text-primary">*</span></strong></label>
+                    <input id="email" type="text" class="form-control" [(ngModel)]="mensaje.email" name="email"
+                      placeholder="Ingrese email">
+                  </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                  <div class="form-group">
+                    <label for="titulo"><strong>Titulo <span class="text-primary">*</span></strong></label>
+                    <input id="titulo" type="text" class="form-control" [(ngModel)]="mensaje.titulo" name="titulo"
+                      required placeholder="Ingrese titulo del mensaje">
+                  </div>
+                </div>
+                <div class="col-md-12 mb-2">
+                  <div class="form-group">
+                    <label for="mensaje"><strong>Mensaje <span class="text-primary">*</span></strong></label>
+                    <textarea id="mensaje" class="form-control" [(ngModel)]="mensaje.mensaje" name="mensaje" required
+                      placeholder="Ingrese mensaje" maxlength="255"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-template-outlined" [disabled]="!mensajeform.form.valid"><i class="fa fa-envelope-o"></i>
+                    Enviar mensaje</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+    
+  
 </div>
 <!-- GET IT-->
 <div class="get-it p-2 rounded">
