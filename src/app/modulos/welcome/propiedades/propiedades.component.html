@@ -116,7 +116,7 @@
                     <i class="{{constantes.ICON_BUSCAR}}"></i>
                     <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
                   </button> -->
-                  <button type="reset" (click)="limpiar()" class="btn btn-sm btn-default">
+                  <button type="button" (click)="limpiar()" class="btn btn-sm btn-default">
                       <i class="{{constantes.ICON_LIMPIAR}}"></i>
                       <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
                   </button>
@@ -225,8 +225,8 @@
           
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 175px)'}">
             <div class="card-body text-center pt-1" *ngIf="idPropiedad==0">
-              <p-paginator [rows]="8" [totalRecords]="propiedadesCopia.length" [rowsPerPageOptions]="[8,12,24]"
-                (onPageChange)="paginate($event)" styleClass="mb7">
+              <p-paginator [rows]="8" [totalRecords]="propiedadesCopia.length"
+                (onPageChange)="paginate($event)" styleClass="mb7" *ngIf="propiedades.length">
               </p-paginator>
               <div *ngIf="cargando">
                 <div class="content text-center" style="padding-top: 20%; color: #6aae7a">

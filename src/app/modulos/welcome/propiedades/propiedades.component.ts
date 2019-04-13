@@ -316,7 +316,7 @@ export class PropiedadesComponent implements OnInit {
   limpiar() {
     this.propiedades = [];
     this.ubigeo = new UbigeoGuardar();
-    // this.ubigeodepartamentos = [];
+    this.ubigeodepartamentos = [];
     this.ubigeoprovincias = [];
     this.ubigeodistritos = [];
   }
