@@ -75,7 +75,7 @@
                   </label>
                   <input type="text" name="precioadquisicion" [(ngModel)]="local.precioadquisicion" required placeholder="Ingrese el precio compra" 
                     class="form-control form-control-sm mousetrap" (updateValue)="local.precioadquisicion=$event" [appAutonumeric2]="local.precioadquisicion"
-                    value="{{local.precioadquisicion}}">
+                    value="{{local.precioadquisicion}}" maxlength="14">
                 </div>
                 <div class="form-group form-group-sm col-sm-4">
                   <label class="control-label">
@@ -83,15 +83,15 @@
                   </label>
                   <input type="text" name="preciocontrato" [(ngModel)]="local.preciocontrato" required placeholder="Ingrese el precio contrato" 
                     class="form-control form-control-sm mousetrap" (updateValue)="local.preciocontrato=$event" [appAutonumeric2]="local.preciocontrato" 
-                    value="{{local.preciocontrato}}">
+                    value="{{local.preciocontrato}}" maxlength="14">
                 </div>
                 <div class="form-group form-group-sm col-sm-4 has-feedback">
                   <label class="control-label">
                     <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="largo" [(ngModel)]="local.largo" required placeholder="Ingrese largo (area)" 
-                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
-                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                  <input type="text" name="largo" [(ngModel)]="local.largo" required placeholder="Ingrese largo (area)" value="{{local.largo}}"
+                  class="form-control mousetrap" [appAutonumericValue]="local.largo" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
               </div>
@@ -101,9 +101,9 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="ancho" [(ngModel)]="local.ancho" required placeholder="Ingrese ancho (area)" 
-                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
-                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                  <input type="text" name="ancho" [(ngModel)]="local.ancho" required placeholder="Ingrese ancho (area)" value="{{local.ancho}}"
+                  class="form-control mousetrap" [appAutonumericValue]="local.ancho" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
                 <div class="form-group form-group-sm col-sm-4">

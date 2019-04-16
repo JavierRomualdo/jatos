@@ -23,6 +23,7 @@ import { PersonasComponent } from '../../../configuracion/personas/personas.comp
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
 import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
+import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 
 @Component({
   selector: 'app-modal-local',
@@ -49,6 +50,7 @@ export class ModalLocalComponent implements OnInit {
   public constantes: any = LS;
   public parametrosFoto: any = null;
   public estaSobreElemento: any;
+  public configAutonumericEnteros: AppAutonumeric;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -62,7 +64,16 @@ export class ModalLocalComponent implements OnInit {
     private _cargaImagenes: CargaImagenesService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.configAutonumericEnteros = {
+      decimalPlaces: 0,
+      decimalPlacesRawValue: 0,
+      decimalPlacesShownOnBlur: 0,
+      decimalPlacesShownOnFocus: 0,
+      maximumValue: '127',
+      minimumValue: '0'
+    }
+  }
 
   ngOnInit() {
     this.local = new Local();
@@ -319,7 +330,7 @@ export class ModalLocalComponent implements OnInit {
       this.local.path = 'locales/' + this.persona.dni;
       this._cargaImagenes.cargarImagenesFirebase(this.local.path, this.archivos);
     } else {
-      this.toastr.info('Ya esta asignado');
+      this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);
     }
   }
 

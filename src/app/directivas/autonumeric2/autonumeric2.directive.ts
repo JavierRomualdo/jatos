@@ -39,6 +39,7 @@ export class Autonumeric2Directive implements OnChanges, OnInit, AfterViewInit {
       decimalPlacesShownOnBlur: "2",
       decimalPlacesShownOnFocus: "2",
       minimumValue: "0",
+      maximumValue: '999999999.99',
       readOnly: this.appAutoRead ? true : false
     };
   }

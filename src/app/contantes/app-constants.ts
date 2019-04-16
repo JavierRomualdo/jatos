@@ -290,7 +290,7 @@ export class LS {
   static MSJ_SI_ACEPTAR = "Sí, Aceptar";
   static MSJ_SI_ELIMINAR = "Sí, eliminar";
   static MSJ_CANCELAR = "Cancelar";
-  static MSJ_ATRIBUTO_AREA_PROPIEDAD = "Atributo para el área de la propiedad.";
+  static MSJ_ATRIBUTO_AREA_PROPIEDAD = "Atributo para el área de la propiedad. Rango: [0, 127]";
   static MSJ_CAMPOS_INVALIDOS = 'Verifique los datos ingresados.';
   static MSJ_TITULO_INVALIDOS = 'Datos inválidos';
   static MSJ_RUC = 'Este atributo es fundamental, se recomienda no cambiarlo.';
@@ -302,6 +302,7 @@ export class LS {
   static MSJ_INTERNET_NO_ESTABLECIDA = 'Conexión no establecida.';
   static MSJ_ASIGNAR_SERVICIOS_PROPIEDAD = 'Asignar Servicios a esta propiedad';
   static MSJ_DEJAR_CAER_ARCHIVOS = 'Deje caer aqui los archivos';
+  static MSJ_INGRESE_DETALLE_POR_IMAGEN = 'Ingese detalle por imagen';
   
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

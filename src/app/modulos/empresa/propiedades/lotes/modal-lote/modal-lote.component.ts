@@ -20,6 +20,7 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
 import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
+import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 
 @Component({
   selector: 'app-modal-lote',
@@ -44,6 +45,7 @@ export class ModalLoteComponent implements OnInit {
   public constantes: any = LS;
   public parametrosFoto: any = null;
   public estaSobreElemento: any;
+  public configAutonumericEnteros: AppAutonumeric;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -57,7 +59,16 @@ export class ModalLoteComponent implements OnInit {
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.configAutonumericEnteros = {
+      decimalPlaces: 0,
+      decimalPlacesRawValue: 0,
+      decimalPlacesShownOnBlur: 0,
+      decimalPlacesShownOnFocus: 0,
+      maximumValue: '127',
+      minimumValue: '0'
+    }
+  }
 
   ngOnInit() {
     this.lote = new Lote();
@@ -288,7 +299,7 @@ export class ModalLoteComponent implements OnInit {
       this.lote.path = 'lotes/' + this.persona.dni;
       this._cargaImagenes.cargarImagenesFirebase(this.lote.path, this.archivos);
     } else {
-      this.toastr.info('¡ Ingrese detalle de la imagen(s)!');
+      this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);
     }
   }
 

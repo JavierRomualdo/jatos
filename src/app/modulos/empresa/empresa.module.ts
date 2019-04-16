@@ -83,6 +83,7 @@ import { ServiciosFormularioComponent } from './componentes/servicios-formulario
 import { HabilitacionurbanaComponent } from './configuracion/habilitacionurbana/habilitacionurbana.component';
 import { HabilitacionurbanaFormularioComponent } from './componentes/habilitacionurbana-formulario/habilitacionurbana-formulario.component';
 import { HabilitacionurbanaListadoComponent } from './componentes/habilitacionurbana-listado/habilitacionurbana-listado.component';
+import { AutonumericDirective } from 'src/app/directivas/autonumeric/autonumeric.directive';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -133,6 +134,7 @@ import { HabilitacionurbanaListadoComponent } from './componentes/habilitacionur
     AlquilerFormularioComponent,
 
     Autonumeric2Directive,
+    AutonumericDirective,
 
     BotonAccionComponent,
 

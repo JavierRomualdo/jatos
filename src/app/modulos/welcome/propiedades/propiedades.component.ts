@@ -247,7 +247,18 @@ export class PropiedadesComponent implements OnInit {
       this.ubigeo.propiedad = this.parametros.tipopropiedad;
       console.log("Ubigeo:");
       console.log(this.ubigeo);
-      this.propiedadesService.busquedaPropiedad(this.ubigeo, this);
+      if (this.rangoprecio) {
+        // aca tengo queagrgar
+        this.propiedadesService.busquedaPropiedad(this.ubigeo, this);
+      } else {
+        const copiaPropieades = this.propiedadesCopia.slice();
+        let propieadesNuevas = copiaPropieades.filter(item => item.nombrehabilitacionurbana === this.combohabilitacionUrbanaSeleccionada.nombrehabilitacionurbana &&
+          item.siglas === this.combohabilitacionUrbanaSeleccionada.siglas);
+        this.propiedades = propieadesNuevas;
+        // this.propiedadesCopia = propieadesNuevas;
+        this.cargando = false;
+        // this.despuesDeBusquedaPropiedad(propieadesNuevas);
+      }
     } else {
       // para los rangos de precios
       if(!this.porescrito) {
@@ -331,7 +342,7 @@ export class PropiedadesComponent implements OnInit {
     this.ubigeoprovincias = data;
     console.log(data);
     this.listarPropiedades();
-    // limpio la habilitacion urbana
+    // limpio la habilitacion urbana  
     this.comboHabilitacionesurbanas = [];
     this.combohabilitacionUrbanaSeleccionada = null;
   }

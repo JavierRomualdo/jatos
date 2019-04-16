@@ -74,7 +74,7 @@
                   </label>
                   <input type="text" name="precioadquisicion" [(ngModel)]="casa.precioadquisicion" required placeholder="Ingrese el precio compra" 
                     class="form-control form-control-sm mousetrap" (updateValue)="casa.precioadquisicion=$event" [appAutonumeric2]="casa.precioadquisicion"
-                    value="{{casa.precioadquisicion}}">
+                    value="{{casa.precioadquisicion}}" maxlength="14">
                 </div>
                 <div class="form-group form-group-sm col-sm-4">
                   <label class="control-label">
@@ -82,15 +82,15 @@
                   </label>
                   <input type="text" name="preciocontrato" [(ngModel)]="casa.preciocontrato" required placeholder="Ingrese el precio contrato" 
                     class="form-control form-control-sm mousetrap" (updateValue)="casa.preciocontrato=$event" [appAutonumeric2]="casa.preciocontrato" 
-                    value="{{casa.preciocontrato}}">
+                    value="{{casa.preciocontrato}}" maxlength="14">
                 </div>
                 <div class="form-group form-group-sm col-sm-4 has-feedback">
                   <label class="control-label">
                     <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="largo" [(ngModel)]="casa.largo" required placeholder="Ingrese largo (area)" 
-                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
-                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                  <input type="text" name="largo" [(ngModel)]="casa.largo" required placeholder="Ingrese largo (area)" value="{{casa.largo}}"
+                  class="form-control mousetrap" [appAutonumericValue]="casa.largo" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
               </div>
@@ -100,9 +100,9 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="ancho" [(ngModel)]="casa.ancho" required placeholder="Ingrese ancho (area)" 
-                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
-                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                  <input type="text" name="ancho" [(ngModel)]="casa.ancho" required placeholder="Ingrese ancho (area)" value="{{casa.ancho}}"
+                  class="form-control mousetrap" [appAutonumericValue]="casa.ancho" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
                 <div class="form-group form-group-sm col-sm-4">
@@ -146,7 +146,7 @@
                     <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
                   </label>
                   <input type="text" name="direccion" [(ngModel)]="casa.direccion" required placeholder="Ingrese direccion"
-                    class="form-control form-control-sm" maxlength="255">
+                    class="form-control form-control-sm" maxlength="100">
                 </div>
               </div>
               <!--/.row-->
@@ -181,26 +181,32 @@
             <div class="tab-pane active" id="home2" role="tabpanel">
               <!--/.row-->
               <div class="row">
-                <div class="form-group form-group-sm col-sm-4">
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
                   <label class="control-label">
                     <strong>{{constantes.TAG_PISOS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="number" value="1" name="npisos" [(ngModel)]="casa.npisos" max="10" min="1" required 
-                    class="form-control form-control-sm" placeholder="Ingrese cantidad pisos" maxlength="8" pKeyFilter="pint">
+                  <input type="text" name="npisos" [(ngModel)]="casa.npisos" required placeholder="Ingrese cantidad pisos" value="{{casa.npisos}}"
+                  class="form-control mousetrap" [appAutonumericValue]="casa.npisos" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="Rango: [0, 127]"
+                    triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
-                <div class="form-group form-group-sm col-sm-4">
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
                   <label class="control-label">
                     <strong>{{constantes.TAG_CUARTOS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="number" value="0" name="ncuartos" [(ngModel)]="casa.ncuartos" max="30" min="0" required
-                    class="form-control form-control-sm" placeholder="Ingrese cantidad cuartos" maxlength="8" pKeyFilter="pint">
+                  <input type="text" name="ncuartos" [(ngModel)]="casa.ncuartos" required placeholder="Ingrese cantidad cuartos" value="{{casa.ncuartos}}"
+                  class="form-control mousetrap" [appAutonumericValue]="casa.ncuartos" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="Rango: [0, 127]"
+                    triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
-                <div class="form-group form-group-sm col-sm-4">
+                <div class="form-group form-group-sm col-sm-4 has-feedback">
                   <label class="control-label">
                     <strong>{{constantes.TAG_BANIOS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="number" value="0" name="nbanios" [(ngModel)]="casa.nbanios" max="10" min="0" required 
-                    class="form-control form-control-sm" placeholder="Ingrese cantidad baños" maxlength="8" pKeyFilter="pint">
+                  <input type="text" name="nbanios" [(ngModel)]="casa.nbanios" required placeholder="Ingrese cantidad baños" value="{{casa.nbanios}}"
+                  class="form-control mousetrap" [appAutonumericValue]="casa.nbanios" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="Rango: [0, 127]"
+                    triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
               </div>
               <!--/.row-->
@@ -238,7 +244,7 @@
                     <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
                   </label>
                   <textarea class="form-control form-control-sm" [(ngModel)]="casa.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
-                    maxlength="255"></textarea>
+                    maxlength="765"></textarea>
                 </div>
               </div>
               <!--/.row-->

@@ -23,6 +23,7 @@ import { PersonasComponent } from '../../../configuracion/personas/personas.comp
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
 import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
+import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 
 @Component({
   selector: 'app-modal-cochera',
@@ -48,11 +49,13 @@ export class ModalCocheraComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
+  public configAutonumericEnteros: AppAutonumeric;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
   public zoom: number = 16;
   public estaSobreElemento: any;
+  
   constructor(
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
@@ -61,7 +64,16 @@ export class ModalCocheraComponent implements OnInit {
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) { }
+  ) {
+    this.configAutonumericEnteros = {
+      decimalPlaces: 0,
+      decimalPlacesRawValue: 0,
+      decimalPlacesShownOnBlur: 0,
+      decimalPlacesShownOnFocus: 0,
+      maximumValue: '127',
+      minimumValue: '0'
+    }
+  }
 
   ngOnInit() {
     this.cochera = new Cochera();
@@ -338,7 +350,7 @@ export class ModalCocheraComponent implements OnInit {
       this.cochera.path = 'cocheras/' + this.persona.dni;
       this._cargaImagenes.cargarImagenesFirebase(this.cochera.path, this.archivos);
     } else {
-      this.toastr.info('Ya esta asignado');
+      this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);
     }
   }
 

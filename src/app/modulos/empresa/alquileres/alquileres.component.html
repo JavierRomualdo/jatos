@@ -125,7 +125,7 @@
             [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="alquilerSeleccionado = $event.node.data"
             (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
             (cellFocused)="filaFocused($event)" (cellDoubleClicked)="alquilerSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
-            [frameworkComponents]="frameworkComponents">
+            [frameworkComponents]="frameworkComponents" [paginationAutoPageSize]="true" [pagination]="true">
           </ag-grid-angular>
           <!--(filterChanged)="actualizarFilas()"-->
         </div>

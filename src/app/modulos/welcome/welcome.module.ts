@@ -23,6 +23,7 @@ import {PanelModule} from 'primeng/panel';
 import {SpinnerModule} from 'primeng/spinner';
 import {TooltipModule} from 'primeng/tooltip';
 import {PaginatorModule} from 'primeng/paginator';
+import {KeyFilterModule} from 'primeng/keyfilter';
 import { CasaDetalleComponent } from './componentes/casa-detalle/casa-detalle.component';
 import { CocheraDetalleComponent } from './componentes/cochera-detalle/cochera-detalle.component';
 import { LoteDetalleComponent } from './componentes/lote-detalle/lote-detalle.component';
@@ -74,7 +75,8 @@ import { Title } from '@angular/platform-browser';
     PanelModule,
     SpinnerModule,
     TooltipModule,
-    PaginatorModule
+    PaginatorModule,
+    KeyFilterModule
   ],
   providers: [
     NgbActiveModal,

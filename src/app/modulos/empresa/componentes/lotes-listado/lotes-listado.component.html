@@ -54,7 +54,8 @@
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
-        (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()">
+        (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
+        [paginationAutoPageSize]="true" [pagination]="true">
       </ag-grid-angular>
       <!--(filterChanged)="actualizarFilas()"-->
     </div>

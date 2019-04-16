@@ -70,7 +70,7 @@
                   </label>
                   <input type="text" name="precioadquisicion" [(ngModel)]="habitacion.precioadquisicion" required placeholder="Ingrese el precio compra" 
                     class="form-control form-control-sm mousetrap" (updateValue)="habitacion.precioadquisicion=$event" [appAutonumeric2]="habitacion.precioadquisicion"
-                    value="{{habitacion.precioadquisicion}}">
+                    value="{{habitacion.precioadquisicion}}" maxlength="14">
                 </div>
                 <div class="form-group form-group-sm col-sm-4">
                   <label class="control-label">
@@ -78,15 +78,15 @@
                   </label>
                   <input type="text" name="preciocontrato" [(ngModel)]="habitacion.preciocontrato" required placeholder="Ingrese el precio contrato" 
                     class="form-control form-control-sm mousetrap" (updateValue)="habitacion.preciocontrato=$event" [appAutonumeric2]="habitacion.preciocontrato" 
-                    value="{{habitacion.preciocontrato}}">
+                    value="{{habitacion.preciocontrato}}" maxlength="14">
                 </div>
                 <div class="form-group form-group-sm col-sm-4 has-feedback">
                   <label class="control-label">
                     <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="largo" [(ngModel)]="habitacion.largo" required placeholder="Ingrese largo (area)" 
-                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
-                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                  <input type="text" name="largo" [(ngModel)]="habitacion.largo" required placeholder="Ingrese largo (area)" value="{{habitacion.largo}}"
+                  class="form-control mousetrap" [appAutonumericValue]="habitacion.largo" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
               </div>
@@ -96,9 +96,9 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="ancho" [(ngModel)]="habitacion.ancho" required placeholder="Ingrese ancho (area)" 
-                  class="form-control mousetrap" maxlength="9" pKeyFilter="pint">
-                    <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
+                  <input type="text" name="ancho" [(ngModel)]="habitacion.ancho" required placeholder="Ingrese ancho (area)" value="{{habitacion.ancho}}"
+                  class="form-control mousetrap" [appAutonumericValue]="habitacion.ancho" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
                 <div class="form-group form-group-sm col-sm-4">
@@ -184,8 +184,10 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_CAMAS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="number" value="1" name="ncamas" [(ngModel)]="habitacion.ncamas" max="10" min="1" required
-                  class="form-control form-control-sm" placeholder="Ingrese cantidad pisos" maxlength="8" pKeyFilter="pint">
+                  <input type="text" name="ncamas" [(ngModel)]="habitacion.ncamas" required placeholder="Ingrese cantidad camas" value="{{habitacion.ncamas}}"
+                  class="form-control mousetrap" [appAutonumericValue]="habitacion.ncamas" [appAutonumeric]="configAutonumericEnteros">
+                  <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="Rango: [0, 127]"
+                    triggers="mouseenter:mouseleave" container="body"></span>
                 </div>
                 <div class="form-group form-group-sm col-sm-2">
                   <label class="control-label">

@@ -1,14 +1,6 @@
-<div class="modal-primary"> <!--*ngIf="listadoPersonas?.length>0"-->
+<div class="modal-primary">
   <div class="card">
-    <!-- <div class="card-header bg-primary p-2" *ngIf="isModal">
-      <strong>{{constantes.TAG_PERSONAS_LISTADO}}</strong>
-      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div> -->
-
     <div class="card-header p-1">
-      <!-- <i class="fa fa-align-justify"></i> -->
       <strong>{{constantes.TAG_PERSONAS_LISTADO}}</strong>
       <div class="card-header-actions">
         <div class="btn-group">
@@ -54,7 +46,8 @@
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="mostrarContextMenu($event.data, $event.event)" (contextmenu)="$event.preventDefault()"
-        (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()">
+        (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
+        [paginationAutoPageSize]="true" [pagination]="true">
       </ag-grid-angular>
       <!--(filterChanged)="actualizarFilas()"-->
     </div>

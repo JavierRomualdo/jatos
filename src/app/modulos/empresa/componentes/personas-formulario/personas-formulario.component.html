@@ -100,7 +100,7 @@
                     <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
                   </label>
                   <input type="text" name="direccion" required placeholder="Ingrese direccion" 
-                    class="form-control form-control-sm" maxlength="255" [(ngModel)]="persona.direccion">
+                    class="form-control form-control-sm" maxlength="100" [(ngModel)]="persona.direccion">
                 </div>
                 <!--Telefono-->
                 <div class="form-group form-group-sm col-sm-4">
@@ -108,7 +108,8 @@
                     <strong>{{constantes.TAG_TELEFONO}} <span class="text-primary">*</span></strong>
                   </label>
                   <input type="text" name="telefono" required  class="form-control form-control-sm" 
-                    placeholder="Ingrese telefono" maxlength="15" [(ngModel)]="persona.telefono">
+                    placeholder="Ingrese telefono" maxlength="9" [(ngModel)]="persona.telefono"
+                    pKeyFilter="pint">
                 </div>
               </div>
               <!--row - roles-->

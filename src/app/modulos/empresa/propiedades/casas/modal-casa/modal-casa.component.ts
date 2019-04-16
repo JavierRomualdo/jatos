@@ -23,6 +23,7 @@ import { PersonasComponent } from '../../../configuracion/personas/personas.comp
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
 import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
+import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 
 @Component({
   selector: 'app-modal-casa',
@@ -48,6 +49,7 @@ export class ModalCasaComponent implements OnInit {
   public tituloForm: string = null;
   public constantes: any = LS;
   public parametrosFoto: any = null;
+  public configAutonumericEnteros: AppAutonumeric;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -62,7 +64,16 @@ export class ModalCasaComponent implements OnInit {
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
-  ) {}
+  ) {
+    this.configAutonumericEnteros = {
+      decimalPlaces: 0,
+      decimalPlacesRawValue: 0,
+      decimalPlacesShownOnBlur: 0,
+      decimalPlacesShownOnFocus: 0,
+      maximumValue: '127',
+      minimumValue: '0'
+    }
+  }
 
   ngOnInit() {
     // limpiar
@@ -322,7 +333,7 @@ export class ModalCasaComponent implements OnInit {
       this.casa.path = 'casas/' + this.casa.codigo;
       this._cargaImagenes.cargarImagenesFirebase(this.casa.path, this.archivos);
     } else {
-      this.toastr.info('Ya esta asignado');
+      this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);
     }
   }
 
