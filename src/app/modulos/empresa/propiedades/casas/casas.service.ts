@@ -277,14 +277,14 @@ export class CasasService {
           return params.data.propietario;
         }
       },
-      {
-        headerName: LS.TAG_UBICACION,
-        width: 150,
-        minWidth: 150,
-        valueGetter: (params) => {
-          return params.data.ubicacion;
-        }
-      },
+      // {
+      //   headerName: LS.TAG_UBICACION,
+      //   width: 150,
+      //   minWidth: 150,
+      //   valueGetter: (params) => {
+      //     return params.data.ubicacion;
+      //   }
+      // },
       {
         headerName: LS.TAG_HAB_URBANA,
         width: 150,

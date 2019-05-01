@@ -1,12 +1,10 @@
 import { Persona } from './entidad.persona';
 import { Ubigeo } from './entidad.ubigeo';
-import { HabilitacionUrbana } from './entidad.habilitacionurbana';
 
 export class Cochera {
   id: number;
   persona_id: Persona = new Persona;
   ubigeo_id: Ubigeo = new Ubigeo();
-  habilitacionurbana_id: HabilitacionUrbana = new HabilitacionUrbana();
   codigo: string = null;
   precioadquisicion: number = 0.00;
   preciocontrato: number = 0.00;

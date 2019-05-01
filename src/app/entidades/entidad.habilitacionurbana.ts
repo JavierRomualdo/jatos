@@ -1,5 +1,5 @@
 export class HabilitacionUrbana {
-    id: number;
+    id: number = null;
     nombre: string = "";
     siglas: string = "";
     estado: boolean = true;

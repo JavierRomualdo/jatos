@@ -74,7 +74,7 @@
                   </p-dropdown>
                   <!--ComboBox: Distritos-->
                   <p-dropdown [options]="ubigeodistritos" name="distritos" [showClear]="true" [(ngModel)]="distritoSeleccionado"
-                    [disabled]="false" (ngModelChange)="mostrarpadistritos(distritoSeleccionado);" placeholder="Todos los distritos..."
+                    [disabled]="false" (ngModelChange)="mostrarhabilitacionurbana(distritoSeleccionado);" placeholder="Todos los distritos..."
                     optionLabel="ubigeo">
                     <ng-template let-item pTemplate="selectedItem">
                       {{distritoSeleccionado?.ubigeo}}
@@ -84,14 +84,17 @@
                     </ng-template>
                   </p-dropdown>
                   <!--ComboBox: Habilitacion Urbana-->
-                  <p-dropdown [options]="comboHabilitacionesurbanas" name="habilitacionurbana" [showClear]="true" [(ngModel)]="combohabilitacionUrbanaSeleccionada"
+                  <p-dropdown [options]="ubigeohabilitacionurbanas" name="habilitacionurbana" [showClear]="true" [(ngModel)]="habilitacionurbanaSeleccionado"
                     [disabled]="false" (ngModelChange)="listarPropiedades()" placeholder="Todas las habilitaciones urbanas..."
-                    optionLabel="siglas">
+                    optionLabel="ubigeo">
                     <ng-template let-item pTemplate="selectedItem">
-                      {{combohabilitacionUrbanaSeleccionada?.siglas}} {{combohabilitacionUrbanaSeleccionada?.nombrehabilitacionurbana}}
+                      <!-- {{combohabilitacionUrbanaSeleccionada?.siglas}}  -->
+                      {{habilitacionurbanaSeleccionado?.ubigeo}}
                     </ng-template>
                     <ng-template let-fs pTemplate="item">
-                      <div> {{fs.value.siglas}} {{fs.value.nombrehabilitacionurbana}}</div>
+                      <div> 
+                        <!-- {{fs.value.siglas}}  -->
+                        {{fs.value.ubigeo}}</div>
                     </ng-template>
                   </p-dropdown>
                 </div>
@@ -257,7 +260,9 @@
                         <h6 style="color: rgb(87, 139, 62)" class="m-0">
                           <i class="{{constantes.ICON_VENTA}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_VENTA}}" *ngIf="propiedad.contrato=='V'"></i>
                           <i class="{{constantes.ICON_ALQUILER}}" aria-hidden="true" ngbTooltip="{{constantes.TAG_ALQUILER}}" *ngIf="propiedad.contrato=='A'"></i>
-                          <strong> {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}} - {{propiedad.ubigeo}}</strong></h6>
+                          <strong> {{propiedad.siglas}} {{propiedad.nombrehabilitacionurbana}} 
+                            <!-- - {{propiedad.ubigeo}} -->
+                          </strong></h6>
                           <!-- {{ubigeo.departamento.ubigeo}} - {{propiedad.ubigeo}} -->
                         <p class="author-category">
                           <strong>

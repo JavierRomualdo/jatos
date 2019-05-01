@@ -87,9 +87,11 @@ export class UbigeoService {
           if (parametro.idtipoubigeo === 1) { // departamento
             // listo las provincias del departamento
             contexto.despuesDeMostrarUbigeosProvincias(res);
-          } else if (parametro. idtipoubigeo === 2) { // provincia
+          } else if (parametro.idtipoubigeo === 2) { // provincia
             // listo los distritos de la provincia
             contexto.despuesDeMostrarUbigeosDistritos(res);
+          } else if (parametro.idtipoubigeo === 3) { // distrito
+            contexto.despuesDeMostrarUbigeosHabilitacionUrbanas(res);
           }
         } else {
           this.toastr.warning('No se encontraron resultados', 'Aviso');

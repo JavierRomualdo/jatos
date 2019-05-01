@@ -21,8 +21,6 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
-import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
-import { HabilitacionurbanaComponent } from '../../../configuracion/habilitacionurbana/habilitacionurbana.component';
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 
 @Component({
@@ -42,7 +40,6 @@ export class ModalLocalComponent implements OnInit {
   public localservicios: Localservicio[];
   public fotos: Foto[];
   public persona: Persona;
-  public habilitacionurbana: HabilitacionUrbana;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
   public accion: string = null;
@@ -80,7 +77,6 @@ export class ModalLocalComponent implements OnInit {
     this.fotos = [];
     this.servicios = [];
     this.persona = new Persona();
-    this.habilitacionurbana = new HabilitacionUrbana();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
@@ -130,7 +126,6 @@ export class ModalLocalComponent implements OnInit {
     this.cargando = true;
     this.local.localpersonaList = this.listaLP;
     this.local.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
-    this.local.habilitacionurbana_id = this.habilitacionurbana;
     this.local.ubigeo_id = this.ubigeo.ubigeo;
     this.local.serviciosList = this.servicios;
     if (this.accion === LS.ACCION_NUEVO) { // guardar nueva local
@@ -186,8 +181,7 @@ export class ModalLocalComponent implements OnInit {
   convertirLocalALocalTO(data) {
     let localTO = new LocalTO(data);
     localTO.propietario = this.local.persona_id.nombres;
-    localTO.ubicacion = this.local.ubigeo_id.ubigeo;
-    localTO.siglas = this.local.habilitacionurbana_id.siglas;
+    localTO.nombrehabilitacionurbana = this.local.ubigeo_id.ubigeo;
     return localTO;
   }
 
@@ -211,7 +205,6 @@ export class ModalLocalComponent implements OnInit {
     this.listaLP = data.localpersonaList;
     this.persona = this.listaLP[0];
     this.ubigeo = data.ubigeo;
-    this.habilitacionurbana = data.habilitacionurbana;
     this.servicios = data.serviciosList;
     this.localservicios = data.localservicioList;
     // Mapa
@@ -266,20 +259,6 @@ export class ModalLocalComponent implements OnInit {
     });
   }
 
-  buscarHabilitacionUrbana() {
-    const modalRef = this.modalService.open(HabilitacionurbanaComponent, {size: 'lg', keyboard: true});
-    modalRef.componentInstance.isModal = true;
-    modalRef.result.then((result) => {
-      console.log('ubigeoguardar:');
-      console.log(result);
-      this.habilitacionurbana = result;
-      this.local.habilitacionurbana_id = this.habilitacionurbana;
-      this.auth.agregarmodalopenclass();
-    }, (reason) => {
-      this.auth.agregarmodalopenclass();
-    });
-  }
-  
   buscarservicio() {
     const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;

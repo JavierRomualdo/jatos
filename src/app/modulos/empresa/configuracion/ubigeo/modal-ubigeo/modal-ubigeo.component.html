@@ -28,6 +28,10 @@
                 <option selected disabled value=undefined>Seleccione Provincia...</option>
                 <option [ngValue]="ubigeoprovincia" *ngFor="let ubigeoprovincia of ubigeoprovincias"  >{{ubigeoprovincia.ubigeo}}</option>
               </select>
+              <select (change)="mostrarHabilitacionesUrbanas(distritoSeleccionado)" required [(ngModel)]="distritoSeleccionado" class="form-control border-primary" name="ubigeodistrito">
+                <option selected disabled value=undefined>Seleccione Distrito...</option>
+                <option [ngValue]="ubigeodistrito" *ngFor="let ubigeodistrito of ubigeodistritos">{{ubigeodistrito.ubigeo}}</option>
+              </select>
               <input type="text" class="form-control border-primary" required placeholder="Busque por ubigeo" maxlength="150" name="ubigeo" [(ngModel)]="parametros.ubigeo.ubigeo">
               <button type="button" class="input-group-addon btn btn-square btn-primary" (click)="busqueda(frmDatos)"><i class="fa fa-search cursor-pointer"></i></button>
               <button type="reset" class="btn btn-sm btn-primary" title="actualizar" (click)="limpiar()"><i class="fa fa-refresh cursor-pointer"></i></button>
@@ -44,9 +48,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let ubigeo of ubigeos;let i=index" [ngStyle]="{'cursor': provinciaSeleccionado ? 'pointer ': 'default'}" (click)="provinciaSeleccionado ? enviarubigeo(ubigeo): ''">
+                    <tr *ngFor="let ubigeo of ubigeos;let i=index" [ngStyle]="{'cursor': provinciaSeleccionado || distritoSeleccionado ? 'pointer ': 'default'}" (click)="provinciaSeleccionado || distritoSeleccionado ? enviarubigeo(ubigeo): ''">
                       <th class="text-center">{{i+1}}</th>
-                      <td>{{ubigeo.ubigeo}}</td>
+                      <td>{{ubigeo.habilitacionurbana_id ? ubigeo.habilitacionurbana_id.siglas : ''}} {{ubigeo.ubigeo}}</td>
                       <td>
                         <label class="switch switch-label switch-pill switch-primary">
                           <input type="checkbox" class="switch-input" [(ngModel)]="ubigeo.estado" name="{{ubigeo.ubigeo}}">
@@ -88,30 +92,53 @@
       <div class="form-group row">
           <label class="col-sm-3 form-control-label">Tipo Ubigeo <span class="text-primary">*</span></label>
           <div class="col-sm-9">
-            <select class="form-control border-primary" placeholder="Filtrar por Ubigeo" style="height: calc(2.5rem);" name="idTipoUbigeo" [(ngModel)]="idTipoUbigeo">
+            <select class="form-control border-primary" (change)="idTipoUbigeo==4 ? listarHabilitacionUrbana(true) : '' " placeholder="Filtrar por Ubigeo" style="height: calc(2.5rem);" name="idTipoUbigeo" [(ngModel)]="idTipoUbigeo">
                 <option value="0">Seleccione tipo ubigeo...</option>
                 <option [ngValue]="tipoubigeo.id" *ngFor="let tipoubigeo of tipoubigeos"  >{{tipoubigeo.tipoubigeo}}</option>
             </select>
           </div>
       </div>
-      <div class="form-group row" *ngIf="idTipoUbigeo==2 || idTipoUbigeo==3" >
+      <div class="form-group row" *ngIf="idTipoUbigeo==2 || idTipoUbigeo==3 || idTipoUbigeo==4" >
         <label class="col-sm-3 form-control-label">Departamento <span class="text-primary">*</span></label>
         <div class="col-sm-9">
-          <select class="form-control border-primary" (change)="idTipoUbigeo==3 ? mostrarprovincias(departamentoSeleccionado): ''" style="height: calc(2.5rem);" name="departamento" [(ngModel)]="departamentoSeleccionado">
+          <select class="form-control border-primary" (change)="idTipoUbigeo==3 || idTipoUbigeo==4 ? mostrarprovincias(departamentoSeleccionado): ''" style="height: calc(2.5rem);" name="departamento" [(ngModel)]="departamentoSeleccionado">
             <option selected disabled value=undefined>Seleccione Departamento...</option>
             <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of ubigeodepartamentos"  >{{ubigeodepartamento.ubigeo}}</option>
           </select>
         </div>
       </div>
-      <div class="form-group row" *ngIf="idTipoUbigeo==3" >
+      <div class="form-group row" *ngIf="idTipoUbigeo==3 || idTipoUbigeo==4" >
         <label class="col-sm-3 form-control-label">Provincia <span class="text-primary">*</span></label>
         <div class="col-sm-9">
-          <select class="form-control border-primary" placeholder="Filtrar por Ubigeo" style="height: calc(2.5rem);" name="roles" [(ngModel)]="provinciaSeleccionado">
+          <select class="form-control border-primary" (change)="idTipoUbigeo==4 ? mostrardistritos(provinciaSeleccionado): ''" placeholder="Filtrar por Ubigeo"
+            style="height: calc(2.5rem);" name="roles" [(ngModel)]="provinciaSeleccionado">
             <option selected disabled value=undefined>Seleccione Provincia...</option>
-            <option [ngValue]="ubigeoprovincia" *ngFor="let ubigeoprovincia of ubigeoprovincias"  >{{ubigeoprovincia.ubigeo}}</option>
+            <option [ngValue]="ubigeoprovincia" *ngFor="let ubigeoprovincia of ubigeoprovincias" >{{ubigeoprovincia.ubigeo}}</option>
           </select>
         </div>
       </div>
+      <div class="form-group row" *ngIf="idTipoUbigeo==4" >
+        <label class="col-sm-3 form-control-label">Distrito <span class="text-primary">*</span></label>
+        <div class="col-sm-9">
+          <select class="form-control border-primary" placeholder="Filtrar por Ubigeo"
+            style="height: calc(2.5rem);" name="distritos22" [(ngModel)]="distritoSeleccionado">
+            <option selected disabled value=undefined>Seleccione Provincia...</option>
+            <option [ngValue]="ubigeodistrito" *ngFor="let ubigeodistrito of ubigeodistritos" >{{ubigeodistrito.ubigeo}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="idTipoUbigeo==4" >
+        <label class="col-sm-3 form-control-label">Habilitacion urbana <span class="text-primary">*</span></label>
+        <div class="col-sm-9">
+          <select class="form-control border-primary" name="habilitacionurbana2" [(ngModel)]="habilitacionurbanaSelecionado">
+            <option selected disabled value=undefined>Seleccione habilitacionurbana...</option>
+            <option [ngValue]="habilitacionurbana" *ngFor="let habilitacionurbana of listaHabilitacionUrbana" >
+              {{habilitacionurbana.nombre}} ({{habilitacionurbana.siglas}})
+            </option>
+          </select>
+        </div>
+      </div>
+
       <div class="form-group row">
         <label class="col-sm-3 form-control-label">Ubigeo <span class="text-primary">*</span></label>
         <div class="col-sm-9">

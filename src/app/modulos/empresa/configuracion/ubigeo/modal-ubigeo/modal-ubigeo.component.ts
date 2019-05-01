@@ -10,6 +10,8 @@ import { UbigeoService } from './ubigeo.service';
 import { TipoubigeoService } from '../modal-tipoubigeo/tipoubigeo.service';
 import { NgForm } from '@angular/forms';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { HabilitacionUrbana } from 'src/app/entidades/entidad.habilitacionurbana';
+import { HabilitacionurbanaService } from '../../habilitacionurbana/habilitacionurbana.service';
 
 @Component({
   selector: 'app-modal-ubigeo',
@@ -29,12 +31,15 @@ export class ModalUbigeoComponent implements OnInit {
   public departamentoSeleccionado: Ubigeo;
   public ubigeoprovincias: Ubigeo[];
   public provinciaSeleccionado: Ubigeo;
+  public ubigeodistritos: Ubigeo[];
   public ubigeos: Ubigeo[]; // son ubigeos de distritos que muestra en la tabla
   public ubigeosCopia: Ubigeo[];
   public distritoSeleccionado: Ubigeo;
   public tipoubigeos: UbigeoTipo[];
   public idTipoUbigeo: number = 0;
   public parametros: UbigeoGuardar;
+  public listaHabilitacionUrbana: HabilitacionUrbana[];
+  public habilitacionurbanaSelecionado: HabilitacionUrbana;
 
   public listado: Boolean = false;
   
@@ -42,6 +47,7 @@ export class ModalUbigeoComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private ubigeoService: UbigeoService,
     private tipoUbigeoService: TipoubigeoService,
+    private habilitacionurbanaService: HabilitacionurbanaService,
     private utilService: UtilService,
     private toastr: ToastrService,
     private modal: NgbModal,
@@ -56,8 +62,11 @@ export class ModalUbigeoComponent implements OnInit {
     this.provinciaSeleccionado = undefined;
     this.ubigeos = [];
     this.ubigeosCopia = [];
+    this.ubigeodistritos = [];
     this.distritoSeleccionado = undefined;
     this.tipoubigeos = [];
+    this.listaHabilitacionUrbana = [];
+    this.habilitacionurbanaSelecionado = undefined;
     // this.parametros = new Ubigeo();
     this.parametros = new UbigeoGuardar();
     this.parametros.departamento = null;
@@ -104,6 +113,12 @@ export class ModalUbigeoComponent implements OnInit {
     this.mostrarubigeos(provinciaSeleccionado.tipoubigeo_id, provinciaSeleccionado.codigo);
   }
 
+  mostrarHabilitacionesUrbanas(distritoSeleccionado) {
+    this.parametros.distrito = distritoSeleccionado;
+    console.log(distritoSeleccionado);
+    this.mostrarubigeos(distritoSeleccionado.tipoubigeo_id, distritoSeleccionado.codigo);
+  }
+
   limpiar() {
     this.parametros = new UbigeoGuardar();
     this.parametros.departamento = null;
@@ -112,8 +127,12 @@ export class ModalUbigeoComponent implements OnInit {
 
     this.ubigeos = [];
     this.ubigeoprovincias = [];
+    this.ubigeodistritos = [];
+    this.listaHabilitacionUrbana = [];
     this.departamentoSeleccionado = undefined;
     this.provinciaSeleccionado = undefined;
+    this.distritoSeleccionado = undefined;
+    this.habilitacionurbanaSelecionado=undefined;
     this.listarUbigeos();
   }
 
@@ -123,8 +142,13 @@ export class ModalUbigeoComponent implements OnInit {
     this.idTipoUbigeo = 0;
     this.departamentoSeleccionado = undefined;
     this.provinciaSeleccionado = undefined;
+    this.distritoSeleccionado = undefined;
+    this.habilitacionurbanaSelecionado = undefined;
     this.ubigeoprovincias = [];
+    this.ubigeodistritos = [];
+    this.listaHabilitacionUrbana = [];
     this.ubigeoGuardar.ubigeo = new Ubigeo();
+    this.ubigeoGuardar.ubigeo.habilitacionurbana_id = new HabilitacionUrbana();
     this.ubigeo = new Ubigeo();
     this.listarTipoUbigeos();
   }
@@ -156,6 +180,13 @@ export class ModalUbigeoComponent implements OnInit {
 
   despuesDeMostrarUbigeosDistritos(data) {
     this.cargando = false;
+    this.ubigeodistritos = data;
+    this.ubigeos = data; // distritos
+  }
+
+  despuesDeMostrarUbigeosHabilitacionUrbanas(data){
+    this.cargando = false;
+    this.listaHabilitacionUrbana = data;
     this.ubigeos = data; // distritos
   }
 
@@ -166,6 +197,20 @@ export class ModalUbigeoComponent implements OnInit {
 
   despuesDeListarTipoUbigeos(data) {
     this.tipoubigeos = data;
+    this.cargando = false;
+    console.log(data);
+  }
+
+  listarHabilitacionUrbana(activos) {
+    this.cargando = true;
+    let parametros = {
+      activos: activos
+    }
+    this.habilitacionurbanaService.listarHabilitacionUrbana(parametros, this);
+  }
+
+  despuesDeListarHabilitacionUrbana(data) {
+    this.listaHabilitacionUrbana = data;
     this.cargando = false;
     console.log(data);
   }
@@ -189,12 +234,20 @@ export class ModalUbigeoComponent implements OnInit {
       this.ubigeoGuardar.departamento = data.departamento;
       this.ubigeoGuardar.provincia = data.provincia;
     }
+    if (data.distrito != null) {
+      this.ubigeoGuardar.departamento = data.departamento;
+      this.ubigeoGuardar.provincia = data.provincia;
+      this.ubigeoGuardar.distrito = data.distrito;
+      console.log("mira:", this.provinciaSeleccionado, this.distritoSeleccionado);
+      this.listarHabilitacionUrbana(true);
+      this.habilitacionurbanaSelecionado = this.ubigeoGuardar.ubigeo.habilitacionurbana_id;
+    }
     this.cargando = false;
   }
 
   guardarUbigeo(form: NgForm) {
     this.cargando = true;
-    if (this.idTipoUbigeo === 1) {
+    if (this.idTipoUbigeo === 1) { // departamento
       this.ubigeoGuardar.departamento = null;
       this.ubigeoGuardar.provincia = null;
     } else if (this.idTipoUbigeo === 2) {
@@ -202,6 +255,11 @@ export class ModalUbigeoComponent implements OnInit {
     } else if (this.idTipoUbigeo === 3) {
       this.ubigeoGuardar.departamento = this.departamentoSeleccionado;
       this.ubigeoGuardar.provincia = this.provinciaSeleccionado;
+    } else if (this.idTipoUbigeo === 4) {
+      this.ubigeoGuardar.departamento = this.departamentoSeleccionado;
+      this.ubigeoGuardar.provincia = this.provinciaSeleccionado;
+      this.ubigeoGuardar.distrito = this.distritoSeleccionado;
+      this.ubigeoGuardar.ubigeo.habilitacionurbana_id = this.habilitacionurbanaSelecionado;
     }
 
     for (const tipoubigeo of this.tipoubigeos) {
@@ -220,7 +278,9 @@ export class ModalUbigeoComponent implements OnInit {
     }
     this.departamentoSeleccionado = undefined;
     this.provinciaSeleccionado = undefined;
+    this.distritoSeleccionado = undefined;
     this.ubigeoprovincias = [];
+    this.ubigeodistritos = [];
     this.ubigeoGuardar = new UbigeoGuardar();
     this.ubigeoGuardar.ubigeo = new Ubigeo();
   }
@@ -269,6 +329,7 @@ export class ModalUbigeoComponent implements OnInit {
     this.departamentoSeleccionado = undefined;
     this.ubigeoprovincias = [];
     this.provinciaSeleccionado = undefined;
+    this.distritoSeleccionado = undefined;
     this.listarUbigeos();
   }
 
