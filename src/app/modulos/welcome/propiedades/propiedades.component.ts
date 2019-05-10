@@ -156,6 +156,7 @@ export class PropiedadesComponent implements OnInit {
       this.propiedadesCopia = [];
       this.ubigeoprovincias = [];
       this.ubigeodistritos = [];
+      this.ubigeohabilitacionurbanas = [];
       this.ubigeo.provincia = new Ubigeo();
       this.ubigeo.distrito = new Ubigeo();
       // this.parametros.departamento = null;
@@ -171,6 +172,7 @@ export class PropiedadesComponent implements OnInit {
       //this.listarPropiedades();
     } else {
       this.ubigeodistritos = [];
+      this.ubigeohabilitacionurbanas = [];
       this.ubigeo.distrito = new Ubigeo();
       this.ubigeo.provincia = new Ubigeo();
       // buscar por departamento (regresando al combo departamento)

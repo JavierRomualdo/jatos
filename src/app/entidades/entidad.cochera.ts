@@ -17,6 +17,7 @@ export class Cochera {
   descripcion: string = null;
   foto: string = null;
   path: string = null; // camino o ruta de imagenes en cloud storage de firebase
+  pathArchivos: string = null; // camino o ruta de archivos en cloud storage de firebase
   // tslint:disable-next-line:no-inferrable-types
   nmensajes: number = 0;
   contrato: string;
@@ -27,6 +28,7 @@ export class Cochera {
   estado: Boolean = true;
   cocherapersonaList: any = {};
   fotosList: any = {};
+  archivosList: any = {};
   serviciosList: any = {};
   cocheraservicioList: any = {};
   latitud: string = "";

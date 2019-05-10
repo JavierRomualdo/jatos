@@ -22,6 +22,7 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
+import { HabitacionArchivo } from 'src/app/entidades/entidad.habitacionarchivo';
 
 @Component({
   selector: 'app-modal-habitacion',
@@ -35,10 +36,12 @@ export class ModalHabitacionComponent implements OnInit {
   public verNuevo = false;
   public cargando: Boolean = false;
   public habitacion: Habitacion;
-  public archivos: FileItem[] = [];
+  public archivosFotos: FileItem[] = [];
+  public archivosDocumentos: FileItem[] = [];
   public servicios: Servicios[];
   public habitacionservicios: Habitacionservicio[];
   public fotos: Foto[];
+  public archivos: HabitacionArchivo[];
   public persona: Persona;
   public ubigeo: UbigeoGuardar;
   public listaLP: any = []; // lista de persona-roles
@@ -75,13 +78,15 @@ export class ModalHabitacionComponent implements OnInit {
   ngOnInit() {
     this.habitacion = new Habitacion();
     this.fotos = [];
+    this.archivos = [];
     this.servicios = [];
     this.persona = new Persona();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
-    this.archivos = [];
+    this.archivosFotos = [];
+    this.archivosDocumentos = [];
     this.listaLP = [];
 
     this.postInicializarModal();
@@ -131,7 +136,7 @@ export class ModalHabitacionComponent implements OnInit {
     this.habitacion.serviciosList = this.servicios;
     if (this.accion === LS.ACCION_NUEVO) { // guardar nueva habitacion
       // guardar en lista fotos
-      for (const item of this.archivos) {
+      for (const item of this.archivosFotos) {
         const foto: Foto = new Foto();
         foto.nombre = item.nombreArchivo;
         foto.foto = item.url;
@@ -142,6 +147,19 @@ export class ModalHabitacionComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.habitacion.fotosList);
+      // guardar en lista documentos
+      for (const item of this.archivosDocumentos) {
+        const archivo: HabitacionArchivo = new HabitacionArchivo();
+        archivo.nombre = item.nombreArchivo;
+        archivo.archivo = item.url;
+        archivo.tipoarchivo = ".pdf";
+        this.archivos.push(archivo);
+      }
+      this.habitacion.archivosList = this.archivos;
+      this.archivos = [];
+      console.log('archivos: ');
+      console.log(this.habitacion.archivosList);
+      //
       this.habitacion.ganancia = this.habitacion.preciocontrato - this.habitacion.precioadquisicion;
       console.log('antes de guardar habitacion: ');
       console.log(this.habitacion);
@@ -150,7 +168,7 @@ export class ModalHabitacionComponent implements OnInit {
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
-      for (const item of this.archivos) {
+      for (const item of this.archivosFotos) {
         const foto: Foto = new Foto();
         foto.nombre = item.nombreArchivo;
         foto.foto = item.url;
@@ -162,6 +180,21 @@ export class ModalHabitacionComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.habitacion.fotosList);
+      // guardar en lista archivos
+      let archivos: HabitacionArchivo[];
+      archivos = [];
+      for (const item of this.archivosDocumentos) {
+        const archivo: HabitacionArchivo = new HabitacionArchivo();
+        archivo.nombre = item.nombreArchivo;
+        archivo.archivo = item.url;
+        archivos.push(archivo);
+        archivo.tipoarchivo = ".pdf";
+      }
+      this.habitacion.archivosList = archivos;
+      archivos = [];
+      console.log('archivos: ');
+      console.log(this.habitacion.archivosList);
+      //
       this.habitacion.ganancia = this.habitacion.preciocontrato - this.habitacion.precioadquisicion;
       console.log('antes de editar propiedad: ');
       console.log(this.habitacion);
@@ -228,12 +261,25 @@ export class ModalHabitacionComponent implements OnInit {
     console.log('traido para edicion');
     console.log(this.habitacion);
     this.habitacion.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
-    // traer archivos de firebase storage
+    // traer archivosFotos de firebase storage
     // this._cargaImagenes.getImagenes(res.path);
 
     // aqui metodo para mostrar todas las imagenes de este propiedad ....
     // this.imagen = res.foto;
     // this.imagenAnterior = res.foto;
+
+    // archivos documentos
+    for (const item of data.archivosList) {
+      console.log('archivo: ');
+      console.log(item);
+      this.archivos.push(item);
+    }
+    console.log('archivos : ');
+    console.log(this.archivos);
+    // this.fotos = res.fotosList;
+    console.log('traido para edicion');
+    console.log(this.habitacion);
+    this.habitacion.archivosList = {}; 
     this.cargando = false;
   }
 
@@ -302,9 +348,10 @@ export class ModalHabitacionComponent implements OnInit {
     this.habitacion.contrato = "A";
   }
 
+  // Metodos para las imagenes
   cargarImagenes() {
     let estadetalle: Boolean = true;
-    for (const item of this.archivos) {
+    for (const item of this.archivosFotos) {
       if (item.detalle === '' || item.detalle === null || item.detalle === undefined) {
         // aqui falta el detalle (input type text) del archivo que obligatoriamente debe tener contenido
         estadetalle = false;
@@ -312,14 +359,24 @@ export class ModalHabitacionComponent implements OnInit {
     }
     if (estadetalle) {
       this.habitacion.path = 'habitaciones/' + this.persona.dni;
-      this._cargaImagenes.cargarImagenesFirebase(this.habitacion.path, this.archivos);
+      this._cargaImagenes.cargarImagenesFirebase(this.habitacion.path, this.archivosFotos);
     } else {
       this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);
     }
   }
 
+  limpiarFotos() {
+    this.archivosFotos = [];
+  }
+
+  // Metodos para los archivos documentos
+  cargarArchivos() {
+    this.habitacion.pathArchivos = 'habitaciones/' + this.habitacion.codigo+'/archivos';
+    this._cargaImagenes.cargarImagenesFirebase(this.habitacion.pathArchivos, this.archivosDocumentos);
+  }
+
   limpiarArchivos() {
-    this.archivos = [];
+    this.archivosDocumentos = [];
   }
 
   limpiarhabitacion() {
@@ -359,11 +416,12 @@ export class ModalHabitacionComponent implements OnInit {
     console.log(this.habitacionservicios);
   }
 
+  // foto
   quitarfoto(item: FileItem) {
-    const index = this.archivos.indexOf(item);
-    this.archivos.splice(index, 1);
+    const index = this.archivosFotos.indexOf(item);
+    this.archivosFotos.splice(index, 1);
     console.log('las fotos que quedan: ');
-    console.log(this.archivos);
+    console.log(this.archivosFotos);
   }
 
   guardardetallefoto(foto: Foto) {
@@ -428,7 +486,46 @@ export class ModalHabitacionComponent implements OnInit {
   // se selecciona la imagen y los muestra en el panel
   onSelectImagenes(event) {
     for(let file of event.files) {
-      this.archivos.push(new FileItem(file));
+      this.archivosFotos.push(new FileItem(file));
+    }
+  }
+
+  // archivos documentos
+  quitararchivo(item: FileItem) {
+    const index = this.archivosDocumentos.indexOf(item);
+    this.archivosDocumentos.splice(index, 1);
+    console.log('los archivos que quedan: ');
+    console.log(this.archivosDocumentos);
+  }
+
+  quitararchivohabitacion(archivo: HabitacionArchivo) {
+    const modalRef = this.modalService.open(ConfirmacionComponent, {windowClass: 'nuevo-modal', size: 'sm', keyboard: false});
+    modalRef.result.then((result) => {
+      // elimino de la bd
+      this.eliminararchivohabitacion(archivo);
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.habitacion.pathArchivos, archivo.nombre);
+      this.toastr.success(result.operacionMensaje, 'Exito');
+      this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      this.auth.agregarmodalopenclass();
+    });
+  }
+
+  eliminararchivohabitacion(archivo: HabitacionArchivo) {
+    this.habitacionService.eliminarArchivoHabitacion(archivo, this);
+  }
+
+  despuesDeEliminarArchivoHabitacion(data) {
+    console.log('se ha eliminado:');
+    console.log(data);
+  }
+
+  // se selecciona la imagen y los muestra en el panel
+  onSelectArchivos(event) {
+    console.log("event.files",event.files);
+    for(let file of event.files) {
+      this.archivosDocumentos.push(new FileItem(file));
     }
   }
 

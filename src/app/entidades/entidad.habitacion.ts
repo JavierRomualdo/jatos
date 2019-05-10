@@ -20,12 +20,14 @@ export class Habitacion {
   descripcion: string = null;
   foto: string = null;
   path: string = null; // camino o ruta de imagenes en cloud storage de firebase
+  pathArchivos: string = null; // camino o ruta de archivos en cloud storage de firebase
   // fotos: Blob [];
   contrato: string;
   estadocontrato: string = 'L';
   estado: boolean = true;
   habitacionpersonaList: any = {};
   fotosList: any = {};
+  archivosList: any = {};
   serviciosList: any = {};
   habitacionservicioList: any = {};
   latitud: string = "";

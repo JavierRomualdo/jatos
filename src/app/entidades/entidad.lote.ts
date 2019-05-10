@@ -18,12 +18,14 @@ export class Lote {
     descripcion: string = null;
     foto: string = null;
     path: string = null; // camino o ruta de imagenes en cloud storage de firebase
+    pathArchivos: string = null; // camino o ruta de archivos en cloud storage de firebase    
     // fotos: Blob[];
     contrato: string;
     estadocontrato: string = 'L';
     estado: boolean = true;
     lotepersonaList: any = {};
     fotosList: any = {};
+    archivosList: any = {};
     latitud: string = "";
     longitud: string = "";
 }

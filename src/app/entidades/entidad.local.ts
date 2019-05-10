@@ -20,6 +20,7 @@ export class Local {
     descripcion: string = null;
     foto: string = null;
     path: string = null; // camino o ruta de imagenes en cloud storage de firebase
+    pathArchivos: string = null; // camino o ruta de archivos en cloud storage de firebase
     // foto: Blob;
     // fotos: Blob[];
     contrato: string;
@@ -27,6 +28,7 @@ export class Local {
     estado: Boolean = true;
     localpersonaList: any = {};
     fotosList: any = {};
+    archivosList: any = {};
     serviciosList: any = {};
     localservicioList: any = {};
     latitud: string = "";

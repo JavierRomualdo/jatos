@@ -184,6 +184,19 @@ export class CocheraService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  eliminarArchivoCochera(parametro, contexto) {
+    this.api.delete2('cocheraarchivo/' + parametro.id).then(
+      (res) => {
+        const index = contexto.archivos.indexOf(parametro);
+        contexto.archivos.splice(index, 1);
+        contexto.despuesDeEliminarArchivoCochera(res);
+      },
+      (error) => {
+        console.log('error: ');
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   imprimirCocheras(parametro, contexto) {
     this.archivoService.postPdf("imprimirReporteCocheras", parametro).then(
       (data) => {

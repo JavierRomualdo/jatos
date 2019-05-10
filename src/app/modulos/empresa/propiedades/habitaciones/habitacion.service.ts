@@ -185,6 +185,19 @@ export class HabitacionService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  eliminarArchivoHabitacion(parametro, contexto) {
+    this.api.delete2('habitacionarchivo/' + parametro.id).then(
+      (res) => {
+        const index = contexto.archivos.indexOf(parametro);
+        contexto.archivos.splice(index, 1);
+        contexto.despuesDeEliminarArchivoHabitacion(res);
+      },
+      (error) => {
+        console.log('error: ');
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   imprimirHabitaciones(parametro, contexto) {
     this.archivoService.postPdf("imprimirReporteHabitaciones", parametro).then(
       (data) => {

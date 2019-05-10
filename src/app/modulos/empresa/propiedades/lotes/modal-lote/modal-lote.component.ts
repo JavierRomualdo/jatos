@@ -19,6 +19,7 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
    ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
+import { LoteArchivo } from 'src/app/entidades/entidad.lotearchivo';
 
 @Component({
   selector: 'app-modal-lote',
@@ -32,8 +33,10 @@ export class ModalLoteComponent implements OnInit {
   public verNuevo = false;
   public cargando: Boolean = false;
   public lote: Lote;
-  public archivos: FileItem[] = [];
+  public archivosFotos: FileItem[] = [];
+  public archivosDocumentos: FileItem[] = [];
   public fotos: Foto[];
+  public archivos: LoteArchivo[];
   public persona: Persona;
   public listaLP: any = []; // lista de persona-roles
   public ubigeo: UbigeoGuardar;
@@ -70,12 +73,14 @@ export class ModalLoteComponent implements OnInit {
   ngOnInit() {
     this.lote = new Lote();
     this.fotos = [];
+    this.archivos = [];
     this.persona = new Persona();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
-    this.archivos = [];
+    this.archivosFotos = [];
+    this.archivosDocumentos = [];
     this.listaLP = [];
 
     this.postInicializarModal();
@@ -123,7 +128,7 @@ export class ModalLoteComponent implements OnInit {
     this.lote.ubigeo_id = this.ubigeo.ubigeo;
     if (this.accion === LS.ACCION_NUEVO) { // guardar nuevo rol
       // guardar en lista fotos
-      for (const item of this.archivos) {
+      for (const item of this.archivosFotos) {
         const foto: Foto = new Foto();
         foto.nombre = item.nombreArchivo;
         foto.foto = item.url;
@@ -134,6 +139,19 @@ export class ModalLoteComponent implements OnInit {
       this.fotos = [];
       console.log('fotos: ');
       console.log(this.lote.fotosList);
+      // guardar en lista documentos
+      for (const item of this.archivosDocumentos) {
+        const archivo: LoteArchivo = new LoteArchivo();
+        archivo.nombre = item.nombreArchivo;
+        archivo.archivo = item.url;
+        archivo.tipoarchivo = ".pdf";
+        this.archivos.push(archivo);
+      }
+      this.lote.archivosList = this.archivos;
+      this.archivos = [];
+      console.log('archivos: ');
+      console.log(this.lote.archivosList);
+      //
       this.lote.ganancia = this.lote.preciocontrato - this.lote.precioadquisicion;
       console.log('antes de guardar lote: ');
       console.log(this.lote);
@@ -142,7 +160,7 @@ export class ModalLoteComponent implements OnInit {
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
-      for (const item of this.archivos) {
+      for (const item of this.archivosFotos) {
         const foto: Foto = new Foto();
         foto.nombre = item.nombreArchivo;
         foto.foto = item.url;
@@ -153,6 +171,21 @@ export class ModalLoteComponent implements OnInit {
       fotos = [];
       console.log('fotos: ');
       console.log(this.lote.fotosList);
+      // guardar en lista archivos
+      let archivos: LoteArchivo[];
+      archivos = [];
+      for (const item of this.archivosDocumentos) {
+        const archivo: LoteArchivo = new LoteArchivo();
+        archivo.nombre = item.nombreArchivo;
+        archivo.archivo = item.url;
+        archivos.push(archivo);
+        archivo.tipoarchivo = ".pdf";
+      }
+      this.lote.archivosList = archivos;
+      archivos = [];
+      console.log('archivos: ');
+      console.log(this.lote.archivosList);
+      //
       this.lote.ganancia = this.lote.preciocontrato - this.lote.precioadquisicion;
       console.log('antes de editar lote: ');
       console.log(this.lote);
@@ -216,12 +249,24 @@ export class ModalLoteComponent implements OnInit {
     console.log('traido para edicion');
     console.log(this.lote);
     this.lote.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
-    // traer archivos de firebase storage
+    // traer archivosFotos de firebase storage
     // this._cargaImagenes.getImagenes(res.path);
 
     // aqui metodo para mostrar todas las imagenes de este lote ....
     // this.imagen = res.foto;
     // this.imagenAnterior = res.foto;
+    // archivos documentos
+    for (const item of data.archivosList) {
+      console.log('archivo: ');
+      console.log(item);
+      this.archivos.push(item);
+    }
+    console.log('archivos : ');
+    console.log(this.archivos);
+    // this.fotos = res.fotosList;
+    console.log('traido para edicion');
+    console.log(this.lote);
+    this.lote.archivosList = {}; 
     this.cargando = false;
   }
 
@@ -266,9 +311,10 @@ export class ModalLoteComponent implements OnInit {
     this.lote.codigo = data;
   }
 
+  // Metodos para las imagenes
   cargarImagenes() {
     let estadetalle: Boolean = true;
-    for (const item of this.archivos) {
+    for (const item of this.archivosFotos) {
       if (item.detalle === '' || item.detalle === null || item.detalle === undefined) {
         // aqui falta el detalle (input type text) del archivo que obligatoriamente debe tener contenido
         estadetalle = false;
@@ -276,14 +322,24 @@ export class ModalLoteComponent implements OnInit {
     }
     if (estadetalle) {
       this.lote.path = 'lotes/' + this.persona.dni;
-      this._cargaImagenes.cargarImagenesFirebase(this.lote.path, this.archivos);
+      this._cargaImagenes.cargarImagenesFirebase(this.lote.path, this.archivosFotos);
     } else {
       this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);
     }
   }
 
+  limpiarFotos() {
+    this.archivosFotos = [];
+  }
+
+  // Metodos para los archivos documentos
+  cargarArchivos() {
+    this.lote.pathArchivos = 'lotes/' + this.lote.codigo+'/archivos';
+    this._cargaImagenes.cargarImagenesFirebase(this.lote.pathArchivos, this.archivosDocumentos);
+  }
+
   limpiarArchivos() {
-    this.archivos = [];
+    this.archivosDocumentos = [];
   }
 
   limpiarlote() {
@@ -300,11 +356,12 @@ export class ModalLoteComponent implements OnInit {
     this.lote.foto = null;
   }
 
+  // foto
   quitarfoto(item: FileItem) {
-    const index = this.archivos.indexOf(item);
-    this.archivos.splice(index, 1);
+    const index = this.archivosFotos.indexOf(item);
+    this.archivosFotos.splice(index, 1);
     console.log('las fotos que quedan: ');
-    console.log(this.archivos);
+    console.log(this.archivosFotos);
   }
 
   guardardetallefoto(foto: Foto) {
@@ -368,7 +425,46 @@ export class ModalLoteComponent implements OnInit {
   // se selecciona la imagen y los muestra en el panel
   onSelectImagenes(event) {
     for(let file of event.files) {
-      this.archivos.push(new FileItem(file));
+      this.archivosFotos.push(new FileItem(file));
+    }
+  }
+
+  // archivos documentos
+  quitararchivo(item: FileItem) {
+    const index = this.archivosDocumentos.indexOf(item);
+    this.archivosDocumentos.splice(index, 1);
+    console.log('los archivos que quedan: ');
+    console.log(this.archivosDocumentos);
+  }
+
+  quitararchivolote(archivo: LoteArchivo) {
+    const modalRef = this.modalService.open(ConfirmacionComponent, {windowClass: 'nuevo-modal', size: 'sm', keyboard: false});
+    modalRef.result.then((result) => {
+      // elimino de la bd
+      this.eliminararhivolote(archivo);
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.lote.pathArchivos, archivo.nombre);
+      this.toastr.success(result.operacionMensaje, 'Exito');
+      this.auth.agregarmodalopenclass();
+    }, (reason) => {
+      this.auth.agregarmodalopenclass();
+    });
+  }
+
+  eliminararhivolote(archivo: LoteArchivo) {
+    this.loteService.eliminarArchivoLote(archivo, this);
+  }
+
+  despuesDeEliminarArchivoLote(data) {
+    console.log('se ha eliminado:');
+    console.log(data);
+  }
+
+  // se selecciona la imagen y los muestra en el panel
+  onSelectArchivos(event) {
+    console.log("event.files",event.files);
+    for(let file of event.files) {
+      this.archivosDocumentos.push(new FileItem(file));
     }
   }
 

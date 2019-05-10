@@ -184,6 +184,19 @@ export class LocalService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  eliminarArchivoLocal(parametro, contexto) {
+    this.api.delete2('localarchivo/' + parametro.id).then(
+      (res) => {
+        const index = contexto.archivos.indexOf(parametro);
+        contexto.archivos.splice(index, 1);
+        contexto.despuesDeEliminarArchivoLocal(res);
+      },
+      (error) => {
+        console.log('error: ');
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   imprimirLocales(parametro, contexto) {
     this.archivoService.postPdf("imprimirReporteLocales", parametro).then(
       (data) => {

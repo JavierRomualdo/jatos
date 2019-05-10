@@ -23,6 +23,7 @@ export class Casa {
   descripcion: string = null;
   foto: string = null;
   path: string = null; // camino o ruta de imagenes en cloud storage de firebase
+  pathArchivos: string = null; // camino o ruta de archivos en cloud storage de firebase
   // foto: Blob;
   // fotos: Blob [];
   // tslint:disable-next-line:no-inferrable-types
@@ -32,6 +33,7 @@ export class Casa {
   estado: boolean = true;
   casapersonaList: any = {};
   fotosList: any = {};
+  archivosList: any = {};
   serviciosList: any = {};
   casaservicioList: any = {};
   latitud: string = "";
@@ -62,12 +64,14 @@ export class Casa {
     this.descripcion = data.descripcion ? data.descripcion : this.descripcion;
     this.foto = data.foto ? data.foto : this.foto;
     this.path = data.path ? data.path : this.path;
+    this.pathArchivos = data.pathArchivos ? data.pathArchivos : this.pathArchivos;
     this.nmensajes = data.nmensajes ? data.nmensajes : this.nmensajes;
     this.contrato = data.contrato ? data.contrato : this.contrato;
     this.estadocontrato = data.estadocontrato ? data.estadocontrato : this.estadocontrato;
     this.estado = data.estado ? data.estado : this.estado;
     this.casapersonaList = data.casapersonaList ? data.casapersonaList : this.casapersonaList;
     this.fotosList = data.fotosList ? data.fotosList : this.fotosList;
+    this.archivosList = data.archivosList ? data.archivosList : this.archivosList;
     this.serviciosList = data.serviciosList ? data.serviciosList : this.serviciosList;
     this.casaservicioList = data.casaservicioList ? data.casaservicioList : this.casaservicioList;
     this.latitud = data.latitud ? data.latitud : this.latitud;

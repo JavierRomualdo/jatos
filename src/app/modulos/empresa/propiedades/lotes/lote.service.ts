@@ -184,6 +184,19 @@ export class LoteService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  eliminarArchivoLote(parametro, contexto) {
+    this.api.delete2('lotearchivo/' + parametro.id).then(
+      (res) => {
+        const index = contexto.archivos.indexOf(parametro);
+        contexto.archivos.splice(index, 1);
+        contexto.despuesDeEliminarArchivoLote(res);
+      },
+      (error) => {
+        console.log('error: ');
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   imprimirLotes(parametro, contexto) {
     this.archivoService.postPdf("imprimirReporteLotes", parametro).then(
       (data) => {

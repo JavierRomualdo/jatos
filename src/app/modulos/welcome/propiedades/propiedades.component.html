@@ -88,13 +88,11 @@
                     [disabled]="false" (ngModelChange)="listarPropiedades()" placeholder="Todas las habilitaciones urbanas..."
                     optionLabel="ubigeo">
                     <ng-template let-item pTemplate="selectedItem">
-                      <!-- {{combohabilitacionUrbanaSeleccionada?.siglas}}  -->
+                      {{habilitacionurbanaSeleccionado?.siglas}} 
                       {{habilitacionurbanaSeleccionado?.ubigeo}}
                     </ng-template>
                     <ng-template let-fs pTemplate="item">
-                      <div> 
-                        <!-- {{fs.value.siglas}}  -->
-                        {{fs.value.ubigeo}}</div>
+                      <div> {{fs.value.siglas}} {{fs.value.ubigeo}}</div>
                     </ng-template>
                   </p-dropdown>
                 </div>

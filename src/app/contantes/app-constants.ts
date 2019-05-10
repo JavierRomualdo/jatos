@@ -115,6 +115,7 @@ export class LS {
   static TAG_DESCRIPCION = "Descripcion";
   static TAG_MAS_OPCIONES = "Más opciones";
   static TAG_IMAGENES = "Imágenes";
+  static TAG_ARCHIVOS = "Archivos";
   static TAG_SERVICIO = "Servicio";
   static TAG_SERVICIOS = "Servicios";
   static TAG_OPCIONES = "Opciones";
@@ -176,6 +177,7 @@ export class LS {
   static TAG_TAMANIO = 'Tamaño';
   static TAG_PROGRESO = 'Progreso';
   static TAG_SIGLAS = 'Siglas';
+  static TAG_TIPO_ARCHIVO = 'Tipo archivo';
 
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";

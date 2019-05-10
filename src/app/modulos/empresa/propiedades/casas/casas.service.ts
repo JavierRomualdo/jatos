@@ -187,6 +187,19 @@ export class CasasService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  eliminarArchivoCasa(parametro, contexto) {
+    this.api.delete2('casaarchivo/' + parametro.id).then(
+      (res) => {
+        const index = contexto.archivos.indexOf(parametro);
+        contexto.archivos.splice(index, 1);
+        contexto.despuesDeEliminarArchivoCasa(res);
+      },
+      (error) => {
+        console.log('error: ');
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   imprimirCasas(parametro, contexto) {
     this.archivoService.postPdf("imprimirReporteCasas", parametro).then(
       (data) => {
