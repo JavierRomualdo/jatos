@@ -18,10 +18,17 @@ export class WelcomeComponentComponent implements OnInit {
   public empresa: Empresa;
   public imagen: string = null;
   public imagenAnterior: string = null; // solo se usara para editar usuario
-  public ubigeo: UbigeoGuardar;
+  // public ubigeo: UbigeoGuardar;
   public fecha = new Date();
   public iniciadosesion = false;
   public constantes: any = LS;
+  public tipopropiedades: string[] = [];
+  public tipocontratodetalle = [];
+  public ubigeos = [];
+  public ubigeo: any;
+  public filteridUbigeos;
+  public contratodetalle: string = null;
+  public propiedad: string = null;
 
   constructor(
     private modalService: NgbModal,
@@ -34,9 +41,12 @@ export class WelcomeComponentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.tipopropiedades = LS.LISTA_PROPIEDADES;
+    this.tipocontratodetalle = LS.LISTA_CONTRATO_DETALLE;
+    this.ubigeos = LS.LISTA_UBIGEO;
     // this.auth.handleAuthentication(); // auth
     this.empresa = new Empresa();
-    this.ubigeo = new UbigeoGuardar();
+    // this.ubigeo = new UbigeoGuardar();
     if (LS.KEY_EMPRESA_SELECT) {
       this.empresa = LS.KEY_EMPRESA_SELECT;
     } else {
@@ -51,7 +61,7 @@ export class WelcomeComponentComponent implements OnInit {
 
   despuesDeListarEmpresa(data) {
     this.empresa = data;
-    this.ubigeo = data.ubigeo;
+    // this.ubigeo = data.ubigeo;
     this.imagen = data.foto;
     this.imagenAnterior = data.foto;
     LS.KEY_EMPRESA_SELECT = this.empresa;
@@ -68,5 +78,23 @@ export class WelcomeComponentComponent implements OnInit {
 
   salir() {
     // this.loginservicio.logout();
+  }
+
+  filterUbigeoSingle(event) {
+    let query = event.query;
+    this.filteridUbigeos = this.ubigeos.filter(item => 
+      item.ubigeo.toLowerCase().indexOf(query.toLowerCase()) == 0);
+  }
+
+  filterCountry(query, ubigeos: any[]):any[] {
+    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+    let filtered : any[] = [];
+    for(let i = 0; i < ubigeos.length; i++) {
+        let ubigeo = ubigeos[i];
+        if(ubigeo.ubigeo.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+            filtered.push(ubigeo);
+        }
+    }
+    return filtered;
   }
 }

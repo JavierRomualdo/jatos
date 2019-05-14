@@ -188,7 +188,7 @@ export class CasasService {
   }
 
   eliminarArchivoCasa(parametro, contexto) {
-    this.api.delete2('casaarchivo/' + parametro.id).then(
+    this.api.delete2('casaarchivo/' + parametro.casa_id).then(
       (res) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);

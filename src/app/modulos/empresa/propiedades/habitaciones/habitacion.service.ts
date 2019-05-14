@@ -186,7 +186,7 @@ export class HabitacionService {
   }
 
   eliminarArchivoHabitacion(parametro, contexto) {
-    this.api.delete2('habitacionarchivo/' + parametro.id).then(
+    this.api.delete2('habitacionarchivo/' + parametro.habitacion_id).then(
       (res) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);

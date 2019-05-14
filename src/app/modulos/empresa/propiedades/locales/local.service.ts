@@ -185,7 +185,7 @@ export class LocalService {
   }
 
   eliminarArchivoLocal(parametro, contexto) {
-    this.api.delete2('localarchivo/' + parametro.id).then(
+    this.api.delete2('localarchivo/' + parametro.local_id).then(
       (res) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);

@@ -185,7 +185,7 @@ export class LoteService {
   }
 
   eliminarArchivoLote(parametro, contexto) {
-    this.api.delete2('lotearchivo/' + parametro.id).then(
+    this.api.delete2('lotearchivo/' + parametro.lote_id).then(
       (res) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);

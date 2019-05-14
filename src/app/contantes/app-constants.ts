@@ -359,4 +359,50 @@ export class LS {
     }
   ];
   static LISTA_CONTRATO = ["A", "V"];
+
+  static LISTA_CONTRATO_DETALLE = [
+    {
+      id: 1,
+      contrato: "Venta",
+      codigo: 'V'
+    },
+    {
+      id: 2,
+      contrato: "Alquiler",
+      codigo: 'A'
+    }
+  ];
+
+  static LISTA_UBIGEO = [
+    {
+      id: 1,
+      ubigeo: 'Piura',
+      tipoubigeo: 'Departamento'
+    },
+    {
+      id: 2,
+      ubigeo: 'Piura',
+      tipoubigeo: 'Provincia'
+    },
+    {
+      id: 3,
+      ubigeo: 'Piura',
+      tipoubigeo: 'Distrito'
+    },
+    {
+      id: 4,
+      ubigeo: 'Castilla',
+      tipoubigeo: 'Distrito'
+    },
+    {
+      id: 5,
+      ubigeo: '26 de octubre',
+      tipoubigeo: 'Distrito'
+    },
+    {
+      id: 6,
+      ubigeo: 'Lima',
+      tipoubigeo: 'Departamento'
+    }
+  ];
 }

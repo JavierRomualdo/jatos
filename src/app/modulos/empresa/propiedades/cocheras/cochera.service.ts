@@ -185,7 +185,7 @@ export class CocheraService {
   }
 
   eliminarArchivoCochera(parametro, contexto) {
-    this.api.delete2('cocheraarchivo/' + parametro.id).then(
+    this.api.delete2('cocheraarchivo/' + parametro.cochera_id).then(
       (res) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);
