@@ -1,6 +1,6 @@
 <div id="all">
   <!-- Navbar Start-->
-  <header class="nav-holder make-sticky animated fadeIn">
+  <header class="nav-holder make-sticky animated fadeIn sticky-top">
     <div id="navbar" role="navigation" class="navbar navbar-expand-lg sizeBar" style="border-bottom: 1px solid green">
       <div class="container">
         <a [routerLink]="['inicio']" class="navbar-brand home">
@@ -36,8 +36,9 @@
               </div>
               <!-- <input type="text" class="form-control" id="inlineFormInputGroupUsername2" required
                 placeholder="Ingrese la ubicación"> -->
-              <p-autoComplete [(ngModel)]="ubigeo" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)" field="ubigeo" [size]="15"
-              placeholder="Ingrese la ubicación" [minLength]="1" name="ubigeos"></p-autoComplete>
+              <p-autoComplete [(ngModel)]="ubigeo" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
+                field="ubigeo" [size]="15" placeholder="Ingrese la ubicación" [minLength]="1" name="ubigeos"
+                [autoZIndex]="true"></p-autoComplete>
               <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></button>
             </div>
           </form>

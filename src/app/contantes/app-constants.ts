@@ -381,22 +381,22 @@ export class LS {
     },
     {
       id: 2,
-      ubigeo: 'Piura',
+      ubigeo: 'Piura, Piura',
       tipoubigeo: 'Provincia'
     },
     {
       id: 3,
-      ubigeo: 'Piura',
+      ubigeo: 'Piura, Piura, Piura',
       tipoubigeo: 'Distrito'
     },
     {
       id: 4,
-      ubigeo: 'Castilla',
+      ubigeo: 'Piura, Piura, Castilla',
       tipoubigeo: 'Distrito'
     },
     {
       id: 5,
-      ubigeo: '26 de octubre',
+      ubigeo: 'Piura, Piura, 26 de octubre',
       tipoubigeo: 'Distrito'
     },
     {
