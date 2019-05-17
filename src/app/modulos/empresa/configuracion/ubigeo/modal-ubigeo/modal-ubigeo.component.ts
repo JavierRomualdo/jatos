@@ -21,6 +21,7 @@ import { HabilitacionurbanaService } from '../../habilitacionurbana/habilitacion
 export class ModalUbigeoComponent implements OnInit {
 
   @Input() edit;
+  @Input() nivelTipoUbigeo: number = 3; // establecemos si este componente es modal o no    
   public ubigeo: Ubigeo;
   public ubigeoGuardar: UbigeoGuardar;
   public vistaFormulario = false;
@@ -40,6 +41,7 @@ export class ModalUbigeoComponent implements OnInit {
   public parametros: UbigeoGuardar;
   public listaHabilitacionUrbana: HabilitacionUrbana[];
   public habilitacionurbanaSelecionado: HabilitacionUrbana;
+  public seleccionoFila: boolean = false;
 
   public listado: Boolean = false;
   
@@ -103,18 +105,21 @@ export class ModalUbigeoComponent implements OnInit {
 
   mostrarprovincias(departamentoSeleccionado) {
     this.parametros.departamento = departamentoSeleccionado;
+    this.seleccionoFila = departamentoSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
     console.log(departamentoSeleccionado);
     this.mostrarubigeos(departamentoSeleccionado.tipoubigeo_id, departamentoSeleccionado.codigo);
   }
 
   mostrardistritos(provinciaSeleccionado) {
     this.parametros.provincia = provinciaSeleccionado;
+    this.seleccionoFila = provinciaSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
     console.log(provinciaSeleccionado);
     this.mostrarubigeos(provinciaSeleccionado.tipoubigeo_id, provinciaSeleccionado.codigo);
   }
 
   mostrarHabilitacionesUrbanas(distritoSeleccionado) {
     this.parametros.distrito = distritoSeleccionado;
+    this.seleccionoFila = distritoSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
     console.log(distritoSeleccionado);
     this.mostrarubigeos(distritoSeleccionado.tipoubigeo_id, distritoSeleccionado.codigo);
   }
@@ -250,15 +255,23 @@ export class ModalUbigeoComponent implements OnInit {
     if (this.idTipoUbigeo === 1) { // departamento
       this.ubigeoGuardar.departamento = null;
       this.ubigeoGuardar.provincia = null;
+      this.ubigeoGuardar.ubigeo.rutaubigeo = this.ubigeoGuardar.ubigeo.ubigeo;
     } else if (this.idTipoUbigeo === 2) {
       this.ubigeoGuardar.departamento = this.departamentoSeleccionado;
+      this.ubigeoGuardar.ubigeo.rutaubigeo = this.departamentoSeleccionado.ubigeo+", "+
+          this.ubigeoGuardar.ubigeo.ubigeo; // formamos la ruta del ubigeo
     } else if (this.idTipoUbigeo === 3) {
       this.ubigeoGuardar.departamento = this.departamentoSeleccionado;
       this.ubigeoGuardar.provincia = this.provinciaSeleccionado;
+      this.ubigeoGuardar.ubigeo.rutaubigeo = this.departamentoSeleccionado.ubigeo+", "+
+        this.provinciaSeleccionado.ubigeo+", "+ this.ubigeoGuardar.ubigeo.ubigeo;
     } else if (this.idTipoUbigeo === 4) {
       this.ubigeoGuardar.departamento = this.departamentoSeleccionado;
       this.ubigeoGuardar.provincia = this.provinciaSeleccionado;
       this.ubigeoGuardar.distrito = this.distritoSeleccionado;
+      this.ubigeoGuardar.ubigeo.rutaubigeo = this.departamentoSeleccionado.ubigeo+", "+
+        this.provinciaSeleccionado.ubigeo+", "+ this.distritoSeleccionado.ubigeo+ ", "+
+        this.ubigeoGuardar.ubigeo.ubigeo; // formamos la ruta del ubigeo
       this.ubigeoGuardar.ubigeo.habilitacionurbana_id = this.habilitacionurbanaSelecionado;
     }
 

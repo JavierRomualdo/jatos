@@ -285,6 +285,8 @@ export class ModalLoteComponent implements OnInit {
 
   buscarubigeo() {
     const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.nivelTipoUbigeo = 4;
+    // 4 es habilitacion urbana (que me retorne un habilitacion urbana)
     modalRef.result.then((result) => {
       console.log('ubigeoguardar:');
       console.log(result);

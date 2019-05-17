@@ -13,7 +13,7 @@ import { PersonaTO } from 'src/app/entidadesTO/empresa/PersonaTO';
   templateUrl: './personas-listado.component.html',
   styleUrls: ['./personas-listado.component.css']
 })
-export class PersonasListadoComponent implements OnInit, OnChanges {
+export class PersonasListadoComponent implements OnInit {
 
   @Input() parametrosBusqueda: any = null;//parametros de busqueda
   @Input() isModal: boolean = false; // establecemos si este componente es modal o no 
@@ -52,10 +52,10 @@ export class PersonasListadoComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
-    if (this.isModal) {
-      this.listarPersonas(false);
-      // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
-    }
+    // if (this.isModal) {
+    //   this.listarPersonas(false);
+    // // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
+    // }
     this.iniciarAgGrid();
   }
 

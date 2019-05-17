@@ -146,6 +146,8 @@ export class PersonasFormularioComponent implements OnInit {
 
   buscarubigeo() {
     const modalRef = this.modal.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.nivelTipoUbigeo = 3;
+    // 3 es distrito (que me retorne un distrito)
     modalRef.result.then((result) => {
       console.log('ubigeoguardar:');
       console.log(result);

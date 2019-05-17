@@ -48,7 +48,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let ubigeo of ubigeos;let i=index" [ngStyle]="{'cursor': provinciaSeleccionado || distritoSeleccionado ? 'pointer ': 'default'}" (click)="provinciaSeleccionado || distritoSeleccionado ? enviarubigeo(ubigeo): ''">
+                    <tr *ngFor="let ubigeo of ubigeos;let i=index" [ngStyle]="{'cursor': seleccionoFila ? 'pointer ': 'default'}" (click)="seleccionoFila ? enviarubigeo(ubigeo): ''">
                       <th class="text-center">{{i+1}}</th>
                       <td>{{ubigeo.siglas ? ubigeo.siglas : ''}} {{ubigeo.ubigeo}}</td>
                       <td>

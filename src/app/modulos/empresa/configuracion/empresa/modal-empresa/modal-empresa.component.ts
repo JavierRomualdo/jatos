@@ -56,6 +56,8 @@ export class ModalEmpresaComponent implements OnInit {
   traerParaEdicion() {
     // aqui traemos los datos del usuario con ese id para ponerlo en el formulario y editarlo
     this.cargando = true;
+    this.empresa.latitud = this.latitude+"";
+    this.empresa.longitud = this.longitude+"";
     this.empresaService.listarEmpresa(this);
   }
 
@@ -65,8 +67,8 @@ export class ModalEmpresaComponent implements OnInit {
     this.imagen = data.foto;
     this.imagenAnterior = data.foto;
     // Mapa
-    this.empresa.latitud = this.empresa.latitud ? this.empresa.latitud : this.latitude+""
-    this.empresa.longitud = this.empresa.longitud ? this.empresa.longitud : this.longitude+""
+    // this.empresa.latitud = this.empresa.latitud ? this.empresa.latitud : this.latitude+""
+    // this.empresa.longitud = this.empresa.longitud ? this.empresa.longitud : this.longitude+""
     this.latitude = Number.parseFloat(this.empresa.latitud);
     this.longitude = Number.parseFloat(this.empresa.longitud);
     // End Mapa
@@ -129,6 +131,8 @@ export class ModalEmpresaComponent implements OnInit {
 
   buscarubigeo() {
     const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.nivelTipoUbigeo = 3;
+    // 3 es distrito (que me retorne un distrito)
     modalRef.result.then((result) => {
       this.ubigeo = result;
       this.empresa.ubigeo_id = result.ubigeo;

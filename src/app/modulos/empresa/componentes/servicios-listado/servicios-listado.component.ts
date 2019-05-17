@@ -50,10 +50,10 @@ export class ServiciosListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
-    if (this.isModal) {
-      this.listarServicios(false);
-      // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
-    }
+    // if (this.isModal) {
+    //   this.listarServicios(false);
+    //   // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
+    // }
     this.iniciarAgGrid();
   }
 
