@@ -114,6 +114,14 @@ export class UbigeoService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  searchUbigeo(parametro, contexto) {
+    this.api.get2('searchUbigeo/'+parametro).then(
+      (res) => {
+        contexto.despuesDeSearchUbigeo(res);
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   private handleError(error: any, contexto): void {
     contexto.cargando = false;
     this.toastr.error('Error Interno: ' + error, 'Error');

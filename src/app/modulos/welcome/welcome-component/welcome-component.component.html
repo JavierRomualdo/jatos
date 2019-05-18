@@ -11,7 +11,7 @@
           <span class="sr-only">Universal - go to homepage</span>
         </a>
         <!---->
-        <div class="navbar-brand">
+        <div class="navbar-brand" *ngIf="verBusqueda">
           <form>
             <label class="sr-only" for="inlineFormInputGroupUsername2">Busque la ubicación</label>
             <div class="input-group mb-2 mr-sm-2">
@@ -37,9 +37,9 @@
               <!-- <input type="text" class="form-control" id="inlineFormInputGroupUsername2" required
                 placeholder="Ingrese la ubicación"> -->
               <p-autoComplete [(ngModel)]="ubigeo" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
-                field="ubigeo" [size]="15" placeholder="Ingrese la ubicación" [minLength]="1" name="ubigeos"
+                field="rutaubigeo" [size]="15" placeholder="Ingrese la ubicación" [minLength]="1" name="ubigeos"
                 [autoZIndex]="true"></p-autoComplete>
-              <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></button>
+              <button type="submit" class="btn btn-primary btn-sm" (click)="buscarPropiedades()"><i class="fa fa-search"></i></button>
             </div>
           </form>
         </div>

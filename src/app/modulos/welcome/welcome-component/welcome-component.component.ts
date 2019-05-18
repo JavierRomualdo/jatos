@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Empresa } from '../../../entidades/entidad.empresa';
 import { ApiRequest2Service } from '../../../servicios/api-request2.service';
-import { UbigeoGuardar } from '../../../entidades/entidad.ubigeoguardar';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LoginService } from '../../../servicios/login.service';
 import { LoginComponent } from 'src/app/componentesgenerales/login/login.component';
 import { EmpresaService } from '../../empresa/configuracion/empresa/modal-empresa/empresa.service';
 import { LS } from 'src/app/contantes/app-constants';
+import { UbigeoService } from '../../empresa/configuracion/ubigeo/modal-ubigeo/ubigeo.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 // import { AuthService } from '../../../servicios/auth.service';
 
 @Component({
@@ -25,17 +26,18 @@ export class WelcomeComponentComponent implements OnInit {
   public tipopropiedades: string[] = [];
   public tipocontratodetalle = [];
   public ubigeos = [];
-  public ubigeo: any;
+  public ubigeo: any; //
+  public propiedad: string = null; //
   public filteridUbigeos;
-  public contratodetalle: string = null;
-  public propiedad: string = null;
-
+  public contratodetalle: any = null; // {}
+  public verBusqueda: boolean = true;
   constructor(
     private modalService: NgbModal,
     public api: ApiRequest2Service,
     private empresaService: EmpresaService,
-    // public auth: AuthService,
-    private loginservicio: LoginService,
+    public toastr: ToastrService,
+    private router: Router,
+    private ubigeoService: UbigeoService
   ) {
     // this.iniciadosesion = this.loginservicio.isAuthenticated();
   }
@@ -82,19 +84,26 @@ export class WelcomeComponentComponent implements OnInit {
 
   filterUbigeoSingle(event) {
     let query = event.query;
-    this.filteridUbigeos = this.ubigeos.filter(item => 
-      item.ubigeo.toLowerCase().indexOf(query.toLowerCase()) == 0);
+    this.ubigeoService.searchUbigeo(query.toLowerCase(), this);
   }
 
-  filterCountry(query, ubigeos: any[]):any[] {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered : any[] = [];
-    for(let i = 0; i < ubigeos.length; i++) {
-        let ubigeo = ubigeos[i];
-        if(ubigeo.ubigeo.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-            filtered.push(ubigeo);
-        }
+  despuesDeSearchUbigeo(data) {
+    this.filteridUbigeos = data;
+  }
+
+  buscarPropiedades() {
+    if (this.ubigeo && this.contratodetalle && this.propiedad) {
+      LS.KEY_UBIGEO = this.ubigeo.rutaubigeo.split(", ");
+      console.log("keypropiedades", LS.KEY_UBIGEO);
+      LS.KEY_PROPIEDAD_SELECT = this.propiedad;
+      LS.KEY_CONTRATO_SELECT = this.contratodetalle.codigo;
+      // limpiar atributos
+      this.ubigeo = null;
+      this.propiedad = null;
+      this.contratodetalle = null;
+      this.router.navigate(['/welcome/propiedades']);
+    } else {
+      this.toastr.warning('Ingrese todos los datos', 'Aviso');
     }
-    return filtered;
   }
 }

@@ -11,6 +11,8 @@ export class LS {
   public static KEY_IS_PERFIL_USER: boolean = false;
   public static KEY_NOTIFICACIONES: any = [];
   public static KEY_CIUDAD_DEFECTO = "Piura";
+  public static KEY_UBIGEO = []; // [departamento; provincia; distrito; habilitacion urbana]
+
   //ICONOS PARA BOTONES
   public static ICON_ACTIVO = "fa fa-check-square-o";
   public static ICON_ARCHIVO = "fa fa-file";

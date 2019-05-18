@@ -134,7 +134,12 @@ export class PropiedadesComponent implements OnInit {
     this.ubigeodepartamentos = data;
     if (LS.KEY_PROPIEDAD_SELECT) {
       const departamentos = this.ubigeodepartamentos.slice();
-      this.departamentoSeleccionado = departamentos.find(item => item.ubigeo === LS.KEY_CIUDAD_DEFECTO);
+      // verificar si proviene de la busqueda en welcome: KEY_UBIGEO[]
+      if (LS.KEY_UBIGEO.length > 0) {
+        this.departamentoSeleccionado = departamentos.find(item => item.ubigeo === LS.KEY_UBIGEO[0]);
+      } else {
+        this.departamentoSeleccionado = departamentos.find(item => item.ubigeo === LS.KEY_CIUDAD_DEFECTO);
+      }
       this.mostrarprovincias(this.departamentoSeleccionado);
     } else {
       this.cargando = false;
@@ -148,6 +153,7 @@ export class PropiedadesComponent implements OnInit {
     if (departamentoSeleccionado) {
       this.ubigeo.departamento = departamentoSeleccionado;
       console.log(departamentoSeleccionado);
+      // mostrar provincias del departamento seleccionado
       this.mostrarubigeos(departamentoSeleccionado.tipoubigeo_id, departamentoSeleccionado.codigo); // provincias
       // this.mostrarlotes(departamento.tipoubigeo_id, departamento.codigo);
       //this.listarPropiedades();
@@ -306,13 +312,27 @@ export class PropiedadesComponent implements OnInit {
     // this.cargando = false;
     this.ubigeoprovincias = data;
     console.log(data);
-    this.listarPropiedades();
+    // verificar si proviene de la busqueda en welcome: KEY_UBIGEO[]
+    if (LS.KEY_UBIGEO.length > 1) { // si hay key de provincia
+      const provincias = this.ubigeoprovincias.slice();
+      this.provinciaSeleccionado = provincias.find(item => item.ubigeo === LS.KEY_UBIGEO[1]);
+      this.mostrardistritos(this.provinciaSeleccionado);
+    } else {
+      this.listarPropiedades();
+    }
     // limpio la habilitacion urbana
   }
 
   despuesDeMostrarUbigeosDistritos(data) {
     this.ubigeodistritos = data;
-    this.listarPropiedades();
+    // verificar si proviene de la busqueda en welcome: KEY_UBIGEO[]
+    if (LS.KEY_UBIGEO.length > 2) { // si hay key de provincia
+      const distritos = this.ubigeodistritos.slice();
+      this.distritoSeleccionado = distritos.find(item => item.ubigeo === LS.KEY_UBIGEO[2]);
+      this.mostrarhabilitacionurbana(this.distritoSeleccionado);
+    } else {
+      this.listarPropiedades();
+    }
     // this.cargando = false;
     console.log(data);
     // limpio la habilitacion urbana
@@ -320,6 +340,11 @@ export class PropiedadesComponent implements OnInit {
 
   despuesDeMostrarUbigeosHabilitacionUrbanas(data) {
     this.ubigeohabilitacionurbanas = data;
+    if (LS.KEY_UBIGEO.length > 3) {
+      const habilitacionesurbanas = this.ubigeohabilitacionurbanas.slice();
+      this.habilitacionurbanaSeleccionado = habilitacionesurbanas.find(item => 
+        item.ubigeo === LS.KEY_UBIGEO[3]);
+    }
     this.listarPropiedades();
     // this.cargando = false;
     console.log(data);
