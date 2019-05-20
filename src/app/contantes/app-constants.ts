@@ -114,7 +114,7 @@ export class LS {
   static TAG_JARDIN_PREG = "¿Jardin?";
   static TAG_COCHERA_PREG = "¿Cochera?";
   static TAG_REFERENCIA = "Referencia";
-  static TAG_DESCRIPCION = "Descripcion";
+  static TAG_DESCRIPCION = "Descripción";
   static TAG_MAS_OPCIONES = "Más opciones";
   static TAG_IMAGENES = "Imágenes";
   static TAG_ARCHIVOS = "Archivos";
@@ -304,9 +304,10 @@ export class LS {
   static MSJ_ERROR_IMPRIMIR = 'El reporte no existe o tiene errores';
   static MSJ_INTERNET_ESTABLECIDA = 'Conexión Establecida.';
   static MSJ_INTERNET_NO_ESTABLECIDA = 'Conexión no establecida.';
-  static MSJ_ASIGNAR_SERVICIOS_PROPIEDAD = 'Asignar Servicios a esta propiedad';
+  static MSJ_ASIGNAR_SERVICIOS_PROPIEDAD = 'Asignar servicios a esta propiedad';
   static MSJ_DEJAR_CAER_ARCHIVOS = 'Deje caer aqui los archivos';
   static MSJ_INGRESE_DETALLE_POR_IMAGEN = 'Ingese detalle por imagen';
+  static MSJ_SERVICIO_YA_SE_HA_ASIGNADO = 'El servicio ya se ha asignado';
   
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

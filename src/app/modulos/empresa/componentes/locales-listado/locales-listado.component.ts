@@ -41,6 +41,7 @@ export class LocalesListadoComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
 
@@ -53,8 +54,8 @@ export class LocalesListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
+    this.localeText = { noRowsToShow: 'No hay locales', page: "Página", of: "de", to: "a" };
     if (this.isModal) {
-      // this.listarLocales(false);
       this.listarLocalesParaTipoContrato(this.parametrosBusqueda);
     }
     this.iniciarAgGrid();

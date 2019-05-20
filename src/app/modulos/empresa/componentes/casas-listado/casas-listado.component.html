@@ -1,4 +1,5 @@
 <div class="modal-primary"> <!--*ngIf="listadoCasas?.length>0"-->
+  <!--Listado-->
   <div class="card">
     <div class="card-header bg-primary p-2" *ngIf="isModal">
       <strong>{{constantes.TAG_CASAS_LISTADO}}</strong>
@@ -50,12 +51,12 @@
           </div>
         </div>
       </div>
-      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listadoCasas"
+      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 250px);" class="ag-theme-balham" [rowData]="listadoCasas"
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
         (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
-        [overlayLoadingTemplate]="overlayLoadingTemplate" [paginationAutoPageSize]="true" [pagination]="true">
+        [overlayLoadingTemplate]="overlayLoadingTemplate" [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText">
       </ag-grid-angular>
       <!--(filterChanged)="actualizarFilas()"-->
     </div>

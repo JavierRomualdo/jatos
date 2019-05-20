@@ -11,6 +11,12 @@
               <i class="fa fa-filter"></i>
               <b> Filtros</b>
             </span>
+            <div class="card-header-actions">
+              <button type="button" (click)="limpiar()" class="btn btn-sm btn-primary" title="Limpiar">
+                  <i class="{{constantes.ICON_LIMPIAR}}"></i>
+                  <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
+              </button>
+            </div>
           </div>
           <p-scrollPanel [style]="{width: '100%', height: 'calc(100vh - 180px)'}">
             <div class="card-body pt-2 pb-2" id="filtrospropiedades">
@@ -18,7 +24,7 @@
               <!-- <p-panel header="Principal" [toggleable]="true"> -->
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">(*)</span></b>
+                    <b> Contrato <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
                   <div class="row">
                     <div class="col-md-6">
@@ -35,7 +41,7 @@
                 </div>
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">(*)</span></b>
+                    <b> Propiedad <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
                   <!--ComboBox: Propiedades-->
                   <select [appFocus]="true" class="form-control form-control-sm mousetrap" name="tipopropiedades" required [(ngModel)]="parametros.tipopropiedad"
@@ -48,7 +54,7 @@
                 </div>
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
-                    <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">(*)</span></b>
+                    <b> Ubicación <span class="text-primary" pTooltip="Obligatorio" tooltipPosition="top">*</span></b>
                   </label>
                   <!--ComboBox: Departamentos-->
                   <p-dropdown [options]="ubigeodepartamentos" name="departamentos" [showClear]="true" [(ngModel)]="departamentoSeleccionado"
@@ -112,21 +118,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-                <div class="form-group form-group-sm text-right mb-2">
-                  <!-- <button type="button" class="btn btn-sm btn-primary mr-1" (click)="listarPropiedades()">
-                    <i class="{{constantes.ICON_BUSCAR}}"></i>
-                    <span class="d-none d-md-inline"> {{constantes.LABEL_BUSCAR}}</span>
-                  </button> -->
-                  <button type="button" (click)="limpiar()" class="btn btn-sm btn-default">
-                      <i class="{{constantes.ICON_LIMPIAR}}"></i>
-                      <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
-                  </button>
-                  <!-- <div class="btn-group">
-                    <button type="reset" class="btn  btn-default" title="Limpiar" (click)="limpiar()">
-                      <i class="fa fa-eraser"></i>
-                    </button>
-                  </div> -->
-                </div>
+                
               <!-- </p-panel><br /> -->
               <!--Panel opcional-->
               <!-- <p-panel header="Opcional" [toggleable]="true">

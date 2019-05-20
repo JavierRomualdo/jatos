@@ -37,7 +37,7 @@
               <!-- <input type="text" class="form-control" id="inlineFormInputGroupUsername2" required
                 placeholder="Ingrese la ubicación"> -->
               <p-autoComplete [(ngModel)]="ubigeo" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
-                field="rutaubigeo" [size]="15" placeholder="Ingrese la ubicación" [minLength]="1" name="ubigeos"
+                field="rutaubigeo" [size]="25" inputClass="height: 100%" placeholder="Ingrese la ubicación" [minLength]="1" name="ubigeos"
                 [autoZIndex]="true"></p-autoComplete>
               <button type="submit" class="btn btn-primary btn-sm" (click)="buscarPropiedades()"><i class="fa fa-search"></i></button>
             </div>

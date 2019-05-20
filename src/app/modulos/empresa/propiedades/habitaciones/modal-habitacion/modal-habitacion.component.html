@@ -84,7 +84,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="largo" [(ngModel)]="habitacion.largo" required placeholder="Ingrese largo (area)" value="{{habitacion.largo}}"
+                  <input type="text" name="largo" [(ngModel)]="habitacion.largo" required placeholder="Ingrese largo (área)" value="{{habitacion.largo}}"
                   class="form-control mousetrap" [appAutonumericValue]="habitacion.largo" [appAutonumeric]="configAutonumericEnteros">
                   <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
@@ -96,7 +96,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="ancho" [(ngModel)]="habitacion.ancho" required placeholder="Ingrese ancho (area)" value="{{habitacion.ancho}}"
+                  <input type="text" name="ancho" [(ngModel)]="habitacion.ancho" required placeholder="Ingrese ancho (área)" value="{{habitacion.ancho}}"
                   class="form-control mousetrap" [appAutonumericValue]="habitacion.ancho" [appAutonumeric]="configAutonumericEnteros">
                   <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
@@ -198,7 +198,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
                   </label>
-                  <textarea class="form-control form-control-sm" [(ngModel)]="habitacion.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
+                  <textarea class="form-control form-control-sm" [(ngModel)]="habitacion.descripcion" required name="descripcion" placeholder="Ingrese descripción"
                     maxlength="255"></textarea>
                 </div>
               </div>
@@ -245,7 +245,7 @@
             
             <div class="tab-pane" id="profile2" role="tabpanel">
               <div class="form-group">
-                <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-2"
+                <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-2"
                   style="background-color: antiquewhite">
                   <div class="col">
                     {{constantes.MSJ_ASIGNAR_SERVICIOS_PROPIEDAD}}
@@ -347,7 +347,7 @@
                                   </td>
                                   <td>
                                     <input class="form-control" (blur)="guardardetallefoto(fotos[i])" [(ngModel)]="foto.detalle"
-                                      [name]="foto.detalle" placeholder="Ingrese descripcion">
+                                      [name]="foto.detalle" placeholder="Ingrese descripción">
                                   </td>
                                   <td class="text-center">
                                     <a [ngClass]="{'btn btn-sm btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
@@ -545,7 +545,7 @@
             <i class="{{constantes.ICON_LIMPIAR}}"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
           </button>
-          <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')">
+          <button type="button" class="btn btn-sm btn-default" (click)="activeModal.dismiss('Cross click')">
             <i class="{{constantes.ICON_CANCELAR}}"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
           </button>

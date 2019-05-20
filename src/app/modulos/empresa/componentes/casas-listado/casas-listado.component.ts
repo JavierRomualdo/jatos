@@ -40,6 +40,7 @@ export class CasasListadoComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>';
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
@@ -53,8 +54,8 @@ export class CasasListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
+    this.localeText = { noRowsToShow: 'No hay casas', page: "Página", of: "de", to: "a" };
     if (this.isModal) {
-      // this.listarCasas(false);
       this.listarCasasParaTipoContrato(this.parametrosBusqueda);
     }
     this.iniciarAgGrid();

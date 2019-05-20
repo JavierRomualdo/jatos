@@ -94,7 +94,6 @@ export class WelcomeComponentComponent implements OnInit {
   buscarPropiedades() {
     if (this.ubigeo && this.contratodetalle && this.propiedad) {
       LS.KEY_UBIGEO = this.ubigeo.rutaubigeo.split(", ");
-      console.log("keypropiedades", LS.KEY_UBIGEO);
       LS.KEY_PROPIEDAD_SELECT = this.propiedad;
       LS.KEY_CONTRATO_SELECT = this.contratodetalle.codigo;
       // limpiar atributos

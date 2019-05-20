@@ -41,6 +41,7 @@ export class HabitacionesListadoComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
 
@@ -53,8 +54,8 @@ export class HabitacionesListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
+    this.localeText = { noRowsToShow: 'No hay habitaciones', page: "Página", of: "de", to: "a" };
     if (this.isModal) {
-      // this.listarHabitaciones(false);
       this.listarHabitacionesParaTipoContrato(this.parametrosBusqueda);
     }
     this.iniciarAgGrid();

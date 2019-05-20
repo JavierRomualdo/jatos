@@ -310,16 +310,9 @@ export class ModalLocalComponent implements OnInit {
     const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
-      let tieneservicio: Boolean = false;
-      for (const servicio of this.servicios) {
-        if (result.id === servicio.id) {
-          console.log('si tiene servicio');
-          tieneservicio = true;
-        }
-      }
-
-      if (tieneservicio) {
-        this.toastr.info('El servicio ya esta asignado');
+      const servicio = this.servicios.find(item => item.id === result.id);
+      if (servicio) {
+        this.toastr.warning(LS.MSJ_SERVICIO_YA_SE_HA_ASIGNADO, LS.TAG_AVISO);
       } else {
         this.servicios.push(result);
       }

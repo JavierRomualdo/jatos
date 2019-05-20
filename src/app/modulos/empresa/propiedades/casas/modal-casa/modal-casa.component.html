@@ -88,7 +88,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_LARGO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="largo" [(ngModel)]="casa.largo" required placeholder="Ingrese largo (area)" value="{{casa.largo}}"
+                  <input type="text" name="largo" [(ngModel)]="casa.largo" required placeholder="Ingrese largo (área)" value="{{casa.largo}}"
                   class="form-control mousetrap" [appAutonumericValue]="casa.largo" [appAutonumeric]="configAutonumericEnteros">
                   <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
@@ -100,7 +100,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_ANCHO_MTS}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="ancho" [(ngModel)]="casa.ancho" required placeholder="Ingrese ancho (area)" value="{{casa.ancho}}"
+                  <input type="text" name="ancho" [(ngModel)]="casa.ancho" required placeholder="Ingrese ancho (área)" value="{{casa.ancho}}"
                   class="form-control mousetrap" [appAutonumericValue]="casa.ancho" [appAutonumeric]="configAutonumericEnteros">
                   <span class="fa fa-question-circle form-control-feedback" placement="top" ngbPopover="{{constantes.MSJ_ATRIBUTO_AREA_PROPIEDAD}}"
                     triggers="mouseenter:mouseleave" container="body"></span>
@@ -126,7 +126,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_DIRECCION}} <span class="text-primary">*</span></strong>
                   </label>
-                  <input type="text" name="direccion" [(ngModel)]="casa.direccion" required placeholder="Ingrese direccion"
+                  <input type="text" name="direccion" [(ngModel)]="casa.direccion" required placeholder="Ingrese dirección"
                     class="form-control form-control-sm" maxlength="100">
                 </div>
               </div>
@@ -229,7 +229,7 @@
                   <label class="control-label">
                     <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
                   </label>
-                  <textarea class="form-control form-control-sm" [(ngModel)]="casa.descripcion" required name="descripcion" placeholder="Ingrese la descripcion"
+                  <textarea class="form-control form-control-sm" [(ngModel)]="casa.descripcion" required name="descripcion" placeholder="Ingrese descripción"
                     maxlength="765"></textarea>
                 </div>
               </div>
@@ -276,7 +276,7 @@
 
             <div class="tab-pane" id="profile2" role="tabpanel">
               <div class="form-group">
-                <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center mt-3 p-2"
+                <div class="pc-line-neg row box-line-negocio no-gutters justify-content-between align-items-center p-2"
                   style="background-color: antiquewhite">
                   <div class="col">
                     {{constantes.MSJ_ASIGNAR_SERVICIOS_PROPIEDAD}}
@@ -577,7 +577,7 @@
             <i class="{{constantes.ICON_LIMPIAR}}"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_LIMPIAR}}</span>
           </button>
-          <button type="button" class="btn btn-sm btn-dark" (click)="activeModal.dismiss('Cross click')">
+          <button type="button" class="btn btn-sm btn-default" (click)="activeModal.dismiss('Cross click')">
             <i class="{{constantes.ICON_CANCELAR}}"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_CANCELAR}}</span>
           </button>
