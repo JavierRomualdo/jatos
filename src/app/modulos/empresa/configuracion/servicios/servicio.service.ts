@@ -29,7 +29,7 @@ export class ServicioService {
           contexto.despuesDeListarServicios([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarServicio(parametro, contexto) {
@@ -43,7 +43,7 @@ export class ServicioService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarServicio(parametro, contexto) {
@@ -57,7 +57,7 @@ export class ServicioService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoServicio(parametro, contexto) {
@@ -71,7 +71,7 @@ export class ServicioService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarServicio(parametro, contexto) {
@@ -85,7 +85,7 @@ export class ServicioService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarServicio(parametro, contexto) {
@@ -98,7 +98,7 @@ export class ServicioService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   busquedaServicios(parametro, contexto) {
@@ -107,16 +107,11 @@ export class ServicioService {
         if (res) {
           contexto.despuesDeBusquedaServicios(res);
         } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
+          this.toastr.warning('No se encontraron resultados', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {
@@ -140,7 +135,7 @@ export class ServicioService {
       },
       {
         headerName: LS.TAG_ACTIVO,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'estado',
         width: 90,
         minWidth: 90,
@@ -149,7 +144,7 @@ export class ServicioService {
       },
       {
         headerName: LS.TAG_OPCIONES,
-        headerClass: 'cell-header-center',//Clase a nivel de th
+        headerClass: 'cell-header-center',
         cellClass: 'text-center',
         width: LS.WIDTH_OPCIONES,
         minWidth: LS.WIDTH_OPCIONES,

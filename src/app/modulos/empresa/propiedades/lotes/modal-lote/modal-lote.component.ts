@@ -208,6 +208,8 @@ export class ModalLoteComponent implements OnInit {
     let loteTO = new LoteTO(data);
     loteTO.propietario = this.lote.persona_id.nombres;
     loteTO.nombrehabilitacionurbana = this.lote.ubigeo_id.ubigeo;
+    loteTO.siglas = this.lote.ubigeo_id.habilitacionurbana_id.siglas;
+    loteTO.ubicacion = this.lote.ubigeo_id.rutaubigeo;
     return loteTO;
   }
 

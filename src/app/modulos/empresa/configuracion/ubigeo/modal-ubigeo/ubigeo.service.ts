@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
+import { UtilService } from 'src/app/servicios/util/util.service';
+import { LS } from 'src/app/contantes/app-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,8 @@ export class UbigeoService {
 
   constructor(
     private api: ApiRequest2Service,
-    public toastr: ToastrService,
+    private utilService: UtilService,
+    private toastr: ToastrService,
   ) { }
 
   litarUbigeos(contexto) {
@@ -18,53 +21,53 @@ export class UbigeoService {
         if (res.length>0) {
           contexto.despuesDeListarUbigeos(res);
         } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
+          this.toastr.warning('No se encontraron resultados', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarUbigeo(parametro, contexto) {
     this.api.post2('ubigeos', parametro).then(
       (res) => {
         if (res) {
-          this.toastr.success('Se ha ingresado correctamente', 'Exito');
+          this.toastr.success('Se ha ingresado correctamente', LS.TAG_EXITO);
           contexto.despuesDeIngresarUbigeo(res);
         } else {
-          this.toastr.warning('Error al ingresar ubigeo', 'Aviso');
+          this.toastr.warning('Error al ingresar ubigeo', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarUbigeo(parametro, contexto) {
     this.api.put2('ubigeos/' + parametro.ubigeo.id, parametro).then(
       (res) => {
         if (res) {
-          this.toastr.success('Se ha modificado correctamente', 'Exito');
+          this.toastr.success('Se ha modificado correctamente', LS.TAG_EXITO);
           contexto.despuesDeModificarUbigeo(res);
         } else {
-          this.toastr.warning('Error al modificar casa', 'Aviso');
+          this.toastr.warning('Error al modificar casa', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoUbigeo(parametro, contexto) {
     this.api.delete2('ubigeos/' + parametro).then(
       (res) => {
         if (res) {
-          this.toastr.success('Se ha modificado el estado', 'Exito');
+          this.toastr.success('Se ha modificado el estado', LS.TAG_EXITO);
           contexto.despuesDeCambiarEstadoUbigeo(res);
         } else {
-          this.toastr.warning('Error al modificar estado', 'Aviso');
+          this.toastr.warning('Error al modificar estado', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarUbigeo(parametro, contexto) {
@@ -73,11 +76,11 @@ export class UbigeoService {
         if (res) {
           contexto.despuesDeMostrarUbigeo(res);
         } else {
-          this.toastr.warning('Error al mostrar ubigeo', 'Aviso');
+          this.toastr.warning('Error al mostrar ubigeo', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarUbigeos(parametro, contexto) {
@@ -98,7 +101,7 @@ export class UbigeoService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   busquedaUbigeos(parametro, contexto) {
@@ -107,11 +110,11 @@ export class UbigeoService {
         if (res) {
           contexto.despuesDeBusquedaUbigeos(res);
         } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
+          this.toastr.warning('No se encontraron resultados', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   searchUbigeo(parametro, contexto) {
@@ -119,11 +122,6 @@ export class UbigeoService {
       (res) => {
         contexto.despuesDeSearchUbigeo(res);
       }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 }

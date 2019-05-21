@@ -215,6 +215,8 @@ export class ModalLocalComponent implements OnInit {
     let localTO = new LocalTO(data);
     localTO.propietario = this.local.persona_id.nombres;
     localTO.nombrehabilitacionurbana = this.local.ubigeo_id.ubigeo;
+    localTO.siglas = this.local.ubigeo_id.habilitacionurbana_id.siglas;
+    localTO.ubicacion = this.local.ubigeo_id.rutaubigeo;
     return localTO;
   }
 

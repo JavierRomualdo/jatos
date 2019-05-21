@@ -217,7 +217,8 @@ export class ModalCocheraComponent implements OnInit {
     let cocheraTO = new CocheraTO(data);
     cocheraTO.propietario = this.cochera.persona_id.nombres;
     cocheraTO.nombrehabilitacionurbana = this.cochera.ubigeo_id.ubigeo;
-    // cocheraTO.siglas = this.cochera.habilitacionurbana_id.siglas;
+    cocheraTO.siglas = this.cochera.ubigeo_id.habilitacionurbana_id.siglas;
+    cocheraTO.ubicacion = this.cochera.ubigeo_id.rutaubigeo;
     return cocheraTO;
   }
 

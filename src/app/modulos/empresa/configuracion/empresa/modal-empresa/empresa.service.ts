@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { LS } from 'src/app/contantes/app-constants';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class EmpresaService {
 
   constructor(
     private api: ApiRequest2Service,
+    private utilService: UtilService,
     private toastr: ToastrService,
   ) { }
 
@@ -24,7 +26,7 @@ export class EmpresaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarEmpresa(parametro, contexto) {
@@ -38,7 +40,7 @@ export class EmpresaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarEmpresa(parametro, contexto) {
@@ -52,11 +54,6 @@ export class EmpresaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
-  }
-
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 }

@@ -208,16 +208,17 @@ export class ModalCasaComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    let casaTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    let casaTO = this.convertirCasaACasaTO(data); // sirve para actualizar la tabla
     // luego se guarda las fotos. vale hacer eso en la sgt version
     this.activeModal.close(casaTO);
   }
 
-  convertirCasaACasTO(data) {
+  convertirCasaACasaTO(data) {
     let casaTO = new CasaTO(data);
     casaTO.propietario = this.casa.persona_id.nombres;
     casaTO.nombrehabilitacionurbana = this.casa.ubigeo_id.ubigeo;
-    // casaTO.siglas = this.casa.ubigeo_id.habilitacionurbana_id.siglas;
+    casaTO.siglas = this.casa.ubigeo_id.habilitacionurbana_id.siglas;
+    casaTO.ubicacion = this.casa.ubigeo_id.rutaubigeo;
     return casaTO;
   }
 
@@ -225,7 +226,7 @@ export class ModalCasaComponent implements OnInit {
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
-    let casaTO = this.convertirCasaACasTO(data); // sirve para actualizar la tabla
+    let casaTO = this.convertirCasaACasaTO(data); // sirve para actualizar la tabla
     this.activeModal.close(casaTO);
   }
 

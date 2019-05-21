@@ -36,7 +36,7 @@ export class CasasService {
           contexto.despuesDeListarCasas([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarCasasParaTipoContrato(parametro, contexto) {
@@ -49,7 +49,7 @@ export class CasasService {
           contexto.despuesDeListarCasasParaTipoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarCasasPorEstadoContrato(parametro, contexto) {
@@ -62,7 +62,7 @@ export class CasasService {
           contexto.despuesDeListarCasasPorEstadoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarCodigoCasa(contexto) {
@@ -74,7 +74,7 @@ export class CasasService {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarCasa(parametro, contexto) {
@@ -88,7 +88,7 @@ export class CasasService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarCasa(parametro, contexto) {
@@ -102,7 +102,7 @@ export class CasasService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarCasa(parametro, contexto) {
@@ -115,7 +115,7 @@ export class CasasService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoCasa(parametro, contexto) {
@@ -129,7 +129,7 @@ export class CasasService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarCasa(parametro, contexto) {
@@ -143,7 +143,7 @@ export class CasasService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   // Mensajes
@@ -151,14 +151,14 @@ export class CasasService {
     this.api.delete2('casamensaje/' + parametro).then(
       (data) => {
         if (data && data.extraInfo) {
-          this.toastr.success('Se ha modificado el estado mensaje', 'Exito');
+          this.toastr.success(LS.MSJ_SE_HA_MODIFICADO_ESTADO_MENSAJE, LS.TAG_EXITO);
           contexto.despuesCambiarEstadoMensajeCasa(data);
         } else {
-          this.toastr.warning('Error al modificar estado mensahe', 'Aviso');
+          this.toastr.warning('Error al modificar estado mensaje', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarMensajesCasa(parametro, contexto) {
@@ -167,11 +167,11 @@ export class CasasService {
         if (res) {
           contexto.despuesDeListarMensajesCasa(res);
         } else {
-          this.toastr.warning('No se encontraron resultados', 'Aviso');
+          this.toastr.warning('No se encontraron resultados', LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarFotoCasa(parametro, contexto) {
@@ -180,11 +180,8 @@ export class CasasService {
         const index = contexto.fotos.indexOf(parametro);
         contexto.fotos.splice(index, 1);
         contexto.despuesDeEliminarFotoCasa(res);
-      },
-      (error) => {
-        console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoCasa(parametro, contexto) {
@@ -193,11 +190,8 @@ export class CasasService {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);
         contexto.despuesDeEliminarArchivoCasa(res);
-      },
-      (error) => {
-        console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirCasas(parametro, contexto) {
@@ -210,7 +204,7 @@ export class CasasService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirCasaDetalle(parametro, contexto) {
@@ -223,7 +217,7 @@ export class CasasService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   exportarExcelCasas(parametro, contexto) {
@@ -236,12 +230,7 @@ export class CasasService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
-  }
-
-  private handleError(error: any, contexto): void {
-    this.toastr.error('Error Interno: ' + error, 'Error');
-    contexto.cargando = false;
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {
@@ -257,7 +246,7 @@ export class CasasService {
       },
       {
         headerName: LS.TAG_IMAGEN,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'foto',
         width: 115,
         minWidth: 115,
@@ -265,17 +254,17 @@ export class CasasService {
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'contrato',
-        width: 115,
-        minWidth: 115,
+        width: 110,
+        minWidth: 110,
         cellRendererFramework: IconAccionComponent,
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Estado Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_ESTADO_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'estadocontrato',
         width: 140,
         minWidth: 140,
@@ -290,20 +279,20 @@ export class CasasService {
           return params.data.propietario;
         }
       },
-      // {
-      //   headerName: LS.TAG_UBICACION,
-      //   width: 150,
-      //   minWidth: 150,
-      //   valueGetter: (params) => {
-      //     return params.data.ubicacion;
-      //   }
-      // },
       {
         headerName: LS.TAG_HAB_URBANA,
-        width: 150,
-        minWidth: 150,
+        width: 115,
+        minWidth: 115,
         valueGetter: (params) => {
-          return params.data.siglas + " "+params.data.nombrehabilitacionurbana;
+          return params.data.siglas;
+        }
+      },
+      {
+        headerName: LS.TAG_UBICACION,
+        width: 230,
+        minWidth: 230,
+        valueGetter: (params) => {
+          return params.data.ubicacion;
         }
       },
       {
@@ -316,18 +305,18 @@ export class CasasService {
       },
       {
         headerName: LS.TAG_AREA,
-        width: 150,
-        minWidth: 150,
+        width: 100,
+        minWidth: 100,
         valueGetter: (params) => {
-          return params.data.largo + " x " + params.data.ancho +" m2";
+          return `${params.data.largo} x ${params.data.ancho} m2`;
         }
       },
       {
         headerName: LS.TAG_PRECIO_ADQUISICION,
-        width: 150,
-        minWidth: 150,
+        width: 140,
+        minWidth: 140,
         valueGetter: (params) => {
-          return params.data.precioadquisicion;
+          return `S/. ${params.data.precioadquisicion}`;
         }
       },
       {
@@ -335,7 +324,7 @@ export class CasasService {
         width: 125,
         minWidth: 125,
         valueGetter: (params) => {
-          return params.data.preciocontrato;
+          return `S/. ${params.data.preciocontrato}`;
         }
       },
       {
@@ -343,13 +332,13 @@ export class CasasService {
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.ganancia;
+          return `S/. ${params.data.ganancia}`;
         }
       },
       {
         headerName: LS.TAG_PISOS,
-        width: 80,
-        minWidth: 80,
+        width: 70,
+        minWidth: 70,
         valueGetter: (params) => {
           return params.data.npisos;
         }
@@ -388,7 +377,7 @@ export class CasasService {
       },
       {
         headerName: LS.TAG_MENSAJES,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'nmensajes',
         width: 95,
         minWidth: 95,
@@ -400,7 +389,7 @@ export class CasasService {
       columnas.push(
         {
           headerName: LS.TAG_ACTIVO,
-          headerClass: 'text-md-center',//Clase a nivel de th
+          headerClass: 'text-md-center',
           field: 'estado',
           width: 90,
           minWidth: 90,
@@ -409,7 +398,7 @@ export class CasasService {
         },
         {
           headerName: LS.TAG_OPCIONES,
-          headerClass: 'cell-header-center', //Clase a nivel de th
+          headerClass: 'cell-header-center',
           cellClass: 'text-center',
           // (params) => { return  (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
           width: LS.WIDTH_OPCIONES,
@@ -424,8 +413,7 @@ export class CasasService {
             enableSorting: false
           },
           pinnedRowCellRenderer: PinnedCellComponent,
-        },
-        // this.utilService.getColumnaOpciones()
+        }
       );
     } else {
       columnas.push(

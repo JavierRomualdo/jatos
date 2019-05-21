@@ -216,7 +216,8 @@ export class ModalHabitacionComponent implements OnInit {
     let habitacionTO = new HabitacionTO(data);
     habitacionTO.propietario = this.habitacion.persona_id.nombres;
     habitacionTO.nombrehabilitacionurbana = this.habitacion.ubigeo_id.ubigeo;
-    // habitacionTO.siglas = this.habitacion.habilitacionurbana_id.siglas;
+    habitacionTO.siglas = this.habitacion.ubigeo_id.habilitacionurbana_id.siglas;
+    habitacionTO.ubicacion = this.habitacion.ubigeo_id.rutaubigeo;
     return habitacionTO;
   }
 

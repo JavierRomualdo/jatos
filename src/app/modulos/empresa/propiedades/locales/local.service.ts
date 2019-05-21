@@ -34,7 +34,7 @@ export class LocalService {
           contexto.despuesDeListarLocales([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarLocalesParaTipoContrato(parametro, contexto) {
@@ -47,7 +47,7 @@ export class LocalService {
           contexto.despuesDeListarLocalesParaTipoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarLocalesPorEstadoContrato(parametro, contexto) {
@@ -60,7 +60,7 @@ export class LocalService {
           contexto.despuesDeListarLocalesPorEstadoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarCodigoLocal(contexto) {
@@ -72,7 +72,7 @@ export class LocalService {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarLocal(parametro, contexto) {
@@ -86,7 +86,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarLocal(parametro, contexto) {
@@ -100,7 +100,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoLocal(parametro, contexto) {
@@ -114,7 +114,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarLocal(parametro, contexto) {
@@ -127,7 +127,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarMensajesLocal(parametro, contexto) {
@@ -140,7 +140,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarLocal(parametro, contexto) {
@@ -154,7 +154,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoMensajeLocal(parametro, contexto) {
@@ -168,7 +168,7 @@ export class LocalService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarFotoLocal(parametro, contexto) {
@@ -181,7 +181,7 @@ export class LocalService {
       (error) => {
         console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoLocal(parametro, contexto) {
@@ -194,7 +194,7 @@ export class LocalService {
       (error) => {
         console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirLocales(parametro, contexto) {
@@ -207,7 +207,7 @@ export class LocalService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirLocalDetalle(parametro, contexto) {
@@ -220,7 +220,7 @@ export class LocalService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   exportarExcelLocales(parametro, contexto) {
@@ -233,12 +233,7 @@ export class LocalService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
-  }
-
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {
@@ -254,7 +249,7 @@ export class LocalService {
       },
       {
         headerName: LS.TAG_IMAGEN,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'foto',
         width: 115,
         minWidth: 115,
@@ -262,17 +257,17 @@ export class LocalService {
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'contrato',
-        width: 115,
-        minWidth: 115,
+        width: 110,
+        minWidth: 110,
         cellRendererFramework: IconAccionComponent,
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Estado Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_ESTADO_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'estadocontrato',
         width: 140,
         minWidth: 140,
@@ -287,20 +282,20 @@ export class LocalService {
           return params.data.propietario;
         }
       },
-      // {
-      //   headerName: LS.TAG_UBICACION,
-      //   width: 150,
-      //   minWidth: 150,
-      //   valueGetter: (params) => {
-      //     return params.data.ubicacion;
-      //   }
-      // },
       {
         headerName: LS.TAG_HAB_URBANA,
-        width: 150,
-        minWidth: 150,
+        width: 115,
+        minWidth: 115,
         valueGetter: (params) => {
-          return params.data.siglas + " "+params.data.nombrehabilitacionurbana;
+          return params.data.siglas;
+        }
+      },
+      {
+        headerName: LS.TAG_UBICACION,
+        width: 230,
+        minWidth: 230,
+        valueGetter: (params) => {
+          return params.data.ubicacion;
         }
       },
       {
@@ -313,18 +308,18 @@ export class LocalService {
       },
       {
         headerName: LS.TAG_AREA,
-        width: 150,
-        minWidth: 150,
+        width: 100,
+        minWidth: 100,
         valueGetter: (params) => {
-          return params.data.largo + " x " + params.data.ancho +" m2";
+          return `${params.data.largo} x ${params.data.ancho} m2`;
         }
       },
       {
         headerName: LS.TAG_PRECIO_ADQUISICION,
-        width: 120,
-        minWidth: 120,
+        width: 140,
+        minWidth: 140,
         valueGetter: (params) => {
-          return params.data.precioadquisicion;
+          return `S/. ${params.data.precioadquisicion}`;
         }
       },
       {
@@ -332,7 +327,7 @@ export class LocalService {
         width: 125,
         minWidth: 125,
         valueGetter: (params) => {
-          return params.data.preciocontrato;
+          return `S/. ${params.data.preciocontrato}`;
         }
       },
       {
@@ -340,7 +335,7 @@ export class LocalService {
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.ganancia;
+          return `S/. ${params.data.ganancia}`;
         }
       },
       {
@@ -353,7 +348,7 @@ export class LocalService {
       },
       {
         headerName: LS.TAG_MENSAJES,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'nmensajes',
         width: 95,
         minWidth: 95,
@@ -365,7 +360,7 @@ export class LocalService {
       columnas.push(
         {
           headerName: LS.TAG_ACTIVO,
-          headerClass: 'text-md-center',//Clase a nivel de th
+          headerClass: 'text-md-center',
           field: 'estado',
           width: 90,
           minWidth: 90,
@@ -374,7 +369,7 @@ export class LocalService {
         },
         {
           headerName: LS.TAG_OPCIONES,
-          headerClass: 'cell-header-center',//Clase a nivel de th
+          headerClass: 'cell-header-center',
           cellClass: 'text-center',
           // cellClass: (params) => { return (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
           width: LS.WIDTH_OPCIONES,
@@ -389,8 +384,7 @@ export class LocalService {
             enableSorting: false
           },
           pinnedRowCellRenderer: PinnedCellComponent,
-        },
-        // this.utilService.getColumnaOpciones()
+        }
       );
     } else {
       columnas.push(

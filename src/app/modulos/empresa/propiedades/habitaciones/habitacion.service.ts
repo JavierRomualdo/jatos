@@ -34,7 +34,7 @@ export class HabitacionService {
           contexto.despuesDeListarHabitaciones([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarHabitacionesParaTipoContrato(parametro, contexto) {
@@ -47,7 +47,7 @@ export class HabitacionService {
           contexto.despuesDeListarHabitacionesParaTipoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarHabitacionesPorEstadoContrato(parametro, contexto) {
@@ -60,7 +60,7 @@ export class HabitacionService {
           contexto.despuesDeListarHabitacionesPorEstadoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarCodigoHabitacion(contexto) {
@@ -72,7 +72,7 @@ export class HabitacionService {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarHabitacion(parametro, contexto) {
@@ -86,7 +86,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarHabitacion(parametro, contexto) {
@@ -100,7 +100,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarHabitacion(parametro, contexto) {
@@ -113,7 +113,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoHabitacion(parametro, contexto) {
@@ -127,7 +127,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarHabitacion(parametro, contexto) {
@@ -141,7 +141,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   // Mensajes
@@ -156,7 +156,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarMensajesHabitacion(parametro, contexto) {
@@ -169,7 +169,7 @@ export class HabitacionService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarFotoHabitacion(parametro, contexto) {
@@ -182,7 +182,7 @@ export class HabitacionService {
       (error) => {
         console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoHabitacion(parametro, contexto) {
@@ -195,7 +195,7 @@ export class HabitacionService {
       (error) => {
         console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirHabitaciones(parametro, contexto) {
@@ -208,7 +208,7 @@ export class HabitacionService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirHabitacionDetalle(parametro, contexto) {
@@ -221,7 +221,7 @@ export class HabitacionService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   exportarExcelHabitaciones(parametro, contexto) {
@@ -234,12 +234,7 @@ export class HabitacionService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
-  }
-
-  private handleError(error: any, contexto): void {
-    this.toastr.error('Error Interno: ' + error, 'Error');
-    contexto.cargando = false;
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {
@@ -255,7 +250,7 @@ export class HabitacionService {
       },
       {
         headerName: LS.TAG_IMAGEN,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'foto',
         width: 115,
         minWidth: 115,
@@ -263,17 +258,17 @@ export class HabitacionService {
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'contrato',
-        width: 115,
-        minWidth: 115,
+        width: 110,
+        minWidth: 110,
         cellRendererFramework: IconAccionComponent,
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Estado Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_ESTADO_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'estadocontrato',
         width: 140,
         minWidth: 140,
@@ -288,20 +283,20 @@ export class HabitacionService {
           return params.data.propietario;
         }
       },
-      // {
-      //   headerName: LS.TAG_UBICACION,
-      //   width: 150,
-      //   minWidth: 150,
-      //   valueGetter: (params) => {
-      //     return params.data.ubicacion;
-      //   }
-      // },
       {
         headerName: LS.TAG_HAB_URBANA,
-        width: 150,
-        minWidth: 150,
+        width: 115,
+        minWidth: 115,
         valueGetter: (params) => {
-          return params.data.siglas + " "+params.data.nombrehabilitacionurbana;
+          return params.data.siglas;
+        }
+      },
+      {
+        headerName: LS.TAG_UBICACION,
+        width: 230,
+        minWidth: 230,
+        valueGetter: (params) => {
+          return params.data.ubicacion;
         }
       },
       {
@@ -314,10 +309,10 @@ export class HabitacionService {
       },
       {
         headerName: LS.TAG_AREA,
-        width: 150,
-        minWidth: 150,
+        width: 100,
+        minWidth: 100,
         valueGetter: (params) => {
-          return params.data.largo + " x " + params.data.ancho +" m2";
+          return `${params.data.largo} x ${params.data.ancho} m2`;
         }
       },
       {
@@ -325,7 +320,7 @@ export class HabitacionService {
         width: 140,
         minWidth: 140,
         valueGetter: (params) => {
-          return params.data.precioadquisicion;
+          return `S/. ${params.data.precioadquisicion}`;
         }
       },
       {
@@ -333,7 +328,7 @@ export class HabitacionService {
         width: 125,
         minWidth: 125,
         valueGetter: (params) => {
-          return params.data.preciocontrato;
+          return `S/. ${params.data.preciocontrato}`;
         }
       },
       {
@@ -341,7 +336,7 @@ export class HabitacionService {
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.ganancia;
+          return `S/. ${params.data.ganancia}`;
         }
       },
       {
@@ -362,7 +357,7 @@ export class HabitacionService {
       },
       {
         headerName: LS.TAG_MENSAJES,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'nmensajes',
         width: 95,
         minWidth: 95,
@@ -374,7 +369,7 @@ export class HabitacionService {
       columnas.push(
         {
           headerName: LS.TAG_ACTIVO,
-          headerClass: 'text-md-center',//Clase a nivel de th
+          headerClass: 'text-md-center',
           field: 'estado',
           width: 90,
           minWidth: 90,
@@ -383,7 +378,7 @@ export class HabitacionService {
         },
         {
           headerName: LS.TAG_OPCIONES,
-          headerClass: 'cell-header-center',//Clase a nivel de th
+          headerClass: 'cell-header-center',
           cellClass: 'text-center',
           // cellClass: (params) => { return (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
           width: LS.WIDTH_OPCIONES,
@@ -398,8 +393,7 @@ export class HabitacionService {
             enableSorting: false
           },
           pinnedRowCellRenderer: PinnedCellComponent,
-        },
-        // this.utilService.getColumnaOpciones()
+        }
       );
     } else {
       columnas.push(

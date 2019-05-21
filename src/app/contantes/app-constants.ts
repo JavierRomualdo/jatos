@@ -154,6 +154,7 @@ export class LS {
   static TAG_EMAIL = "Email";
   static TAG_TITULO = "Titulo";
   static TAG_ESTADO = "Estado";
+  static TAG_ESTADO_CONTRATO = "Estado contrato";
   static TAG_DATOS_PERSONALES = "Datos personales";
   static TAG_LATITUD = "Latitud";
   static TAG_LONGITUD = "Longitud";
@@ -308,6 +309,7 @@ export class LS {
   static MSJ_DEJAR_CAER_ARCHIVOS = 'Deje caer aqui los archivos';
   static MSJ_INGRESE_DETALLE_POR_IMAGEN = 'Ingese detalle por imagen';
   static MSJ_SERVICIO_YA_SE_HA_ASIGNADO = 'El servicio ya se ha asignado';
+  static MSJ_SE_HA_MODIFICADO_ESTADO_MENSAJE = 'Se ha modificado el estado del mensaje';
   
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";

@@ -34,7 +34,7 @@ export class LoteService {
           contexto.despuesDeListarLotes([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarLotesParaTipoContrato(parametro, contexto) {
@@ -47,7 +47,7 @@ export class LoteService {
           contexto.despuesDeListarLotesParaTipoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarLotesPorEstadoContrato(parametro, contexto) {
@@ -60,7 +60,7 @@ export class LoteService {
           contexto.despuesDeListarLotesPorEstadoContrato([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarCodigoLote(contexto) {
@@ -72,7 +72,7 @@ export class LoteService {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarLote(parametro, contexto) {
@@ -86,7 +86,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarLote(parametro, contexto) {
@@ -100,7 +100,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoLote(parametro, contexto) {
@@ -114,7 +114,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarLote(parametro, contexto) {
@@ -127,7 +127,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   listarMensajesLote(parametro, contexto) {
@@ -140,7 +140,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarLote(parametro, contexto) {
@@ -154,7 +154,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoMensajeLote(parametro, contexto) {
@@ -168,7 +168,7 @@ export class LoteService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarFotoLote(parametro, contexto) {
@@ -181,7 +181,7 @@ export class LoteService {
       (error) => {
         console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoLote(parametro, contexto) {
@@ -194,7 +194,7 @@ export class LoteService {
       (error) => {
         console.log('error: ');
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirLotes(parametro, contexto) {
@@ -207,7 +207,7 @@ export class LoteService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirLoteDetalle(parametro, contexto) {
@@ -220,7 +220,7 @@ export class LoteService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   exportarExcelLotes(parametro, contexto) {
@@ -233,12 +233,7 @@ export class LoteService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
-  }
-
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {
@@ -254,7 +249,7 @@ export class LoteService {
       },
       {
         headerName: LS.TAG_IMAGEN,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'foto',
         width: 115,
         minWidth: 115,
@@ -262,17 +257,17 @@ export class LoteService {
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'contrato',
-        width: 115,
-        minWidth: 115,
+        width: 110,
+        minWidth: 110,
         cellRendererFramework: IconAccionComponent,
         cellClass: 'text-md-center'
       },
       {
-        headerName: 'Estado Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_ESTADO_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'estadocontrato',
         width: 140,
         minWidth: 140,
@@ -287,20 +282,20 @@ export class LoteService {
           return params.data.propietario;
         }
       },
-      // {
-      //   headerName: LS.TAG_UBICACION,
-      //   width: 150,
-      //   minWidth: 150,
-      //   valueGetter: (params) => {
-      //     return params.data.ubicacion;
-      //   }
-      // },
       {
         headerName: LS.TAG_HAB_URBANA,
-        width: 150,
-        minWidth: 150,
+        width: 115,
+        minWidth: 115,
         valueGetter: (params) => {
-          return params.data.siglas + " "+params.data.nombrehabilitacionurbana;
+          return params.data.siglas;
+        }
+      },
+      {
+        headerName: LS.TAG_UBICACION,
+        width: 230,
+        minWidth: 230,
+        valueGetter: (params) => {
+          return params.data.ubicacion;
         }
       },
       {
@@ -313,18 +308,18 @@ export class LoteService {
       },
       {
         headerName: LS.TAG_AREA,
-        width: 150,
-        minWidth: 150,
+        width: 100,
+        minWidth: 100,
         valueGetter: (params) => {
-          return params.data.largo + " x " + params.data.ancho +" m2";
+          return `${params.data.largo} x ${params.data.ancho} m2`;
         }
       },
       {
         headerName: LS.TAG_PRECIO_ADQUISICION,
-        width: 120,
-        minWidth: 120,
+        width: 140,
+        minWidth: 140,
         valueGetter: (params) => {
-          return params.data.precioadquisicion;
+          return `S/. ${params.data.precioadquisicion}`;
         }
       },
       {
@@ -332,7 +327,7 @@ export class LoteService {
         width: 125,
         minWidth: 125,
         valueGetter: (params) => {
-          return params.data.preciocontrato;
+          return `S/. ${params.data.preciocontrato}`;
         }
       },
       {
@@ -340,12 +335,12 @@ export class LoteService {
         width: 100,
         minWidth: 100,
         valueGetter: (params) => {
-          return params.data.ganancia;
+          return `S/. ${params.data.ganancia}`;
         }
       },
       {
         headerName: LS.TAG_MENSAJES,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'nmensajes',
         width: 95,
         minWidth: 95,
@@ -357,7 +352,7 @@ export class LoteService {
       columnas.push(
         {
           headerName: LS.TAG_ACTIVO,
-          headerClass: 'text-md-center',//Clase a nivel de th
+          headerClass: 'text-md-center',
           field: 'estado',
           width: 90,
           minWidth: 90,
@@ -366,7 +361,7 @@ export class LoteService {
         },
         {
           headerName: LS.TAG_OPCIONES,
-          headerClass: 'cell-header-center',//Clase a nivel de th
+          headerClass: 'cell-header-center',
           cellClass: 'text-center',
           // cellClass: (params) => { return (params.data.estadocontrato !=='L') ? 'd-none' : 'text-center' },
           width: LS.WIDTH_OPCIONES,
@@ -381,8 +376,7 @@ export class LoteService {
             enableSorting: false
           },
           pinnedRowCellRenderer: PinnedCellComponent,
-        },
-        // this.utilService.getColumnaOpciones()
+        }
       );
     } else {
       columnas.push(

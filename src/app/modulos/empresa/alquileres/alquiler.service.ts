@@ -29,7 +29,7 @@ export class AlquilerService {
           contexto.despuesDeListarAlquileres([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarAlquiler(parametro, contexto) {
@@ -41,7 +41,7 @@ export class AlquilerService {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarAlquiler(parametro, contexto) {
@@ -55,7 +55,7 @@ export class AlquilerService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirAlquileres(parametro, contexto) {
@@ -68,7 +68,7 @@ export class AlquilerService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   imprimirDetalleAlquiler(parametro, contexto) {
@@ -81,7 +81,7 @@ export class AlquilerService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   exportarExcelAlquileres(parametro, contexto) {
@@ -94,20 +94,15 @@ export class AlquilerService {
         }
         contexto.cargando = false;
       }
-    ).catch(err => this.utilService.handleError(err, this));
-  }
-
-  private handleError(error: any, contexto): void {
-    this.toastr.error('Error Interno: ' + error, 'Error');
-    contexto.cargando = false;
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {
     let columnas: Array<any> = [];
     columnas.push(
       {
-        headerName: 'Contrato',
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerName: LS.TAG_CONTRATO,
+        headerClass: 'text-md-center',
         field: 'estadocontrato',
         width: 115,
         minWidth: 115,
@@ -116,7 +111,7 @@ export class AlquilerService {
       },
       {
         headerName: LS.TAG_IMAGEN,
-        headerClass: 'text-md-center',//Clase a nivel de th
+        headerClass: 'text-md-center',
         field: 'foto',
         width: 115,
         minWidth: 115,

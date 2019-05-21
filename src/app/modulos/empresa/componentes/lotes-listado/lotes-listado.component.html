@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 250px);" class="ag-theme-balham" [rowData]="listadoLotes"
+      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listadoLotes"
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
