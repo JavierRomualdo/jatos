@@ -40,6 +40,7 @@ export class UsuariosComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
   
@@ -52,6 +53,7 @@ export class UsuariosComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
+    this.localeText = { noRowsToShow: 'No se encontraron usuarios', page: "Página", of: "de", to: "a" };
     if (LS.KEY_IS_PERFIL_USER) {
       let objJWT: ObjetoJWT = JSON.parse(localStorage.getItem(LS.KEY_CURRENT_USER));
       this.editarUsuario(parseInt(objJWT.userId));

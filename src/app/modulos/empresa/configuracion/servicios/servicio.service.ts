@@ -7,6 +7,7 @@ import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opcion
 import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { ArchivoService } from 'src/app/servicios/archivo/archivo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class ServicioService {
 
   constructor(
     private api: ApiRequest2Service,
+    private archivoService: ArchivoService,
     private utilService: UtilService,
     private toastr: ToastrService
   ) { }
@@ -110,6 +112,32 @@ export class ServicioService {
           this.toastr.warning('No se encontraron resultados', LS.TAG_AVISO);
           contexto.cargando = false;
         }
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  imprimirServicios(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReportePersonas", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('ListadoServicios_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  imprimirServicioDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteServicios", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleServicio_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }

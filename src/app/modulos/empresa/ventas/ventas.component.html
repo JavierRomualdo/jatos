@@ -120,12 +120,12 @@
               </div>
             </div>
           </div>
-          <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listaResultado"
+          <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listaResultado"
             [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
             [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="ventaSeleccionado = $event.node.data"
             (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
             (cellFocused)="filaFocused($event)" (cellDoubleClicked)="ventaSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
-            [frameworkComponents]="frameworkComponents" [paginationAutoPageSize]="true" [pagination]="true">
+            [frameworkComponents]="frameworkComponents" [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText">
           </ag-grid-angular>
           <!--(filterChanged)="actualizarFilas()"-->
         </div>

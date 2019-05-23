@@ -55,6 +55,7 @@ export class AlquileresComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
   
@@ -66,7 +67,7 @@ export class AlquileresComponent implements OnInit {
 
   ngOnInit() {
     this.isScreamMd = window.innerWidth <= 576 ? false : true;
-
+    this.localeText = { noRowsToShow: 'No se encontraron alquileres', page: "Página", of: "de", to: "a" };
     this.listaPropiedades = LS.LISTA_PROPIEDADES;
     this.propiedadSeleccionado = this.listaPropiedades ? this.listaPropiedades[0] : null;
     this.departamentoSeleccionado = undefined;

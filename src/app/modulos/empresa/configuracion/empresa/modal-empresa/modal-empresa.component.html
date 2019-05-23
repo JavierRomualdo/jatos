@@ -13,10 +13,17 @@
           <!-- <i class="fa fa-align-justify"></i>  -->
           <strong>{{constantes.TAG_DATOS_GENERALES}}</strong>
           <div class="card-header-actions">
-            <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosGeneral"
-              aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
-              <i class="fa fa-minus"></i>
-            </a>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-primary mr-1" id="btnImprimir" placement="top"
+                (click)="imprimir()" ngbTooltip="{{constantes.LABEL_IMPRIMIR}}" container="body" title="{{constantes.ATAJO_IMPRIMIR}}">
+                <i class="{{constantes.ICON_IMPRIMIR}}" aria-hidden="true"></i>
+                <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
+              </button>
+              <a href="#" class="card-header-action btn-minimize" data-toggle="collapse" data-target="#collapseDatosGeneral"
+                aria-expanded="true" placement="top" ngbTooltip="{{constantes.TAG_MOSTRAR_OCULTAR}}">
+                <i class="fa fa-minus"></i>
+              </a>
+            </div>
           </div>
         </div>
         <div class="card-body pb-0 pt-1 collapse show" id="collapseDatosGeneral">

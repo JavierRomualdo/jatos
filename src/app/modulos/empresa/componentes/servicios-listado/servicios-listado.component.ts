@@ -38,6 +38,7 @@ export class ServiciosListadoComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
 
@@ -50,6 +51,7 @@ export class ServiciosListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
+    this.localeText = { noRowsToShow: 'No se encontraron servicios', page: "Página", of: "de", to: "a" };
     // if (this.isModal) {
     //   this.listarServicios(false);
     //   // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
@@ -140,6 +142,7 @@ export class ServiciosListadoComponent implements OnInit {
 
   generarOpciones() {
     let perConsultar = true;
+    let perImprimir = true;
     let perModificar = true;
     let perEliminar = true;
     let perInactivar = this.objetoSeleccionado.estado; //empInactivo
@@ -174,6 +177,13 @@ export class ServiciosListadoComponent implements OnInit {
         icon: LS.ICON_ELIMINAR,
         disabled: !perEliminar,
         command: () => perEliminar ? this.eliminarServicio() : null
+      },
+      {separator:true},
+      {
+        label: LS.ACCION_IMPRIMIR,
+        icon: LS.ICON_IMPRIMIR,
+        disabled: !perImprimir,
+        command: () => perImprimir ? this.imprimirServicioDetalle() : null
       }
     ];
   }
@@ -274,7 +284,23 @@ export class ServiciosListadoComponent implements OnInit {
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
   }
 
-  imprimirCasas() {}
+  imprimir() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoServicios
+    }
+    this.servicioService.imprimirServicios(parametros, this);
+  }
+
+  imprimirServicioDetalle() {
+    this.cargando = true;
+    let parametros = {
+      servicio: this.objetoSeleccionado,
+      fechaActual: this.utilService.obtenerFechaActual()
+    }
+    this.servicioService.imprimirServicioDetalle(parametros, this);
+  }
 
   ejecutarAccionPaFormulario(data) { // oriden del formulario de personas
     // data {accion: string . persona: Servicio}

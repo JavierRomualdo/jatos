@@ -11,6 +11,7 @@ import { EmpresaService } from './empresa.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions,
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
+import { UtilService } from 'src/app/servicios/util/util.service';
 
 @Component({
   selector: 'app-modal-empresa',
@@ -35,6 +36,7 @@ export class ModalEmpresaComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
+    private utilService: UtilService,
     private empresaService: EmpresaService,
     private modalService: NgbModal,
     private auth: AuthService,
@@ -155,6 +157,15 @@ export class ModalEmpresaComponent implements OnInit {
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
+  }
+
+  imprimir() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.empresa
+    }
+    this.empresaService.imprimirEmpresa(parametros, this);
   }
 
   // Mapa

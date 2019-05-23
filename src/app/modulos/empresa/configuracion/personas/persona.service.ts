@@ -7,6 +7,7 @@ import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opcion
 import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { ArchivoService } from 'src/app/servicios/archivo/archivo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class PersonaService {
 
   constructor(
     private api: ApiRequest2Service,
+    private archivoService: ArchivoService,
     private utilService: UtilService,
     private toastr: ToastrService, // para mensajes de exito o error
   ) { }
@@ -31,7 +33,7 @@ export class PersonaService {
           contexto.despuesDeListarPersonas([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarPersona(parametro, contexto) {
@@ -45,7 +47,7 @@ export class PersonaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarPersona(parametro, contexto) {
@@ -59,7 +61,7 @@ export class PersonaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoPersona(parametro, contexto) {
@@ -73,7 +75,7 @@ export class PersonaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarPersona(parametro, contexto) {
@@ -87,7 +89,7 @@ export class PersonaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarPersona(parametro, contexto) {
@@ -100,7 +102,7 @@ export class PersonaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   busquedaPersonas(parametro, contexto) {
@@ -113,12 +115,33 @@ export class PersonaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+  imprimirPersonas(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReportePersonas", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('ListadoPersonas_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  imprimirPersonaDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReportePersonaDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetallePersona_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {

@@ -40,6 +40,7 @@ export class PersonasListadoComponent implements OnInit {
   public columnDefs: Array<object> = [];
   public columnDefsSelected: Array<object> = [];
   public rowSelection: string;
+  public localeText = {};
   public context;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
   
@@ -52,6 +53,7 @@ export class PersonasListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
+    this.localeText = { noRowsToShow: 'No se encontraron personas', page: "Página", of: "de", to: "a" };
     // if (this.isModal) {
     //   this.listarPersonas(false);
     // // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
@@ -156,7 +158,7 @@ export class PersonasListadoComponent implements OnInit {
 
   generarOpciones() {
     let perConsultar = true;
-    let perMensajes = true;
+    let perImprimir = true;
     let perModificar = true;
     let perEliminar = true;
     let perInactivar = this.objetoSeleccionado.estado; //empInactivo
@@ -191,6 +193,13 @@ export class PersonasListadoComponent implements OnInit {
         icon: LS.ICON_ELIMINAR,
         disabled: !perEliminar,
         command: () => perEliminar ? this.eliminarPersona() : null
+      },
+      {separator:true},
+      {
+        label: LS.ACCION_IMPRIMIR,
+        icon: LS.ICON_IMPRIMIR,
+        disabled: !perImprimir,
+        command: () => perImprimir ? this.imprimirDetalleCasa() : null
       }
     ];
   }
@@ -288,7 +297,23 @@ export class PersonasListadoComponent implements OnInit {
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
   }
 
-  imprimirCasas() {}
+  imprimir() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoPersonas
+    }
+    this.personaService.imprimirPersonas(parametros, this);
+  }
+
+  imprimirDetalleCasa() {
+    this.cargando = true;
+    let parametros = {
+      persona: this.objetoSeleccionado,
+      fechaActual: this.utilService.obtenerFechaActual()
+    }
+    this.personaService.imprimirPersonaDetalle(parametros, this);
+  }
 
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {

@@ -54,7 +54,7 @@ export class LotesListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
-    this.localeText = { noRowsToShow: 'No hay lotes', page: "Página", of: "de", to: "a" };
+    this.localeText = { noRowsToShow: 'No se encontraron lotes', page: "Página", of: "de", to: "a" };
     if (this.isModal) {
       this.listarLotesParaTipoContrato(this.parametrosBusqueda);
     }

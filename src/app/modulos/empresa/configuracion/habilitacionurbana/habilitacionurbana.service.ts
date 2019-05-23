@@ -7,6 +7,7 @@ import { InputEstadoComponent } from 'src/app/modulos/componentes/input-estado/i
 import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opciones/boton-opciones.component';
 import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
 import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
+import { ArchivoService } from 'src/app/servicios/archivo/archivo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class HabilitacionurbanaService {
 
   constructor(
     private api: ApiRequest2Service,
+    private archivoService: ArchivoService,
     private utilService: UtilService,
     private toastr: ToastrService
   ) { }
@@ -29,7 +31,7 @@ export class HabilitacionurbanaService {
           contexto.despuesDeListarHabilitacionUrbana([]);
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   ingresarHabilitacionUrbana(parametro, contexto) {
@@ -43,7 +45,7 @@ export class HabilitacionurbanaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   modificarHabilitacionUrbana(parametro, contexto) {
@@ -57,7 +59,7 @@ export class HabilitacionurbanaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   cambiarEstadoHabilitacionUrbana(parametro, contexto) {
@@ -71,7 +73,7 @@ export class HabilitacionurbanaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarHabilitacionUrbana(parametro, contexto) {
@@ -85,7 +87,7 @@ export class HabilitacionurbanaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   mostrarHabilitacionUrbana(parametro, contexto) {
@@ -98,12 +100,33 @@ export class HabilitacionurbanaService {
           contexto.cargando = false;
         }
       }
-    ).catch(err => this.handleError(err, contexto));
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  private handleError(error: any, contexto): void {
-    contexto.cargando = false;
-    this.toastr.error('Error Interno: ' + error, 'Error');
+  imprimirHabilitacionesUrbanas(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteHabilitacionesUrbanas", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('ListadoHabilitacionesUrbanas_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  imprimirHabilitacionUrbanaDetalle(parametro, contexto) {
+    this.archivoService.postPdf("imprimirReporteHabilitacionUrbanaDetalle", parametro).then(
+      (data) => {
+        if (data._body.byteLength > 0) {
+          this.utilService.descargarArchivoPDF('DetalleHabilitacionUrbana_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
+        } else {
+          this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   generarColumnas(isModal: boolean): Array<any> {

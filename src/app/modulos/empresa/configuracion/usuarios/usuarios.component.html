@@ -53,12 +53,12 @@
             </div>
           </div>
         </div>
-        <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listadoUsuarios"
+        <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listadoUsuarios"
           [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
           [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
           (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
           (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultarUsuario()"
-          [paginationAutoPageSize]="true" [pagination]="true">
+          [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText">
         </ag-grid-angular>
         <!--(filterChanged)="actualizarFilas()"-->
       </div>

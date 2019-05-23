@@ -54,7 +54,7 @@ export class CocherasListadoComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
-    this.localeText = { noRowsToShow: 'No hay cocheras', page: "Página", of: "de", to: "a" };
+    this.localeText = { noRowsToShow: 'No se encontraron cocheras', page: "Página", of: "de", to: "a" };
     if (this.isModal) {
       this.listarCocherasParaTipoContrato(this.parametrosBusqueda);
     }
