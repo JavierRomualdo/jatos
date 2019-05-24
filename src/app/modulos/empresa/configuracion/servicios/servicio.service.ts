@@ -117,7 +117,7 @@ export class ServicioService {
   }
 
   imprimirServicios(parametro, contexto) {
-    this.archivoService.postPdf("imprimirReportePersonas", parametro).then(
+    this.archivoService.postPdf("imprimirReporteServicios", parametro).then(
       (data) => {
         if (data._body.byteLength > 0) {
           this.utilService.descargarArchivoPDF('ListadoServicios_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
@@ -130,12 +130,25 @@ export class ServicioService {
   }
 
   imprimirServicioDetalle(parametro, contexto) {
-    this.archivoService.postPdf("imprimirReporteServicios", parametro).then(
+    this.archivoService.postPdf("imprimirReporteServicioDetalle", parametro).then(
       (data) => {
         if (data._body.byteLength > 0) {
           this.utilService.descargarArchivoPDF('DetalleServicio_' + this.utilService.obtenerHorayFechaActual() + '.pdf', data);
         } else {
           this.toastr.warning(LS.MSJ_ERROR_IMPRIMIR, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  exportarExcelServicioss(parametro, contexto) {
+    this.archivoService.postExcel("exportarExcelServicios", parametro).then(
+      (data) => {
+        if (data) {
+          this.utilService.descargarArchivoExcel(data, "ListadoServicios_");
+        } else {
+          this.toastr.warning(LS.MSJ_NO_DATA, LS.TAG_AVISO);
         }
         contexto.cargando = false;
       }

@@ -129,6 +129,19 @@ export class HabilitacionurbanaService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
+  exportarExcelHabilitacionesUrbanas(parametro, contexto) {
+    this.archivoService.postExcel("exportarExcelHabilitacionesUrbanas", parametro).then(
+      (data) => {
+        if (data) {
+          this.utilService.descargarArchivoExcel(data, "ListadoHabilitacionesUrbanas_");
+        } else {
+          this.toastr.warning(LS.MSJ_NO_DATA, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
   generarColumnas(isModal: boolean): Array<any> {
     let columnas: Array<any> = [];
     columnas.push(

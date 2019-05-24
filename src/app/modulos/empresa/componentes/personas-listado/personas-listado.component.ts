@@ -315,6 +315,15 @@ export class PersonasListadoComponent implements OnInit {
     this.personaService.imprimirPersonaDetalle(parametros, this);
   }
 
+  exportarPersonas() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoPersonas
+    }
+    this.personaService.exportarExcelPersonas(parametros, this);
+  }
+
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.personaService.generarColumnas(this.isModal);

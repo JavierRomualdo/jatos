@@ -300,6 +300,15 @@ export class HabilitacionurbanaListadoComponent implements OnInit {
     this.habilitacionurbanaService.imprimirHabilitacionUrbanaDetalle(parametros, this);
   }
 
+  exportarHabilitacionesUrbanas() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoHabilitacionUrbana
+    }
+    this.habilitacionurbanaService.exportarExcelHabilitacionesUrbanas(parametros, this);
+  }
+
   ejecutarAccionPaFormulario(data) { // oriden del formulario de personas
     // data {accion: string . persona: Servicio}
     switch (data.accion) {

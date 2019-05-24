@@ -23,7 +23,7 @@
             <span class="d-none d-md-inline"> {{constantes.LABEL_IMPRIMIR}}</span>
           </button>
           <button type="button" class="btn btn-sm btn-primary mr-1" *ngIf="!isModal" id="btnExportar" placement="top"
-            ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
+            (click)="exportarServicios()" ngbTooltip="{{constantes.LABEL_EXPORTAR}}" container="body" title="{{constantes.ATAJO_EXPORTAR}}">
             <i class="{{constantes.ICON_EXPORTAR}}" aria-hidden="true"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_EXPORTAR}}</span>
           </button>

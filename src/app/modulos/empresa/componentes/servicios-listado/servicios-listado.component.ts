@@ -302,6 +302,15 @@ export class ServiciosListadoComponent implements OnInit {
     this.servicioService.imprimirServicioDetalle(parametros, this);
   }
 
+  exportarServicios() {
+    this.cargando = true;
+    let parametros = {
+      fechaActual: this.utilService.obtenerFechaActual(),
+      data: this.listadoServicios
+    }
+    this.servicioService.exportarExcelServicioss(parametros, this);
+  }
+
   ejecutarAccionPaFormulario(data) { // oriden del formulario de personas
     // data {accion: string . persona: Servicio}
     switch (data.accion) {

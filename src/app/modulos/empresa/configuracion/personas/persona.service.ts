@@ -144,6 +144,19 @@ export class PersonaService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
+  exportarExcelPersonas(parametro, contexto) {
+    this.archivoService.postExcel("exportarExcelPersonas", parametro).then(
+      (data) => {
+        if (data) {
+          this.utilService.descargarArchivoExcel(data, "ListadoPersonas_");
+        } else {
+          this.toastr.warning(LS.MSJ_NO_DATA, LS.TAG_AVISO);
+        }
+        contexto.cargando = false;
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
   generarColumnas(isModal: boolean): Array<any> {
     let columnas: Array<any> = [];
     columnas.push(
