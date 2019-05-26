@@ -162,8 +162,8 @@ export class ModalEmpresaComponent implements OnInit {
   imprimir() {
     this.cargando = true;
     let parametros = {
-      fechaActual: this.utilService.obtenerFechaActual(),
-      data: this.empresa
+      empresa: this.empresa,
+      fechaActual: this.utilService.obtenerFechaActual()
     }
     this.empresaService.imprimirEmpresa(parametros, this);
   }

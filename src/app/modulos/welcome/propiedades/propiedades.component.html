@@ -102,13 +102,34 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-                <!--Opcional-->
+                <!--Opcional: Precios-->
                 <div class="form-group form-group-sm mb-2">
                   <label class="control-label">
                     <strong> Precios</strong>
                   </label>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <label>¿Por escrito?</label>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-pill switch-primary">
+                        <input type="checkbox" class="switch-input" [(ngModel)]="porescrito" name="porescrito">
+                        <span class="switch-slider" data-checked="si" data-unchecked="no"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="porescrito">
+                    <div class="col-md-12">
+                      <input type="text" name="precio1" [(ngModel)]="rangoprecio.preciominimo" required placeholder="Rango 1" value="{{rangoprecio.preciominimo}}"
+                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecio.preciominimo=$event" [appAutonumeric2]="rangoprecio.preciominimo">
+                    </div>
+                    <div class="col-md-12">
+                      <input type="text" name="precio2" [(ngModel)]="rangoprecio.preciomaximo" required placeholder="Rango 2" value="{{rangoprecio.preciomaximo}}"
+                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecio.preciomaximo=$event" [appAutonumeric2]="rangoprecio.preciomaximo">
+                    </div>
+                  </div>
                   <!--ComboBox: Rango precios-->
-                  <p-dropdown [options]="listaRangoPrecios" name="rangoprecio" [showClear]="true" [(ngModel)]="rangoprecio"
+                  <p-dropdown [options]="listaRangoPrecios" name="rangoprecio" [showClear]="true" [(ngModel)]="rangoprecio" *ngIf="!porescrito"
                     [disabled]="false" (ngModelChange)="listarPropiedades()" placeholder="Todos los precios..." optionLabel="preciominimo">
                     <ng-template let-item pTemplate="selectedItem">
                         S/ {{rangoprecio?.preciominimo}} - S/ {{rangoprecio?.preciomaximo}}

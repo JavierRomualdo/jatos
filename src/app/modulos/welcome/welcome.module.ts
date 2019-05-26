@@ -63,7 +63,8 @@ import { Title } from '@angular/platform-browser';
     WelcomeRoutingModule,
 
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80'
+      apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80',
+      libraries: ["places"]
     }),
     ToastrModule.forRoot({
       closeButton: true

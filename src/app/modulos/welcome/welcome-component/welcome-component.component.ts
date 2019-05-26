@@ -92,7 +92,7 @@ export class WelcomeComponentComponent implements OnInit {
   }
 
   buscarPropiedades() {
-    if (this.ubigeo && this.contratodetalle && this.propiedad) {
+    if (typeof this.ubigeo === 'object' && this.contratodetalle && this.propiedad) {
       LS.KEY_UBIGEO = this.ubigeo.rutaubigeo.split(", ");
       LS.KEY_PROPIEDAD_SELECT = this.propiedad;
       LS.KEY_CONTRATO_SELECT = this.contratodetalle.codigo;

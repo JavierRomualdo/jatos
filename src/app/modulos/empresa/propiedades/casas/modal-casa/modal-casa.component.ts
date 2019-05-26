@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, NgZone, ViewChild} from '@angular/core';
 import { Casa } from 'src/app/entidades/entidad.casa';
 import { FileItem } from 'src/app/entidades/file-item';
 import { Servicios } from 'src/app/entidades/entidad.servicios';
@@ -23,6 +23,8 @@ import { PersonasComponent } from '../../../configuracion/personas/personas.comp
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 import { CasaArchivo } from 'src/app/entidades/entidad.casaarchivo';
+import { FormControl } from '@angular/forms';
+// import { } from '@types/googlemaps';
 
 @Component({
   selector: 'app-modal-casa',

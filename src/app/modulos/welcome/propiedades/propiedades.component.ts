@@ -27,7 +27,7 @@ export class PropiedadesComponent implements OnInit {
   public propiedades: any = []; // lista proyecto
   public propiedadesCopia: any = []; // lista proyecto
   public idPropiedad = 0; // parametro para la propiedad detalle
-  public rangoprecio: Rangoprecios = null;
+  public rangoprecio: Rangoprecios = new Rangoprecios();
   public servicios: Servicios[] = [];
   public constantes: any = LS;
 
@@ -70,7 +70,7 @@ export class PropiedadesComponent implements OnInit {
     this.titleService.setTitle( LS.PAGINA_PROPIEDADES );
     this.tipopropiedades = LS.LISTA_PROPIEDADES;
     this.listarUbigeos(); // index ubigeos (departamento)
-    // this.rangoprecio.preciominimo = "0";
+    this.rangoprecio.preciominimo = "0";
     this.parametros.tipopropiedad = LS.KEY_PROPIEDAD_SELECT ? this.utilService.seleccionarPropiedad(this.tipopropiedades) : null;
     if (LS.KEY_CONTRATO_SELECT) {
       this.ubigeo.contrato = [];

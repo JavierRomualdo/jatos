@@ -294,7 +294,7 @@ export class HabilitacionurbanaListadoComponent implements OnInit {
   imprimirHabilitacionUrbanaDetalle() {
     this.cargando = true;
     let parametros = {
-      servicio: this.objetoSeleccionado,
+      habilitacionurbana: this.objetoSeleccionado,
       fechaActual: this.utilService.obtenerFechaActual()
     }
     this.habilitacionurbanaService.imprimirHabilitacionUrbanaDetalle(parametros, this);

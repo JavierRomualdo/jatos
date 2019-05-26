@@ -255,6 +255,11 @@
                 </div>
               </div>
               <!--/.row-->
+              <h1>Angular 2 + Google Maps Places Autocomplete</h1>
+              <div class="form-group">
+                <input placeholder="search for location" name="searchlocation" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+              </div>
+              <!--/.row-->
               <div class="row">
                 <div class="form-group form-group-sm col-sm-12"><!--[mapTypeControlOptions]="mapTypeControlOptions"-->
                   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
