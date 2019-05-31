@@ -176,20 +176,22 @@ export class CasasService {
 
   eliminarFotoCasa(parametro, contexto) {
     this.api.delete2('casafoto/' + parametro.id).then(
-      (res) => {
+      (data) => {
         const index = contexto.fotos.indexOf(parametro);
         contexto.fotos.splice(index, 1);
-        contexto.despuesDeEliminarFotoCasa(res);
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarFotoCasa(data);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoCasa(parametro, contexto) {
-    this.api.delete2('casaarchivo/' + parametro.casa_id).then(
-      (res) => {
+    this.api.delete2('casaarchivo/' + parametro.id).then(
+      (data) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);
-        contexto.despuesDeEliminarArchivoCasa(res);
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarArchivoCasa(data);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }

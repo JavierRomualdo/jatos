@@ -132,7 +132,6 @@ export class ModalCasaComponent implements OnInit {
 
   guardarpropiedad() {
     console.log('vamos a guardar una propiedad');
-    this.cargando = true;
     this.casa.casapersonaList = this.listaLP;
     this.casa.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.casa.ubigeo_id = this.ubigeo.ubigeo;
@@ -140,11 +139,13 @@ export class ModalCasaComponent implements OnInit {
     if (this.accion === LS.ACCION_NUEVO) { // guardar nueva propiedad
       // guardar en lista fotos
       for (const item of this.archivosFotos) {
-        const foto: Foto = new Foto();
-        foto.nombre = item.nombreArchivo;
-        foto.foto = item.url;
-        foto.detalle = item.detalle;
-        this.fotos.push(foto);
+        if (item.progreso===100) {
+          const foto: Foto = new Foto();
+          foto.nombre = item.nombreArchivo;
+          foto.foto = item.url;
+          foto.detalle = item.detalle;
+          this.fotos.push(foto);
+        }
       }
       this.casa.fotosList = this.fotos;
       this.fotos = [];
@@ -152,11 +153,13 @@ export class ModalCasaComponent implements OnInit {
       console.log(this.casa.fotosList);
       // guardar en lista documentos
       for (const item of this.archivosDocumentos) {
-        const archivo: CasaArchivo = new CasaArchivo();
-        archivo.nombre = item.nombreArchivo;
-        archivo.archivo = item.url;
-        archivo.tipoarchivo = ".pdf";
-        this.archivos.push(archivo);
+        if (item.progreso===100) {
+          const archivo: CasaArchivo = new CasaArchivo();
+          archivo.nombre = item.nombreArchivo;
+          archivo.archivo = item.url;
+          archivo.tipoarchivo = ".pdf";
+          this.archivos.push(archivo);
+        }
       }
       this.casa.archivosList = this.archivos;
       this.archivos = [];
@@ -164,19 +167,29 @@ export class ModalCasaComponent implements OnInit {
       console.log(this.casa.archivosList);
       //
       this.casa.ganancia = this.casa.preciocontrato - this.casa.precioadquisicion;
-      console.log('antes de guardar propiedad: ');
-      console.log(this.casa);
-      this.casasService.ingresarCasa(this.casa, this);
+      // verificar si las fotos y archivos se subieron firebase
+      if (this.casa.fotosList.length!==this.archivosFotos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_IMAGENES, LS.TAG_AVISO);
+      } else if (this.casa.archivosList.length!==this.archivosDocumentos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_ARCHIVOS, LS.TAG_AVISO);
+      } else { // exito
+        console.log('antes de guardar propiedad: ');
+        console.log(this.casa);
+        this.cargando = true;
+        this.casasService.ingresarCasa(this.casa, this);
+      }
     } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
       for (const item of this.archivosFotos) {
-        const foto: Foto = new Foto();
-        foto.nombre = item.nombreArchivo;
-        foto.foto = item.url;
-        foto.detalle = item.detalle;
-        fotos.push(foto);
+        if (item.progreso===100) {
+          const foto: Foto = new Foto();
+          foto.nombre = item.nombreArchivo;
+          foto.foto = item.url;
+          foto.detalle = item.detalle;
+          fotos.push(foto);
+        }
       }
       this.casa.fotosList = fotos;
       fotos = [];
@@ -186,11 +199,13 @@ export class ModalCasaComponent implements OnInit {
       let archivos: CasaArchivo[];
       archivos = [];
       for (const item of this.archivosDocumentos) {
-        const archivo: CasaArchivo = new CasaArchivo();
-        archivo.nombre = item.nombreArchivo;
-        archivo.archivo = item.url;
-        archivos.push(archivo);
-        archivo.tipoarchivo = ".pdf";
+        if (item.progreso===100) {
+          const archivo: CasaArchivo = new CasaArchivo();
+          archivo.nombre = item.nombreArchivo;
+          archivo.archivo = item.url;
+          archivos.push(archivo);
+          archivo.tipoarchivo = ".pdf";
+        }
       }
       this.casa.archivosList = archivos;
       archivos = [];
@@ -199,9 +214,17 @@ export class ModalCasaComponent implements OnInit {
       //
       this.casa.casaservicioList = this.casaservicios;
       this.casa.ganancia = this.casa.preciocontrato - this.casa.precioadquisicion;
-      console.log('antes de editar propiedad: ');
-      console.log(this.casa);
-      this.casasService.modificarCasa(this.casa, this);
+      // verificar si las fotos y archivos se subieron firebase
+      if (this.casa.fotosList.length!==this.archivosFotos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_IMAGENES, LS.TAG_AVISO);
+      } else if (this.casa.archivosList.length!==this.archivosDocumentos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_ARCHIVOS, LS.TAG_AVISO);
+      } else { // exito
+        console.log('antes de editar propiedad: ');
+        console.log(this.casa);
+        this.cargando = true;
+        this.casasService.modificarCasa(this.casa, this);
+      }
     }
   }
 
@@ -225,6 +248,7 @@ export class ModalCasaComponent implements OnInit {
   }
 
   despuesDeModificarCasa(data) {
+    console.log('se ha modificado estos datos: ');
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
@@ -263,7 +287,7 @@ export class ModalCasaComponent implements OnInit {
     // this.fotos = res.fotosList;
     console.log('traido para edicion');
     console.log(this.casa);
-    this.casa.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+    this.casa.fotosList = []; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
     // traer archivosFotos de firebase storage
     // this._cargaImagenes.getImagenes(res.path);
 
@@ -282,7 +306,7 @@ export class ModalCasaComponent implements OnInit {
     // this.fotos = res.fotosList;
     console.log('traido para edicion');
     console.log(this.casa);
-    this.casa.archivosList = {}; 
+    this.casa.archivosList = []; 
     this.cargando = false;
   }
 
@@ -366,6 +390,10 @@ export class ModalCasaComponent implements OnInit {
     this.archivosFotos = [];
   }
 
+  limpiarArchivosDocumentos() {
+    this.archivosDocumentos = [];
+  }
+
   // Metodos para los archivos documentos
   cargarArchivos() {
     this.casa.pathArchivos = 'casas/' + this.casa.codigo+'/archivos';
@@ -410,6 +438,10 @@ export class ModalCasaComponent implements OnInit {
 
   // foto
   quitarfoto(item: FileItem) {
+    if (item.progreso===100) {
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.casa.path, item.nombreArchivo);
+    }
     const index = this.archivosFotos.indexOf(item);
     this.archivosFotos.splice(index, 1);
     console.log('las fotos que quedan: ');
@@ -436,7 +468,6 @@ export class ModalCasaComponent implements OnInit {
       if (this.casa.foto === foto.foto) {
         this.casa.foto = null;
       }
-      this.toastr.success(result.operacionMensaje, 'Exito');
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();
@@ -482,6 +513,10 @@ export class ModalCasaComponent implements OnInit {
   }
   // archivos documentos
   quitararchivo(item: FileItem) {
+    if (item.progreso===100) {
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.casa.pathArchivos, item.nombreArchivo);
+    }
     const index = this.archivosDocumentos.indexOf(item);
     this.archivosDocumentos.splice(index, 1);
     console.log('los archivos que quedan: ');
@@ -495,7 +530,6 @@ export class ModalCasaComponent implements OnInit {
       this.eliminararchivocasa(archivo);
       // elimino de firebase storage
       this._cargaImagenes.deleteArchivo(this.casa.pathArchivos, archivo.nombre);
-      this.toastr.success(result.operacionMensaje, 'Exito');
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();

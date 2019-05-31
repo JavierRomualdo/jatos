@@ -173,26 +173,22 @@ export class LoteService {
 
   eliminarFotoLote(parametro, contexto) {
     this.api.delete2('lotefoto/' + parametro.id).then(
-      (res) => {
+      (data) => {
         const index = contexto.fotos.indexOf(parametro);
         contexto.fotos.splice(index, 1);
-        contexto.despuesDeEliminarFotoLote(res);
-      },
-      (error) => {
-        console.log('error: ');
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarFotoLote(data);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoLote(parametro, contexto) {
-    this.api.delete2('lotearchivo/' + parametro.lote_id).then(
-      (res) => {
+    this.api.delete2('lotearchivo/' + parametro.id).then(
+      (data) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);
-        contexto.despuesDeEliminarArchivoLote(res);
-      },
-      (error) => {
-        console.log('error: ');
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarArchivoLote(data);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }

@@ -32,8 +32,8 @@ export class Casa {
   estadocontrato: string = 'L';
   estado: boolean = true;
   casapersonaList: any = {};
-  fotosList: any = {};
-  archivosList: any = {};
+  fotosList = [];
+  archivosList = [];
   serviciosList: any = {};
   casaservicioList: any = {};
   latitud: string = "";

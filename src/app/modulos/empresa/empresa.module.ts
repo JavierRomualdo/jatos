@@ -181,7 +181,6 @@ import { AutonumericDirective } from 'src/app/directivas/autonumeric/autonumeric
 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80',
-      language: 'en',
       libraries: ['geometry', 'places']
     }),
   ],

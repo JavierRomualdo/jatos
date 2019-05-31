@@ -129,7 +129,6 @@ export class ModalHabitacionComponent implements OnInit {
 
   guardarHabitacion() {
     console.log('vamos a guardar una habitacion');
-    this.cargando = true;
     this.habitacion.habitacionpersonaList = this.listaLP;
     this.habitacion.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.habitacion.ubigeo_id = this.ubigeo.ubigeo;
@@ -137,11 +136,13 @@ export class ModalHabitacionComponent implements OnInit {
     if (this.accion === LS.ACCION_NUEVO) { // guardar nueva habitacion
       // guardar en lista fotos
       for (const item of this.archivosFotos) {
-        const foto: Foto = new Foto();
-        foto.nombre = item.nombreArchivo;
-        foto.foto = item.url;
-        foto.detalle = item.detalle;
-        this.fotos.push(foto);
+        if (item.progreso===100) {
+          const foto: Foto = new Foto();
+          foto.nombre = item.nombreArchivo;
+          foto.foto = item.url;
+          foto.detalle = item.detalle;
+          this.fotos.push(foto);
+        }
       }
       this.habitacion.fotosList = this.fotos;
       this.fotos = [];
@@ -149,11 +150,13 @@ export class ModalHabitacionComponent implements OnInit {
       console.log(this.habitacion.fotosList);
       // guardar en lista documentos
       for (const item of this.archivosDocumentos) {
-        const archivo: HabitacionArchivo = new HabitacionArchivo();
-        archivo.nombre = item.nombreArchivo;
-        archivo.archivo = item.url;
-        archivo.tipoarchivo = ".pdf";
-        this.archivos.push(archivo);
+        if (item.progreso===100) {
+          const archivo: HabitacionArchivo = new HabitacionArchivo();
+          archivo.nombre = item.nombreArchivo;
+          archivo.archivo = item.url;
+          archivo.tipoarchivo = ".pdf";
+          this.archivos.push(archivo);
+        }
       }
       this.habitacion.archivosList = this.archivos;
       this.archivos = [];
@@ -161,19 +164,29 @@ export class ModalHabitacionComponent implements OnInit {
       console.log(this.habitacion.archivosList);
       //
       this.habitacion.ganancia = this.habitacion.preciocontrato - this.habitacion.precioadquisicion;
-      console.log('antes de guardar habitacion: ');
-      console.log(this.habitacion);
-      this.habitacionService.ingresarHabitacion(this.habitacion, this);
+      // verificar si las fotos y archivos se subieron firebase
+      if (this.habitacion.fotosList.length!==this.archivosFotos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_IMAGENES, LS.TAG_AVISO);
+      } else if (this.habitacion.archivosList.length!==this.archivosDocumentos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_ARCHIVOS, LS.TAG_AVISO);
+      } else { // exito
+        console.log('antes de guardar habitacion: ');
+        console.log(this.habitacion);
+        this.cargando = true;
+        this.habitacionService.ingresarHabitacion(this.habitacion, this);
+      }
     } else if (this.accion === LS.ACCION_EDITAR) { // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
       for (const item of this.archivosFotos) {
-        const foto: Foto = new Foto();
-        foto.nombre = item.nombreArchivo;
-        foto.foto = item.url;
-        foto.detalle = item.detalle;
-        fotos.push(foto);
+        if (item.progreso===100) {
+          const foto: Foto = new Foto();
+          foto.nombre = item.nombreArchivo;
+          foto.foto = item.url;
+          foto.detalle = item.detalle;
+          fotos.push(foto);
+        }
       }
       this.habitacion.fotosList = fotos;
       this.habitacion.habitacionservicioList = this.habitacionservicios;
@@ -184,11 +197,13 @@ export class ModalHabitacionComponent implements OnInit {
       let archivos: HabitacionArchivo[];
       archivos = [];
       for (const item of this.archivosDocumentos) {
-        const archivo: HabitacionArchivo = new HabitacionArchivo();
-        archivo.nombre = item.nombreArchivo;
-        archivo.archivo = item.url;
-        archivos.push(archivo);
-        archivo.tipoarchivo = ".pdf";
+        if (item.progreso===100) {
+          const archivo: HabitacionArchivo = new HabitacionArchivo();
+          archivo.nombre = item.nombreArchivo;
+          archivo.archivo = item.url;
+          archivos.push(archivo);
+          archivo.tipoarchivo = ".pdf";
+        }
       }
       this.habitacion.archivosList = archivos;
       archivos = [];
@@ -196,9 +211,17 @@ export class ModalHabitacionComponent implements OnInit {
       console.log(this.habitacion.archivosList);
       //
       this.habitacion.ganancia = this.habitacion.preciocontrato - this.habitacion.precioadquisicion;
-      console.log('antes de editar propiedad: ');
-      console.log(this.habitacion);
-      this.habitacionService.modificarHabitacion(this.habitacion, this);
+      // verificar si las fotos y archivos se subieron firebase
+      if (this.habitacion.fotosList.length!==this.archivosFotos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_IMAGENES, LS.TAG_AVISO);
+      } else if (this.habitacion.archivosList.length!==this.archivosDocumentos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_ARCHIVOS, LS.TAG_AVISO);
+      } else { // exito
+        console.log('antes de editar habitacion: ');
+        console.log(this.habitacion);
+        this.cargando = true;
+        this.habitacionService.modificarHabitacion(this.habitacion, this);
+      }
     }
   }
 
@@ -222,6 +245,7 @@ export class ModalHabitacionComponent implements OnInit {
   }
 
   despuesDeModificarHabitacion(data) {
+    console.log('se ha modificado estos datos: ');
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
@@ -261,7 +285,7 @@ export class ModalHabitacionComponent implements OnInit {
     // this.fotos = res.fotosList;
     console.log('traido para edicion');
     console.log(this.habitacion);
-    this.habitacion.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+    this.habitacion.fotosList = []; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
     // traer archivosFotos de firebase storage
     // this._cargaImagenes.getImagenes(res.path);
 
@@ -280,7 +304,7 @@ export class ModalHabitacionComponent implements OnInit {
     // this.fotos = res.fotosList;
     console.log('traido para edicion');
     console.log(this.habitacion);
-    this.habitacion.archivosList = {}; 
+    this.habitacion.archivosList = []; 
     this.cargando = false;
   }
 
@@ -365,6 +389,10 @@ export class ModalHabitacionComponent implements OnInit {
     this.archivosFotos = [];
   }
 
+  limpiarArchivosDocumentos() {
+    this.archivosDocumentos = [];
+  }
+
   // Metodos para los archivos documentos
   cargarArchivos() {
     this.habitacion.pathArchivos = 'habitaciones/' + this.habitacion.codigo+'/archivos';
@@ -414,6 +442,10 @@ export class ModalHabitacionComponent implements OnInit {
 
   // foto
   quitarfoto(item: FileItem) {
+    if (item.progreso===100) {
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.habitacion.path, item.nombreArchivo);
+    }
     const index = this.archivosFotos.indexOf(item);
     this.archivosFotos.splice(index, 1);
     console.log('las fotos que quedan: ');
@@ -441,7 +473,6 @@ export class ModalHabitacionComponent implements OnInit {
       if (this.habitacion.foto === foto.foto) {
         this.habitacion.foto = null;
       }
-      this.toastr.success(result.operacionMensaje, 'Exito');
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();
@@ -488,6 +519,10 @@ export class ModalHabitacionComponent implements OnInit {
 
   // archivos documentos
   quitararchivo(item: FileItem) {
+    if (item.progreso===100) {
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.habitacion.pathArchivos, item.nombreArchivo);
+    }
     const index = this.archivosDocumentos.indexOf(item);
     this.archivosDocumentos.splice(index, 1);
     console.log('los archivos que quedan: ');
@@ -501,7 +536,6 @@ export class ModalHabitacionComponent implements OnInit {
       this.eliminararchivohabitacion(archivo);
       // elimino de firebase storage
       this._cargaImagenes.deleteArchivo(this.habitacion.pathArchivos, archivo.nombre);
-      this.toastr.success(result.operacionMensaje, 'Exito');
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();

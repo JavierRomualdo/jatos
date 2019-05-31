@@ -101,7 +101,7 @@ export class LocalDetalleComponent implements OnInit {
           // this.fotos = res.fotosList;
           console.log('traido para edicion');
           console.log(this.local);
-          this.local.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+          this.local.fotosList = []; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
           // traer archivos de firebase storage
           // this._cargaImagenes.getImagenes(res.path);
 

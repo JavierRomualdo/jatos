@@ -101,7 +101,7 @@ export class CocheraDetalleComponent implements OnInit {
             // this.fotos = res.fotosList;
             console.log("traido para edicion");
             console.log(this.cochera);
-            this.cochera.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+            this.cochera.fotosList = []; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
             // traer archivos de firebase storage
             // this._cargaImagenes.getImagenes(res.path);
 

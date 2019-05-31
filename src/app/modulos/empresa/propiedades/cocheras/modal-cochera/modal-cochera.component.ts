@@ -128,20 +128,20 @@ export class ModalCocheraComponent implements OnInit {
 
   guardarcochera() {
     console.log('vamos a guardar una cochera');
-    this.cargando = true;
     this.cochera.cocherapersonaList = this.listaLP;
     this.cochera.persona_id = this.listaLP[0]; // this.listaPR[0].idrol
     this.cochera.ubigeo_id = this.ubigeo.ubigeo;
     this.cochera.serviciosList = this.servicios;
-    if (this.accion === LS.ACCION_NUEVO) {
-      // guardar nueva cochera
+    if (this.accion === LS.ACCION_NUEVO) { // guardar nueva cochera
       // guardar en lista fotos
       for (const item of this.archivosFotos) {
-        const foto: Foto = new Foto();
-        foto.nombre = item.nombreArchivo;
-        foto.foto = item.url;
-        foto.detalle = item.detalle;
-        this.fotos.push(foto);
+        if (item.progreso===100) {
+          const foto: Foto = new Foto();
+          foto.nombre = item.nombreArchivo;
+          foto.foto = item.url;
+          foto.detalle = item.detalle;
+          this.fotos.push(foto);
+        }
       }
       this.cochera.fotosList = this.fotos;
       this.fotos = [];
@@ -149,11 +149,13 @@ export class ModalCocheraComponent implements OnInit {
       console.log(this.cochera.fotosList);
       // guardar en lista documentos
       for (const item of this.archivosDocumentos) {
-        const archivo: CocheraArchivo = new CocheraArchivo();
-        archivo.nombre = item.nombreArchivo;
-        archivo.archivo = item.url;
-        archivo.tipoarchivo = ".pdf";
-        this.archivos.push(archivo);
+        if (item.progreso===100) {
+          const archivo: CocheraArchivo = new CocheraArchivo();
+          archivo.nombre = item.nombreArchivo;
+          archivo.archivo = item.url;
+          archivo.tipoarchivo = ".pdf";
+          this.archivos.push(archivo);
+        }
       }
       this.cochera.archivosList = this.archivos;
       this.archivos = [];
@@ -161,31 +163,43 @@ export class ModalCocheraComponent implements OnInit {
       console.log(this.cochera.archivosList);
       //
       this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.precioadquisicion;
-      console.log('antes de guardar cochera: ');
-      console.log(this.cochera);
-      this.cocheraService.ingresarCochera(this.cochera, this);
+      // verificar si las fotos y archivos se subieron firebase
+      if (this.cochera.fotosList.length!==this.archivosFotos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_IMAGENES, LS.TAG_AVISO);
+      } else if (this.cochera.archivosList.length!==this.archivosDocumentos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_ARCHIVOS, LS.TAG_AVISO);
+      } else { // exito
+        console.log('antes de guardar cochera: ');
+        console.log(this.cochera);
+        this.cargando = true;
+        this.cocheraService.ingresarCochera(this.cochera, this);
+      }
     } else if (this.accion === LS.ACCION_EDITAR) {
       // guardar el rol editado
       // guardar en lista fotos
       let fotos: Foto[];
       fotos = [];
       for (const item of this.archivosFotos) {
-        const foto: Foto = new Foto();
-        foto.nombre = item.nombreArchivo;
-        foto.foto = item.url;
-        foto.detalle = item.detalle;
-        fotos.push(foto);
+        if (item.progreso===100) {
+          const foto: Foto = new Foto();
+          foto.nombre = item.nombreArchivo;
+          foto.foto = item.url;
+          foto.detalle = item.detalle;
+          fotos.push(foto);
+        }
       }
       this.cochera.fotosList = fotos;
       // guardar en lista archivos
       let archivos: CocheraArchivo[];
       archivos = [];
       for (const item of this.archivosDocumentos) {
-        const archivo: CocheraArchivo = new CocheraArchivo();
-        archivo.nombre = item.nombreArchivo;
-        archivo.archivo = item.url;
-        archivos.push(archivo);
-        archivo.tipoarchivo = ".pdf";
+        if (item.progreso===100) {
+          const archivo: CocheraArchivo = new CocheraArchivo();
+          archivo.nombre = item.nombreArchivo;
+          archivo.archivo = item.url;
+          archivos.push(archivo);
+          archivo.tipoarchivo = ".pdf";
+        }
       }
       this.cochera.archivosList = archivos;
       archivos = [];
@@ -197,9 +211,17 @@ export class ModalCocheraComponent implements OnInit {
       console.log('fotos: ');
       console.log(this.cochera.fotosList);
       this.cochera.ganancia = this.cochera.preciocontrato - this.cochera.precioadquisicion;
-      console.log('antes de editar cochera: ');
-      console.log(this.cochera);
-      this.cocheraService.modificarCochera(this.cochera, this);
+      // verificar si las fotos y archivos se subieron firebase
+      if (this.cochera.fotosList.length!==this.archivosFotos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_IMAGENES, LS.TAG_AVISO);
+      } else if (this.cochera.archivosList.length!==this.archivosDocumentos.length) {
+        this.toastr.warning(LS.MSJ_FALTAN_SUBIR_ARCHIVOS, LS.TAG_AVISO);
+      } else { // exito
+        console.log('antes de editar cochera: ');
+        console.log(this.cochera);
+        this.cargando = true;
+        this.cocheraService.modificarCochera(this.cochera, this);
+      }
     }
   }
 
@@ -223,6 +245,7 @@ export class ModalCocheraComponent implements OnInit {
   }
 
   despuesDeModificarCochera(data) {
+    console.log('se ha modificado estos datos: ');
     console.log(data);
     this.cargando = false;
     this.verNuevo = false;
@@ -261,7 +284,7 @@ export class ModalCocheraComponent implements OnInit {
     // this.fotos = res.fotosList;
     console.log('traido para edicion');
     console.log(this.cochera);
-    this.cochera.fotosList = {}; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
+    this.cochera.fotosList = []; // tiene que ser vacio xq son la lista de imagenes nuevas pa agregarse
     // traer archivosFotos de firebase storage
     // this._cargaImagenes.getImagenes(res.path);
 
@@ -280,7 +303,7 @@ export class ModalCocheraComponent implements OnInit {
     // this.fotos = res.fotosList;
     console.log('traido para edicion');
     console.log(this.cochera);
-    this.cochera.archivosList = {}; 
+    this.cochera.archivosList = []; 
     this.cargando = false;
   }
 
@@ -377,6 +400,10 @@ export class ModalCocheraComponent implements OnInit {
     this.archivosFotos = [];
   }
 
+  limpiarArchivosDocumentos() {
+    this.archivosDocumentos = [];
+  }
+
   // Metodos para los archivos documentos
   cargarArchivos() {
     this.cochera.pathArchivos = 'cocheras/' + this.cochera.codigo+'/archivos';
@@ -426,6 +453,10 @@ export class ModalCocheraComponent implements OnInit {
 
   // foto
   quitarfoto(item: FileItem) {
+    if (item.progreso===100) {
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.cochera.path, item.nombreArchivo);
+    }
     const index = this.archivosFotos.indexOf(item);
     this.archivosFotos.splice(index, 1);
     console.log('las fotos que quedan: ');
@@ -457,7 +488,6 @@ export class ModalCocheraComponent implements OnInit {
         if (this.cochera.foto === foto.foto) {
           this.cochera.foto = null;
         }
-        this.toastr.success(result.operacionMensaje, 'Exito');
         this.auth.agregarmodalopenclass();
       },
       reason => {
@@ -506,6 +536,10 @@ export class ModalCocheraComponent implements OnInit {
 
   // archivos documentos
   quitararchivo(item: FileItem) {
+    if (item.progreso===100) {
+      // elimino de firebase storage
+      this._cargaImagenes.deleteArchivo(this.cochera.pathArchivos, item.nombreArchivo);
+    }
     const index = this.archivosDocumentos.indexOf(item);
     this.archivosDocumentos.splice(index, 1);
     console.log('los archivos que quedan: ');
@@ -519,7 +553,6 @@ export class ModalCocheraComponent implements OnInit {
       this.eliminararchivocochera(archivo);
       // elimino de firebase storage
       this._cargaImagenes.deleteArchivo(this.cochera.pathArchivos, archivo.nombre);
-      this.toastr.success(result.operacionMensaje, 'Exito');
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();

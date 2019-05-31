@@ -173,23 +173,22 @@ export class CocheraService {
 
   eliminarFotoCochera(parametro, contexto) {
     this.api.delete2('cocherafoto/' + parametro.id).then(
-      (res) => {
+      (data) => {
         const index = contexto.fotos.indexOf(parametro);
         contexto.fotos.splice(index, 1);
-        contexto.despuesDeEliminarFotoCochera(res);
-      },
-      (error) => {
-        console.log('error: ');
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarFotoCochera(data);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoCochera(parametro, contexto) {
-    this.api.delete2('cocheraarchivo/' + parametro.cochera_id).then(
-      (res) => {
+    this.api.delete2('cocheraarchivo/' + parametro.id).then(
+      (data) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);
-        contexto.despuesDeEliminarArchivoCochera(res);
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarArchivoCochera(data);
       },
       (error) => {
         console.log('error: ');

@@ -307,10 +307,11 @@ export class LS {
   static MSJ_INTERNET_NO_ESTABLECIDA = 'Conexión no establecida.';
   static MSJ_ASIGNAR_SERVICIOS_PROPIEDAD = 'Asignar servicios a esta propiedad';
   static MSJ_DEJAR_CAER_ARCHIVOS = 'Deje caer aqui los archivos';
-  static MSJ_INGRESE_DETALLE_POR_IMAGEN = 'Ingese detalle por imagen';
+  static MSJ_INGRESE_DETALLE_POR_IMAGEN = 'Ingrese detalle por cada imagen';
   static MSJ_SERVICIO_YA_SE_HA_ASIGNADO = 'El servicio ya se ha asignado';
   static MSJ_SE_HA_MODIFICADO_ESTADO_MENSAJE = 'Se ha modificado el estado del mensaje';
-  
+  static MSJ_FALTAN_SUBIR_IMAGENES = 'Faltan subir imágenes';
+  static MSJ_FALTAN_SUBIR_ARCHIVOS = 'Faltan subir archivos';
   //Swal;
   public static SWAL_CORRECTO = "Correcto!";
   public static SWAL_INCORRECTO = "Error!";

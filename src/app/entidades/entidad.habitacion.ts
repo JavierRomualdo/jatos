@@ -26,8 +26,8 @@ export class Habitacion {
   estadocontrato: string = 'L';
   estado: boolean = true;
   habitacionpersonaList: any = {};
-  fotosList: any = {};
-  archivosList: any = {};
+  fotosList = [];
+  archivosList = [];
   serviciosList: any = {};
   habitacionservicioList: any = {};
   latitud: string = "";

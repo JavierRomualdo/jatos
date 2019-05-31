@@ -174,23 +174,22 @@ export class HabitacionService {
 
   eliminarFotoHabitacion(parametro, contexto) {
     this.api.delete2('habitacionfoto/' + parametro.id).then(
-      (res) => {
+      (data) => {
         const index = contexto.fotos.indexOf(parametro);
         contexto.fotos.splice(index, 1);
-        contexto.despuesDeEliminarFotoHabitacion(res);
-      },
-      (error) => {
-        console.log('error: ');
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarFotoHabitacion(data);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
   eliminarArchivoHabitacion(parametro, contexto) {
-    this.api.delete2('habitacionarchivo/' + parametro.habitacion_id).then(
-      (res) => {
+    this.api.delete2('habitacionarchivo/' + parametro.id).then(
+      (data) => {
         const index = contexto.archivos.indexOf(parametro);
         contexto.archivos.splice(index, 1);
-        contexto.despuesDeEliminarArchivoHabitacion(res);
+        this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+        contexto.despuesDeEliminarArchivoHabitacion(data);
       },
       (error) => {
         console.log('error: ');

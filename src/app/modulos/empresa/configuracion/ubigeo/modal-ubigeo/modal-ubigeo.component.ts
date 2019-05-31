@@ -346,8 +346,25 @@ export class ModalUbigeoComponent implements OnInit {
     this.listarUbigeos();
   }
 
-  enviarubigeo(ubigeo: Ubigeo) {
-    this.parametros.ubigeo = ubigeo;
+  enviarubigeo(ubigeo) {
+    console.log("enviarubigeo ubigeo: ", ubigeo);
+    if (ubigeo.tipoubigeo_id === 4) {
+      // pertenece al cuarto nivel del ubigeo (habilitaciones urbanas) que es despues de distritos
+      this.cargando = true;
+      this.parametros.ubigeo = ubigeo;
+      this.habilitacionurbanaService.mostrarHabilitacionUrbana(ubigeo.habilitacionurbana_id, this);
+    } else {
+      this.parametros.ubigeo = ubigeo;
+      console.log("enviarubigeo parametros: ", this.parametros);
+      this.activeModal.close(this.parametros);
+    }
+  }
+
+  despuesDeMostrarHabilitacionUrbana(data) {
+    console.log('esto trajo para editar');
+    console.log(data);
+    this.parametros.ubigeo.habilitacionurbana_id = data;
+    this.cargando = false;
     this.activeModal.close(this.parametros);
   }
 
