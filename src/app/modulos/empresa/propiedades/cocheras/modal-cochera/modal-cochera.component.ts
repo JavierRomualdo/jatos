@@ -389,7 +389,7 @@ export class ModalCocheraComponent implements OnInit {
       }
     }
     if (estadetalle) {
-      this.cochera.path = 'cocheras/' + this.persona.dni;
+      this.cochera.path = 'cocheras/' + this.cochera.codigo+'/fotos';
       this._cargaImagenes.cargarImagenesFirebase(this.cochera.path, this.archivosFotos);
     } else {
       this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);

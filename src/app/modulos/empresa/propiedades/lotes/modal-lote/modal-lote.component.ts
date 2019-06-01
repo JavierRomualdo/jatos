@@ -213,9 +213,6 @@ export class ModalLoteComponent implements OnInit {
         this.cargando = true;
         this.loteService.modificarLote(this.lote, this);
       }
-      console.log('antes de editar lote: ');
-      console.log(this.lote);
-      this.loteService.modificarLote(this.lote, this);
     }
   }
 
@@ -352,7 +349,7 @@ export class ModalLoteComponent implements OnInit {
       }
     }
     if (estadetalle) {
-      this.lote.path = 'lotes/' + this.persona.dni;
+      this.lote.path = 'lotes/' + this.lote.codigo+'/fotos';
       this._cargaImagenes.cargarImagenesFirebase(this.lote.path, this.archivosFotos);
     } else {
       this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);

@@ -339,7 +339,7 @@
                                 </tr>
                                 <!--/.archivosFotos de fotos para subirse-->
                                 <tr *ngFor="let archivo of archivosFotos; let i = index;">
-                                  <td>{{fotos.length + 1}}</td>
+                                  <td>{{fotos.length + i + 1}}</td>
                                   <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer" (click)="mostrarFotoPrincipal(archivosFotos[i])">{{archivo.nombreArchivo}}</td>
                                   <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
                                   <td>
@@ -442,7 +442,7 @@
                               </tr>
                               <!--/.archivosDocumentos de documentos para subirse-->
                               <tr *ngFor="let archivo of archivosDocumentos; let i = index;">
-                                <td>{{archivos.length + 1}}</td>
+                                <td>{{archivos.length + i + 1}}</td>
                                 <td [ngClass]="{'text-green': archivo.progreso >= 100}">{{archivo.nombreArchivo}}</td>
                                 <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
                                 <td>

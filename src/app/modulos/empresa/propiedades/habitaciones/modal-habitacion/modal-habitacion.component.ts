@@ -378,7 +378,7 @@ export class ModalHabitacionComponent implements OnInit {
       }
     }
     if (estadetalle) {
-      this.habitacion.path = 'habitaciones/' + this.persona.dni;
+      this.habitacion.path = 'habitaciones/' + this.habitacion.codigo+'/fotos';
       this._cargaImagenes.cargarImagenesFirebase(this.habitacion.path, this.archivosFotos);
     } else {
       this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);

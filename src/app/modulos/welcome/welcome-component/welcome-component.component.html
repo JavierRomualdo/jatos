@@ -30,7 +30,7 @@
                   [(ngModel)]="contratodetalle">
                   <option value=null>Contrato...</option>
                   <option [ngValue]="contrato" *ngFor="let contrato of tipocontratodetalle">
-                    {{contrato.contrato}} ({{contrato.codigo}})
+                    {{contrato.contrato}}
                   </option>
                 </select>
               </div>
@@ -70,7 +70,7 @@
   
   <!-- FOOTER -->
 
-  <footer class="pie animated fixed-bottom navbar-expand-sm">
+  <footer class="pie animated navbar-expand-sm"><!--fixed-bottom-->
     <div class="copyrights">
       <div class="container">
         <div class="top-bar navbar-expand-sm">

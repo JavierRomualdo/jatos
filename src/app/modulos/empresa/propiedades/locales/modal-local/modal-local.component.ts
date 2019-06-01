@@ -373,7 +373,7 @@ export class ModalLocalComponent implements OnInit {
       }
     }
     if (estadetalle) {
-      this.local.path = 'locales/' + this.persona.dni;
+      this.local.path = 'locales/' + this.local.codigo+'/fotos';
       this._cargaImagenes.cargarImagenesFirebase(this.local.path, this.archivosFotos);
     } else {
       this.toastr.warning(LS.MSJ_INGRESE_DETALLE_POR_IMAGEN, LS.TAG_AVISO);

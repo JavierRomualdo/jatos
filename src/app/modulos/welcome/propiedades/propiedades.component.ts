@@ -46,7 +46,6 @@ export class PropiedadesComponent implements OnInit {
 
   public radiobutton: any;
   public listaRangoPrecios: any = LS.LISTA_RANGO_PRECIOS;
-  public rangoPrecio: any;
 
   constructor(
     private ubigeoService: UbigeoService,
@@ -114,13 +113,25 @@ export class PropiedadesComponent implements OnInit {
   }
 
   verificarRangoPrecioRadio() {
-    console.log(this.rangoPrecio);
-    let rango = LS.LISTA_RANGO_PRECIOS.find(item => item.id == this.rangoPrecio);
-    console.log('rango');
-    console.log(rango);
+    console.log(this.rangoprecio);
+    if (this.rangoprecio) {
+      let rango = LS.LISTA_RANGO_PRECIOS.find(item => item.id == this.rangoprecio.id);
+      console.log('rango');
+      console.log(rango);
+    }
+  }
+
+  cambiarPorEscrito() {
+    console.log("por escrito: ",this.porescrito)
+    if (this.porescrito) {
+      this.rangoprecio = new Rangoprecios();
+    } else {
+      this.rangoprecio = null;
+    }
+  }
+
+  limpiarPrecios() {
     this.rangoprecio = new Rangoprecios();
-    this.rangoprecio.preciominimo = rango.preciominimo;
-    this.rangoprecio.preciomaximo = rango.preciomaximo;
   }
 
   cambiarActivar(activar) {
@@ -299,7 +310,7 @@ export class PropiedadesComponent implements OnInit {
     this.provinciaSeleccionado = null;
     this.distritoSeleccionado = null;
     this.habilitacionurbanaSeleccionado = null;
-    this.rangoprecio = null;
+    this.cambiarPorEscrito();
 
   }
 
