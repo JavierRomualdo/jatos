@@ -5,7 +5,7 @@ import { WelcomeComponentComponent } from './welcome-component/welcome-component
 import { InicioComponent } from './inicio/inicio.component';
 import { NosotrosComponent } from './nosotros/nosotros.component';
 import { PropiedadesComponent } from './propiedades/propiedades.component';
-import { LoteDetalleComponent } from './componentes/lote-detalle/lote-detalle.component';
+import { ServiciosComponent } from './servicios/servicios.component';
 
 const welcomeRoutes: Routes = [
   {
@@ -19,6 +19,7 @@ const welcomeRoutes: Routes = [
       // {path: 'servicios/propiedades', component: PropiedadesComponent},
       // {path: 'lote/:id', component: LoteDetalleComponent},
       {path: 'contacto', component: SuscripcionComponent},
+      {path: 'servicios', component: ServiciosComponent},
       {path: '', redirectTo: 'inicio', pathMatch: 'full'}
     ]
   }

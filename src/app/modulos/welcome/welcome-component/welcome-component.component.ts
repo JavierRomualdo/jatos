@@ -22,7 +22,6 @@ export class WelcomeComponentComponent implements OnInit {
   // public ubigeo: UbigeoGuardar;
   public fecha = new Date();
   public iniciadosesion = false;
-  public constantes: any = LS;
   public tipopropiedades: string[] = [];
   public tipocontratodetalle = [];
   public ubigeos = [];

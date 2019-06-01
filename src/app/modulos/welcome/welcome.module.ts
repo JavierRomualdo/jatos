@@ -33,7 +33,8 @@ import { HabitacionDetalleComponent } from './componentes/habitacion-detalle/hab
 import { Autonumeric2Directive2 } from 'src/app/directivas/autonumeric2/autonumeric2.directive';
 import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
 import { Title } from '@angular/platform-browser';
-
+import { ServiciosComponent } from './servicios/servicios.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 @NgModule({
   declarations: [
     WelcomeComponentComponent, 
@@ -53,7 +54,8 @@ import { Title } from '@angular/platform-browser';
     LoteDetalleComponent,
 
     Autonumeric2Directive2,
-    FocusDirective
+    FocusDirective,
+    ServiciosComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +81,8 @@ import { Title } from '@angular/platform-browser';
     TooltipModule,
     PaginatorModule,
     AutoCompleteModule,
-    KeyFilterModule
+    KeyFilterModule,
+    NgxExtendedPdfViewerModule
   ],
   providers: [
     NgbActiveModal,

@@ -12,6 +12,10 @@ export class LS {
   public static KEY_NOTIFICACIONES: any = [];
   public static KEY_CIUDAD_DEFECTO = "Piura";
   public static KEY_UBIGEO = []; // [departamento; provincia; distrito; habilitacion urbana]
+  public static KEY_SERVICIO_DOCUMENT = {
+    titulo: "Jardinería",
+    documento: "assets/documentos/estados-de-las-promesas.pdf"
+  }
 
   //ICONOS PARA BOTONES
   public static ICON_ACTIVO = "fa fa-check-square-o";
@@ -181,6 +185,10 @@ export class LS {
   static TAG_PROGRESO = 'Progreso';
   static TAG_SIGLAS = 'Siglas';
   static TAG_TIPO_ARCHIVO = 'Tipo archivo';
+  static TAG_JARDINERIA = 'Jardinería';
+  static TAG_DISENIO_INTERIORES = 'Diseño interiores';
+  static TAG_DISENIO_EXTERIORES = 'Diseño exteriores';
+  static TAG_CAMARA_VIGILANCIA = 'Cámara vigilancia';
 
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
