@@ -20,7 +20,12 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/locale",
+                "output": "/assets/locale/"
+              }
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.min.css",
@@ -43,7 +48,10 @@
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
               "node_modules/@coreui/coreui/dist/js/coreui.min.js",
-              "node_modules/autonumeric/dist/autoNumeric.min.js"
+              "node_modules/autonumeric/dist/autoNumeric.min.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/pdf.worker.js",
+              "node_modules/ngx-extended-pdf-viewer/assets/viewer.js"
             ]
           },
           "configurations": {
