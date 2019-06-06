@@ -27,7 +27,8 @@ export class PropiedadesComponent implements OnInit {
   public propiedades: any = []; // lista proyecto
   public propiedadesCopia: any = []; // lista proyecto
   public idPropiedad = 0; // parametro para la propiedad detalle
-  public rangoprecio: Rangoprecios = new Rangoprecios();
+  public rangoprecio: Rangoprecios = null;
+  public rangoprecioEscrito: Rangoprecios = new Rangoprecios();
   public servicios: Servicios[] = [];
   public constantes: any = LS;
 
@@ -41,8 +42,6 @@ export class PropiedadesComponent implements OnInit {
   public idRangoPrecio: number = 0;
   public activar: Boolean = false;
   public verServicios: Boolean = false;
-
-  public porescrito: boolean = true;
 
   public radiobutton: any;
   public listaRangoPrecios: any = LS.LISTA_RANGO_PRECIOS;
@@ -69,7 +68,6 @@ export class PropiedadesComponent implements OnInit {
     this.titleService.setTitle( LS.PAGINA_PROPIEDADES );
     this.tipopropiedades = LS.LISTA_PROPIEDADES;
     this.listarUbigeos(); // index ubigeos (departamento)
-    this.rangoprecio.preciominimo = "0";
     this.parametros.tipopropiedad = LS.KEY_PROPIEDAD_SELECT ? this.utilService.seleccionarPropiedad(this.tipopropiedades) : null;
     if (LS.KEY_CONTRATO_SELECT) {
       this.ubigeo.contrato = [];
@@ -84,8 +82,6 @@ export class PropiedadesComponent implements OnInit {
   ejecutarAccion(parametros) {
     LS.KEY_PROPIEDAD_SELECT = parametros.propiedad;
     this.listarUbigeos();
-    // this.despuesDeListarUbigeos(this.ubigeodepartamentos);
-    // this.listarPropiedades();
     this.parametros.tipopropiedad = parametros.propiedad;
     this.propiedades = [];
     this.cerrarPropiedadDetalle();
@@ -112,26 +108,8 @@ export class PropiedadesComponent implements OnInit {
     }
   }
 
-  verificarRangoPrecioRadio() {
-    console.log(this.rangoprecio);
-    if (this.rangoprecio) {
-      let rango = LS.LISTA_RANGO_PRECIOS.find(item => item.id == this.rangoprecio.id);
-      console.log('rango');
-      console.log(rango);
-    }
-  }
-
-  cambiarPorEscrito() {
-    console.log("por escrito: ",this.porescrito)
-    if (this.porescrito) {
-      this.rangoprecio = new Rangoprecios();
-    } else {
-      this.rangoprecio = null;
-    }
-  }
-
   limpiarPrecios() {
-    this.rangoprecio = new Rangoprecios();
+    this.rangoprecioEscrito = new Rangoprecios();
   }
 
   cambiarActivar(activar) {
@@ -252,12 +230,18 @@ export class PropiedadesComponent implements OnInit {
     }
   }
 
+  listarPropiedadesConPreciosPorCombo() {
+    this.ubigeo.rangoprecio = this.rangoprecio;
+    this.listarPropiedades();
+  }
+
+  listarPropiedadesConPreciosPorEscrito() {
+    this.ubigeo.rangoprecio = this.rangoprecioEscrito;
+    this.listarPropiedades();
+  }
+
   mostrarPropiedad() {
     this.cargando = true;
-    if(!this.porescrito) {
-      this.verificarRangoPrecioRadio();
-    }
-    this.ubigeo.rangoprecio = this.rangoprecio;
     this.ubigeo.propiedad = this.parametros.tipopropiedad;
     this.ubigeo.habilitacionurbana = this.habilitacionurbanaSeleccionado;
     console.log("Ubigeo:");
@@ -310,7 +294,7 @@ export class PropiedadesComponent implements OnInit {
     this.provinciaSeleccionado = null;
     this.distritoSeleccionado = null;
     this.habilitacionurbanaSeleccionado = null;
-    this.cambiarPorEscrito();
+    // this.cambiarPorEscrito();
 
   }
 

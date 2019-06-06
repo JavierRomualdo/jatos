@@ -107,30 +107,9 @@
                   <label class="control-label">
                     <strong> Precios</strong>
                   </label>
-                  <div class="row">
-                    <div class="col-md-8">
-                      <label>¿Por escrito?</label>
-                    </div>
-                    <div class="col-md-4">
-                      <label class="switch switch-label switch-pill switch-primary">
-                        <input type="checkbox" class="switch-input" [(ngModel)]="porescrito" name="porescrito" (change)="cambiarPorEscrito()">
-                        <span class="switch-slider" data-checked="si" data-unchecked="no"></span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="row" *ngIf="porescrito">
-                    <div class="col-md-12">
-                      <input type="text" name="precio1" [(ngModel)]="rangoprecio.preciominimo" required="" placeholder="Rango 1" value="{{rangoprecio.preciominimo}}"
-                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecio.preciominimo=$event" [appAutonumeric2]="rangoprecio.preciominimo">
-                    </div>
-                    <div class="col-md-12">
-                      <input type="text" name="precio2" [(ngModel)]="rangoprecio.preciomaximo" required="" placeholder="Rango 2" value="{{rangoprecio.preciomaximo}}"
-                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecio.preciomaximo=$event" [appAutonumeric2]="rangoprecio.preciomaximo">
-                    </div>
-                  </div>
-                  <!--ComboBox: Rango precios-->
-                  <p-dropdown [options]="listaRangoPrecios" name="rangoprecio" [showClear]="true" [(ngModel)]="rangoprecio" *ngIf="!porescrito"
-                    [disabled]="false" (ngModelChange)="listarPropiedades()" placeholder="Todos los precios..." optionLabel="preciominimo">
+                  <!--Precios: Select-->
+                  <p-dropdown [options]="listaRangoPrecios" name="rangoprecio" [showClear]="true" [(ngModel)]="rangoprecio"
+                    [disabled]="false" (ngModelChange)="listarPropiedadesConPreciosPorCombo()" placeholder="Todos los precios..." optionLabel="preciominimo">
                     <ng-template let-item pTemplate="selectedItem">
                         S/ {{rangoprecio?.preciominimo}} - S/ {{rangoprecio?.preciomaximo}}
                     </ng-template>
@@ -138,12 +117,23 @@
                       <div>S/ {{fs.value.preciominimo}} - S/ {{fs.value.preciomaximo}}</div>
                     </ng-template>
                   </p-dropdown>
+                  <!--Precios: Por escrito-->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <input type="text" name="precio1" [(ngModel)]="rangoprecioEscrito.preciominimo" required="" placeholder="Rango 1" value="{{rangoprecioEscrito.preciominimo}}"
+                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecioEscrito.preciominimo=$event" [appAutonumeric2]="rangoprecioEscrito.preciominimo">
+                    </div>
+                    <div class="col-md-12">
+                      <input type="text" name="precio2" [(ngModel)]="rangoprecioEscrito.preciomaximo" required="" placeholder="Rango 2" value="{{rangoprecioEscrito.preciomaximo}}"
+                      class="form-control form-control-sm mousetrap" (updateValue)="rangoprecioEscrito.preciomaximo=$event" [appAutonumeric2]="rangoprecioEscrito.preciomaximo">
+                    </div>
+                  </div>
                 </div>
-                <div class="text-right" *ngIf="porescrito">
+                <div class="text-right">
                   <button type="button" (click)="limpiarPrecios()" class="btn btn-sm btn-primary" title="Limpiar precios">
                     <i class="{{constantes.ICON_LIMPIAR}}"></i>
                   </button>
-                  <button type="button" class="btn btn-sm btn-default mr-1" (click)="listarPropiedades()" title="Buscar">
+                  <button type="button" class="btn btn-sm btn-default mr-1" (click)="listarPropiedadesConPreciosPorEscrito()" title="Buscar">
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
