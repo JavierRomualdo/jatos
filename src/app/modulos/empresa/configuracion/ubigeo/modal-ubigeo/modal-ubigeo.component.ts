@@ -21,7 +21,7 @@ import { HabilitacionurbanaService } from '../../habilitacionurbana/habilitacion
 export class ModalUbigeoComponent implements OnInit {
 
   @Input() edit;
-  @Input() nivelTipoUbigeo: number = 3; // establecemos si este componente es modal o no    
+  @Input() nivelTipoUbigeo: number = 4; // establecemos si este componente es modal o no    
   public ubigeo: Ubigeo;
   public ubigeoGuardar: UbigeoGuardar;
   public vistaFormulario = false;
@@ -104,24 +104,36 @@ export class ModalUbigeoComponent implements OnInit {
   }
 
   mostrarprovincias(departamentoSeleccionado) {
-    this.parametros.departamento = departamentoSeleccionado;
-    this.seleccionoFila = departamentoSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
-    console.log(departamentoSeleccionado);
-    this.mostrarubigeos(departamentoSeleccionado.tipoubigeo_id, departamentoSeleccionado.codigo);
+    console.log("departamentoSeleccionado: ", departamentoSeleccionado);
+    if (departamentoSeleccionado!=="undefined") {
+      this.parametros.departamento = departamentoSeleccionado;
+      this.seleccionoFila = departamentoSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
+      console.log(departamentoSeleccionado);
+      this.mostrarubigeos(departamentoSeleccionado.tipoubigeo_id, departamentoSeleccionado.codigo);
+    }
   }
 
   mostrardistritos(provinciaSeleccionado) {
-    this.parametros.provincia = provinciaSeleccionado;
-    this.seleccionoFila = provinciaSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
-    console.log(provinciaSeleccionado);
-    this.mostrarubigeos(provinciaSeleccionado.tipoubigeo_id, provinciaSeleccionado.codigo);
+    console.log("provinciaSeleccionado: ", provinciaSeleccionado);
+    if (provinciaSeleccionado!=="undefined") {
+      this.parametros.provincia = provinciaSeleccionado;
+      this.seleccionoFila = provinciaSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
+      console.log(provinciaSeleccionado);
+      this.mostrarubigeos(provinciaSeleccionado.tipoubigeo_id, provinciaSeleccionado.codigo);
+    } else{
+      this.mostrarprovincias(this.parametros.departamento);
+    }
   }
 
   mostrarHabilitacionesUrbanas(distritoSeleccionado) {
-    this.parametros.distrito = distritoSeleccionado;
-    this.seleccionoFila = distritoSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
-    console.log(distritoSeleccionado);
-    this.mostrarubigeos(distritoSeleccionado.tipoubigeo_id, distritoSeleccionado.codigo);
+    if (distritoSeleccionado!=="undefined") {
+      this.parametros.distrito = distritoSeleccionado;
+      this.seleccionoFila = distritoSeleccionado.tipoubigeo_id==this.nivelTipoUbigeo - 1;
+      console.log(distritoSeleccionado);
+      this.mostrarubigeos(distritoSeleccionado.tipoubigeo_id, distritoSeleccionado.codigo);
+    } else {
+      this.mostrardistritos(this.parametros.provincia);
+    }
   }
 
   limpiar() {
@@ -244,8 +256,8 @@ export class ModalUbigeoComponent implements OnInit {
       this.ubigeoGuardar.provincia = data.provincia;
       this.ubigeoGuardar.distrito = data.distrito;
       console.log("mira:", this.provinciaSeleccionado, this.distritoSeleccionado);
-      this.listarHabilitacionUrbana(true);
       this.habilitacionurbanaSelecionado = this.ubigeoGuardar.ubigeo.habilitacionurbana_id;
+      this.listarHabilitacionUrbana(true);
     }
     this.cargando = false;
   }

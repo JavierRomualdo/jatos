@@ -21,15 +21,17 @@
           <div class="card-body">
             <div class="input-group">
               <select (change)="mostrarprovincias(departamentoSeleccionado)" required [(ngModel)]="departamentoSeleccionado" class="form-control border-primary" name="ubigeodepartamento">
-                <option selected disabled value=undefined>Seleccione Departamento...</option>
+                <option selected value=undefined>Seleccione Departamento...</option>
                 <option [ngValue]="ubigeodepartamento" *ngFor="let ubigeodepartamento of ubigeodepartamentos"  >{{ubigeodepartamento.ubigeo}}</option>
               </select>
-              <select (change)="mostrardistritos(provinciaSeleccionado)" required [(ngModel)]="provinciaSeleccionado" class="form-control border-primary" name="ubigeoprovincia">
-                <option selected disabled value=undefined>Seleccione Provincia...</option>
+              <select (change)="mostrardistritos(provinciaSeleccionado)" required [(ngModel)]="provinciaSeleccionado" class="form-control border-primary" name="ubigeoprovincia"
+                *ngIf="nivelTipoUbigeo===3 || nivelTipoUbigeo===4">
+                <option selected value=undefined>Seleccione Provincia...</option>
                 <option [ngValue]="ubigeoprovincia" *ngFor="let ubigeoprovincia of ubigeoprovincias"  >{{ubigeoprovincia.ubigeo}}</option>
               </select>
-              <select (change)="mostrarHabilitacionesUrbanas(distritoSeleccionado)" required [(ngModel)]="distritoSeleccionado" class="form-control border-primary" name="ubigeodistrito">
-                <option selected disabled value=undefined>Seleccione Distrito...</option>
+              <select (change)="mostrarHabilitacionesUrbanas(distritoSeleccionado)" required [(ngModel)]="distritoSeleccionado" class="form-control border-primary" name="ubigeodistrito"
+                *ngIf="nivelTipoUbigeo===4">
+                <option selected value=undefined>Seleccione Distrito...</option>
                 <option [ngValue]="ubigeodistrito" *ngFor="let ubigeodistrito of ubigeodistritos">{{ubigeodistrito.ubigeo}}</option>
               </select>
               <input type="text" class="form-control border-primary" required placeholder="Busque por ubigeo" maxlength="150" name="ubigeo" [(ngModel)]="parametros.ubigeo.ubigeo">
@@ -48,7 +50,9 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let ubigeo of ubigeos;let i=index" [ngStyle]="{'cursor': seleccionoFila ? 'pointer ': 'default'}" (click)="seleccionoFila ? enviarubigeo(ubigeo): ''">
+                    <tr *ngFor="let ubigeo of ubigeos;let i=index">
+                      <!--[ngStyle]="{'cursor': seleccionoFila ? 'pointer ': 'default'}"
+                        (click)="seleccionoFila ? enviarubigeo(ubigeo): ''"-->
                       <th class="text-center">{{i+1}}</th>
                       <td>{{ubigeo.siglas ? ubigeo.siglas : ''}} {{ubigeo.ubigeo}}</td>
                       <td>
@@ -59,6 +63,9 @@
                       </td>
                       <td scope="row" class="text-center">
                         <a class="btn-link" style="cursor: pointer" title="editar" (click)="traerParaEdicion(ubigeo.id)"><i class="fa fa-edit text-primary" style="font-size: 23px; "></i></a>
+                        <a class="btn-link" style="cursor: pointer" title="seleccionar" (click)="seleccionoFila ? enviarubigeo(ubigeo): ''" *ngIf="seleccionoFila">
+                          <i class="fa fa-check text-primary" style="font-size: 23px; "></i>
+                        </a>
                       </td>
                     </tr>
                   </tbody>

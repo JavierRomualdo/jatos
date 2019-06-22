@@ -188,7 +188,7 @@ export class LS {
   static TAG_JARDINERIA = 'Jardinería';
   static TAG_DISENIO_INTERIORES = 'Diseño interiores';
   static TAG_DISENIO_EXTERIORES = 'Diseño exteriores';
-  static TAG_CAMARA_VIGILANCIA = 'Cámara vigilancia';
+  static TAG_CAMARA_VIGILANCIA = 'Videovigilancia';
 
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";

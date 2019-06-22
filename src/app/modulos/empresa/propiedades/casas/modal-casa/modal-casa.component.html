@@ -255,6 +255,14 @@
                 </div>
               </div>
               <!--/.row-->
+              <h1>Angular Google Maps with Places Search Example</h1>
+              <div class="form-group">
+                <label>Enter address</label>
+                <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" #search>
+              </div>
+              <h5>Address: {{address}}</h5>
+              <div>Latitude: {{latitude}}</div>
+              <div>Longitude: {{longitude}}</div>
               <div class="row">
                 <div class="form-group form-group-sm col-sm-12"><!--[mapTypeControlOptions]="mapTypeControlOptions"-->
                   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 

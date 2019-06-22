@@ -258,6 +258,10 @@ input[type=email], input[type=number], [type=text].form-control, [type=password]
   width: 100% !important;
   height: 120px;
 }
+
+.h-img{
+  height: 155% !important;
+}
 /*Ajuste de tamaño casa-detalle. etc..*/
 #content .w-100 {
   height: -webkit-fill-available;
@@ -334,7 +338,7 @@ input[type=email], input[type=number], [type=text].form-control, [type=password]
 /*radiobutton*/
 .ui-radiobutton-box.ui-state-active {
   border: 1px solid #6aae7a !important;
-  background: #6aae7a !important;
+  background: #738177 !important;
 }
 
 /* feedback (?)*/
@@ -344,4 +348,7 @@ input[type=email], input[type=number], [type=text].form-control, [type=password]
 /*footer del admin*/
 .app-footer {
   flex: 0 0 40px !important;
+}
+.img-carousel {
+  height: 518px !important;
 }
