@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HabitacionDetalleComponent } from './habitacion-detalle.component';
+import { UbigeosListadoComponent } from './ubigeos-listado.component';
 
-describe('HabitacionDetalleComponent', () => {
-  let component: HabitacionDetalleComponent;
-  let fixture: ComponentFixture<HabitacionDetalleComponent>;
+describe('UbigeosListadoComponent', () => {
+  let component: UbigeosListadoComponent;
+  let fixture: ComponentFixture<UbigeosListadoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HabitacionDetalleComponent ]
+      declarations: [ UbigeosListadoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HabitacionDetalleComponent);
+    fixture = TestBed.createComponent(UbigeosListadoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

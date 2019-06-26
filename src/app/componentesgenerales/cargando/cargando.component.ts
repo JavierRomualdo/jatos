@@ -13,5 +13,3 @@ export class CargandoComponent implements OnInit {
   }
 
 }
-
-export class PaWelcomeCargandoComponent extends CargandoComponent {}

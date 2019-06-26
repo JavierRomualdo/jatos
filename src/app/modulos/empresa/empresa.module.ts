@@ -84,6 +84,10 @@ import { HabilitacionurbanaComponent } from './configuracion/habilitacionurbana/
 import { HabilitacionurbanaFormularioComponent } from './componentes/habilitacionurbana-formulario/habilitacionurbana-formulario.component';
 import { HabilitacionurbanaListadoComponent } from './componentes/habilitacionurbana-listado/habilitacionurbana-listado.component';
 import { AutonumericDirective } from 'src/app/directivas/autonumeric/autonumeric.directive';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
+import { UbigeosListadoComponent } from './componentes/ubigeos-listado/ubigeos-listado.component';
+import { UbigeosFormularioComponent } from './componentes/ubigeos-formulario/ubigeos-formulario.component';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -135,6 +139,7 @@ import { AutonumericDirective } from 'src/app/directivas/autonumeric/autonumeric
 
     Autonumeric2Directive,
     AutonumericDirective,
+    FocusDirective,
 
     BotonAccionComponent,
 
@@ -153,7 +158,9 @@ import { AutonumericDirective } from 'src/app/directivas/autonumeric/autonumeric
     ServiciosFormularioComponent,
     HabilitacionurbanaComponent,
     HabilitacionurbanaListadoComponent,
-    HabilitacionurbanaFormularioComponent
+    HabilitacionurbanaFormularioComponent,
+    UbigeosListadoComponent,
+    UbigeosFormularioComponent
   ],
   imports: [
     ComponentesModule,
@@ -178,6 +185,7 @@ import { AutonumericDirective } from 'src/app/directivas/autonumeric/autonumeric
     CalendarModule,
     FileUploadModule,
     PaginatorModule,
+    AutoCompleteModule,
 
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyACiya9u1WJZ3DBZmZcw2gUlczgoHtxC80',

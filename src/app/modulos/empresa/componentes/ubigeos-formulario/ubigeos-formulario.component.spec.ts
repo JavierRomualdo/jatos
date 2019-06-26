@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocalDetalleComponent } from './local-detalle.component';
+import { UbigeosFormularioComponent } from './ubigeos-formulario.component';
 
-describe('LocalDetalleComponent', () => {
-  let component: LocalDetalleComponent;
-  let fixture: ComponentFixture<LocalDetalleComponent>;
+describe('UbigeosFormularioComponent', () => {
+  let component: UbigeosFormularioComponent;
+  let fixture: ComponentFixture<UbigeosFormularioComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocalDetalleComponent ]
+      declarations: [ UbigeosFormularioComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocalDetalleComponent);
+    fixture = TestBed.createComponent(UbigeosFormularioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -117,6 +117,16 @@ export class UbigeoService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
+  // para el welcome
+  buscarUbigeosHabilitacionUrbana(parametro, contexto) {
+    this.api.get2('buscarUbigeosHabilitacionUrbana/'+parametro).then(
+      (res) => {
+        contexto.despuesDeBuscarUbigeosHabilitacionUrbana(res);
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+  //
+
   searchUbigeo(parametro, contexto) {
     this.api.get2('searchUbigeo/'+parametro).then(
       (res) => {
