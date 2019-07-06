@@ -3,6 +3,10 @@ import { ApiRequest2Service } from 'src/app/servicios/api-request2.service';
 import { ToastrService } from 'ngx-toastr';
 import { UtilService } from 'src/app/servicios/util/util.service';
 import { LS } from 'src/app/contantes/app-constants';
+import { InputEstadoComponent } from 'src/app/modulos/componentes/input-estado/input-estado.component';
+import { BotonOpcionesComponent } from 'src/app/modulos/componentes/boton-opciones/boton-opciones.component';
+import { TooltipReaderComponent } from 'src/app/modulos/componentes/tooltip-reader/tooltip-reader.component';
+import { PinnedCellComponent } from 'src/app/modulos/componentes/pinned-cell/pinned-cell.component';
 
 @Injectable({
   providedIn: 'root'
@@ -57,13 +61,27 @@ export class UbigeoService {
   }
 
   cambiarEstadoUbigeo(parametro, contexto) {
-    this.api.delete2('ubigeos/' + parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha modificado el estado', LS.TAG_EXITO);
-          contexto.despuesDeCambiarEstadoUbigeo(res);
+    this.api.post2('cambiarEstadoUbigeo', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeCambiarEstadoUbigeo(data.extraInfo);
         } else {
-          this.toastr.warning('Error al modificar estado', LS.TAG_AVISO);
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  eliminarUbigeo(parametro, contexto) {
+    this.api.delete2('servicios/'+parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeEliminarUbigeo(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
@@ -104,6 +122,29 @@ export class UbigeoService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
+  listarubigeos(parametro, contexto) {
+    this.api.post2('listarubigeos', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          if (parametro.tipoubigeo_id === 0) {
+            contexto.despuesDeMostrarUbigeosDepartamentos(data.extraInfo);
+          } else if (parametro.tipoubigeo_id === 1) { // departamento
+            // listo las provincias del departamento
+            contexto.despuesDeMostrarUbigeosProvincias(data.extraInfo);
+          } else if (parametro.tipoubigeo_id === 2) { // provincia
+            // listo los distritos de la provincia
+            contexto.despuesDeMostrarUbigeosDistritos(data.extraInfo);
+          } else if (parametro.tipoubigeo_id === 3) { // distrito
+            contexto.despuesDeMostrarUbigeosHabilitacionUrbanas(data.extraInfo);
+          }
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
   busquedaUbigeos(parametro, contexto) {
     this.api.post2('buscarubigeos', parametro).then(
       (res) => {
@@ -127,11 +168,65 @@ export class UbigeoService {
   }
   //
 
+  buscarUbigeosDistrito(parametro, contexto) {
+    this.api.get2('buscarUbigeosDistrito/'+parametro).then(
+      (res) => {
+        contexto.despuesDeBuscarUbigeosDistrito(res);
+      }
+    ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
   searchUbigeo(parametro, contexto) {
     this.api.get2('searchUbigeo/'+parametro).then(
       (res) => {
         contexto.despuesDeSearchUbigeo(res);
       }
     ).catch(err => this.utilService.handleError(err, contexto));
+  }
+
+  generarColumnas(isModal: boolean): Array<any> {
+    let columnas: Array<any> = [];
+    columnas.push(
+      {
+        headerName: LS.TAG_UBIGEO,
+        width: 150,
+        minWidth: 150,
+        valueGetter: (params) => {
+          return params.data.ubigeo;
+        }
+      },
+      {
+        headerName: LS.TAG_ACTIVO,
+        headerClass: 'text-md-center',
+        field: 'estado',
+        width: 90,
+        minWidth: 90,
+        cellRendererFramework: InputEstadoComponent,
+        cellClass: 'text-md-center'
+      },
+      {
+        headerName: LS.TAG_OPCIONES,
+        headerClass: 'cell-header-center',
+        cellClass: 'text-center',
+        width: LS.WIDTH_OPCIONES,
+        minWidth: LS.WIDTH_OPCIONES,
+        maxWidth: LS.WIDTH_OPCIONES,
+        cellRendererFramework: BotonOpcionesComponent,
+        headerComponentFramework: TooltipReaderComponent,
+        headerComponentParams: {
+          class: LS.ICON_OPCIONES,
+          tooltip: LS.TAG_OPCIONES,
+          text: '',
+          enableSorting: false
+        },
+        pinnedRowCellRenderer: PinnedCellComponent,
+      }
+    );
+    // if (isModal) {
+    //   columnas.push(
+    //     this.utilService.getSpanSelect()
+    //   )
+    // }
+    return columnas;
   }
 }

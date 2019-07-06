@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listadoPersonas"
+      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 285px);" class="ag-theme-balham" [rowData]="listadoPersonas"
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="mostrarContextMenu($event.data, $event.event)" (contextmenu)="$event.preventDefault()"

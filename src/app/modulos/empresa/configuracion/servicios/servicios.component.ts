@@ -3,6 +3,7 @@ import { LS } from 'src/app/contantes/app-constants';
 import { MenuItem } from 'primeng/api';
 import { UtilService } from 'src/app/servicios/util/util.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Servicios } from 'src/app/entidades/entidad.servicios';
 
 @Component({
   selector: 'app-servicios',
@@ -12,6 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ServiciosComponent implements OnInit {
 
   @Input() isModal: boolean = false; // establecemos si este componente es modal o no
+  @Input() in_listaServicios: Array<Servicios> = []
   public constantes: any = LS;
   public parametrosListado: any = null;
   public items: MenuItem[];
@@ -27,6 +29,7 @@ export class ServiciosComponent implements OnInit {
     }
     this.parametrosListado = {
       listar: true,
+      in_listaServicios: this.in_listaServicios,
       activos: false,
       isModal: this.isModal
     };
@@ -37,6 +40,7 @@ export class ServiciosComponent implements OnInit {
     this.parametrosListado = {
       accion: LS.ACCION_NUEVO, // accion nuevo
       listar: true,
+      in_listaServicios: this.in_listaServicios,
       isModal: this.isModal
     }
   }
@@ -44,6 +48,7 @@ export class ServiciosComponent implements OnInit {
   consultarGeneral(activos: boolean) {
     this.parametrosListado = {
       listar: true,
+      in_listaServicios: this.in_listaServicios,
       activos: activos,
       isModal: this.isModal
     };

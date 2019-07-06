@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { LS } from 'src/app/contantes/app-constants';
 import { MenuItem } from 'primeng/api';
-import { GridApi } from 'ag-grid-community';
+import { GridApi } from 'ag-grid';
 import { ContextMenu } from 'primeng/contextmenu';
 import { Servicios } from 'src/app/entidades/entidad.servicios';
 import { ServicioService } from '../../configuracion/servicios/servicio.service';
@@ -18,7 +18,9 @@ export class ServiciosListadoComponent implements OnInit {
   @Input() parametrosBusqueda: any = null;//parametros de busqueda
   @Input() isModal: boolean = false; // establecemos si este componente es modal o no 
   public cargando: boolean = false;
-  public listadoServicios: Array<Servicios> = []; // lista casas
+  public listadoServicios: Array<Servicios> = []; // lista de servicios
+  public listadoServiciosAsignados: Array<Servicios> = []; // se pasa la lista (es modal)
+  public in_listaServicios: Array<Servicios> = [];
   public objetoSeleccionado: Servicios; //
   public parametrosFormulario: any = null;
 
@@ -52,10 +54,6 @@ export class ServiciosListadoComponent implements OnInit {
     this.innerWidth = window.innerWidth;//Obtiene el tamaño de la pantalla
     this.isScreamMd = this.innerWidth <= 576 ? false : true;
     this.localeText = { noRowsToShow: 'No se encontraron servicios', page: "Página", of: "de", to: "a" };
-    // if (this.isModal) {
-    //   this.listarServicios(false);
-    //   // this.listarCasasParaTipoContrato(this.parametrosBusqueda);
-    // }
     this.iniciarAgGrid();
   }
 
@@ -64,6 +62,7 @@ export class ServiciosListadoComponent implements OnInit {
     if (changes.parametrosBusqueda) {
       if (changes.parametrosBusqueda.currentValue && changes.parametrosBusqueda.currentValue.listar) {
         this.isModal = this.parametrosBusqueda.isModal;
+        this.in_listaServicios = this.parametrosBusqueda.in_listaServicios;
         if (this.parametrosBusqueda.accion) {
           // accion = nuevo
           this.nuevaServicio();
@@ -114,7 +113,21 @@ export class ServiciosListadoComponent implements OnInit {
   }
 
   despuesDeListarServicios(data) {
-    this.listadoServicios = data;
+    if (this.isModal) {
+      // verifico que los elementos de la data sean diferentes
+      // que la lista de servicios entrantes de otro componente
+      // de origen (in_listaServicios). Pues todo ocurre cuando es sea modal
+      const listaServiciosCopia: Servicios[] = [];
+      data.forEach(servicio => {
+        const servicioCopia = this.in_listaServicios.find(item => item.id === servicio.id);
+        if (!servicioCopia) {
+          listaServiciosCopia.push(servicio);
+        }
+      });
+      this.listadoServicios = listaServiciosCopia;
+    } else {
+      this.listadoServicios = data;
+    }
     this.cargando = false;
     console.log(data);
   }
@@ -128,16 +141,16 @@ export class ServiciosListadoComponent implements OnInit {
   }
   
   /**Modal de casa-listado*/
-  filaSeleccionar() {
-    this.enviarItem(this.objetoSeleccionado);
-  }
-
   ejecutarSpanAccion(event, data) {
-    this.enviarItem(data);
+    this.enviarItem(new Array(data));
   }
 
-  enviarItem(item) {
-    this.activeModal.close(item);
+  filaSeleccionar() {
+    this.enviarItem(this.listadoServiciosAsignados);
+  }
+
+  enviarItem(items) {
+    this.activeModal.close(items);
   }
 
   generarOpciones() {
@@ -190,6 +203,7 @@ export class ServiciosListadoComponent implements OnInit {
 
   // aca pasa los parametros pasa a casaComponent y luego al modal casa
   emitirAccion(accion: string, seleccionado: Servicios) {
+    console.log("seleccionado: ", seleccionado);
     this.accion = accion;
     if (accion === LS.ACCION_CONSULTAR || accion === LS.ACCION_EDITAR) {
       this.mostrarServicio(seleccionado);
@@ -331,7 +345,7 @@ export class ServiciosListadoComponent implements OnInit {
   iniciarAgGrid() {
     this.columnDefs = this.servicioService.generarColumnas(this.isModal);
     this.columnDefsSelected = this.columnDefs.slice();
-    this.rowSelection = "single";
+    this.rowSelection = "multiple";
     this.context = { componentParent: this };
   }
 
@@ -352,6 +366,14 @@ export class ServiciosListadoComponent implements OnInit {
     this.generarOpciones();
     this.menuOpciones.show(event);
     event.stopPropagation();
+  }
+
+  selectionChanged() {
+    this.listadoServiciosAsignados = this.utilService.getAGSelectedData(this.gridApi);
+  }
+
+  enviarServicios() {
+    this.filaSeleccionar();
   }
 
   redimensionarColumnas() {

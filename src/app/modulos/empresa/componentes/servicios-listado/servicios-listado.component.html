@@ -1,17 +1,15 @@
-<div class="modal-primary"> <!--*ngIf="listadoServicios?.length>0"-->
+<div class="modal-primary">
   <div class="card" *ngIf="!vistaFormulario">
-    <!-- <div class="card-header bg-primary p-2" *ngIf="isModal">
-      <strong>{{constantes.TAG_SERVICIOS_LISTADO}}</strong>
-      <button type="button" class="close" style="color: white;" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div> -->
-
     <div class="card-header p-1">
-      <!-- <i class="fa fa-align-justify"></i> -->
       <strong>{{constantes.TAG_SERVICIOS_LISTADO}}</strong>
       <div class="card-header-actions">
         <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-primary mr-1" id="btnSeleccionar" placement="top" (click)="enviarServicios()"
+            ngbTooltip="{{constantes.LABEL_SELECCIONAR}}" container="body" title="{{constantes.ATAJO_NUEVO}}"
+            *ngIf="listadoServiciosAsignados.length > 0">
+            <i class="{{constantes.ICON_SELECCIONAR}}" aria-hidden="true"></i>
+            <span class="d-none d-md-inline"> {{constantes.LABEL_SELECCIONAR}}</span>
+          </button>
           <button type="button" class="btn btn-sm btn-primary mr-1" id="btnNuevo" placement="top" (click)="nuevaServicio()"
             ngbTooltip="{{constantes.LABEL_NUEVO}}" container="body" title="{{constantes.ATAJO_NUEVO}}">
             <i class="{{constantes.ICON_NUEVO}}" aria-hidden="true"></i>
@@ -50,12 +48,12 @@
           </div>
         </div>
       </div>
-      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listadoServicios"
+      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 285px);" class="ag-theme-balham" [rowData]="listadoServicios"
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="mostrarContextMenu($event.data, $event.event)" (contextmenu)="$event.preventDefault()"
         (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
-        [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText">
+        [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText" (selectionChanged)="isModal ? selectionChanged(): ''">
       </ag-grid-angular>
       <!--(filterChanged)="actualizarFilas()"-->
     </div>

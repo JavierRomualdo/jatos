@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { UbigeoGuardar } from 'src/app/entidades/entidad.ubigeoguardar';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/servicios/auth.service';
-import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
-import { ModalUbigeoComponent } from './modal-ubigeo/modal-ubigeo.component';
-import { ModalTipoubigeoComponent } from './modal-tipoubigeo/modal-tipoubigeo.component';
-import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
-import { UbigeoService } from './modal-ubigeo/ubigeo.service';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { LS } from 'src/app/contantes/app-constants';
+import { MenuItem } from 'primeng/api';
+import { ModalTipoubigeoComponent } from './modal-tipoubigeo/modal-tipoubigeo.component';
 
 @Component({
   selector: 'app-ubigeo',
@@ -18,105 +12,71 @@ import { UtilService } from 'src/app/servicios/util/util.service';
 })
 export class UbigeoComponent implements OnInit {
 
-  public cargando: Boolean = false;
-  public confirmarcambioestado: Boolean = false;
-  public ubigeos: Array<Ubigeo> = [];
-  public ubigeosCopia: Array<Ubigeo> = [];
-  public parametros: UbigeoGuardar;
-
+  @Input() isModal: boolean = false; // establecemos si este componente es modal o no
+  @Input() accion: string = LS.ACCION_LISTAR;
+  public constantes: any = LS;
+  public parametrosListado: any = null;
+  public items: MenuItem[];
+  
   constructor(
-    private modalService: NgbModal,
-    private ubigeoService: UbigeoService,
     private utilService: UtilService,
-    private toastr: ToastrService,
-    private auth: AuthService,
-  ) {
-    this.parametros = new UbigeoGuardar();
-  }
+    public activeModal: NgbActiveModal,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
-    this.listarUbigeos();
+    if (!this.isModal) {
+      this.items = this.utilService.generarItemsMenuesPaUbigeos(this);
+    }
+    this.parametrosListado = {
+      accion: this.accion,
+      activos: false,
+      isModal: this.isModal
+    };
+  }
+
+  // proviene del menu
+  nuevo() {
+    this.parametrosListado = {
+      accion: LS.ACCION_NUEVO, // accion nuevo
+      isModal: this.isModal
+    }
+  }
+
+  consultarGeneral(activos: boolean) {
+    this.parametrosListado = {
+      listar: true,
+      activos,
+      isModal: this.isModal
+    };
   }
 
   // Metodos para abrir los modales
-  abrirUbigeos() {
-    const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
-    modalRef.result.then((result) => {
-    }, (reason) => {
-    });
-  }
+  // abrirUbigeos() {
+  //   const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
+  //   modalRef.result.then((result) => {
+  //   }, (reason) => {
+  //   });
+  // }
 
-  abrirTipoUbigeos() {
+  nuevoTipoUbigeo() {
     const modalRef = this.modalService.open(ModalTipoubigeoComponent, {size: 'lg', keyboard: true});
     modalRef.result.then((result) => {
     }, (reason) => {
     });
   }
 
-  editarUbigeo(id) {
-    const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
-    // asi... le pasamos el parametro id del usuario en el modal-usuario
-    modalRef.componentInstance.edit = id;
-    modalRef.result.then((result) => {
-      this.listarUbigeos();
-    }, (reason) => {
-    });
-  }
+  // editarUbigeo(id) {
+  //   const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
+  //   // asi... le pasamos el parametro id del usuario en el modal-usuario
+  //   modalRef.componentInstance.edit = id;
+  //   modalRef.result.then((result) => {
+  //     this.listarUbigeos();
+  //   }, (reason) => {
+  //   });
+  // }
 
-  listarUbigeos() {
-    this.cargando = true;
-    this.ubigeoService.litarUbigeos(this);
-  }
-
-  despuesDeListarUbigeos(data) {
-    this.ubigeos = data;
-    this.cargando = false;
-  }
-
-  confirmarcambiodeestado(ubigeo): void {
-    const modalRef = this.modalService.open(ConfirmacionComponent, {windowClass: 'nuevo-modal', size: 'sm', keyboard: false});
-    modalRef.result.then((result) => {
-      this.confirmarcambioestado = true;
-      this.cambiarestadoservicio(ubigeo);
-      this.auth.agregarmodalopenclass();
-    }, (reason) => {
-      ubigeo.estado = !ubigeo.estado;
-      this.auth.agregarmodalopenclass();
-    });
-  }
-
-  cambiarestadoservicio(ubigeo) {
-    this.cargando = true;
-    this.ubigeoService.cambiarEstadoUbigeo(ubigeo.id, this);
-  }
-
-  despuesDeCambiarEstadoUbigeo(data) {
-    this.listarUbigeos();
-    this.cargando = false;
-  }
-
-  limpiar() {
-    this.parametros = new UbigeoGuardar();
-    this.ubigeos = [];
-    this.listarUbigeos();
-  }
-
-  busqueda(form: NgForm) {
-    let formularioTocado = this.utilService.establecerFormularioTocado(form);
-    if (form && form.valid && formularioTocado) {
-      this.cargando = true;
-      this.ubigeoService.busquedaUbigeos(this.parametros, this);
-    } else {
-      this.toastr.warning('Verifique los datos ingresados.', 'Datos inválidos');
-    }
-  }
-
-  despuesDeBusquedaUbigeos(data) {
-    this.ubigeos = data;
-    this.cargando = false;
-  }
-
-  paginate(event) {
-    this.ubigeos = this.ubigeosCopia.slice(event.first, event.first+event.rows);
-  }
+  // paginate(event) {
+  //   this.ubigeos = this.ubigeosCopia.slice(event.first, event.first+event.rows);
+  // }
 }

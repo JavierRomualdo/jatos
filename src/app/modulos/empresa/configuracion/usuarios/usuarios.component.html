@@ -5,7 +5,7 @@
   <li class="breadcrumb-item active">Usuarios</li>
 </ol>
 <div class="container-fluid p-2">
-  <div class="modal-primary"> <!--*ngIf="listadoUsuarios?.length>0"-->
+  <div class="modal-primary">
     <!--Formulario-->
     <div *ngIf="vistaFormulario">
       <app-usuario-formulario [parametrosFormulario]="parametrosFormulario" (enviarAccion)="ejecutarAccion($event)">
@@ -21,7 +21,6 @@
       </div>
   
       <div class="card-header p-1" *ngIf="!isModal">
-        <!-- <i class="fa fa-align-justify"></i> -->
         <strong>{{constantes.TAG_USUARIOS_LISTADO}}</strong>
         <div class="card-header-actions">
           <div class="btn-group">
@@ -53,7 +52,7 @@
             </div>
           </div>
         </div>
-        <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listadoUsuarios"
+        <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 270px);" class="ag-theme-balham" [rowData]="listadoUsuarios"
           [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
           [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
           (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"

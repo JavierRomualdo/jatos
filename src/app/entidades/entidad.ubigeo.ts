@@ -16,6 +16,7 @@ export class Ubigeo {
   }
 
   hydrate(data) {
+    this.id = data.id ? data.id : this.id;
     this.tipoubigeo_id = data.tipoubigeo_id ? data.tipoubigeo_id : this.tipoubigeo_id;
     this.habilitacionurbana_id = data.habilitacionurbana_id ? data.habilitacionurbana_id: this.habilitacionurbana_id;
     this.ubigeo = data.ubigeo ? data.ubigeo : this.ubigeo;

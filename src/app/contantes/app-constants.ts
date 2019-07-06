@@ -175,6 +175,11 @@ export class LS {
   static TAG_PERSONAS_LISTADO = 'Listado de personas';
   static TAG_MANTENIMIENTO_SERVICIOS = 'Mantenimiento de servicios';
   static TAG_SERVICIOS_LISTADO = 'Listado de servicios';
+  static TAG_MANTENIMIENTO_UBIGEOS = 'Mantenimiento de ubigeos';
+  static TAG_DEPARTAMENTOS_LISTADO = 'Listado de departamentos';
+  static TAG_PROVINCIAS_LISTADO = 'Listado de provincias';
+  static TAG_DISTRITOS_LISTADO = 'Listado de distritos';
+  static TAG_HABILITACIONE_URBANAS_LISTADO = 'Listado de habilitación urbana';
   static TAG_MANTENIMIENTO_HABILITACION_URBANA = 'Mantenimiento de habilitacion urbana';
   static TAG_HABILITACION_URBANA = 'Habilitación urbana';
   static TAG_NOMBRE_HABILITACION_URBANA = 'Nombre habilitación urbana';
@@ -189,6 +194,7 @@ export class LS {
   static TAG_DISENIO_INTERIORES = 'Diseño interiores';
   static TAG_DISENIO_EXTERIORES = 'Diseño exteriores';
   static TAG_CAMARA_VIGILANCIA = 'Videovigilancia';
+  static TAG_TIPO_UBIGEO = 'Tipo ubigeo';
 
   //LABELS
   public static LABEL_ACTUALIZAR = "Actualizar";
@@ -203,6 +209,7 @@ export class LS {
   public static LABEL_IMPRIMIR = "Imprimir";
   public static LABEL_EXPORTAR = "Exportar";
   public static LABEL_SUBIR = "Subir";
+  public static LABEL_SELECCIONAR = "Seleccionar";
 
   //ATAJOS
   public static ATAJO_ACEPTAR = "alt+s";
@@ -229,6 +236,7 @@ export class LS {
   static ACCION_IMPRIMIR = "Imprimir";
   static ACCION_EXPORTAR = "Exportar";
   static ACCION_NUEVO = "Nuevo";
+  static ACCION_LISTAR = 'Listar';
   static ACCION_SELECCIONAR = 'SELECCIONAR';
   static ACCION_VER_ALQUILER = 'Ver alquiler';
   static ACCION_VER_VENTA = 'Ver venta';
@@ -286,7 +294,10 @@ export class LS {
   public static TITULO_FORM_NUEVA_HABILITACION_URBANA = 'Nueva habilitación urbana';
   public static TITULO_FORM_EDITAR_HABILITACION_URBANA = 'Editar habilitación urbana';
   public static TITULO_FORM_CONSULTAR_HABILITACION_URBANA = 'Consultar habilitación urbana';
-  
+  public static TITULO_FORM_NUEVO_UBIGEO = 'Nuevo ubigeo';
+  public static TITULO_FORM_EDITAR_UBIGEO = 'Editar ubigeo';
+  public static TITULO_FORM_CONSULTAR_UBIGEO = 'Consultar ubigeo';
+
   // PAGINAS
   public static PAGINA_JATOS = "Jatos";
   public static PAGINA_PROPIEDADES = "Propiedades - Jatos";

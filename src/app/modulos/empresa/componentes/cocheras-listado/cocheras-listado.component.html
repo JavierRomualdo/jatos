@@ -1,4 +1,4 @@
-<div class="modal-primary"> <!--*ngIf="listadoCocheras?.length>0"-->
+<div class="modal-primary">
   <!--Listado-->
   <div class="card">
     <div class="card-header bg-primary p-2" *ngIf="isModal">
@@ -9,7 +9,6 @@
     </div>
 
     <div class="card-header p-1" *ngIf="!isModal">
-      <!-- <i class="fa fa-align-justify"></i>  -->
       <strong>{{constantes.TAG_COCHERA_LISTADO}}</strong>
       <div class="card-header-actions">
         <div class="btn-group">
@@ -51,7 +50,7 @@
           </div>
         </div>
       </div>
-      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 255px);" class="ag-theme-balham" [rowData]="listadoCocheras"
+      <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 265px);" class="ag-theme-balham" [rowData]="listadoCocheras"
         [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"

@@ -157,6 +157,20 @@ export class ServicioService {
 
   generarColumnas(isModal: boolean): Array<any> {
     let columnas: Array<any> = [];
+    if (isModal) {
+      columnas.push(
+        {
+          headerName: "",
+          field: "",
+          headerCheckboxSelection: true,
+          headerCheckboxSelectionFilteredOnly: true,
+          checkboxSelection: true,
+          width: 38,
+          minWidth: 38,
+          maxWidth: 38,
+        }
+      );
+    }
     columnas.push(
       {
         headerName: LS.TAG_SERVICIO,

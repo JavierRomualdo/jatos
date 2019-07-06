@@ -333,6 +333,58 @@ export class UtilService {
     return items;
   }
 
+  generarItemsMenuesPaUbigeos(contexto) {
+    let items = [
+    {
+        label: LS.TAG_ARCHIVO,
+        icon: LS.ICON_ARCHIVO,
+        items: [
+          {
+            label: LS.ACCION_NUEVO, 
+            icon: LS.ICON_NUEVO,
+            command: () => {
+              contexto.nuevo();
+            }
+          },
+          {
+            label: LS.TAG_TIPO_UBIGEO, 
+            icon: LS.ICON_NUEVO,
+            command: () => {
+              contexto.nuevoTipoUbigeo();
+            }
+          }
+        ]
+    },
+    {
+        label: LS.ACCION_CONSULTAR,
+        icon: LS.ICON_CONSULTAR,
+        items: [
+            {
+                label: LS.TAG_GENERAL, 
+                icon: LS.ICON_BUSCAR_MAS,
+                items: [
+                  {
+                    label: LS.TAG_ACTIVOS, 
+                    icon: LS.ICON_ACTIVO,
+                    command: () => {
+                      contexto.consultarGeneral(true);
+                    }
+                  },
+                  {
+                    label: LS.TAG_INCLUIR_INACTIVOS, 
+                    icon: LS.ICON_INACTIVO,
+                    command: () => {
+                      contexto.consultarGeneral(false);
+                    }
+                  }
+                ]
+            },
+          ]
+        }
+      ];
+    return items;
+  }
+
   /**
    * Autoselecciona el contrato
    * @param {Array<any>} contratos

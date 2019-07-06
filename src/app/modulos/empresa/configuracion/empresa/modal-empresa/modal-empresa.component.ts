@@ -6,12 +6,13 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
-import { ModalUbigeoComponent } from '../../ubigeo/modal-ubigeo/modal-ubigeo.component';
 import { EmpresaService } from './empresa.service';
 import { LS } from 'src/app/contantes/app-constants';
 import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenControlOptions,
   ScaleControlOptions, ScaleControlStyle, PanControlOptions } from '@agm/core/services/google-maps-types';
 import { UtilService } from 'src/app/servicios/util/util.service';
+import { UbigeoService } from '../../ubigeo/modal-ubigeo/ubigeo.service';
+import { UbigeoComponent } from '../../ubigeo/ubigeo.component';
 
 @Component({
   selector: 'app-modal-empresa',
@@ -29,6 +30,9 @@ export class ModalEmpresaComponent implements OnInit {
   public empresa: Empresa;
   public ubigeo: UbigeoGuardar;
   public constantes: any = LS;
+  // busqueda de ubigeos en autocomplete (distritos)
+  public ubigeoDistritos: any = []; //
+  public filteridUbigeos;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -38,6 +42,7 @@ export class ModalEmpresaComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private utilService: UtilService,
     private empresaService: EmpresaService,
+    private ubigeoService: UbigeoService,
     private modalService: NgbModal,
     private auth: AuthService,
     private _cargaImagenes: CargaImagenesService,
@@ -66,6 +71,7 @@ export class ModalEmpresaComponent implements OnInit {
   despuesDeListarEmpresa(data) {
     this.empresa = data;
     this.ubigeo = data.ubigeo;
+    this.ubigeoDistritos[0] = this.ubigeo.ubigeo;
     this.imagen = data.foto;
     this.imagenAnterior = data.foto;
     // Mapa
@@ -79,7 +85,8 @@ export class ModalEmpresaComponent implements OnInit {
 
   guardarEmpresa() {
     this.cargando = true;
-    this.empresa.ubigeo_id = this.ubigeo.ubigeo;
+    // this.empresa.ubigeo_id = this.ubigeo.ubigeo;
+    this.empresa.ubigeo_id = this.ubigeoDistritos[0];
     // this.imagenAnterior es un parametro que tambien se podra visualizar si es nuevo o editar empresa
     if (this.imagenAnterior === undefined) { // nueva empresa undefined
       if (this.archivo.archivo !== null) { // el usuario guarda con su foto
@@ -131,17 +138,21 @@ export class ModalEmpresaComponent implements OnInit {
     }
   }
 
-  buscarubigeo() {
-    const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
-    modalRef.componentInstance.nivelTipoUbigeo = 3;
-    // 3 es distrito (que me retorne un distrito)
+  nuevoUbigeo() {
+    const modalRef = this.modalService.open(UbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
-      this.ubigeo = result;
-      this.empresa.ubigeo_id = result.ubigeo;
-      this.auth.agregarmodalopenclass();
     }, (reason) => {
-      this.auth.agregarmodalopenclass();
     });
+  }
+
+  filterUbigeoSingle(event) {
+    let query = event.query;
+    this.ubigeoService.buscarUbigeosDistrito(query.toLowerCase(), this);
+  }
+
+  despuesDeBuscarUbigeosDistrito(data) {
+    this.filteridUbigeos = data;
   }
 
   cargarImagen() {
@@ -157,6 +168,7 @@ export class ModalEmpresaComponent implements OnInit {
     this.ubigeo.departamento = new Ubigeo();
     this.ubigeo.provincia = new Ubigeo();
     this.ubigeo.ubigeo = new Ubigeo();
+    this.ubigeoDistritos = [];
   }
 
   imprimir() {

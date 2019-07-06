@@ -8,9 +8,8 @@
   <form #empresaform="ngForm" name="empresaform" autocomplete="off" class="form-horizontal" (ngSubmit)="guardarEmpresa()">
     <div class="card-body pb-0 p-1">
       <!--/.card-->
-      <div class="card"><!--border-primary-->
-        <div class="card-header pt-2 pb-2"><!--bg-primary border-primary-->
-          <!-- <i class="fa fa-align-justify"></i>  -->
+      <div class="card">
+        <div class="card-header pt-2 pb-2">
           <strong>{{constantes.TAG_DATOS_GENERALES}}</strong>
           <div class="card-header-actions">
             <div class="btn-group">
@@ -51,9 +50,16 @@
               </label>
               <div class="form-group">
                 <div class="input-group">
-                  <label class="form-control form-control-sm">{{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}</label>
+                  <span class="ui-fluid w-80">
+                    <p-autoComplete [(ngModel)]="ubigeoDistritos" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
+                    field="rutaubigeo" placeholder="Ingrese distrito ..." [minLength]="1" name="ubigeos" [autoZIndex]="true" [multiple]="true"
+                    inputStyleClass="form-control" [readonly]="ubigeoDistritos.length>0" [required]="true"></p-autoComplete>
+                  </span>
                   <div class="input-group-append">
-                    <button type="button" class="btn btn-primary btn-sm" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>                      </div>
+                    <button type="button" class="btn btn-primary btn-sm" (click)="nuevoUbigeo()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -101,14 +107,14 @@
         <div class="tab-pane active" id="imagen" role="tabpanel">
           <div class="line"></div>
           <div class="form-group row">
-              <label class="col-sm-3 form-control-label">Logo</label>
-              <div class="col-sm-9">
-                <div class="form-group">
-                  <div class="input-group">
-                    <input type="file" class="btn btn-primary form-control-file" accept="image/*" (change)="detectarArchivo($event)">
-                  </div>
+            <label class="col-sm-3 form-control-label">Logo</label>
+            <div class="col-sm-9">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="file" class="btn btn-primary form-control-file" accept="image/*" (change)="detectarArchivo($event)">
                 </div>
               </div>
+            </div>
           </div>
           <hr class="bg-primary">
           <div class="form-group row">
@@ -134,45 +140,44 @@
         </div>
 
         <div class="tab-pane" id="mapa" role="tabpanel">
-            <!--/.row-->
-            <div class="row">
-              <div class="form-group form-group-sm col-sm-6">
-                <label class="control-label">
-                  <strong>{{constantes.TAG_LATITUD}} <span class="text-primary">*</span></strong>
-                </label>
-                <input type="text" name="latitud" placeholder="Ingrese latitud" [(ngModel)]="empresa.latitud"
-                  [disabled]="true" class="form-control form-control-sm mousetrap" required>
-              </div>
-              <div class="form-group form-group-sm col-sm-6">
-                <label class="control-label">
-                  <strong>{{constantes.TAG_LONGITUD}} <span class="text-primary">*</span></strong>
-                </label>
-                <input type="text" name="longitud" placeholder="Ingrese longitud" [(ngModel)]="empresa.longitud"
-                  [disabled]="true" class="form-control form-control-sm mousetrap" required>
-              </div>
+          <!--/.row-->
+          <div class="row">
+            <div class="form-group form-group-sm col-sm-6">
+              <label class="control-label">
+                <strong>{{constantes.TAG_LATITUD}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="text" name="latitud" placeholder="Ingrese latitud" [(ngModel)]="empresa.latitud"
+                [disabled]="true" class="form-control form-control-sm mousetrap" required>
             </div>
-            <!--/.row-->
-            <div class="row">
-              <div class="form-group form-group-sm col-sm-12"><!--[mapTypeControlOptions]="mapTypeControlOptions"-->
-                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
-                [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
-                [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
-                [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
-                  <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true" (dragEnd)="markerDragEnd($event)"
-                    [markerDraggable]="true">
-                    <agm-info-window>
-                      <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
-                      <p>Punto de Ubicación</p>
-                    </agm-info-window>
-                  </agm-marker>
-                </agm-map>
-              </div>
+            <div class="form-group form-group-sm col-sm-6">
+              <label class="control-label">
+                <strong>{{constantes.TAG_LONGITUD}} <span class="text-primary">*</span></strong>
+              </label>
+              <input type="text" name="longitud" placeholder="Ingrese longitud" [(ngModel)]="empresa.longitud"
+                [disabled]="true" class="form-control form-control-sm mousetrap" required>
             </div>
-            <!--/.row-->
+          </div>
+          <!--/.row-->
+          <div class="row">
+            <div class="form-group form-group-sm col-sm-12"><!--[mapTypeControlOptions]="mapTypeControlOptions"-->
+              <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [zoomControl]="true" [zoomControlOptions]="zoomControlOptions" 
+              [fullscreenControl]="true" [fullscreenControlOptions]="fullscreenControlOptions" [streetViewControl]="'false'" 
+              [mapTypeControl]="'true'" [scaleControl]="true" [scaleControlOptions]="scaleControlOptions" 
+              [disableDefaultUI]="true" [panControl]="true" [panControlOptions]="panControlOptions" [streetViewControlOptions]="true">
+                <agm-marker [latitude]="latitude" [longitude]="longitude" [draggable]="true" (dragEnd)="markerDragEnd($event)"
+                  [markerDraggable]="true">
+                  <agm-info-window>
+                    <h6><strong>Ubicación {{constantes.TAG_CASA}}</strong></h6>
+                    <p>Punto de Ubicación</p>
+                  </agm-info-window>
+                </agm-marker>
+              </agm-map>
+            </div>
+          </div>
+          <!--/.row-->
         </div>
       </div>
 
-        
     </div>
     <div class="modal-footer border-primary">
       <button type="submit" class="btn btn-sm btn-primary" [disabled]="!empresaform.form.valid || ubigeo.ubigeo.id==undefined"><i class="fa fa-dot-circle-o"></i> Guardar</button>

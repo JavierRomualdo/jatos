@@ -27,7 +27,7 @@
               <!--/.row-->
               <div class="row">
                 <!--Propietario-->
-                <div class="form-group form-group-sm col-sm-4">
+                <div class="form-group form-group-sm col-lg-4 col-md-12 col-sm-12">
                   <label class="control-label">
                     <strong>{{constantes.TAG_PROPIETARIO}} <span class="text-primary">*</span></strong>
                   </label>
@@ -41,7 +41,7 @@
                   </div>
                 </div>
                 <!--Contrato-->
-                <div class="form-group form-group-sm col-sm-4">
+                <div class="form-group form-group-sm col-lg-4 col-md-6 col-sm-6">
                   <label class="control-label">
                     <strong>{{constantes.TAG_CONTRATO}} <span class="text-primary">*</span></strong>
                   </label>
@@ -53,7 +53,7 @@
                   </div>
                 </div>
                 <!--Imagen-->
-                <div class="form-group form-group-sm col-sm-4">
+                <div class="form-group form-group-sm col-lg-4 col-md-6 col-sm-6">
                   <label class="control-label">
                     <strong>{{constantes.TAG_FOTO_PRINCIPAL}} <span class="text-primary">*</span></strong>
                   </label>
@@ -107,12 +107,28 @@
                   </label>
                   <div class="form-group">
                     <div class="input-group">
-                      <label class="form-control form-control-sm">
-                        {{ubigeo.departamento.ubigeo}} - {{ubigeo.provincia.ubigeo}} - {{ubigeo.distrito.ubigeo}} - {{ubigeo.ubigeo.ubigeo}}
-                      </label>
+                      <span class="ui-fluid w-90">
+                        <p-autoComplete [(ngModel)]="ubigeoHU" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
+                        field="rutaubigeo" placeholder="habilitacion urbana" [minLength]="1" [disabled]="accion===constantes.ACCION_CONSULTAR || !isModal"
+                        name="ubigeos" [autoZIndex]="true" [multiple]="true" (onSelect)="seleccionarUbigeoEnAutocomplete($event)" 
+                        inputStyleClass="form-control" [readonly]="ubigeoHU.length>0" [required]="true"></p-autoComplete>
+                      </span>
                       <div class="input-group-append">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="buscarubigeo()"><i class="fa fa-search"></i></button>                      </div>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="nuevoUbigeo()">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
                     </div>
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                      <div *ngIf="!isObject()">
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                        Ingrese y seleccione la habilitación urbana. 
+                      </div>
+                      <div *ngIf="isObject()">
+                        <i class="fa fa-check" style="color: green" aria-hidden="true" *ngIf="isObject()"></i>
+                        Se ha Ingresado y seleccionado con éxito la habilitación urbana.
+                      </div>
+                    </small>
                   </div>
                 </div>
               </div>
@@ -194,12 +210,12 @@
               </div>
               <!--/.row-->
               <div class="row">
-                <div class="form-group form-group-sm col-sm-12">
+                <div class="form-group col-sm-12">
                   <label class="control-label">
                     <strong>{{constantes.TAG_DESCRIPCION}} <span class="text-primary">*</span></strong>
                   </label>
                   <textarea class="form-control form-control-sm" [(ngModel)]="habitacion.descripcion" required name="descripcion" placeholder="Ingrese descripción"
-                    maxlength="255"></textarea>
+                    maxlength="765" rows="3"></textarea>
                 </div>
               </div>
               <!--/.row-->
@@ -252,7 +268,7 @@
                   </div>
                   <div class="col-auto">
                     <a [ngClass]="{'btn btn-link disabled' : accion===constantes.ACCION_CONSULTAR}" 
-                      (click)="buscarservicio()" title="asignar rol" style="cursor: pointer">
+                      (click)="buscarservicio()" title="agregar servicios" style="cursor: pointer">
                       <i class="fa fa-plus-circle fa-2x cursor-pointer text-primary"></i>
                     </a>
                   </div>
@@ -360,7 +376,8 @@
                                 <!--/.archivosFotos de fotos para subirse-->
                                 <tr *ngFor="let archivo of archivosFotos; let i = index;">
                                   <td>{{fotos.length + i + 1}}</td>
-                                  <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer" (click)="mostrarFotoPrincipal(archivosFotos[i])">{{archivo.nombreArchivo}}</td>
+                                  <td [ngClass]="{'text-green': archivo.progreso >= 100}" style="cursor: pointer"
+                                    (click)="mostrarFotoPrincipal(archivosFotos[i])">{{archivo.nombreArchivo}}</td>
                                   <td>{{archivo.archivo.size / 1024 /1024 | number: '.2-2'}} MB</td>
                                   <td>
                                     <div class="progress">
@@ -499,7 +516,8 @@
           <br />
         </div>
         <div class="modal-footer border-primary" *ngIf="isModal">
-          <button type="submit" class="btn btn-sm btn-primary" [disabled]="!habitacionform.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined">
+          <button type="submit" class="btn btn-sm btn-primary"
+          [disabled]="!habitacionform.form.valid || listaLP.length==0 || ubigeo.ubigeo.id==undefined || ubigeoHU.length==0">
             <i class="{{constantes.ICON_GUARDAR}}"></i>
             <span class="d-none d-md-inline"> {{constantes.LABEL_GUARDAR}}</span>
           </button>
@@ -514,11 +532,11 @@
         </div>
       </form>
     </fieldset>
-    
   </div>
 </div>
 
-<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto" (displayChange)="onDialogClose($event)"></app-imagen-modal>
+<app-imagen-modal *ngIf="parametrosFoto" [parametros]="parametrosFoto"
+(displayChange)="onDialogClose($event)"></app-imagen-modal>
 
 <div *ngIf="cargando">
   <app-cargando></app-cargando>

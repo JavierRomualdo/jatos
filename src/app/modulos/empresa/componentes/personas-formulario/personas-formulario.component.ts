@@ -7,7 +7,8 @@ import { LS } from 'src/app/contantes/app-constants';
 import { ModalRolComponent } from '../../configuracion/empresa/modal-rol/modal-rol.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ModalUbigeoComponent } from '../../configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
+import { UbigeoService } from '../../configuracion/ubigeo/modal-ubigeo/ubigeo.service';
+import { UbigeoComponent } from '../../configuracion/ubigeo/ubigeo.component';
 
 @Component({
   selector: 'app-personas-formulario',
@@ -27,9 +28,13 @@ export class PersonasFormularioComponent implements OnInit {
   public accion: string = null;
   public tituloForm: string = null;
   public constantes: any = LS;
+  // busqueda de ubigeos en autocomplete (distritos)
+  public ubigeoDistritos: any = []; //
+  public filteridUbigeos;
 
   constructor(
     private personaService: PersonaService,
+    private ubigeoService: UbigeoService,
     private modal: NgbModal,
     private toastr: ToastrService, // para mensajes de exito o error
   ) { }
@@ -90,6 +95,7 @@ export class PersonasFormularioComponent implements OnInit {
     console.log(data);
     this.persona = data;
     this.ubigeo = data.ubigeo;
+    this.ubigeoDistritos[0] = this.ubigeo.ubigeo;
     this.cargando = false;
     this.listaPR = this.persona.personarolList && this.persona.personarolList.length > 0 ? this.persona.personarolList : [];
   }
@@ -98,7 +104,8 @@ export class PersonasFormularioComponent implements OnInit {
     this.cargando = true;
     this.persona.personarolList = this.listaPR;
     this.persona.rol_id = this.listaPR[0]; // this.listaPR[0].idrol
-    this.persona.ubigeo_id = this.ubigeo.ubigeo;
+    // this.persona.ubigeo_id = this.ubigeo.ubigeo;
+    this.persona.ubigeo_id = this.ubigeoDistritos[0];
     if (this.accion === LS.ACCION_NUEVO) { // guardar nuevo rol
       console.log('antes de guardar persona: ');
       console.log(this.persona);
@@ -144,19 +151,21 @@ export class PersonasFormularioComponent implements OnInit {
     );
   }
 
-  buscarubigeo() {
-    const modalRef = this.modal.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
-    modalRef.componentInstance.nivelTipoUbigeo = 3;
-    // 3 es distrito (que me retorne un distrito)
+  nuevoUbigeo() {
+    const modalRef = this.modal.open(UbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
-      console.log('ubigeoguardar:');
-      console.log(result);
-      this.ubigeo = result;
-      this.persona.ubigeo_id = result.ubigeo;
-      // this.auth.agregarmodalopenclass();
     }, (reason) => {
-      // this.auth.agregarmodalopenclass();
     });
+  }
+
+  filterUbigeoSingle(event) {
+    let query = event.query;
+    this.ubigeoService.buscarUbigeosDistrito(query.toLowerCase(), this);
+  }
+
+  despuesDeBuscarUbigeosDistrito(data) {
+    this.filteridUbigeos = data;
   }
 
   quitardelista(pr) {

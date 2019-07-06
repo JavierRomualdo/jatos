@@ -11,7 +11,6 @@ import { CargaImagenesService } from 'src/app/servicios/carga-imagenes.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
-import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
 import { LocalService } from '../local.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
@@ -23,6 +22,9 @@ import { PersonasComponent } from '../../../configuracion/personas/personas.comp
 import { ServiciosComponent } from '../../../configuracion/servicios/servicios.component';
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 import { LocalArchivo } from 'src/app/entidades/entidad.localarchivo';
+import { UbigeoComponent } from '../../../configuracion/ubigeo/ubigeo.component';
+import { UbigeoService } from '../../../configuracion/ubigeo/modal-ubigeo/ubigeo.service';
+import { HabilitacionurbanaService } from '../../../configuracion/habilitacionurbana/habilitacionurbana.service';
 
 @Component({
   selector: 'app-modal-local',
@@ -51,6 +53,9 @@ export class ModalLocalComponent implements OnInit {
   public parametrosFoto: any = null;
   public estaSobreElemento: any;
   public configAutonumericEnteros: AppAutonumeric;
+  // busqueda de ubigeos en autocomplete (habilitaciones urbanas)
+  public ubigeoHU: any = []; //
+  public filteridUbigeos;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -60,6 +65,8 @@ export class ModalLocalComponent implements OnInit {
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
     private localService: LocalService,
+    private ubigeoService: UbigeoService,
+    private habilitacionurbanaService: HabilitacionurbanaService,
     private fotosService: FotosService,
     private _cargaImagenes: CargaImagenesService,
     private toastr: ToastrService,
@@ -80,6 +87,7 @@ export class ModalLocalComponent implements OnInit {
     this.fotos = [];
     this.archivos = [];
     this.servicios = [];
+    this.localservicios = [];
     this.persona = new Persona();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
@@ -264,6 +272,7 @@ export class ModalLocalComponent implements OnInit {
     this.listaLP = data.localpersonaList;
     this.persona = this.listaLP[0];
     this.ubigeo = data.ubigeo;
+    this.ubigeoHU[0] = this.ubigeo.ubigeo;
     this.servicios = data.serviciosList;
     this.localservicios = data.localservicioList;
     // Mapa
@@ -317,31 +326,23 @@ export class ModalLocalComponent implements OnInit {
     });
   }
 
-  buscarubigeo() {
-    const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
-    modalRef.componentInstance.nivelTipoUbigeo = 4;
-    // 4 es habilitacion urbana (que me retorne un habilitacion urbana)
+  nuevoUbigeo() {
+    const modalRef = this.modalService.open(UbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
-      console.log('ubigeoguardar:');
-      console.log(result);
-      this.ubigeo = result;
-      this.local.ubigeo_id = result.ubigeo;
-      this.auth.agregarmodalopenclass();
     }, (reason) => {
-      this.auth.agregarmodalopenclass();
     });
   }
 
   buscarservicio() {
     const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
-    modalRef.result.then((result) => {
-      const servicio = this.servicios.find(item => item.id === result.id);
-      if (servicio) {
-        this.toastr.warning(LS.MSJ_SERVICIO_YA_SE_HA_ASIGNADO, LS.TAG_AVISO);
-      } else {
-        this.servicios.push(result);
-      }
+    modalRef.componentInstance.in_listaServicios = this.servicios;
+    modalRef.result.then((listaServicios) => {
+      // agrego la listaServicios en servicios de mi componente modal-casa
+      listaServicios.forEach(servicio => {
+        this.servicios.push(servicio);
+      });
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();
@@ -361,6 +362,32 @@ export class ModalLocalComponent implements OnInit {
   despuesDeGenerarCodigoLocal(data) {
     this.cargando = false;
     this.local.codigo = data;
+  }
+
+  filterUbigeoSingle(event) {
+    let query = event.query;
+    this.ubigeoService.buscarUbigeosHabilitacionUrbana(query.toLowerCase(), this);
+  }
+
+  despuesDeBuscarUbigeosHabilitacionUrbana(data) {
+    this.filteridUbigeos = data;
+  }
+
+  isObject(): boolean {
+    return (typeof this.ubigeoHU[0] === 'object');
+  }
+
+  seleccionarUbigeoEnAutocomplete(event) {
+    this.habilitacionurbanaService.mostrarHabilitacionUrbana(this.ubigeoHU[0].habilitacionurbana_id, this);
+    this.ubigeo.ubigeo = this.ubigeoHU[0];
+    this.local.ubigeo_id = this.ubigeoHU[0];
+    console.log("ubigeoHU: ", this.ubigeoHU[0]);
+  }
+
+  despuesDeMostrarHabilitacionUrbana(data) {
+    console.log('esto trajo para editar: ', data);
+    this.ubigeo.ubigeo.habilitacionurbana_id = this.ubigeoHU[0];
+    this.local.ubigeo_id.habilitacionurbana_id = data;
   }
 
   // Metodos para las imagenes

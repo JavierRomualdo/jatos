@@ -20,6 +20,9 @@ import { ZoomControlOptions, ControlPosition, ZoomControlStyle, FullscreenContro
 import { PersonasComponent } from '../../../configuracion/personas/personas.component';
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 import { LoteArchivo } from 'src/app/entidades/entidad.lotearchivo';
+import { UbigeoComponent } from '../../../configuracion/ubigeo/ubigeo.component';
+import { UbigeoService } from '../../../configuracion/ubigeo/modal-ubigeo/ubigeo.service';
+import { HabilitacionurbanaService } from '../../../configuracion/habilitacionurbana/habilitacionurbana.service';
 
 @Component({
   selector: 'app-modal-lote',
@@ -46,6 +49,9 @@ export class ModalLoteComponent implements OnInit {
   public parametrosFoto: any = null;
   public estaSobreElemento: any;
   public configAutonumericEnteros: AppAutonumeric;
+  // busqueda de ubigeos en autocomplete (habilitaciones urbanas)
+  public ubigeoHU: any = []; //
+  public filteridUbigeos;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -56,6 +62,8 @@ export class ModalLoteComponent implements OnInit {
     private activeModal: NgbActiveModal,
     private _cargaImagenes: CargaImagenesService,
     private loteService: LoteService,
+    private ubigeoService: UbigeoService,
+    private habilitacionurbanaService: HabilitacionurbanaService,
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
@@ -258,6 +266,7 @@ export class ModalLoteComponent implements OnInit {
     this.listaLP = data.lotepersonaList;
     this.persona = this.listaLP[0] ;
     this.ubigeo = data.ubigeo;
+    this.ubigeoHU[0] = this.ubigeo.ubigeo;
     // Mapa
     this.lote.latitud = this.lote.latitud ? this.lote.latitud : this.latitude+""
     this.lote.longitud = this.lote.longitud ? this.lote.longitud : this.longitude+""
@@ -324,6 +333,14 @@ export class ModalLoteComponent implements OnInit {
     });
   }
 
+  nuevoUbigeo() {
+    const modalRef = this.modalService.open(UbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
+    modalRef.result.then((result) => {
+    }, (reason) => {
+    });
+  }
+
   postGuardarLote() {
     // se genera el codigode la cochera cuando la accion es nuevo
     this.cargando = true;
@@ -337,6 +354,32 @@ export class ModalLoteComponent implements OnInit {
   despuesDeGenerarCodigoLote(data) {
     this.cargando = false;
     this.lote.codigo = data;
+  }
+
+  filterUbigeoSingle(event) {
+    let query = event.query;
+    this.ubigeoService.buscarUbigeosHabilitacionUrbana(query.toLowerCase(), this);
+  }
+
+  despuesDeBuscarUbigeosHabilitacionUrbana(data) {
+    this.filteridUbigeos = data;
+  }
+
+  isObject(): boolean {
+    return (typeof this.ubigeoHU[0] === 'object');
+  }
+
+  seleccionarUbigeoEnAutocomplete(event) {
+    this.habilitacionurbanaService.mostrarHabilitacionUrbana(this.ubigeoHU[0].habilitacionurbana_id, this);
+    this.ubigeo.ubigeo = this.ubigeoHU[0];
+    this.lote.ubigeo_id = this.ubigeoHU[0];
+    console.log("ubigeoHU: ", this.ubigeoHU[0]);
+  }
+
+  despuesDeMostrarHabilitacionUrbana(data) {
+    console.log('esto trajo para editar: ', data);
+    this.ubigeo.ubigeo.habilitacionurbana_id = this.ubigeoHU[0];
+    this.lote.ubigeo_id.habilitacionurbana_id = data;
   }
 
   // Metodos para las imagenes

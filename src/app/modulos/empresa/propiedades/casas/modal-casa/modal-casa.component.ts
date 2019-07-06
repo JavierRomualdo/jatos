@@ -12,7 +12,6 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
-import { ModalUbigeoComponent } from '../../../configuracion/ubigeo/modal-ubigeo/modal-ubigeo.component';
 import { CasasService } from '../casas.service';
 import { FotosService } from 'src/app/servicios/fotos/fotos.service';
 import { LS } from 'src/app/contantes/app-constants';
@@ -24,6 +23,9 @@ import { ServiciosComponent } from '../../../configuracion/servicios/servicios.c
 import { AppAutonumeric } from 'src/app/directivas/autonumeric/AppAutonumeric';
 import { CasaArchivo } from 'src/app/entidades/entidad.casaarchivo';
 import { MapsAPILoader, MouseEvent  } from '@agm/core';
+import { UbigeoService } from '../../../configuracion/ubigeo/modal-ubigeo/ubigeo.service';
+import { HabilitacionurbanaService } from '../../../configuracion/habilitacionurbana/habilitacionurbana.service';
+import { UbigeoComponent } from '../../../configuracion/ubigeo/ubigeo.component';
 // import {} from '@types/googlemaps'; 
 declare var google;
 
@@ -53,6 +55,9 @@ export class ModalCasaComponent implements OnInit {
   public constantes: any = LS;
   public parametrosFoto: any = null;
   public configAutonumericEnteros: AppAutonumeric;
+  // busqueda de ubigeos en autocomplete (habilitaciones urbanas)
+  public ubigeoHU: any = []; //
+  public filteridUbigeos;
   // Mapa
   public latitude: number = -5.196395;
   public longitude: number = -80.630287;
@@ -69,6 +74,8 @@ export class ModalCasaComponent implements OnInit {
     private activeModal: NgbActiveModal,
     private _cargaImagenes: CargaImagenesService,
     private casasService: CasasService,
+    private ubigeoService: UbigeoService,
+    private habilitacionurbanaService: HabilitacionurbanaService,
     private fotosService: FotosService,
     private toastr: ToastrService,
     private auth: AuthService
@@ -89,6 +96,7 @@ export class ModalCasaComponent implements OnInit {
     this.fotos = [];
     this.archivos = [];
     this.servicios = [];
+    this.casaservicios = [];
     this.persona = new Persona();
     this.ubigeo = new UbigeoGuardar();
     this.ubigeo.departamento = new Ubigeo();
@@ -275,6 +283,7 @@ export class ModalCasaComponent implements OnInit {
     this.listaLP = data.casapersonaList;
     this.persona = this.listaLP[0];
     this.ubigeo = data.ubigeo;
+    this.ubigeoHU[0] = this.ubigeo.ubigeo;
     this.servicios = data.serviciosList;
     this.casaservicios = data.casaservicioList;
     // Mapa
@@ -329,31 +338,23 @@ export class ModalCasaComponent implements OnInit {
     });
   }
 
-  buscarubigeo() {
-    const modalRef = this.modalService.open(ModalUbigeoComponent, {size: 'lg', keyboard: true});
-    modalRef.componentInstance.nivelTipoUbigeo = 4;
-    // 4 es habilitacion urbana (que me retorne un habilitacion urbana)
+  nuevoUbigeo() {
+    const modalRef = this.modalService.open(UbigeoComponent, {size: 'lg', keyboard: true});
+    modalRef.componentInstance.isModal = true;
     modalRef.result.then((result) => {
-      console.log('ubigeoguardar:');
-      console.log(result);
-      this.ubigeo = result;
-      this.casa.ubigeo_id = result.ubigeo;
-      this.auth.agregarmodalopenclass();
     }, (reason) => {
-      this.auth.agregarmodalopenclass();
     });
   }
 
   buscarservicio() {
     const modalRef = this.modalService.open(ServiciosComponent, {size: 'lg', keyboard: true});
     modalRef.componentInstance.isModal = true;
-    modalRef.result.then((result) => {
-      const servicio = this.servicios.find(item => item.id === result.id);
-      if (servicio) {
-        this.toastr.warning(LS.MSJ_SERVICIO_YA_SE_HA_ASIGNADO, LS.TAG_AVISO);
-      } else {
-        this.servicios.push(result);
-      }
+    modalRef.componentInstance.in_listaServicios = this.servicios;
+    modalRef.result.then((listaServicios) => {
+      // agrego la listaServicios en servicios de mi componente modal-casa
+      listaServicios.forEach(servicio => {
+        this.servicios.push(servicio);
+      });
       this.auth.agregarmodalopenclass();
     }, (reason) => {
       this.auth.agregarmodalopenclass();
@@ -373,6 +374,32 @@ export class ModalCasaComponent implements OnInit {
   despuesDeGenerarCodigoCasa(data) {
     this.cargando = false;
     this.casa.codigo = data;
+  }
+
+  filterUbigeoSingle(event) {
+    let query = event.query;
+    this.ubigeoService.buscarUbigeosHabilitacionUrbana(query.toLowerCase(), this);
+  }
+
+  despuesDeBuscarUbigeosHabilitacionUrbana(data) {
+    this.filteridUbigeos = data;
+  }
+
+  isObject(): boolean {
+    return (typeof this.ubigeoHU[0] === 'object');
+  }
+
+  seleccionarUbigeoEnAutocomplete(event) {
+    this.habilitacionurbanaService.mostrarHabilitacionUrbana(this.ubigeoHU[0].habilitacionurbana_id, this);
+    this.ubigeo.ubigeo = this.ubigeoHU[0];
+    this.casa.ubigeo_id = this.ubigeoHU[0];
+    console.log("ubigeoHU: ", this.ubigeoHU[0]);
+  }
+
+  despuesDeMostrarHabilitacionUrbana(data) {
+    console.log('esto trajo para editar: ', data);
+    this.ubigeo.ubigeo.habilitacionurbana_id = this.ubigeoHU[0];
+    this.casa.ubigeo_id.habilitacionurbana_id = data;
   }
 
   // Metodos para las imagenes
