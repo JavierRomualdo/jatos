@@ -88,6 +88,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FocusDirective } from 'src/app/directivas/focus/focus.directive';
 import { UbigeosListadoComponent } from './componentes/ubigeos-listado/ubigeos-listado.component';
 import { UbigeosFormularioComponent } from './componentes/ubigeos-formulario/ubigeos-formulario.component';
+import { UppercaseDirective } from 'src/app/directivas/uppercase/uppercase.directive';
 
 @NgModule({
   declarations: [HomeComponent,
@@ -140,6 +141,7 @@ import { UbigeosFormularioComponent } from './componentes/ubigeos-formulario/ubi
     Autonumeric2Directive,
     AutonumericDirective,
     FocusDirective,
+    UppercaseDirective,
 
     BotonAccionComponent,
 

@@ -366,7 +366,7 @@ export class ModalLocalComponent implements OnInit {
 
   filterUbigeoSingle(event) {
     let query = event.query;
-    this.ubigeoService.buscarUbigeosHabilitacionUrbana(query.toLowerCase(), this);
+    this.ubigeoService.buscarUbigeosHabilitacionUrbana(query.toUpperCase(), this);
   }
 
   despuesDeBuscarUbigeosHabilitacionUrbana(data) {

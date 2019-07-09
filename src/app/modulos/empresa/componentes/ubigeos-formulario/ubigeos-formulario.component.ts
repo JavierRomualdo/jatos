@@ -159,7 +159,7 @@ export class UbigeosFormularioComponent implements OnInit {
     } else { // guardar el ubigeo editado
       console.log('antes de editar:');
       console.log(this.ubigeoGuardar);
-      this.ubigeoService.modificarUbigeo(this.ubigeoGuardar, this);
+      this.ubigeoService.modificarUbigeo(this.ubigeoGuardar.ubigeo, this);
     }
     this.departamentoSeleccionado = null;
     this.provinciaSeleccionado = null;

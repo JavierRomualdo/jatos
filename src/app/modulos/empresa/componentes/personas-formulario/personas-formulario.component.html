@@ -89,7 +89,7 @@
                       <span class="ui-fluid w-80">
                         <p-autoComplete [(ngModel)]="ubigeoDistritos" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
                         field="rutaubigeo" placeholder="Ingrese distrito ..." [minLength]="1" name="ubigeos" [autoZIndex]="true" [multiple]="true"
-                        inputStyleClass="form-control" [readonly]="ubigeoDistritos.length>0" [required]="true"></p-autoComplete>
+                        inputStyleClass="form-control text-uppercase" [readonly]="ubigeoDistritos.length>0" [required]="true"></p-autoComplete>
                       </span>
                       <div class="input-group-append">
                         <button type="button" class="btn btn-primary btn-sm" (click)="nuevoUbigeo()">

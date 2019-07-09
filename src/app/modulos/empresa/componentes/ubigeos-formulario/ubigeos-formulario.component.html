@@ -53,8 +53,8 @@
                 <label class="control-label">
                   <strong>Ubigeo <span class="text-primary">*</span></strong>
                 </label>
-                <input type="text" class="form-control" name="ubigeo" required="" placeholder="Ingrese nombre ubigeo" maxlength="50"
-                  [(ngModel)]="ubigeoGuardar.ubigeo.ubigeo" [disabled]="accion===constantes.ACCION_CONSULTAR">
+                <input type="text" class="form-control text-uppercase" name="ubigeo" required="" placeholder="Ingrese nombre ubigeo"
+                maxlength="50" [(ngModel)]="ubigeoGuardar.ubigeo.ubigeo" [disabled]="accion===constantes.ACCION_CONSULTAR" appUppercase>
               </div>
             </div>
             <!--/.row-->

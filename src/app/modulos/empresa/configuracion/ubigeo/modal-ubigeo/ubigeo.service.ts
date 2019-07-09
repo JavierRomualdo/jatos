@@ -47,13 +47,13 @@ export class UbigeoService {
   }
 
   modificarUbigeo(parametro, contexto) {
-    this.api.put2('ubigeos/' + parametro.ubigeo.id, parametro).then(
-      (res) => {
-        if (res) {
-          this.toastr.success('Se ha modificado correctamente', LS.TAG_EXITO);
-          contexto.despuesDeModificarUbigeo(res);
+    this.api.put2('ubigeos/' + parametro.id, parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeModificarUbigeo(data.extraInfo);
         } else {
-          this.toastr.warning('Error al modificar casa', LS.TAG_AVISO);
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;
         }
       }
@@ -125,7 +125,7 @@ export class UbigeoService {
   listarubigeos(parametro, contexto) {
     this.api.post2('listarubigeos', parametro).then(
       (data) => {
-        if (data && data.extraInfo) {
+        if (data) {
           if (parametro.tipoubigeo_id === 0) {
             contexto.despuesDeMostrarUbigeosDepartamentos(data.extraInfo);
           } else if (parametro.tipoubigeo_id === 1) { // departamento
@@ -137,9 +137,7 @@ export class UbigeoService {
           } else if (parametro.tipoubigeo_id === 3) { // distrito
             contexto.despuesDeMostrarUbigeosHabilitacionUrbanas(data.extraInfo);
           }
-        } else {
-          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
-          contexto.cargando = false;
+          !data.extraInfo && this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
         }
       }
     ).catch(err => this.utilService.handleError(err, contexto));

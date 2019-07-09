@@ -111,7 +111,7 @@
                         <p-autoComplete [(ngModel)]="ubigeoHU" [suggestions]="filteridUbigeos" (completeMethod)="filterUbigeoSingle($event)"
                         field="rutaubigeo" placeholder="habilitacion urbana" [minLength]="1" [disabled]="accion===constantes.ACCION_CONSULTAR || !isModal"
                         name="ubigeos" [autoZIndex]="true" [multiple]="true" (onSelect)="seleccionarUbigeoEnAutocomplete($event)" 
-                        inputStyleClass="form-control" [readonly]="ubigeoHU.length>0" [required]="true"></p-autoComplete>
+                        inputStyleClass="form-control text-uppercase" [readonly]="ubigeoHU.length>0" [required]="true"></p-autoComplete>
                       </span>
                       <div class="input-group-append">
                         <button type="button" class="btn btn-primary btn-sm" (click)="nuevoUbigeo()">

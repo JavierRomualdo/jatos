@@ -161,7 +161,7 @@ export class PersonasFormularioComponent implements OnInit {
 
   filterUbigeoSingle(event) {
     let query = event.query;
-    this.ubigeoService.buscarUbigeosDistrito(query.toLowerCase(), this);
+    this.ubigeoService.buscarUbigeosDistrito(query.toUpperCase(), this);
   }
 
   despuesDeBuscarUbigeosDistrito(data) {
