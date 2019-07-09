@@ -47,7 +47,7 @@ export class UbigeoService {
   }
 
   modificarUbigeo(parametro, contexto) {
-    this.api.put2('ubigeos/' + parametro.id, parametro).then(
+    this.api.put2('ubigeos/' + parametro.ubigeo.id, parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
