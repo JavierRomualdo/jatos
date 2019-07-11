@@ -143,9 +143,17 @@ export class VentaServiceService {
         }
       },
       {
+        headerName: LS.TAG_HAB_URBANA,
+        width: 115,
+        minWidth: 115,
+        valueGetter: (params) => {
+          return params.data.siglas;
+        }
+      },
+      {
         headerName: LS.TAG_UBICACION,
-        width: 150,
-        minWidth: 150,
+        width: 230,
+        minWidth: 230,
         valueGetter: (params) => {
           return params.data.ubicacion;
         }
@@ -160,16 +168,16 @@ export class VentaServiceService {
       },
       {
         headerName: LS.TAG_PRECIO_CONTRATO,
-        width: 110,
-        minWidth: 110,
+        width: 130,
+        minWidth: 130,
         valueGetter: (params) => {
-          return params.data.preciocontrato;
+          return `S/ ${params.data.preciocontrato}`;
         }
       },
       {
         headerName: LS.TAG_FECHA_VENTA,
-        width: 90,
-        minWidth: 90,
+        width: 130,
+        minWidth: 130,
         valueGetter: (params) => {
           return params.data.fechaVenta;
         }

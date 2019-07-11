@@ -432,15 +432,27 @@ export class VentaFormularioComponent implements OnInit {
   }
 
   insertarVenta() {
-    // this.setearValoresRhBonoMotivo();
-    this.cargando = true;
-    console.log(this.utilService.obtenerFechaActual());
-    console.log(new Date(this.utilService.obtenerFechaActual()));
-    this.venta.fecha = this.utilService.obtenerFechaActual();
-    console.log(this.venta.fecha);
-    console.log('Venta antes de ingresar');
-    console.log(this.venta);
-    this.ventaService.ingresarVenta(this.venta, this);
+    const parametros = {
+      title: LS.MSJ_TITULO_VENTA,
+      texto: LS.MSJ_PREGUNTA_VENTA + "<br> " + LS.TAG_CODIGO_PROPIEDAD + ": " + this.codigo,
+      type: LS.SWAL_QUESTION,
+      confirmButtonText: LS.LABEL_ACEPTAR,
+      cancelButtonText: LS.LABEL_CANCELAR
+    };
+    this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
+      if (respuesta) { // REALIZAR LA VENTA
+        this.cargando = true;
+        console.log(this.utilService.obtenerFechaActual());
+        console.log(new Date(this.utilService.obtenerFechaActual()));
+        this.venta.fecha = this.utilService.obtenerFechaActual();
+        console.log(this.venta.fecha);
+        console.log('Venta antes de ingresar');
+        console.log(this.venta);
+        this.ventaService.ingresarVenta(this.venta, this);
+      } else { // SE CANCELO LA VENTA
+        this.cargando = false;
+      }
+    });
   }
 
   despuesDeIngresarVenta(data) {

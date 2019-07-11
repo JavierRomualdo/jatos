@@ -6,6 +6,7 @@ export class AlquilerTO {
     propiedad_codigo: string;
     cliente: string = "";
     propietario: string = "";
+    siglas: string = "";
     ubicacion: string = "";// propiedad
     direccion: string = ""; // propiedad
     preciocontrato: number;
@@ -24,6 +25,7 @@ export class AlquilerTO {
         this.propiedad_codigo = data.propiedad_codigo ? data.propiedad_codigo : this.propiedad_codigo;
         this.cliente = data.cliente ? data.cliente : this.cliente;
         this.propietario = data.propietario ? data.propietario : this.propietario;
+        this.siglas = data.siglas ? data.siglas : this.siglas;
         this.ubicacion = data.ubicacion ? data.ubicacion : this.ubicacion;
         this.direccion = data.direccion ? data.direccion : this.direccion;
         this.preciocontrato = data.preciocontrato ? data.preciocontrato : this.preciocontrato;

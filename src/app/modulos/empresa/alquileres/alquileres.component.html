@@ -120,7 +120,7 @@
               </div>
             </div>
           </div>
-          <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 210px);" class="ag-theme-balham" [rowData]="listaResultado"
+          <ag-grid-angular #agGrid id="agGrid" style="width: 100%; height: calc(100vh - 225px);" class="ag-theme-balham" [rowData]="listaResultado"
             [columnDefs]="columnDefsSelected" [enableSorting]="true" (gridSizeChanged)="redimensionarColumnas()" [rowSelection]="rowSelection"
             [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="alquilerSeleccionado = $event.node.data"
             (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"

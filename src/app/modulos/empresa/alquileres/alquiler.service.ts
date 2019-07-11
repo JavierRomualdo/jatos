@@ -143,9 +143,17 @@ export class AlquilerService {
         }
       },
       {
+        headerName: LS.TAG_HAB_URBANA,
+        width: 115,
+        minWidth: 115,
+        valueGetter: (params) => {
+          return params.data.siglas;
+        }
+      },
+      {
         headerName: LS.TAG_UBICACION,
-        width: 150,
-        minWidth: 150,
+        width: 230,
+        minWidth: 230,
         valueGetter: (params) => {
           return params.data.ubicacion;
         }
@@ -160,24 +168,24 @@ export class AlquilerService {
       },
       {
         headerName: LS.TAG_PRECIO_CONTRATO,
-        width: 100,
-        minWidth: 100,
+        width: 130,
+        minWidth: 130,
         valueGetter: (params) => {
           return params.data.preciocontrato;
         }
       },
       {
         headerName: LS.TAG_DESDE,
-        width: 90,
-        minWidth: 90,
+        width: 130,
+        minWidth: 130,
         valueGetter: (params) => {
           return params.data.fechadesde;
         }
       },
       {
         headerName: LS.TAG_HASTA,
-        width: 90,
-        minWidth: 90,
+        width: 130,
+        minWidth: 130,
         valueGetter: (params) => {
           return params.data.fechahasta;
         }

@@ -78,6 +78,7 @@ export class LS {
   static TAG_INCLUIR_INACTIVOS = "Incluir inactivos";
   static TAG_APARTAMENTO = 'Apartamento';
   static TAG_APARTAMENTO_LISTADO = 'Listado de apartamentos';
+  static TAG_PROPIEDAD = 'Propiedad';
   static TAG_CASA = "Casa";
   static TAG_CASAS_LISTADO = "Listado de casas";
   static TAG_COCHERA = "Cochera";
@@ -89,7 +90,7 @@ export class LS {
   static TAG_LOTE = "Lote";
   static TAG_LOTE_LISTADO = "Listado de lotes";
   static TAG_MENSAJE_LISTADO = "Listado de mensajes";
-  static TAG_PROPIEDAD = "Propiedad";
+  static TAG_CODIGO_PROPIEDAD = "Código propiedad";
   static TAG_PROPIETARIO = "Propietario";
   static TAG_CLIENTE = "Cliente";
   static TAG_DATOS_GENERALES = "Datos generales";
@@ -309,6 +310,10 @@ export class LS {
   static MSJ_COLUMNAS = "columnas seleccionadas";
   static MSJ_PREGUNTA_INACTIVAR = "¿Está seguro que desea inactivar?";
   static MSJ_PREGUNTA_ACTIVAR = "¿Está seguro que desea activar?";
+  static MSJ_TITULO_VENTA = "Venta de propiedad";
+  static MSJ_PREGUNTA_VENTA = "¿Está seguro que desea realizar la venta?";
+  static MSJ_TITULO_ALQUILER = "Alquiler de propiedad";
+  static MSJ_PREGUNTA_ALQUILER = "¿Está seguro que desea realizar el alquiler?";
   static MSJ_TITULO_ELIMINAR = "¿Está seguro?";
   static MSJ_PREGUNTA_ELIMINAR = "Una vez eliminado no se podrá recuperar.";
   static MSJ_SI_ACEPTAR = "Sí, Aceptar";

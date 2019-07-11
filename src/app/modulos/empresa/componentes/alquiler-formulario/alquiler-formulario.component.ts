@@ -503,18 +503,30 @@ export class AlquilerFormularioComponent implements OnInit {
   }
 
   insertarAlquiler() {
-    // this.setearValoresRhBonoMotivo();
-    this.cargando = true;
-    console.log(this.utilService.obtenerFechaActual());
-    console.log(new Date(this.utilService.obtenerFechaActual()));
-    console.log('fecha hasta');
-    console.log(this.fechahasta);
-    this.alquiler.fechadesde = this.utilService.formatearDateToStringYYYYMMDD(this.fechadesde);
-    this.alquiler.fechahasta = this.utilService.formatearDateToStringYYYYMMDD(this.fechahasta);
-    console.log(this.alquiler.fechadesde);
-    console.log('Alquiler antes de ingresar');
-    console.log(this.alquiler);
-    this.alquilerService.ingresarAlquiler(this.alquiler, this);
+    const parametros = {
+      title: LS.MSJ_TITULO_ALQUILER,
+      texto: LS.MSJ_PREGUNTA_ALQUILER + "<br> " + LS.TAG_CODIGO_PROPIEDAD + ": " + this.codigo,
+      type: LS.SWAL_QUESTION,
+      confirmButtonText: LS.LABEL_ACEPTAR,
+      cancelButtonText: LS.LABEL_CANCELAR
+    };
+    this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
+      if (respuesta) { // REALIZAR EL ALQUILER
+        this.cargando = true;
+        console.log(this.utilService.obtenerFechaActual());
+        console.log(new Date(this.utilService.obtenerFechaActual()));
+        console.log('fecha hasta');
+        console.log(this.fechahasta);
+        this.alquiler.fechadesde = this.utilService.formatearDateToStringYYYYMMDD(this.fechadesde);
+        this.alquiler.fechahasta = this.utilService.formatearDateToStringYYYYMMDD(this.fechahasta);
+        console.log(this.alquiler.fechadesde);
+        console.log('Alquiler antes de ingresar');
+        console.log(this.alquiler);
+        this.alquilerService.ingresarAlquiler(this.alquiler, this);
+      } else { // SE CANCELO EL ALQUILER
+        this.cargando = false;
+      }
+    });
   }
 
   despuesDeIngresarAlquiler(data) {
