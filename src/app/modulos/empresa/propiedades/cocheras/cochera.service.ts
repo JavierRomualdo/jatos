@@ -256,6 +256,15 @@ export class CocheraService {
         cellClass: 'text-md-center'
       },
       {
+        headerName: LS.TAG_MENSAJES,
+        headerClass: 'text-md-center',
+        field: 'nmensajes',
+        width: 95,
+        minWidth: 95,
+        cellRendererFramework: SpanMensajeComponent,
+        cellClass: 'text-md-center'
+      },
+      {
         headerName: LS.TAG_CONTRATO,
         headerClass: 'text-md-center',
         field: 'contrato',
@@ -336,16 +345,7 @@ export class CocheraService {
         valueGetter: (params) => {
           return `S/. ${params.data.ganancia}`;
         }
-      },
-      {
-        headerName: LS.TAG_MENSAJES,
-        headerClass: 'text-md-center',
-        field: 'nmensajes',
-        width: 95,
-        minWidth: 95,
-        cellRendererFramework: SpanMensajeComponent,
-        cellClass: 'text-md-center'
-      },
+      }
     );
     if (!isModal) {
       columnas.push(
@@ -383,5 +383,15 @@ export class CocheraService {
       )
     }
     return columnas;
+  }
+
+  generarReglaPaFilasConMensajes() {
+    return {
+      "sick-days-breach": function(params) {
+        let nmensajes = params.data.nmensajes;
+        return nmensajes > 0;
+      }
+      // "sick-days-breach": "data.nmensajes > 0"
+    };
   }
 }

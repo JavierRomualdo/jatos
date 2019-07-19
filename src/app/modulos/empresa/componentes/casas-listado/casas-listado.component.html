@@ -55,7 +55,8 @@
         [enableColResize]="true" [context]="context" (gridReady)="onGridReady($event)" (rowSelected)="objetoSeleccionado = $event.node.data"
         (cellContextMenu)="!isModal ? mostrarContextMenu($event.data, $event.event) : null" (contextmenu)="!isModal ? $event.preventDefault() : null"
         (cellFocused)="filaFocused($event)" (cellDoubleClicked)="objetoSeleccionado = $event.node.data; isModal ? filaSeleccionar() : consultar()"
-        [overlayLoadingTemplate]="overlayLoadingTemplate" [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText">
+        [overlayLoadingTemplate]="overlayLoadingTemplate" [paginationAutoPageSize]="true" [pagination]="true" [localeText]="localeText"
+        [rowClassRules]="rowClassRules">
       </ag-grid-angular>
       <!--(filterChanged)="actualizarFilas()"-->
     </div>

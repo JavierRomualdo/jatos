@@ -43,6 +43,7 @@ export class LotesListadoComponent implements OnInit {
   public rowSelection: string;
   public localeText = {};
   public context;
+  public rowClassRules;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
 
   constructor(
@@ -73,7 +74,7 @@ export class LotesListadoComponent implements OnInit {
         } else {
           // aca son las consultas en general para listado de lotes
           if (this.parametrosBusqueda.estadoContrato === null) {
-            this.listarCasas(this.parametrosBusqueda.activos);
+            this.listarLotes(this.parametrosBusqueda.activos);
           } else {
             this.listarLotesPorEstadoContrato(this.parametrosBusqueda.estadoContrato);
           }
@@ -112,7 +113,7 @@ export class LotesListadoComponent implements OnInit {
     }
   }
 
-  listarCasas(activos: boolean) {
+  listarLotes(activos: boolean) {
     this.cargando = true;
     let parametros = {
       activos: activos
@@ -351,6 +352,7 @@ export class LotesListadoComponent implements OnInit {
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
   }
 
+  // metodo que se abre la ventana del listado de mensajes
   verMensajes() {
     let parametros = {
       propiedad: LS.TAG_LOTE,
@@ -358,6 +360,7 @@ export class LotesListadoComponent implements OnInit {
       codigo: this.objetoSeleccionado.codigo,
       activos: false,
       nmensajes: this.objetoSeleccionado.nmensajes,
+      objetoSeleccionado: this.objetoSeleccionado,
       verMensajes: true
     }
     this.enviarAccion.emit(parametros);
@@ -395,6 +398,7 @@ export class LotesListadoComponent implements OnInit {
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.loteService.generarColumnas(this.isModal);
+    this.rowClassRules = this.loteService.generarReglaPaFilasConMensajes();
     this.columnDefsSelected = this.columnDefs.slice();
     this.rowSelection = "single";
     this.context = { componentParent: this };

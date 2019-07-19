@@ -6,6 +6,7 @@ import { MensajeListadoService } from './mensaje-listado.service';
 import { MensajeTO } from 'src/app/entidadesTO/empresa/MensajeTO';
 import { UtilService } from 'src/app/servicios/util/util.service';
 import { GridApi } from 'ag-grid';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-mensajes-listado',
@@ -26,6 +27,7 @@ export class MensajesListadoComponent implements OnInit {
   public cargando: boolean = false;
   public parametrosFormMensaje: any = null; // para el modal mensaje
   public parametrosFormMail: any = null; // para el modal mensaje
+  public listadomensajesAsignados: Array<MensajeTO> = []; // se pasa la lista (es modal)
 
   //AG-GRID
   public opciones: MenuItem[];
@@ -39,6 +41,7 @@ export class MensajesListadoComponent implements OnInit {
   
   constructor(
     private utilService: UtilService,
+    private toastr: ToastrService,
     private mensajeListadoService: MensajeListadoService
   ) { }
 
@@ -48,7 +51,7 @@ export class MensajesListadoComponent implements OnInit {
   }
 
   ngOnChanges(changes) {
-    console.log('change casa listado');
+    console.log('change mensaje listado');
     if (changes.parametrosMensaje) {
       if (changes.parametrosMensaje.currentValue && changes.parametrosMensaje.currentValue) {
         this.codigo = this.parametrosMensaje.codigo;
@@ -113,7 +116,6 @@ export class MensajesListadoComponent implements OnInit {
   }
 
   eliminarMensaje() {
-    // this.accion = LS.ACCION_ELIMINAR;
     let parametros = {
       title: LS.MSJ_TITULO_ELIMINAR,
       texto: LS.MSJ_PREGUNTA_ELIMINAR + "<br>" + LS.TAG_MENSAJE + ": " + this.mensajeSeleccionado.nombres,
@@ -123,28 +125,119 @@ export class MensajesListadoComponent implements OnInit {
       confirmButtonColor: LS.COLOR_ELIMINAR
     }
     this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
-      if (respuesta) {//Si presiona CONTABILIZAR
+      if (respuesta) {
         this.cargando = true;
         let parametros = {
           propiedad: this.parametrosMensaje.propiedad,
-          id: this.mensajeSeleccionado.id
+          mensaje: this.mensajeSeleccionado,
+          propiedad_id: this.parametrosMensaje.propiedad_id, // idCasa o idLote o etc
+          cantMensajesActual: this.parametrosMensaje.nmensajes, // cantidad mensajes actual propiedad
         }
         this.mensajeListadoService.eliminarMensaje(parametros, this);
-      } else {//Cierra el formulario
+      } else {
         this.cargando = false;
       }
     });
   }
 
-  despuesDeEliminarMensaje(data) {
+  despuesDeEliminarMensaje(mensaje) {
     this.cargando = false;
-    this.refrescarTabla(LS.ACCION_ELIMINAR, this.mensajeSeleccionado);
+    this.refrescarTabla(LS.ACCION_ELIMINAR, mensaje);
+  }
+
+  eliminarMensajes() {
+    let parametros = {
+      title: LS.MSJ_TITULO_ELIMINAR,
+      texto: `${LS.MSJ_PREGUNTA_ELIMINAR} <br/> ${this.listadomensajesAsignados.length} 
+      ${LS.TAG_MENSAJES}, ${LS.TAG_PROPIEDAD} : ${this.codigo}`,
+      type: LS.SWAL_WARNING,
+      confirmButtonText: LS.MSJ_SI_ELIMINAR,
+      cancelButtonText: LS.MSJ_CANCELAR,
+      confirmButtonColor: LS.COLOR_ELIMINAR
+    }
+    this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
+      if (respuesta) {
+        this.cargando = true;
+        const cantMensajesActivados = this.listadomensajesAsignados.filter(mensaje => mensaje.estado == true).length;
+        let parametros = {
+          listaMensajes: this.listadomensajesAsignados,
+          listaIdsMensajes: this.listadomensajesAsignados.map(mensaje => mensaje.id),
+          propiedad: this.parametrosMensaje.propiedad,
+          propiedad_id: this.parametrosMensaje.propiedad_id, // idCasa o idLote o etc
+          cantMensajesActual: this.parametrosMensaje.nmensajes, // cantidad mensajes actual propiedad
+          cantMensajesActivados
+        }
+        this.mensajeListadoService.eliminarMensajes(parametros, this);
+      } else {
+        this.cargando = false;
+      }
+    });
+  }
+
+  despuesDeEliminarMensajes(mensajes) {
+    mensajes.forEach(mensaje => {
+      this.refrescarTabla(LS.ACCION_ELIMINAR, mensaje);
+    });
+    this.cargando = false;
+  }
+
+  activarMensajes(estado: boolean) {
+    let parametros;
+    if (estado) { // activar mensajes
+      parametros = {
+        title: LS.ACCION_ACTIVAR,
+        texto: `${LS.MSJ_PREGUNTA_ACTIVAR} <br> ${this.listadomensajesAsignados.length} 
+        ${LS.TAG_MENSAJES}, ${LS.TAG_PROPIEDAD} : ${this.codigo}`,
+        type: LS.SWAL_QUESTION,
+        confirmButtonText: LS.LABEL_ACEPTAR,
+        cancelButtonText: LS.LABEL_CANCELAR
+      };
+    } else {
+      parametros = {
+        title: LS.ACCION_INACTIVAR,
+        texto: `${LS.MSJ_PREGUNTA_INACTIVAR} <br> ${this.listadomensajesAsignados.length} 
+        ${LS.TAG_MENSAJES}, ${LS.TAG_PROPIEDAD} : ${this.codigo}`,
+        type: LS.SWAL_QUESTION,
+        confirmButtonText: LS.LABEL_ACEPTAR,
+        cancelButtonText: LS.LABEL_CANCELAR
+      };
+    }
+
+    this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
+      if (respuesta) {
+        const miestado = !estado;
+        const lista = this.listadomensajesAsignados.filter(mensaje => mensaje.estado == miestado);
+        if (lista.length > 0) {
+          this.cargando = true;
+          let parametro = {
+            propiedad: this.parametrosMensaje.propiedad,
+            propiedad_id: this.parametrosMensaje.propiedad_id, // idCasa o idLote o etc
+            cantMensajesActual: this.parametrosMensaje.nmensajes, // cantidad de mensajes actual
+            listaIdsMensajes: lista.map(mensaje => mensaje.id),
+            listaMensajes: lista,
+            estado: estado
+          }
+          this.mensajeListadoService.cambiarEstadoMensajes(parametro, this);
+        } else {
+          this.toastr.warning("Los mensajes ya estan "+(estado ? "activos.":"inactivados."), LS.TAG_AVISO);
+        }
+      } else {
+        this.cargando = false;
+      }
+    });
+  }
+
+  despuesCambiarEstadoMensajes(mensajes) {
+    mensajes.forEach(mensaje => {
+      mensaje.estado = !mensaje.estado;
+      this.refrescarTabla(LS.ACCION_EDITAR, mensaje);
+    });
+    this.cargando = false;
   }
 
   activarMensaje(estado: boolean) {
     let parametros;
     if (!estado) {
-      // this.accion = LS.ACCION_INACTIVAR;
       parametros = {
         title: LS.ACCION_INACTIVAR,
         texto: LS.MSJ_PREGUNTA_INACTIVAR + "<br> " + LS.TAG_MENSAJE + ": " + this.mensajeSeleccionado.nombres,
@@ -153,7 +246,6 @@ export class MensajesListadoComponent implements OnInit {
         cancelButtonText: LS.LABEL_CANCELAR
       };
     } else {
-      // this.accion = LS.ACCION_ACTIVAR;
       parametros = {
         title: LS.ACCION_ACTIVAR,
         texto: LS.MSJ_PREGUNTA_ACTIVAR + "<br> " + LS.TAG_MENSAJE + ": " + this.mensajeSeleccionado.nombres,
@@ -163,29 +255,25 @@ export class MensajesListadoComponent implements OnInit {
       };
     }
     this.utilService.generarSwallConfirmacionHtml(parametros).then(respuesta => {
-      if (respuesta) {//Si presiona CONTABILIZAR
+      if (respuesta) {
         this.cargando = true;
-        // this.objetoSeleccionado.estado = estado;
-        const listaMensajesSeleccionadas = this.utilService.getAGSelectedData(this.gridApi);
         let parametro = {
           propiedad: this.parametrosMensaje.propiedad,
           propiedad_id: this.parametrosMensaje.propiedad_id,
-          nmensajes: this.parametrosMensaje.nmensajes,
-          listaMensajes: listaMensajesSeleccionadas,
+          mensaje: this.mensajeSeleccionado,
+          cantMensajesActual: this.parametrosMensaje.nmensajes, // cantidas de mensajes actual
           estado: estado
         }
         this.mensajeListadoService.cambiarEstadoMensaje(parametro, this);
-      } else {//Cierra el formulario
+      } else {
         this.cargando = false;
       }
     });
   }
 
-  despuesCambiarEstadoMensaje(mensajes) {
-    mensajes.forEach(mensaje => {
-      mensaje.estado = !mensaje.estado;
-      this.refrescarTabla(LS.ACCION_EDITAR, mensaje);
-    });
+  despuesCambiarEstadoMensaje(mensaje) {
+    mensaje.estado = !mensaje.estado;
+    this.refrescarTabla(LS.ACCION_EDITAR, mensaje);
     this.cargando = false;
   }
 
@@ -230,6 +318,10 @@ export class MensajesListadoComponent implements OnInit {
     this.parametrosFormMensaje = null;
   } //
 
+  selectionChanged() {
+    this.listadomensajesAsignados = this.utilService.getAGSelectedData(this.gridApi);
+  }
+
  // modal formulario enviar mail
  enviarMail() {
   this.mostrarModalMail();
@@ -250,9 +342,12 @@ export class MensajesListadoComponent implements OnInit {
 
   // boton regresar
   cancelar() {
+    const nmensajes = this.listaResultado.filter(mensaje => mensaje.estado == true).length;
+    this.parametrosMensaje.objetoSeleccionado.nmensajes = nmensajes;
     let parametros = {
       accion : LS.ACCION_CONSULTAR,
-      cerrarListado: true
+      cerrarListado: true,
+      objetoSeleccionado: this.parametrosMensaje.objetoSeleccionado
     }
     this.enviarAccion.emit(parametros);
   }

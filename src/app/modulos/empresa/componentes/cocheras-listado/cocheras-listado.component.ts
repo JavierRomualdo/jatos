@@ -43,6 +43,7 @@ export class CocherasListadoComponent implements OnInit {
   public rowSelection: string;
   public localeText = {};
   public context;
+  public rowClassRules;
   @ViewChild("menuOpciones") menuOpciones: ContextMenu;
 
   constructor(
@@ -351,6 +352,7 @@ export class CocherasListadoComponent implements OnInit {
     this.refrescarTabla(LS.ACCION_ELIMINAR, this.objetoSeleccionado);
   }
 
+  // metodo que se abre la ventana del listado de mensajes
   verMensajes() {
     let parametros = {
       propiedad: LS.TAG_HABITACION,
@@ -358,6 +360,7 @@ export class CocherasListadoComponent implements OnInit {
       codigo: this.objetoSeleccionado.codigo,
       activos: false,
       nmensajes: this.objetoSeleccionado.nmensajes,
+      objetoSeleccionado: this.objetoSeleccionado,
       verMensajes: true
     }
     this.enviarAccion.emit(parametros);
@@ -394,6 +397,7 @@ export class CocherasListadoComponent implements OnInit {
   //#region [R3] [AG-GRID] 
   iniciarAgGrid() {
     this.columnDefs = this.cocheraService.generarColumnas(this.isModal);
+    this.rowClassRules = this.cocheraService.generarReglaPaFilasConMensajes();
     this.columnDefsSelected = this.columnDefs.slice();
     this.rowSelection = "single";
     this.context = { componentParent: this };

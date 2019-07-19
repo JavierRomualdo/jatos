@@ -60,12 +60,40 @@ export class MensajeListadoService {
     ).catch(err => this.handleError(err, contexto));
   }
 
+  eliminarMensajes(parametro, contexto) {
+    this.api.post2('eliminarMensajes', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesDeEliminarMensajes(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
   cambiarEstadoMensaje(parametro, contexto) {
     this.api.post2('cambiarEstadoMensaje/', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
           contexto.despuesCambiarEstadoMensaje(data.extraInfo);
+        } else {
+          this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
+          contexto.cargando = false;
+        }
+      }
+    ).catch(err => this.handleError(err, contexto));
+  }
+
+  cambiarEstadoMensajes(parametro, contexto) {
+    this.api.post2('cambiarEstadoMensajes/', parametro).then(
+      (data) => {
+        if (data && data.extraInfo) {
+          this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
+          contexto.despuesCambiarEstadoMensajes(data.extraInfo);
         } else {
           this.toastr.warning(data.operacionMensaje, LS.TAG_AVISO);
           contexto.cargando = false;

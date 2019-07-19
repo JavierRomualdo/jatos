@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Habitacion } from 'src/app/entidades/entidad.habitacion';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { Ubigeo } from 'src/app/entidades/entidad.ubigeo';
 import { Persona } from 'src/app/entidades/entidad.persona';
 import { ConfirmacionComponent } from 'src/app/componentesgenerales/confirmacion/confirmacion.component';
@@ -141,6 +140,7 @@ export class HabitacionesComponent implements OnInit {
   ejecutarAccionMensaje(parametros) {
     if (parametros.cerrarListado) {
       this.vermensajes = false;
+      this.refrescarTabla(LS.ACCION_EDITAR,parametros.objetoSeleccionado);
       this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'A');
     }
   }

@@ -153,6 +153,7 @@ export class CasasComponent implements OnInit {
   ejecutarAccionMensaje(parametros) {
     if (parametros.cerrarListado) {
       this.vermensajes = false;
+      this.refrescarTabla(LS.ACCION_EDITAR,parametros.objetoSeleccionado);
       this.items = this.utilService.generarItemsMenuesPropiedades(this, true, 'V');
     }
   }

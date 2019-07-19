@@ -365,3 +365,11 @@ input[type=email], input[type=number], [type=text].form-control, [type=password]
 .w-80 {
   width: 80% !important;
 }
+
+.ag-theme-balham .sick-days-warning {
+  background-color: sandybrown !important;
+}
+
+.ag-theme-balham .sick-days-breach {
+  background-color: #f5c9c9 !important;
+}
