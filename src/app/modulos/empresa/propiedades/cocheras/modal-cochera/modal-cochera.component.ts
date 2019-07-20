@@ -125,7 +125,7 @@ export class ModalCocheraComponent implements OnInit {
         case LS.ACCION_NUEVO:
           if (this.isModal) {
             this.tituloForm = LS.TITULO_FORM_NUEVA_COCHERA;
-            this.postGuardarCochera();
+            this.postGuardarCochera(this.parametros.cochera);
           } else {
             this.tituloForm = LS.TITULO_FORM_CONSULTAR_COCHERA;
           }
@@ -355,14 +355,17 @@ export class ModalCocheraComponent implements OnInit {
     });
   }
 
-  postGuardarCochera() {
+  postGuardarCochera(ultimaPropiedad) {
     // se genera el codigode la cochera cuando la accion es nuevo
     this.cargando = true;
     // Mapa
     this.cochera.latitud = this.cochera.latitud === "" ? this.latitude + "" : this.cochera.latitud;
     this.cochera.longitud = this.cochera.longitud === "" ? this.longitude + "" : this.cochera.longitud;
     // End Mapa
-    this.cocheraService.generarCodigoCochera(this);
+    const parametros = {
+      ultimaPropiedad
+    }
+    this.cocheraService.generarCodigoCochera(parametros, this);
   }
 
   despuesDeGenerarCodigoCochera(data) {

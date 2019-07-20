@@ -63,8 +63,8 @@ export class LoteService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  generarCodigoLote(contexto) {
-    this.api.get2('generarCodigoLote').then(
+  generarCodigoLote(parametro, contexto) {
+    this.api.post2('generarCodigoLote', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           contexto.despuesDeGenerarCodigoLote(data.extraInfo);

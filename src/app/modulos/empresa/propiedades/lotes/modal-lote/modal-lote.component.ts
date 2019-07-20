@@ -119,7 +119,7 @@ export class ModalLoteComponent implements OnInit {
         case LS.ACCION_NUEVO:
           if (this.isModal) {
             this.tituloForm = LS.TITULO_FORM_NUEVO_LOTE;
-            this.postGuardarLote();
+            this.postGuardarLote(this.parametros.lote);
           } else {
             this.tituloForm = LS.TITULO_FORM_CONSULTAR_LOTE;
           }
@@ -341,14 +341,17 @@ export class ModalLoteComponent implements OnInit {
     });
   }
 
-  postGuardarLote() {
+  postGuardarLote(ultimaPropiedad) {
     // se genera el codigode la cochera cuando la accion es nuevo
     this.cargando = true;
     // Mapa
     this.lote.latitud = this.lote.latitud === "" ? this.latitude + "" : this.lote.latitud;
     this.lote.longitud = this.lote.longitud === "" ? this.longitude + "" : this.lote.longitud;
     // End Mapa
-    this.loteService.generarCodigoLote(this);
+    const parametros = {
+      ultimaPropiedad
+    }
+    this.loteService.generarCodigoLote(parametros, this);
   }
 
   despuesDeGenerarCodigoLote(data) {

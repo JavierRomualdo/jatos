@@ -151,7 +151,8 @@ export class LocalesListadoComponent implements OnInit {
   }
 
   nuevoLocal() {
-    this.emitirAccion(LS.ACCION_NUEVO, null);
+    // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
+    this.emitirAccion(LS.ACCION_NUEVO, this.listadoLocales[this.listadoLocales.length-1]);
   }
 
   consultar() {
@@ -259,7 +260,7 @@ export class LocalesListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        local: null,
+        local: seleccionado,
         verMensajes: false
       }
       this.enviarAccion.emit(parametros);

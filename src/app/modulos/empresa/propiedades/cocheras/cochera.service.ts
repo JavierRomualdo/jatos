@@ -63,8 +63,8 @@ export class CocheraService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  generarCodigoCochera(contexto) {
-    this.api.get2('generarCodigoCochera').then(
+  generarCodigoCochera(parametro, contexto) {
+    this.api.post2('generarCodigoCochera', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           contexto.despuesDeGenerarCodigoCochera(data.extraInfo);

@@ -63,8 +63,8 @@ export class HabitacionService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  generarCodigoHabitacion(contexto) {
-    this.api.get2('generarCodigoHabitacion').then(
+  generarCodigoHabitacion(parametro, contexto) {
+    this.api.post2('generarCodigoHabitacion', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           contexto.despuesDeGenerarCodigoHabitacion(data.extraInfo);

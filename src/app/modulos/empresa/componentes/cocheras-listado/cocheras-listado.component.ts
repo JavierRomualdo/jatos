@@ -151,7 +151,8 @@ export class CocherasListadoComponent implements OnInit {
   }
 
   nuevaCochera() {
-    this.emitirAccion(LS.ACCION_NUEVO, null);
+    // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
+    this.emitirAccion(LS.ACCION_NUEVO, this.listadoCocheras[this.listadoCocheras.length-1]);
   }
 
   consultar() {
@@ -259,7 +260,7 @@ export class CocherasListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        cochera: null,
+        cochera: seleccionado,
         verMensajes: false
       }
       this.enviarAccion.emit(parametros);

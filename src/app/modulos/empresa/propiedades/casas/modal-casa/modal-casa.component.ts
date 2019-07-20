@@ -134,7 +134,7 @@ export class ModalCasaComponent implements OnInit {
         case LS.ACCION_NUEVO:
           if (this.isModal) {
             this.tituloForm = LS.TITULO_FORM_NUEVA_CASA;
-            this.postGuardarCasa();
+            this.postGuardarCasa(this.parametros.casa);
           } else {
             this.tituloForm = LS.TITULO_FORM_CONSULTAR_CASA;
             this.accion = LS.ACCION_CONSULTAR;
@@ -361,14 +361,17 @@ export class ModalCasaComponent implements OnInit {
     });
   }
 
-  postGuardarCasa() {
+  postGuardarCasa(ultimaPropiedad) {
     // se genera el codigode la casa cuando la accion es nuevo
     this.cargando = true;
     // Mapa
     this.casa.latitud = this.casa.latitud === "" ? this.latitude + "" : this.casa.latitud;
     this.casa.longitud = this.casa.longitud === "" ? this.longitude + "" : this.casa.longitud;
     // End Mapa
-    this.casasService.generarCodigoCasa(this);
+    const parametros = {
+      ultimaPropiedad
+    }
+    this.casasService.generarCodigoCasa(parametros, this);
   }
 
   despuesDeGenerarCodigoCasa(data) {

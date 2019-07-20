@@ -151,7 +151,8 @@ export class HabitacionesListadoComponent implements OnInit {
   }
 
   nuevaHabitacion() {
-    this.emitirAccion(LS.ACCION_NUEVO, null);
+    // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
+    this.emitirAccion(LS.ACCION_NUEVO, this.listadoHabitaciones[this.listadoHabitaciones.length-1]);
   }
 
   consultar() {
@@ -259,7 +260,7 @@ export class HabitacionesListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        habitacion: null,
+        habitacion: seleccionado,
         verMensajes: false
       }
       this.enviarAccion.emit(parametros);

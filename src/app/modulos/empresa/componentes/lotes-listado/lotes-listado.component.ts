@@ -151,7 +151,8 @@ export class LotesListadoComponent implements OnInit {
   }
 
   nuevoLote() {
-    this.emitirAccion(LS.ACCION_NUEVO, null);
+    // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
+    this.emitirAccion(LS.ACCION_NUEVO, this.listadoLotes[this.listadoLotes.length-1]);
   }
 
   consultar() {
@@ -259,7 +260,7 @@ export class LotesListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        lote: null,
+        lote: seleccionado,
         verMensajes: false
       }
       this.enviarAccion.emit(parametros);

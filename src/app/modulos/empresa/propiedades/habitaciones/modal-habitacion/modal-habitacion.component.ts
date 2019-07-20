@@ -125,7 +125,7 @@ export class ModalHabitacionComponent implements OnInit {
         case LS.ACCION_NUEVO:
           if (this.isModal) {
             this.tituloForm = LS.TITULO_FORM_NUEVA_HABITACION;
-            this.postGuardarHabitacion();
+            this.postGuardarHabitacion(this.parametros.habitacion);
           } else {
             this.tituloForm = LS.TITULO_FORM_CONSULTAR_HABITACION;
             this.accion = LS.ACCION_CONSULTAR;
@@ -353,14 +353,17 @@ export class ModalHabitacionComponent implements OnInit {
     });
   }
 
-  postGuardarHabitacion() {
+  postGuardarHabitacion(ultimaPropiedad) {
     // se genera el codigode la habitacion cuando la accion es nuevo
     this.cargando = true;
     // Mapa
     this.habitacion.latitud = this.habitacion.latitud === "" ? this.latitude + "" : this.habitacion.latitud;
     this.habitacion.longitud = this.habitacion.longitud === "" ? this.longitude + "" : this.habitacion.longitud;
     // End Mapa
-    this.habitacionService.generarCodigoHabitacion(this);
+    const parametros = {
+      ultimaPropiedad
+    }
+    this.habitacionService.generarCodigoHabitacion(parametros, this);
   }
 
   despuesDeGenerarCodigoHabitacion(data) {

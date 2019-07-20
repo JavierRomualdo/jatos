@@ -63,8 +63,8 @@ export class LocalService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  generarCodigoLocal(contexto) {
-    this.api.get2('generarCodigoLocal').then(
+  generarCodigoLocal(parametro, contexto) {
+    this.api.post2('generarCodigoLocal', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           contexto.despuesDeGenerarCodigoLocal(data.extraInfo);

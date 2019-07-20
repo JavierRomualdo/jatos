@@ -65,8 +65,8 @@ export class CasasService {
     ).catch(err => this.utilService.handleError(err, contexto));
   }
 
-  generarCodigoCasa(contexto) {
-    this.api.get2('generarCodigoCasa').then(
+  generarCodigoCasa(parametro, contexto) {
+    this.api.post2('generarCodigoCasa', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           contexto.despuesDeGenerarCodigoCasa(data.extraInfo);

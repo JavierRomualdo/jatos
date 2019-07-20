@@ -151,7 +151,8 @@ export class CasasListadoComponent implements OnInit {
   }
 
   nuevaCasa() {
-    this.emitirAccion(LS.ACCION_NUEVO, null);
+    // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
+    this.emitirAccion(LS.ACCION_NUEVO, this.listadoCasas[this.listadoCasas.length-1]);
   }
 
   consultar() {
@@ -260,7 +261,7 @@ export class CasasListadoComponent implements OnInit {
     } else {
       let parametros = {
         accion: accion, // accion nuevo
-        casa: null,
+        casa: seleccionado,
         verMensajes: false
       }
       this.enviarAccion.emit(parametros);
