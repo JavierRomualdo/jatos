@@ -629,14 +629,14 @@ export class ModalCasaComponent implements OnInit {
   }
  
  
-  markerDragEnd($event: MouseEvent) {
-    console.log($event);
-    this.latitude = $event.coords.lat;
-    this.longitude = $event.coords.lng;
-    this.casa.latitud = this.latitude + "";
-    this.casa.longitud = this.longitude + "";
-    this.getAddress(this.latitude, this.longitude);
-  }
+  // markerDragEnd($event: MouseEvent) {
+  //   console.log($event);
+  //   this.latitude = $event.coords.lat;
+  //   this.longitude = $event.coords.lng;
+  //   this.casa.latitud = this.latitude + "";
+  //   this.casa.longitud = this.longitude + "";
+  //   this.getAddress(this.latitude, this.longitude);
+  // }
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
@@ -679,11 +679,11 @@ export class ModalCasaComponent implements OnInit {
     position: ControlPosition.LEFT_TOP,
   }
 
-  // markerDragEnd($event) { // MouseEvent
-  //   this.latitude = $event.coords.lat;
-  //   this.longitude = $event.coords.lng;
-  //   this.casa.latitud = this.latitude + "";
-  //   this.casa.longitud = this.longitude + "";
-  // }
+  markerDragEnd($event) { // MouseEvent
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.casa.latitud = this.latitude + "";
+    this.casa.longitud = this.longitude + "";
+  }
   // End Mapa
 }
