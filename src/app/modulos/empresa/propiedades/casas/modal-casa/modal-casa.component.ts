@@ -106,7 +106,7 @@ export class ModalCasaComponent implements OnInit {
     this.archivosDocumentos = [];
     this.listaLP = [];
     this.postInicializarModal();
-    this.initMapaAutocomplete();
+    // this.initMapaAutocomplete();
   }
 
   ngOnChanges(changes) {
