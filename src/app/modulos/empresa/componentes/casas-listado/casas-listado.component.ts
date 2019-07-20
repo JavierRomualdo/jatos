@@ -152,7 +152,10 @@ export class CasasListadoComponent implements OnInit {
 
   nuevaCasa() {
     // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
-    this.emitirAccion(LS.ACCION_NUEVO, this.listadoCasas[this.listadoCasas.length-1]);
+    const ids = this.listadoCasas.map(casa => casa.id);
+    const idMax = Math.max(...ids);
+    const ultimaCasa = this.listadoCasas.find(casa => casa.id == idMax);
+    this.emitirAccion(LS.ACCION_NUEVO, ultimaCasa);
   }
 
   consultar() {

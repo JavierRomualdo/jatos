@@ -152,7 +152,10 @@ export class LotesListadoComponent implements OnInit {
 
   nuevoLote() {
     // necesito la ultima casa para generar mi siguiente codigo de mi nueva propiedad
-    this.emitirAccion(LS.ACCION_NUEVO, this.listadoLotes[this.listadoLotes.length-1]);
+    const ids = this.listadoLotes.map(casa => casa.id);
+    const idMax = Math.max(...ids);
+    const ultimoLote = this.listadoLotes.find(casa => casa.id == idMax);
+    this.emitirAccion(LS.ACCION_NUEVO, ultimoLote);
   }
 
   consultar() {
