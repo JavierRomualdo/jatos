@@ -75,7 +75,7 @@ export class MensajeListadoService {
   }
 
   cambiarEstadoMensaje(parametro, contexto) {
-    this.api.post2('cambiarEstadoMensaje/', parametro).then(
+    this.api.post2('cambiarEstadoMensaje', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
@@ -89,7 +89,7 @@ export class MensajeListadoService {
   }
 
   cambiarEstadoMensajes(parametro, contexto) {
-    this.api.post2('cambiarEstadoMensajes/', parametro).then(
+    this.api.post2('cambiarEstadoMensajes', parametro).then(
       (data) => {
         if (data && data.extraInfo) {
           this.toastr.success(data.operacionMensaje, LS.TAG_EXITO);
